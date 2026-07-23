@@ -34,6 +34,23 @@ export function SaveButton() {
 스타일입니다. 애플리케이션 루트에서 한 번만 불러오십시오. 리셋 없이 토큰만 필요한 경우에는
 CSS 변수 전용 `@city-ds/react/theme.css`를 사용할 수 있습니다.
 
+## 디자인 토큰
+
+공개 토큰은 모두 `--city-` 접두사의 CSS 변수입니다. 색상·간격·타이포그래피·radius·
+그림자·모션·컨트롤 크기를 제공하며, Tailwind 유틸리티와 컴포넌트도 같은 값을 사용합니다.
+
+```css
+.dashboard-card {
+  padding: var(--city-space-6);
+  color: var(--city-color-foreground);
+  background: var(--city-color-surface);
+  border-radius: var(--city-radius-lg);
+  box-shadow: var(--city-shadow-panel);
+}
+```
+
+전체 목록과 테마별 미리보기는 `기초/디자인 토큰` 스토리에서 확인할 수 있습니다.
+
 ## 테마
 
 기본값은 운영체제 설정을 따릅니다. 강제로 고정하려면 문서 루트에 `data-theme`을 지정하십시오.

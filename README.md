@@ -60,6 +60,35 @@ document.documentElement.dataset.theme = 'light';
 delete document.documentElement.dataset.theme; // system
 ```
 
+## 디자인 토큰
+
+공개 토큰은 모두 `--city-` 접두사의 CSS 변수입니다. 색상과 그림자는 테마에 반응하며,
+간격은 4px 단위의 `--city-space-unit`을 기준으로 합니다.
+
+| 범주         | 예시                                                          |
+| ------------ | ------------------------------------------------------------- |
+| 색상         | `--city-color-background`, `--city-color-primary`             |
+| 간격         | `--city-space-2`, `--city-space-6`                            |
+| 타이포그래피 | `--city-font-size-sm`, `--city-font-weight-medium`            |
+| 형태와 효과  | `--city-radius-md`, `--city-shadow-panel`                     |
+| 모션         | `--city-duration-normal`, `--city-easing-standard`            |
+| 컨트롤       | `--city-control-sm`, `--city-control-md`, `--city-control-lg` |
+
+애플리케이션 CSS를 city-ds CSS보다 나중에 불러오고 필요한 값만 재정의하십시오.
+
+```css
+:root {
+  --city-radius-md: 0.5rem;
+}
+
+[data-theme='light'] {
+  --city-color-primary: oklch(0.32 0.01 286);
+}
+```
+
+Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 토큰을 사용합니다. 전체 목록과
+테마별 미리보기는 Storybook의 `기초/디자인 토큰` 스토리에서 확인할 수 있습니다.
+
 ## 컴포넌트
 
 `@city-ds/react`는 다음 16개 그룹을 제공합니다.

@@ -111,6 +111,7 @@ const preview: Preview = {
       storySort: {
         order: [
           '시작하기',
+          '기초',
           'Actions',
           'Forms',
           'Navigation',

@@ -1,6 +1,7 @@
 export * from './components/badge';
 export * from './components/button';
 export * from './components/checkbox';
+export * from './components/collapsible';
 export * from './components/dialog';
 export * from './components/field';
 export * from './components/file-upload';

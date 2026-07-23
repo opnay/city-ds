@@ -2,6 +2,7 @@ import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
+import { Collapsible } from '../../src/components/collapsible';
 import { Dialog } from '../../src/components/dialog';
 import { Popover } from '../../src/components/popover';
 import { Select } from '../../src/components/select';
@@ -247,3 +248,66 @@ function ToastExample() {
     </>
   );
 }
+
+describe('collapsible', () => {
+  it('links the trigger to the panel and toggles with keyboard input', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Collapsible.Root>
+        <Collapsible.Trigger>Advanced options</Collapsible.Trigger>
+        <Collapsible.Panel>Extra settings</Collapsible.Panel>
+      </Collapsible.Root>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Advanced options' });
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger).toHaveAttribute('aria-controls');
+    expect(screen.queryByText('Extra settings')).not.toBeInTheDocument();
+
+    trigger.focus();
+    await user.keyboard('{Enter}');
+
+    const panel = screen.getByText('Extra settings');
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(trigger).toHaveAttribute('aria-controls', panel.id);
+
+    await user.keyboard(' ');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('supports disabled roots and controlled state updates', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+
+    render(
+      <Collapsible.Root open={false} disabled onOpenChange={onOpenChange}>
+        <Collapsible.Trigger>Disabled options</Collapsible.Trigger>
+        <Collapsible.Panel>Unavailable settings</Collapsible.Panel>
+      </Collapsible.Root>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Disabled options' });
+    expect(trigger).toHaveAttribute('aria-disabled', 'true');
+    await user.click(trigger);
+
+    expect(onOpenChange).not.toHaveBeenCalled();
+    expect(screen.queryByText('Unavailable settings')).not.toBeInTheDocument();
+  });
+
+  it('honors the Base UI render contract', () => {
+    render(
+      <Collapsible.Root defaultOpen>
+        <Collapsible.Trigger render={<button type="button" data-testid="custom-trigger" />}>
+          Custom trigger
+        </Collapsible.Trigger>
+        <Collapsible.Panel render={<section data-testid="custom-panel" />}>
+          Custom panel
+        </Collapsible.Panel>
+      </Collapsible.Root>,
+    );
+
+    expect(screen.getByTestId('custom-trigger').tagName).toBe('BUTTON');
+    expect(screen.getByTestId('custom-panel').tagName).toBe('SECTION');
+  });
+});

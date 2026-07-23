@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { Button } from '@city-ds/react';
 
@@ -55,6 +56,21 @@ export const Disabled: Story = {
   args: {
     disabled: true,
     children: 'Deploy',
+  },
+};
+
+export const FocusVisible: Story = {
+  args: {
+    children: 'Keyboard focus',
+  },
+  parameters: {
+    docs: {
+      autoplay: true,
+    },
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.tab();
+    await expect(within(canvasElement).getByRole('button')).toHaveFocus();
   },
 };
 

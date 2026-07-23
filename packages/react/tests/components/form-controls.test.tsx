@@ -19,6 +19,7 @@ describe('form and display controls', () => {
     render(
       <>
         <Button onClick={onClick}>Save</Button>
+        <Button variant="outline">Outline</Button>
         <Button disabled onClick={onClick}>
           Disabled
         </Button>
@@ -29,7 +30,12 @@ describe('form and display controls', () => {
     await user.click(screen.getByRole('button', { name: 'Disabled' }));
 
     expect(onClick).toHaveBeenCalledTimes(1);
-    expect(screen.getByRole('button', { name: 'Save' })).toHaveClass('bg-city-primary');
+    expect(screen.getByRole('button', { name: 'Save' })).toHaveClass(
+      'bg-city-primary',
+      'focus-visible:ring-2',
+      'focus-visible:ring-offset-2',
+    );
+    expect(screen.getByRole('button', { name: 'Outline' })).toHaveClass('border-city-border');
   });
 
   it('renders Badge through the Base UI render API', () => {

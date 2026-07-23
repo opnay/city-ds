@@ -8,3 +8,80 @@ body,
   color: var(--city-color-foreground);
   background: var(--city-color-background);
 }
+
+.sbdocs-wrapper {
+  color: var(--city-color-foreground) !important;
+  background: var(--city-color-background) !important;
+}
+
+.sbdocs-content {
+  color: var(--city-color-foreground) !important;
+}
+
+.sbdocs-content :where(h1, h2, h3, h4, h5, h6, p, li, dt, dd) {
+  color: var(--city-color-foreground) !important;
+}
+
+.sbdocs-preview,
+.docs-story {
+  color: var(--city-color-foreground) !important;
+  background: var(--city-color-background) !important;
+  border-color: var(--city-color-border) !important;
+}
+
+.sbdocs-preview > :first-child {
+  color: var(--city-color-muted-foreground) !important;
+  background: var(--city-color-surface) !important;
+  border-color: var(--city-color-border) !important;
+}
+
+.sbdocs-preview > :first-child button,
+.sbdocs-preview-actions button {
+  color: var(--city-color-muted-foreground) !important;
+}
+
+.docblock-argstable,
+.docblock-argstable thead,
+.docblock-argstable tbody,
+.docblock-argstable tr,
+.docblock-argstable th,
+.docblock-argstable td {
+  color: var(--city-color-foreground) !important;
+  background: var(--city-color-background) !important;
+  border-color: var(--city-color-border) !important;
+}
+
+.docblock-argstable :where(code, input, select, textarea) {
+  color: var(--city-color-foreground) !important;
+  background: var(--city-color-surface-raised) !important;
+  border-color: var(--city-color-input) !important;
+}
+
+.docblock-argstable :where(span, label) {
+  color: var(--city-color-foreground) !important;
+}
+
+.sbdocs-content a {
+  color: inherit;
+}
+
+.sbdocs-content :not(pre) > code {
+  color: var(--city-color-foreground) !important;
+  background: var(--city-color-surface-raised) !important;
+  border-color: var(--city-color-border) !important;
+}
+
+.sbdocs-content pre.prismjs {
+  color: var(--city-color-foreground) !important;
+  background: var(--city-color-surface-raised) !important;
+  border: 1px solid var(--city-color-border) !important;
+}
+
+.sbdocs-content pre.prismjs :where(code, span) {
+  color: inherit !important;
+  background: transparent !important;
+}
+
+.sbdocs-content :where(hr, table, th, td) {
+  border-color: var(--city-color-border) !important;
+}

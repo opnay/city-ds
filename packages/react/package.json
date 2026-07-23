@@ -64,6 +64,10 @@
       "types": "./dist/components/table/index.d.ts",
       "import": "./dist/components/table/index.js"
     },
+    "./toggle": {
+      "types": "./dist/components/toggle/index.d.ts",
+      "import": "./dist/components/toggle/index.js"
+    },
     "./tabs": {
       "types": "./dist/components/tabs/index.d.ts",
       "import": "./dist/components/tabs/index.js"

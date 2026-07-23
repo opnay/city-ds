@@ -10,6 +10,7 @@ import { Field } from '../../src/components/field';
 import { Input, InputGroup, Textarea } from '../../src/components/input';
 import { RadioGroup } from '../../src/components/radio-group';
 import { Switch } from '../../src/components/switch';
+import { Toggle } from '../../src/components/toggle';
 
 describe('form and display controls', () => {
   it('runs button actions and prevents disabled interaction', async () => {
@@ -148,6 +149,37 @@ describe('form and display controls', () => {
     expect(screen.getByRole('radio', { name: 'Dark' })).toHaveAttribute('aria-checked', 'true');
     expect(onValueChange).toHaveBeenLastCalledWith(
       'dark',
+      expect.objectContaining({ reason: 'none' }),
+    );
+  });
+
+  it('toggles Toggle pressed state with pointer and keyboard interaction', async () => {
+    const user = userEvent.setup();
+    const onPressedChange = vi.fn();
+
+    render(
+      <>
+        <Toggle aria-label="Bold" onPressedChange={onPressedChange}>
+          B
+        </Toggle>
+        <Toggle aria-label="Pinned" defaultPressed />
+        <Toggle aria-label="Locked" disabled onPressedChange={onPressedChange}>
+          Locked
+        </Toggle>
+      </>,
+    );
+
+    const toggle = screen.getByRole('button', { name: 'Bold' });
+    await user.click(toggle);
+    toggle.focus();
+    await user.keyboard('[Space]');
+    await user.click(screen.getByRole('button', { name: 'Locked' }));
+
+    expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('button', { name: 'Pinned' })).toHaveAttribute('aria-pressed', 'true');
+    expect(onPressedChange).toHaveBeenCalledTimes(2);
+    expect(onPressedChange).toHaveBeenLastCalledWith(
+      false,
       expect.objectContaining({ reason: 'none' }),
     );
   });

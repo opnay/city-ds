@@ -39,6 +39,7 @@ const meta = {
   component: PaginationExample,
   tags: ['autodocs'],
   parameters: {
+    layout: 'padded',
     docs: {
       description: {
         component: '페이지 범위와 경계 상태를 관리하는 접근성 높은 페이지네이션입니다.',

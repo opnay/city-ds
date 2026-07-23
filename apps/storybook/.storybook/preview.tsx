@@ -43,6 +43,9 @@ const preview: Preview = {
   },
   parameters: {
     a11y: {
+      context: {
+        exclude: ['[data-base-ui-focus-guard]'],
+      },
       test: 'error',
     },
     controls: {

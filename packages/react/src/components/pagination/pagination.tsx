@@ -161,7 +161,7 @@ export const PaginationRoot = React.forwardRef<HTMLElement, PaginationRootProps>
       props: {
         ...props,
         children: content,
-        className: cn('flex items-center', className),
+        className: cn('flex min-w-0 max-w-full items-center overflow-x-auto', className),
         'aria-label': props['aria-label'] ?? 'Pagination',
         'data-city-pagination-root': '',
         'data-invalid-page': normalizedPage !== page ? '' : undefined,
@@ -195,7 +195,7 @@ export const PaginationList = React.forwardRef<HTMLUListElement, PaginationListP
     const content = children ?? (
       <>
         <PaginationItem>
-          <PaginationFirst />
+          <PaginationFirst className="hidden sm:inline-flex" />
         </PaginationItem>
         <PaginationItem>
           <PaginationPrevious />
@@ -227,7 +227,7 @@ export const PaginationList = React.forwardRef<HTMLUListElement, PaginationListP
           <PaginationNext />
         </PaginationItem>
         <PaginationItem>
-          <PaginationLast />
+          <PaginationLast className="hidden sm:inline-flex" />
         </PaginationItem>
       </>
     );

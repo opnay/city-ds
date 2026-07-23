@@ -1,7 +1,5 @@
 :root,
 [data-theme='light'] {
-  color-scheme: light;
-
   --city-color-background: oklch(1 0 0);
   --city-color-foreground: oklch(0.21 0.006 285.885);
   --city-color-surface: oklch(0.985 0 0);
@@ -29,8 +27,6 @@
 }
 
 [data-theme='dark'] {
-  color-scheme: dark;
-
   --city-color-background: oklch(0.141 0.005 285.823);
   --city-color-foreground: oklch(0.985 0 0);
   --city-color-surface: oklch(0.21 0.006 285.885);
@@ -53,8 +49,6 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    color-scheme: dark;
-
     --city-color-background: oklch(0.141 0.005 285.823);
     --city-color-foreground: oklch(0.985 0 0);
     --city-color-surface: oklch(0.21 0.006 285.885);

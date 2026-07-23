@@ -165,6 +165,8 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
       <>
         <input
           accept={accept}
+          aria-label={props['aria-label'] ?? 'File upload'}
+          aria-labelledby={props['aria-labelledby']}
           className="sr-only"
           data-city-file-upload-input=""
           disabled={disabled}

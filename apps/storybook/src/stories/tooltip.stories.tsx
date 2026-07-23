@@ -13,10 +13,16 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function TooltipExample({ side = 'top' }: { side?: 'top' | 'right' | 'bottom' | 'left' }) {
+function TooltipExample({
+  side = 'top',
+  defaultOpen = false,
+}: {
+  side?: 'top' | 'right' | 'bottom' | 'left';
+  defaultOpen?: boolean;
+}) {
   return (
     <Tooltip.Provider delay={0} closeDelay={0}>
-      <Tooltip.Root>
+      <Tooltip.Root defaultOpen={defaultOpen}>
         <Tooltip.Trigger aria-label="Show deployment details">Deployment</Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Positioner side={side} sideOffset={8}>
@@ -33,6 +39,10 @@ function TooltipExample({ side = 'top' }: { side?: 'top' | 'right' | 'bottom' | 
 
 export const Default: Story = {
   render: () => <TooltipExample />,
+};
+
+export const Open: Story = {
+  render: () => <TooltipExample defaultOpen />,
 };
 
 export const RightAligned: Story = {

@@ -45,7 +45,9 @@ export function SaveButton() {
 }
 ```
 
-패키지 CSS는 디자인 토큰과 컴포넌트 유틸리티를 포함하지만 Tailwind Preflight는 포함하지 않습니다.
+`styles.css`는 Tailwind Preflight, 디자인 토큰과 컴포넌트 유틸리티를 포함하는 앱 기반
+스타일입니다. 애플리케이션 루트에서 한 번만 가져오십시오. 전역 리셋이나 컴포넌트 스타일
+없이 CSS 변수만 필요한 경우에는 `@city-ds/react/theme.css`를 가져올 수 있습니다.
 
 ## 테마
 

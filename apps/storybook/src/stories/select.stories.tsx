@@ -13,9 +13,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function StatusSelect() {
+function StatusSelect({ disabled = false }: { disabled?: boolean }) {
   return (
-    <Select.Root defaultValue="in-progress">
+    <Select.Root defaultValue="in-progress" disabled={disabled}>
       <Select.Label>Status</Select.Label>
       <Select.Trigger aria-label="Project status" className="w-56">
         <Select.Value placeholder="Choose a status" />
@@ -48,6 +48,10 @@ function StatusSelect() {
 
 export const Default: Story = {
   render: () => <StatusSelect />,
+};
+
+export const Disabled: Story = {
+  render: () => <StatusSelect disabled />,
 };
 
 export const Grouped: Story = {

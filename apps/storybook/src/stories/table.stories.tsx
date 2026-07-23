@@ -14,7 +14,7 @@ interface TableStoryArgs {
 
 function DataTable({ size, variant }: TableStoryArgs) {
   return (
-    <div style={{ maxWidth: 720, minWidth: 560 }}>
+    <div style={{ maxWidth: 720, width: '100%' }}>
       <Table.Root aria-label="Project inventory" size={size} variant={variant}>
         <Table.Caption>Current project inventory</Table.Caption>
         <Table.Header>

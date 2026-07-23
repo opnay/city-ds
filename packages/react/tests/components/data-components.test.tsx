@@ -49,6 +49,8 @@ describe('Pagination', () => {
     const navigation = screen.getByRole('navigation', { name: 'Pagination' });
 
     expect(navigation).toHaveAttribute('data-invalid-page');
+    expect(navigation).toHaveClass('max-w-full');
+    expect(navigation).toHaveClass('overflow-x-auto');
     expect(screen.getByRole('button', { name: 'Page 3' })).toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('button', { name: 'Go to next page' })).toBeDisabled();
 
@@ -66,6 +68,10 @@ describe('Pagination', () => {
     expect(screen.getByRole('button', { name: 'Go to first page' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Go to previous page' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Page 7' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('button', { name: 'Go to first page' })).toHaveClass(
+      'hidden',
+      'sm:inline-flex',
+    );
     expect(screen.getByRole('button', { name: 'Go back 5 pages' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Go forward 5 pages' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Go to next page' })).toBeInTheDocument();
@@ -73,6 +79,10 @@ describe('Pagination', () => {
 
     await user.click(screen.getByRole('button', { name: 'Go forward 5 pages' }));
 
+    expect(screen.getByRole('button', { name: 'Go to last page' })).toHaveClass(
+      'hidden',
+      'sm:inline-flex',
+    );
     expect(onPageChange).toHaveBeenCalledWith(12);
   });
 });
@@ -138,6 +148,7 @@ describe('FileUpload', () => {
     expect(input).toHaveAttribute('accept', 'text/plain');
     expect(input).toHaveAttribute('name', 'reports');
     expect(input).toHaveAttribute('multiple');
+    expect(input).toHaveAccessibleName('File upload');
 
     await user.upload(input as HTMLInputElement, file);
     await user.upload(input as HTMLInputElement, file);

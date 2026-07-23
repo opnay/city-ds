@@ -78,7 +78,11 @@
     },
     "./styles.css": "./dist/styles.css",
     "./theme.css": "./src/styles/theme.css",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./popover": {
+      "types": "./dist/components/popover/index.d.ts",
+      "import": "./dist/components/popover/index.js"
+    }
   },
   "files": [
     "dist",

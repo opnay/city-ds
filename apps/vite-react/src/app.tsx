@@ -4,6 +4,7 @@ import {
   Button,
   Field,
   Input,
+  Popover,
   Progress,
   Switch,
   Tabs,
@@ -78,6 +79,21 @@ export function App() {
             <Progress.Indicator />
           </Progress.Track>
         </Progress.Root>
+
+        <Popover.Root>
+          <Popover.Trigger>Inspect filters</Popover.Trigger>
+          <Popover.Portal>
+            <Popover.Positioner sideOffset={8}>
+              <Popover.Popup>
+                <Popover.Title>Smoke popover</Popover.Title>
+                <Popover.Description>
+                  Root exports include styled popover primitives.
+                </Popover.Description>
+                <Popover.Close className="mt-4">Close</Popover.Close>
+              </Popover.Popup>
+            </Popover.Positioner>
+          </Popover.Portal>
+        </Popover.Root>
 
         <Tabs.Root defaultValue="activity">
           <Tabs.List aria-label="Workspace view">

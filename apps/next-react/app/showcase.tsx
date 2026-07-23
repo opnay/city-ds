@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@city-ds/react/button';
 import { Field } from '@city-ds/react/field';
 import { Input } from '@city-ds/react/input';
+import { Popover } from '@city-ds/react/popover';
 import { Progress } from '@city-ds/react/progress';
 import { Tabs } from '@city-ds/react/tabs';
 
@@ -32,6 +33,21 @@ export function Showcase() {
           <Progress.Indicator />
         </Progress.Track>
       </Progress.Root>
+
+      <Popover.Root>
+        <Popover.Trigger>Inspect release gates</Popover.Trigger>
+        <Popover.Portal>
+          <Popover.Positioner sideOffset={8}>
+            <Popover.Popup>
+              <Popover.Title>Release gates</Popover.Title>
+              <Popover.Description>
+                Subpath exports include the popover composition API.
+              </Popover.Description>
+              <Popover.Close className="mt-4">Close</Popover.Close>
+            </Popover.Popup>
+          </Popover.Positioner>
+        </Popover.Portal>
+      </Popover.Root>
 
       <Tabs.Root defaultValue="summary">
         <Tabs.List aria-label="Deployment details">

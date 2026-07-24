@@ -2,10 +2,163 @@
 
 import * as React from 'react';
 import { useRender } from '@base-ui/react/use-render';
+import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
+import { Checkbox } from '../checkbox';
 import { cn } from '../../lib/cn';
 import type { ControlSize } from '../../types';
 
 export const TABLE_VARIANTS = ['line', 'surface'] as const;
+
+export type TableSortDirection = 'asc' | 'desc';
+
+export interface TableScrollAreaProps extends Omit<
+  React.ComponentPropsWithoutRef<'div'>,
+  'className'
+> {
+  className?: string;
+}
+
+export const TableScrollArea = React.forwardRef<HTMLDivElement, TableScrollAreaProps>(
+  ({ className, ...props }, ref) => (
+    <div
+      {...props}
+      ref={ref}
+      className={cn('rounded-city-md border-city-border w-full overflow-x-auto border', className)}
+      data-city-table-scroll-area=""
+    />
+  ),
+);
+
+TableScrollArea.displayName = 'Table.ScrollArea';
+
+export interface TableSortButtonProps extends Omit<
+  React.ComponentPropsWithoutRef<'button'>,
+  'className' | 'onChange'
+> {
+  className?: string;
+  direction?: TableSortDirection | false;
+  onDirectionChange?: (direction: TableSortDirection) => void;
+}
+
+function getNextSortDirection(direction: TableSortButtonProps['direction']): TableSortDirection {
+  return direction === 'asc' ? 'desc' : 'asc';
+}
+
+export const TableSortButton = React.forwardRef<HTMLButtonElement, TableSortButtonProps>(
+  (
+    {
+      children,
+      className,
+      direction = false,
+      onClick,
+      onDirectionChange,
+      type = 'button',
+      ...props
+    },
+    ref,
+  ) => {
+    const Icon = direction === 'asc' ? ArrowUp : direction === 'desc' ? ArrowDown : ChevronsUpDown;
+    const sortLabel =
+      direction === 'asc'
+        ? 'sorted ascending'
+        : direction === 'desc'
+          ? 'sorted descending'
+          : 'not sorted';
+    const textLabel = typeof children === 'string' ? children : 'Column';
+
+    return (
+      <button
+        {...props}
+        ref={ref}
+        type={type}
+        aria-label={props['aria-label'] ?? `${textLabel} (${sortLabel})`}
+        aria-pressed={direction !== false}
+        className={cn(
+          'rounded-city-xs hover:bg-city-muted focus-visible:ring-city-ring focus-visible:ring-offset-city-background -mx-1 inline-flex items-center gap-1 px-1 py-0.5 text-inherit transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+          className,
+        )}
+        data-city-table-sort-button=""
+        data-sort-direction={direction || 'none'}
+        onClick={(event) => {
+          onClick?.(event);
+          if (!event.defaultPrevented) {
+            onDirectionChange?.(getNextSortDirection(direction));
+          }
+        }}
+      >
+        <span>{children}</span>
+        <Icon aria-hidden="true" className="size-3.5" />
+      </button>
+    );
+  },
+);
+
+TableSortButton.displayName = 'Table.SortButton';
+
+export interface TableSelectionHeadProps extends Omit<TableHeadProps, 'children'> {
+  checked?: boolean | 'indeterminate';
+  label?: string;
+  onCheckedChange?: (checked: boolean) => void;
+}
+
+export const TableSelectionHead = React.forwardRef<HTMLTableCellElement, TableSelectionHeadProps>(
+  ({ checked = false, label = 'Select all rows', onCheckedChange, className, ...props }, ref) => (
+    <TableHead {...props} ref={ref} className={cn('w-10', className)}>
+      <Checkbox
+        aria-label={label}
+        checked={checked === true}
+        indeterminate={checked === 'indeterminate'}
+        onCheckedChange={(value) => onCheckedChange?.(value === true)}
+      />
+    </TableHead>
+  ),
+);
+
+TableSelectionHead.displayName = 'Table.SelectionHead';
+
+export interface TableSelectionCellProps extends Omit<TableCellProps, 'children'> {
+  checked?: boolean;
+  label: string;
+  onCheckedChange?: (checked: boolean) => void;
+}
+
+export const TableSelectionCell = React.forwardRef<HTMLTableCellElement, TableSelectionCellProps>(
+  ({ checked = false, label, onCheckedChange, className, ...props }, ref) => (
+    <TableCell {...props} ref={ref} className={cn('w-10', className)}>
+      <Checkbox
+        aria-label={label}
+        checked={checked}
+        onCheckedChange={(value) => onCheckedChange?.(value === true)}
+      />
+    </TableCell>
+  ),
+);
+
+TableSelectionCell.displayName = 'Table.SelectionCell';
+
+export interface TableStateRowProps extends Omit<TableRowProps, 'children'> {
+  children: React.ReactNode;
+  colSpan: number;
+  status?: 'empty' | 'loading';
+}
+
+export const TableStateRow = React.forwardRef<HTMLTableRowElement, TableStateRowProps>(
+  ({ children, className, colSpan, status = 'empty', ...props }, ref) => (
+    <TableRow {...props} ref={ref} className={cn('hover:bg-transparent', className)}>
+      <TableCell
+        colSpan={colSpan}
+        className="text-city-muted-foreground h-28 text-center text-sm"
+        role={status === 'loading' ? 'status' : undefined}
+        aria-live={status === 'loading' ? 'polite' : undefined}
+        data-city-table-state={status}
+      >
+        {children}
+      </TableCell>
+    </TableRow>
+  ),
+);
+
+TableStateRow.displayName = 'Table.StateRow';
 
 export type TableVariant = (typeof TABLE_VARIANTS)[number];
 
@@ -279,4 +432,9 @@ export const Table = {
   Head: TableHead,
   Cell: TableCell,
   Caption: TableCaption,
+  ScrollArea: TableScrollArea,
+  SortButton: TableSortButton,
+  SelectionHead: TableSelectionHead,
+  SelectionCell: TableSelectionCell,
+  StateRow: TableStateRow,
 } as const;

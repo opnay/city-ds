@@ -38,6 +38,88 @@ describe('Table', () => {
     expect(screen.getByRole('columnheader', { name: 'Job' })).toHaveAttribute('scope', 'col');
     expect(screen.getByRole('cell', { name: 'Build' })).toBeInTheDocument();
   });
+
+  it('supports controlled sorting and keyboard activation', async () => {
+    const user = userEvent.setup();
+    const onDirectionChange = vi.fn();
+
+    render(
+      <Table.Root aria-label="Projects">
+        <Table.Header>
+          <Table.Row>
+            <Table.Head aria-sort="ascending">
+              <Table.SortButton direction="asc" onDirectionChange={onDirectionChange}>
+                Project
+              </Table.SortButton>
+            </Table.Head>
+          </Table.Row>
+        </Table.Header>
+      </Table.Root>,
+    );
+
+    const button = screen.getByRole('button', { name: 'Project (sorted ascending)' });
+
+    expect(screen.getByRole('columnheader', { name: /Project/ })).toHaveAttribute(
+      'aria-sort',
+      'ascending',
+    );
+
+    await user.tab();
+    expect(button).toHaveFocus();
+    await user.keyboard('{Enter}');
+
+    expect(onDirectionChange).toHaveBeenCalledWith('desc');
+  });
+
+  it('supports selectable header, row cells, and indeterminate state', async () => {
+    const user = userEvent.setup();
+    const onAllChange = vi.fn();
+    const onRowChange = vi.fn();
+
+    render(
+      <Table.Root aria-label="Projects">
+        <Table.Header>
+          <Table.Row>
+            <Table.SelectionHead checked="indeterminate" onCheckedChange={onAllChange} />
+            <Table.Head>Project</Table.Head>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            <Table.SelectionCell label="Select Beacon" onCheckedChange={onRowChange} />
+            <Table.Cell>Beacon</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table.Root>,
+    );
+
+    expect(screen.getByRole('checkbox', { name: 'Select all rows' })).toHaveAttribute(
+      'aria-checked',
+      'mixed',
+    );
+
+    await user.click(screen.getByRole('checkbox', { name: 'Select all rows' }));
+    await user.click(screen.getByRole('checkbox', { name: 'Select Beacon' }));
+
+    expect(onAllChange).toHaveBeenCalledWith(true);
+    expect(onRowChange).toHaveBeenCalledWith(true);
+  });
+
+  it('renders empty and loading state rows across all columns', () => {
+    render(
+      <Table.Root aria-label="Projects">
+        <Table.Body>
+          <Table.StateRow colSpan={3}>No projects</Table.StateRow>
+          <Table.StateRow colSpan={3} status="loading">
+            Loading projects
+          </Table.StateRow>
+        </Table.Body>
+      </Table.Root>,
+    );
+
+    expect(screen.getByRole('cell', { name: 'No projects' })).toHaveAttribute('colspan', '3');
+    expect(screen.getByRole('status')).toHaveAttribute('data-city-table-state', 'loading');
+  });
 });
 
 describe('Pagination', () => {

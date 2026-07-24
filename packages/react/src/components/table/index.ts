@@ -8,6 +8,11 @@ export {
   TableHead,
   TableHeader,
   TableRoot,
+  TableScrollArea,
+  TableSelectionCell,
+  TableSelectionHead,
+  TableSortButton,
+  TableStateRow,
   TableRow,
 } from './table';
 export type {
@@ -18,6 +23,12 @@ export type {
   TableHeadProps,
   TableHeaderProps,
   TableRootProps,
+  TableScrollAreaProps,
+  TableSelectionCellProps,
+  TableSelectionHeadProps,
+  TableSortButtonProps,
+  TableSortDirection,
+  TableStateRowProps,
   TableRowProps,
   TableVariant,
 } from './table';

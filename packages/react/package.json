@@ -32,6 +32,10 @@
       "types": "./dist/components/dialog/index.d.ts",
       "import": "./dist/components/dialog/index.js"
     },
+    "./empty-state": {
+      "types": "./dist/components/empty-state/index.d.ts",
+      "import": "./dist/components/empty-state/index.js"
+    },
     "./field": {
       "types": "./dist/components/field/index.d.ts",
       "import": "./dist/components/field/index.js"

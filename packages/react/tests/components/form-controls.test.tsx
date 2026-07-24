@@ -6,6 +6,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { Badge } from '../../src/components/badge';
 import { Button } from '../../src/components/button';
 import { Checkbox } from '../../src/components/checkbox';
+import { Combobox } from '../../src/components/combobox';
 import { Field } from '../../src/components/field';
 import { Fieldset } from '../../src/components/fieldset';
 import { Input, InputGroup, Textarea } from '../../src/components/input';
@@ -261,5 +262,98 @@ describe('form and display controls', () => {
       true,
       expect.objectContaining({ reason: 'none' }),
     );
+  });
+});
+
+const comboboxProjects = ['Civic Portal', 'Transit Map', 'Permit Tracker'];
+
+function TestCombobox() {
+  return (
+    <Field.Root>
+      <Combobox.Root items={comboboxProjects}>
+        <Field.Label>Project</Field.Label>
+        <Combobox.InputGroup>
+          <Combobox.Input placeholder="Search projects" />
+          <Combobox.Clear />
+          <Combobox.Trigger />
+        </Combobox.InputGroup>
+        <Combobox.Portal>
+          <Combobox.Positioner>
+            <Combobox.Popup>
+              <Combobox.Empty>No projects found.</Combobox.Empty>
+              <Combobox.List>
+                {(project: string) => (
+                  <Combobox.Item key={project} value={project}>
+                    {project}
+                  </Combobox.Item>
+                )}
+              </Combobox.List>
+            </Combobox.Popup>
+          </Combobox.Positioner>
+        </Combobox.Portal>
+      </Combobox.Root>
+    </Field.Root>
+  );
+}
+
+describe('Combobox', () => {
+  it('filters input, selects with keyboard, and clears the value', async () => {
+    const user = userEvent.setup();
+    render(<TestCombobox />);
+
+    const input = screen.getByRole('combobox', { name: 'Project' });
+    await user.type(input, 'Transit');
+
+    expect(screen.getByRole('option', { name: 'Transit Map' })).toBeVisible();
+    expect(screen.queryByRole('option', { name: 'Civic Portal' })).not.toBeInTheDocument();
+    expect(screen.getByRole('status')).not.toHaveClass('py-6');
+    expect(screen.getByRole('status')).toBeEmptyDOMElement();
+
+    await user.keyboard('[ArrowDown][Enter]');
+    expect(input).toHaveValue('Transit Map');
+
+    await user.click(screen.getByRole('button', { name: 'Clear selection' }));
+    expect(input).toHaveValue('');
+  });
+
+  it('supports multiple selected chips and chip removal', async () => {
+    const user = userEvent.setup();
+    render(
+      <Field.Root>
+        <Combobox.Root
+          items={comboboxProjects}
+          multiple
+          defaultValue={['Civic Portal', 'Transit Map']}
+        >
+          <Field.Label>Projects</Field.Label>
+          <Combobox.InputGroup className="flex-col items-stretch">
+            <Combobox.Chips>
+              <Combobox.Value>
+                {(selectedProjects: string[]) =>
+                  selectedProjects.map((project) => (
+                    <Combobox.Chip key={project}>
+                      {project}
+                      <Combobox.ChipRemove aria-label={`Remove ${project}`} />
+                    </Combobox.Chip>
+                  ))
+                }
+              </Combobox.Value>
+            </Combobox.Chips>
+            <div className="flex w-full items-center">
+              <Combobox.Input />
+            </div>
+          </Combobox.InputGroup>
+        </Combobox.Root>
+      </Field.Root>,
+    );
+
+    expect(screen.getByText('Civic Portal')).toBeVisible();
+    expect(screen.getByRole('toolbar')).not.toContainElement(
+      screen.getByRole('combobox', { name: 'Projects' }),
+    );
+    await user.click(screen.getByRole('button', { name: 'Remove Civic Portal' }));
+
+    expect(screen.queryByText('Civic Portal')).not.toBeInTheDocument();
+    expect(screen.getByText('Transit Map')).toBeVisible();
   });
 });

@@ -40,6 +40,10 @@
       "types": "./dist/components/field/index.d.ts",
       "import": "./dist/components/field/index.js"
     },
+    "./fieldset": {
+      "types": "./dist/components/fieldset/index.d.ts",
+      "import": "./dist/components/fieldset/index.js"
+    },
     "./file-upload": {
       "types": "./dist/components/file-upload/index.d.ts",
       "import": "./dist/components/file-upload/index.js"

@@ -7,6 +7,7 @@ import { Badge } from '../../src/components/badge';
 import { Button } from '../../src/components/button';
 import { Checkbox } from '../../src/components/checkbox';
 import { Field } from '../../src/components/field';
+import { Fieldset } from '../../src/components/fieldset';
 import { Input, InputGroup, Textarea } from '../../src/components/input';
 import { RadioGroup } from '../../src/components/radio-group';
 import { Switch } from '../../src/components/switch';
@@ -65,6 +66,60 @@ describe('form and display controls', () => {
     expect(input).toHaveAttribute('data-invalid');
     expect(input).toHaveAccessibleDescription('Work account only Enter a work email.');
     expect(screen.getByText('Enter a work email.')).toBeVisible();
+  });
+
+  it('uses Fieldset legend as the group accessible name', () => {
+    render(
+      <Fieldset.Root>
+        <Fieldset.Legend>Release channels</Fieldset.Legend>
+        <Fieldset.Description>Choose every channel this project can use.</Fieldset.Description>
+        <label>
+          <Checkbox aria-label="Stable" />
+          Stable
+        </label>
+      </Fieldset.Root>,
+    );
+
+    expect(screen.getByRole('group', { name: 'Release channels' })).toBeVisible();
+    expect(screen.getByText('Choose every channel this project can use.')).toHaveClass(
+      'text-city-muted-foreground',
+    );
+  });
+
+  it('propagates disabled Fieldset state to native controls and composed radio groups', async () => {
+    const user = userEvent.setup();
+    const onRadioValueChange = vi.fn();
+
+    render(
+      <>
+        <Fieldset.Root disabled>
+          <Fieldset.Legend>Locked profile</Fieldset.Legend>
+          <Input aria-label="Workspace" defaultValue="City" />
+          <input aria-label="Native token" defaultValue="abc123" />
+        </Fieldset.Root>
+        <Fieldset.Root
+          render={<RadioGroup defaultValue="standard" onValueChange={onRadioValueChange} />}
+          disabled
+        >
+          <Fieldset.Legend>Locked plan</Fieldset.Legend>
+          <RadioGroup.Item value="standard">Standard</RadioGroup.Item>
+          <RadioGroup.Item value="enterprise">Enterprise</RadioGroup.Item>
+        </Fieldset.Root>
+      </>,
+    );
+
+    expect(screen.getByRole('group', { name: 'Locked profile' })).toBeDisabled();
+    expect(screen.getByRole('textbox', { name: 'Workspace' })).toBeDisabled();
+    expect(screen.getByRole('textbox', { name: 'Native token' })).toBeDisabled();
+
+    await user.click(screen.getByRole('radio', { name: 'Enterprise' }));
+
+    expect(screen.getByRole('radiogroup', { name: 'Locked plan' })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
+    expect(screen.getByRole('radio', { name: 'Standard' })).toHaveAttribute('aria-checked', 'true');
+    expect(onRadioValueChange).not.toHaveBeenCalled();
   });
 
   it('preserves Input and Textarea uncontrolled value changes', async () => {

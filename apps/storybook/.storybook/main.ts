@@ -10,7 +10,10 @@ const config: StorybookConfig = {
     mergeConfig(config, {
       plugins: [tailwindcss()],
       optimizeDeps: {
-        include: ['@city-ds/react > @base-ui/react/accordion'],
+        include: [
+          '@city-ds/react > @base-ui/react/accordion',
+          '@city-ds/react > @base-ui/react/number-field',
+        ],
       },
     }),
 };

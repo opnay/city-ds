@@ -107,6 +107,10 @@
       "types": "./dist/components/popover/index.d.ts",
       "import": "./dist/components/popover/index.js"
     },
+    "./number-field": {
+      "types": "./dist/components/number-field/index.d.ts",
+      "import": "./dist/components/number-field/index.js"
+    },
     "./toolbar": {
       "types": "./dist/components/toolbar/index.d.ts",
       "import": "./dist/components/toolbar/index.js"

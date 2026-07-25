@@ -12,6 +12,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./accordion": {
+      "types": "./dist/components/accordion/index.d.ts",
+      "import": "./dist/components/accordion/index.js"
+    },
     "./badge": {
       "types": "./dist/components/badge/index.d.ts",
       "import": "./dist/components/badge/index.js"
@@ -23,10 +27,6 @@
     "./checkbox": {
       "types": "./dist/components/checkbox/index.d.ts",
       "import": "./dist/components/checkbox/index.js"
-    },
-    "./collapsible": {
-      "types": "./dist/components/collapsible/index.d.ts",
-      "import": "./dist/components/collapsible/index.js"
     },
     "./combobox": {
       "types": "./dist/components/combobox/index.d.ts",

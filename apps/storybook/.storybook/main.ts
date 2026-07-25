@@ -9,6 +9,9 @@ const config: StorybookConfig = {
   viteFinal: (config) =>
     mergeConfig(config, {
       plugins: [tailwindcss()],
+      optimizeDeps: {
+        include: ['@city-ds/react > @base-ui/react/accordion'],
+      },
     }),
 };
 

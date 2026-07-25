@@ -118,6 +118,18 @@ describe('theme contract', () => {
     expect(themeCss).toContain('(prefers-color-scheme: dark)');
   });
 
+  it('disables the Skeleton shimmer when reduced motion is requested', () => {
+    expect(stylesCss).toMatch(
+      /@media \(prefers-reduced-motion: reduce\) \{[\s\S]*?\.city-skeleton::after \{[\s\S]*?animation: none;[\s\S]*?content: none;[\s\S]*?\n\s{2}}\n}/,
+    );
+  });
+
+  it('derives text Skeleton height from hidden typography content', () => {
+    expect(stylesCss).toMatch(
+      /\.city-skeleton\[data-variant='text']::before \{\s*content: '\\00a0';\s*visibility: hidden;\s*}/,
+    );
+  });
+
   it.each(foundationTokens)('publishes foundation token %s', (token) => {
     expect(themeCss).toContain(token);
   });

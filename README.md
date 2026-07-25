@@ -102,6 +102,23 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 
 각 컴포넌트는 `@city-ds/react/button`과 같은 명시적인 subpath export도 제공합니다.
 
+### Storybook 브라우저 테스트
+
+Storybook 스토리는 Vitest 브라우저 모드에서 Chromium으로 렌더링 검사를 실행합니다.
+처음 실행하거나 CI 캐시가 비어 있으면 Playwright 브라우저를 먼저 설치하십시오.
+
+```bash
+pnpm --filter @city-ds/storybook exec playwright install chromium
+pnpm --filter @city-ds/storybook test
+```
+
+실패한 상호작용을 디버깅할 때는 Storybook을 켠 뒤 동일한 스토리를 브라우저에서 열어
+`play` 함수의 단계와 접근성 오류를 확인하십시오.
+
+```bash
+pnpm storybook
+```
+
 ## 모노레포
 
 ```text

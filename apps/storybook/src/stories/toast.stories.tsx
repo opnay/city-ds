@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { Button, Toast } from '@city-ds/react';
 
 const meta = {
@@ -57,6 +58,19 @@ function ToastStory({ withAction = false }: { withAction?: boolean }) {
 }
 
 export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Show notification' }));
+
+    const notification = await within(document.body).findByText('Changes saved');
+    await expect(notification).toBeVisible();
+
+    await userEvent.click(
+      within(document.body).getByRole('button', { name: 'Close notification' }),
+    );
+    await expect(within(document.body).queryByText('Changes saved')).toBeNull();
+  },
   render: () => <ToastStory />,
 };
 

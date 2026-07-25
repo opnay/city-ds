@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { Button, Dialog } from '@city-ds/react';
 
 const meta = {
@@ -43,6 +44,22 @@ function DialogExample({
 }
 
 export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole('button', { name: 'New workspace' });
+
+    await userEvent.click(trigger);
+
+    const dialog = await within(document.body).findByRole('dialog', { name: 'Create workspace' });
+    await expect(dialog).toBeVisible();
+    await expect(within(dialog).getByRole('button', { name: 'Cancel' })).toHaveFocus();
+
+    await userEvent.keyboard('{Escape}');
+    await expect(
+      within(document.body).queryByRole('dialog', { name: 'Create workspace' }),
+    ).toBeNull();
+    await expect(trigger).toHaveFocus();
+  },
   render: () => (
     <DialogExample
       title="Create workspace"

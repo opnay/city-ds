@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { Select } from '@city-ds/react';
 
 const meta = {
@@ -47,6 +48,16 @@ function StatusSelect({ disabled = false }: { disabled?: boolean }) {
 }
 
 export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole('combobox', { name: 'Project status' });
+
+    await expect(trigger).toHaveTextContent('In progress');
+    await userEvent.click(trigger);
+    await userEvent.click(await within(document.body).findByRole('option', { name: 'Done' }));
+
+    await expect(trigger).toHaveTextContent('Done');
+  },
   render: () => <StatusSelect />,
 };
 

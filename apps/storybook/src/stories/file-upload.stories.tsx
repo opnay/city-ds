@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { FileUpload } from '@city-ds/react';
 
 interface FileUploadStoryArgs {
@@ -88,6 +89,15 @@ export const WithFiles: Story = {
     disabled: false,
     multiple: true,
     withFiles: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(canvas.getByText('city-ds-spec.txt')).toBeVisible();
+    await userEvent.click(canvas.getByRole('button', { name: 'Remove city-ds-spec.txt' }));
+
+    await expect(canvas.queryByText('city-ds-spec.txt')).toBeNull();
+    await expect(canvas.getByText('components.md')).toBeVisible();
   },
 };
 

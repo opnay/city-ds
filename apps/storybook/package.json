@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@city-ds/react": "workspace:*",
+    "lucide-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

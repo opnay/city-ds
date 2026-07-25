@@ -19,6 +19,7 @@ export * from './components/table';
 export * from './components/tabs';
 export * from './components/toggle';
 export * from './components/toast';
+export * from './components/toolbar';
 export * from './components/tooltip';
 export { cn } from './lib/cn';
 export { CITY_THEMES, type CityTheme } from './theme';

@@ -30,13 +30,13 @@ body,
   border-color: var(--city-color-border) !important;
 }
 
-.sbdocs-preview > :first-child {
+.sbdocs-preview > :first-child:not(.docs-story) {
   color: var(--city-color-muted-foreground) !important;
   background: var(--city-color-surface) !important;
   border-color: var(--city-color-border) !important;
 }
 
-.sbdocs-preview > :first-child button,
+.sbdocs-preview > :first-child:not(.docs-story) button,
 .sbdocs-preview-actions button {
   color: var(--city-color-muted-foreground) !important;
 }

@@ -63,8 +63,11 @@ export const Default: Story = {
 
     await userEvent.click(canvas.getByRole('button', { name: 'Show notification' }));
 
-    const notification = await within(document.body).findByText('Changes saved');
+    const notification = await within(document.body).findByRole('dialog', {
+      name: 'Changes saved',
+    });
     await expect(notification).toBeVisible();
+    await userEvent.hover(notification);
 
     await userEvent.click(
       within(document.body).getByRole('button', { name: 'Close notification' }),

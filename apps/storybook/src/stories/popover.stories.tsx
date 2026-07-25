@@ -88,7 +88,7 @@ export const LongContent: Story = {
       <Popover.Trigger>View notes</Popover.Trigger>
       <Popover.Portal>
         <Popover.Positioner sideOffset={8}>
-          <Popover.Popup className="max-h-72 overflow-auto">
+          <Popover.Popup className="max-h-72 overflow-auto" tabIndex={0}>
             <Popover.Title>Release notes</Popover.Title>
             <Popover.Description>
               This panel demonstrates a longer body while preserving Base UI positioning and focus

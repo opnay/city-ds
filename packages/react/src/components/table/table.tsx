@@ -19,12 +19,16 @@ export interface TableScrollAreaProps extends Omit<
 }
 
 export const TableScrollArea = React.forwardRef<HTMLDivElement, TableScrollAreaProps>(
-  ({ className, ...props }, ref) => (
+  ({ className, tabIndex = 0, ...props }, ref) => (
     <div
       {...props}
       ref={ref}
-      className={cn('rounded-city-md border-city-border w-full overflow-x-auto border', className)}
+      className={cn(
+        'rounded-city-md border-city-border focus-visible:ring-city-ring focus-visible:ring-offset-city-background w-full overflow-x-auto border outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+        className,
+      )}
       data-city-table-scroll-area=""
+      tabIndex={tabIndex}
     />
   ),
 );

@@ -105,6 +105,28 @@ describe('Table', () => {
     expect(onRowChange).toHaveBeenCalledWith(true);
   });
 
+  it('keeps horizontal scroll areas keyboard accessible', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Table.ScrollArea data-testid="table-scroll-area">
+        <Table.Root aria-label="Wide projects">
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>Beacon</Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table.Root>
+      </Table.ScrollArea>,
+    );
+
+    const scrollArea = screen.getByTestId('table-scroll-area');
+
+    expect(scrollArea).toHaveAttribute('tabindex', '0');
+    await user.tab();
+    expect(scrollArea).toHaveFocus();
+  });
+
   it('renders empty and loading state rows across all columns', () => {
     render(
       <Table.Root aria-label="Projects">

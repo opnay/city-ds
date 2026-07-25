@@ -14,11 +14,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const statusItems = {
+  backlog: 'Backlog',
+  'in-progress': 'In progress',
+  done: 'Done',
+} as const;
+
+const regionItems = {
+  seoul: 'Seoul',
+  tokyo: 'Tokyo',
+  virginia: 'Virginia',
+  oregon: 'Oregon (unavailable)',
+} as const;
+
 function StatusSelect({ disabled = false }: { disabled?: boolean }) {
   return (
-    <Select.Root defaultValue="in-progress" disabled={disabled}>
+    <Select.Root defaultValue="in-progress" disabled={disabled} items={statusItems}>
       <Select.Label>Status</Select.Label>
-      <Select.Trigger aria-label="Project status" className="w-56">
+      <Select.Trigger className="w-56">
         <Select.Value placeholder="Choose a status" />
         <Select.Icon />
       </Select.Trigger>
@@ -50,7 +63,7 @@ function StatusSelect({ disabled = false }: { disabled?: boolean }) {
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const trigger = canvas.getByRole('combobox', { name: 'Project status' });
+    const trigger = canvas.getByRole('combobox', { name: 'Status' });
 
     await expect(trigger).toHaveTextContent('In progress');
     await userEvent.click(trigger);
@@ -67,9 +80,9 @@ export const Disabled: Story = {
 
 export const Grouped: Story = {
   render: () => (
-    <Select.Root defaultValue="seoul">
+    <Select.Root defaultValue="seoul" items={regionItems}>
       <Select.Label>Deployment region</Select.Label>
-      <Select.Trigger aria-label="Deployment region" className="w-56">
+      <Select.Trigger className="w-56">
         <Select.Value placeholder="Choose a region" />
         <Select.Icon />
       </Select.Trigger>

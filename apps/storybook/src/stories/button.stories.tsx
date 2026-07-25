@@ -93,7 +93,7 @@ export const Interactive: Story = {
 
 export const RenderedAsLink: Story = {
   render: () => (
-    <Button render={<a href="https://base-ui.com" />} variant="outline">
+    <Button nativeButton={false} render={<a href="https://base-ui.com" />} variant="outline">
       Open Base UI
     </Button>
   ),

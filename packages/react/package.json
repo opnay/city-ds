@@ -111,6 +111,10 @@
       "types": "./dist/components/number-field/index.d.ts",
       "import": "./dist/components/number-field/index.js"
     },
+    "./search-field": {
+      "types": "./dist/components/search-field/index.d.ts",
+      "import": "./dist/components/search-field/index.js"
+    },
     "./toolbar": {
       "types": "./dist/components/toolbar/index.d.ts",
       "import": "./dist/components/toolbar/index.js"

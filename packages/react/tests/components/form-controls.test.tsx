@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -11,6 +11,7 @@ import { Field } from '../../src/components/field';
 import { Fieldset } from '../../src/components/fieldset';
 import { Input, InputGroup, Textarea } from '../../src/components/input';
 import { RadioGroup } from '../../src/components/radio-group';
+import { SearchField } from '../../src/components/search-field';
 import { Switch } from '../../src/components/switch';
 import { Toggle } from '../../src/components/toggle';
 
@@ -162,6 +163,129 @@ describe('form and display controls', () => {
     expect(screen.getByText('https://')).toHaveAttribute('data-city-position', 'leading');
     expect(screen.getByText('.dev')).toHaveAttribute('data-city-position', 'trailing');
     expect(screen.getByRole('textbox', { name: 'Domain' })).toBeVisible();
+  });
+
+  it('supports SearchField typing, clear, Escape, and native form submission', async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+
+    render(
+      <SearchField.Root onSubmit={onSubmit}>
+        <SearchField.Label>Search projects</SearchField.Label>
+        <SearchField.Group data-testid="search-group">
+          <SearchField.Input />
+          <SearchField.Clear />
+          <SearchField.Submit />
+        </SearchField.Group>
+      </SearchField.Root>,
+    );
+
+    const input = screen.getByRole('searchbox', { name: 'Search projects' });
+    const searchButton = screen.getByRole('button', { name: 'Search' });
+
+    expect(screen.getByTestId('search-group')).toContainElement(input);
+    expect(input).toHaveAttribute('type', 'search');
+    expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
+
+    await user.type(input, 'city');
+    expect(input).toHaveValue('city');
+    expect(screen.getByRole('button', { name: 'Clear search' })).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: 'Clear search' }));
+    expect(input).toHaveValue('');
+    expect(input).toHaveFocus();
+
+    await user.type(input, 'metro');
+    await user.keyboard('{Escape}');
+    expect(input).toHaveValue('');
+
+    await user.type(input, 'roads{Enter}');
+    expect(onSubmit).toHaveBeenLastCalledWith('roads', expect.anything());
+
+    await user.clear(input);
+    await user.type(input, 'bridges');
+    await user.click(searchButton);
+    expect(onSubmit).toHaveBeenLastCalledWith('bridges', expect.anything());
+  });
+
+  it('supports SearchField controlled values and loading status', async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+
+    function ControlledSearch() {
+      const [value, setValue] = React.useState('city');
+
+      return (
+        <SearchField.Root
+          loading
+          onValueChange={(nextValue) => {
+            setValue(nextValue);
+            onValueChange(nextValue);
+          }}
+          value={value}
+        >
+          <SearchField.Label>Search packages</SearchField.Label>
+          <SearchField.Group>
+            <SearchField.Input />
+            <SearchField.Clear />
+            <SearchField.Submit />
+          </SearchField.Group>
+          <SearchField.Loading>Searching…</SearchField.Loading>
+        </SearchField.Root>
+      );
+    }
+
+    render(<ControlledSearch />);
+
+    const input = screen.getByRole('searchbox', { name: 'Search packages' });
+    expect(input).toHaveValue('city');
+    expect(screen.getByText('Searching…')).toBeVisible();
+
+    await user.type(input, ' ds');
+    expect(input).toHaveValue('city ds');
+    expect(onValueChange).toHaveBeenLastCalledWith('city ds');
+
+    await user.click(screen.getByRole('button', { name: 'Clear search' }));
+    expect(input).toHaveValue('');
+    expect(input).toHaveFocus();
+    expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
+  });
+
+  it('propagates SearchField disabled and invalid states to its inline controls', () => {
+    render(
+      <>
+        <SearchField.Root defaultValue="archived" disabled>
+          <SearchField.Label>Disabled search</SearchField.Label>
+          <SearchField.Group data-testid="disabled-search-group">
+            <SearchField.Input disabled={false} />
+            <SearchField.Clear disabled={false} />
+            <SearchField.Submit disabled={false} />
+          </SearchField.Group>
+        </SearchField.Root>
+        <SearchField.Root defaultValue="x" invalid>
+          <SearchField.Label>Invalid search</SearchField.Label>
+          <SearchField.Group data-testid="invalid-search-group">
+            <SearchField.Input />
+            <SearchField.Clear />
+            <SearchField.Submit />
+          </SearchField.Group>
+          <SearchField.Error match>Enter at least 2 characters.</SearchField.Error>
+        </SearchField.Root>
+      </>,
+    );
+
+    const disabledGroup = screen.getByTestId('disabled-search-group');
+    expect(disabledGroup).toHaveAttribute('data-disabled');
+    expect(disabledGroup).toHaveClass('data-[disabled]:opacity-50');
+    expect(within(disabledGroup).getByRole('searchbox')).toBeDisabled();
+    expect(within(disabledGroup).getByRole('button', { name: 'Clear search' })).toBeDisabled();
+    expect(within(disabledGroup).getByRole('button', { name: 'Search' })).toBeDisabled();
+
+    const invalidGroup = screen.getByTestId('invalid-search-group');
+    expect(invalidGroup).toHaveAttribute('data-invalid');
+    expect(invalidGroup).toHaveClass('data-[invalid]:border-city-destructive');
+    expect(within(invalidGroup).getByRole('searchbox')).toHaveAttribute('data-invalid');
+    expect(screen.getByText('Enter at least 2 characters.')).toBeVisible();
   });
 
   it('supports Checkbox checked, indeterminate, and disabled states', async () => {

@@ -16,6 +16,10 @@
       "types": "./dist/components/accordion/index.d.ts",
       "import": "./dist/components/accordion/index.js"
     },
+    "./alert": {
+      "types": "./dist/components/alert/index.d.ts",
+      "import": "./dist/components/alert/index.js"
+    },
     "./badge": {
       "types": "./dist/components/badge/index.d.ts",
       "import": "./dist/components/badge/index.js"
@@ -23,6 +27,10 @@
     "./button": {
       "types": "./dist/components/button/index.d.ts",
       "import": "./dist/components/button/index.js"
+    },
+    "./callout": {
+      "types": "./dist/components/callout/index.d.ts",
+      "import": "./dist/components/callout/index.js"
     },
     "./checkbox": {
       "types": "./dist/components/checkbox/index.d.ts",

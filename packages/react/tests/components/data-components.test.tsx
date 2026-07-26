@@ -2,12 +2,61 @@ import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
+import { Alert } from '../../src/components/alert';
 import { EmptyState } from '../../src/components/empty-state';
 import { FileUpload } from '../../src/components/file-upload';
 import { Pagination } from '../../src/components/pagination';
 import { Progress } from '../../src/components/progress';
 import { Skeleton } from '../../src/components/skeleton';
 import { Table } from '../../src/components/table';
+
+describe('Alert', () => {
+  it('connects title and description and uses polite status defaults for informational messages', () => {
+    render(
+      <Alert.Root variant="info">
+        <Alert.Title>Dataset synced</Alert.Title>
+        <Alert.Description>Records are ready.</Alert.Description>
+      </Alert.Root>,
+    );
+
+    const status = screen.getByRole('status', {
+      name: 'Dataset synced',
+      description: 'Records are ready.',
+    });
+
+    expect(status).toHaveAttribute('aria-live', 'polite');
+    expect(status).toHaveAttribute('data-variant', 'info');
+    expect(status).toHaveAccessibleDescription('Records are ready.');
+    expect(status.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-foreground');
+  });
+
+  it('uses assertive alert defaults for errors and allows live region overrides', () => {
+    render(
+      <>
+        <Alert.Root variant="error">
+          <Alert.Title>Import failed</Alert.Title>
+          <Alert.Description>Fix the source file and try again.</Alert.Description>
+        </Alert.Root>
+        <Alert.Root aria-live="polite" role="status" variant="error">
+          <Alert.Title>Background retry failed</Alert.Title>
+          <Alert.Description>The scheduled retry will continue later.</Alert.Description>
+        </Alert.Root>
+      </>,
+    );
+
+    expect(screen.getByRole('alert', { name: 'Import failed' })).toHaveAttribute(
+      'aria-live',
+      'assertive',
+    );
+    expect(screen.getByText('Fix the source file and try again.')).toHaveClass(
+      'text-city-foreground',
+    );
+    expect(screen.getByRole('status', { name: 'Background retry failed' })).toHaveAttribute(
+      'aria-live',
+      'polite',
+    );
+  });
+});
 
 describe('Table', () => {
   it('keeps native table semantics and applies size and variant state', () => {

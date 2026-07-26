@@ -134,6 +134,10 @@
     "./toolbar": {
       "types": "./dist/components/toolbar/index.d.ts",
       "import": "./dist/components/toolbar/index.js"
+    },
+    "./checkbox-group": {
+      "types": "./dist/components/checkbox-group/index.d.ts",
+      "import": "./dist/components/checkbox-group/index.js"
     }
   },
   "files": [

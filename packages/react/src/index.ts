@@ -5,6 +5,7 @@ export * from './components/button';
 export * from './components/callout';
 export * from './components/breadcrumbs';
 export * from './components/checkbox';
+export * from './components/checkbox-group';
 export * from './components/combobox';
 export * from './components/dialog';
 export * from './components/drawer';

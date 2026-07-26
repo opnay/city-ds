@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { AlertDialog } from '../../src/components/alert-dialog';
 import { Button } from '../../src/components/button';
 import { Dialog } from '../../src/components/dialog';
 import { Drawer } from '../../src/components/drawer';
+import { Menu } from '../../src/components/menu';
 import { Popover } from '../../src/components/popover';
 import { Select } from '../../src/components/select';
 import { Tabs } from '../../src/components/tabs';
@@ -311,6 +312,112 @@ describe('overlay and selection controls', () => {
       expect.objectContaining({ reason: 'item-press' }),
     );
     await waitFor(() => expect(screen.queryByRole('listbox')).not.toBeInTheDocument());
+  });
+
+  it('opens a menu, supports keyboard selection, and restores trigger focus', async () => {
+    const user = userEvent.setup();
+    const onOpen = vi.fn();
+    const onArchive = vi.fn();
+
+    render(
+      <Menu.Root onOpenChange={onOpen}>
+        <Menu.Trigger aria-label="Row actions">Actions</Menu.Trigger>
+        <Menu.Portal>
+          <Menu.Positioner>
+            <Menu.Popup>
+              <Menu.ScrollUpIndicator data-testid="menu-scroll-up" />
+              <Menu.Item variant="destructive" onClick={onArchive}>
+                Archive
+              </Menu.Item>
+              <Menu.Item>Duplicate</Menu.Item>
+            </Menu.Popup>
+          </Menu.Positioner>
+        </Menu.Portal>
+      </Menu.Root>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Row actions' });
+    expect(trigger).toHaveClass('hover:bg-city-accent', 'active:bg-city-accent-active');
+    await user.click(trigger);
+
+    expect(await screen.findByRole('menu')).toHaveAttribute('tabindex', '0');
+    expect(screen.getByRole('menu')).toHaveClass(
+      'max-h-(--available-height)',
+      'overflow-y-auto',
+      'overscroll-contain',
+    );
+    const scrollUpIndicator = screen.getByTestId('menu-scroll-up');
+    expect(scrollUpIndicator).not.toHaveAttribute('data-visible');
+    fireEvent.scroll(screen.getByRole('menu'), { target: { scrollTop: 16 } });
+    expect(scrollUpIndicator).toHaveAttribute('data-visible');
+    fireEvent.scroll(screen.getByRole('menu'), { target: { scrollTop: 0 } });
+    expect(scrollUpIndicator).not.toHaveAttribute('data-visible');
+    expect(screen.getByRole('menuitem', { name: 'Archive' })).toHaveClass(
+      'pl-2',
+      'text-city-destructive',
+      'hover:bg-city-accent',
+      'data-[highlighted]:bg-city-accent',
+      'data-[highlighted]:text-city-destructive',
+    );
+    expect(screen.getByRole('menuitem', { name: 'Duplicate' })).toHaveClass('pl-2');
+    expect(onOpen).toHaveBeenCalledWith(true, expect.objectContaining({ reason: 'trigger-press' }));
+
+    await user.keyboard('{ArrowDown}{Enter}');
+
+    expect(onArchive).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(screen.queryByRole('menu')).not.toBeInTheDocument());
+    expect(trigger).toHaveFocus();
+  });
+
+  it('toggles menu checkbox items and selects radio items without closing the menu', async () => {
+    const user = userEvent.setup();
+    const onCheckedChange = vi.fn();
+    const onValueChange = vi.fn();
+
+    render(
+      <Menu.Root>
+        <Menu.Trigger>View options</Menu.Trigger>
+        <Menu.Portal>
+          <Menu.Positioner>
+            <Menu.Popup>
+              <Menu.CheckboxItem onCheckedChange={onCheckedChange}>
+                <Menu.CheckboxItemIndicator />
+                Show archived
+              </Menu.CheckboxItem>
+              <Menu.RadioGroup defaultValue="list" onValueChange={onValueChange}>
+                <Menu.RadioItem value="list">
+                  <Menu.RadioItemIndicator />
+                  List
+                </Menu.RadioItem>
+                <Menu.RadioItem value="grid">
+                  <Menu.RadioItemIndicator />
+                  Grid
+                </Menu.RadioItem>
+              </Menu.RadioGroup>
+            </Menu.Popup>
+          </Menu.Positioner>
+        </Menu.Portal>
+      </Menu.Root>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'View options' }));
+    const checkboxItem = await screen.findByRole('menuitemcheckbox', { name: 'Show archived' });
+    expect(checkboxItem).toHaveClass('pl-8');
+    expect(screen.getByRole('menuitemradio', { name: 'List' })).toHaveClass('pl-8');
+    await user.hover(checkboxItem);
+    expect(checkboxItem).toHaveAttribute('data-highlighted');
+    await user.click(checkboxItem);
+    await user.click(screen.getByRole('menuitemradio', { name: 'Grid' }));
+
+    expect(onCheckedChange).toHaveBeenCalledWith(
+      true,
+      expect.objectContaining({ reason: 'item-press' }),
+    );
+    expect(onValueChange).toHaveBeenCalledWith(
+      'grid',
+      expect.objectContaining({ reason: 'item-press' }),
+    );
+    expect(screen.getByRole('menu')).toBeVisible();
   });
 
   it('activates tabs with keyboard navigation when activateOnFocus is enabled', async () => {

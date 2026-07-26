@@ -15,6 +15,7 @@ export * from './components/field';
 export * from './components/fieldset';
 export * from './components/file-upload';
 export * from './components/input';
+export * from './components/menu';
 export * from './components/number-field';
 export * from './components/pagination';
 export * from './components/popover';

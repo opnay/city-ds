@@ -4,6 +4,7 @@ import {
   Button,
   Field,
   Input,
+  Menu,
   Popover,
   Progress,
   Switch,
@@ -94,6 +95,18 @@ export function App() {
             </Popover.Positioner>
           </Popover.Portal>
         </Popover.Root>
+
+        <Menu.Root>
+          <Menu.Trigger aria-label="Workspace actions">Actions</Menu.Trigger>
+          <Menu.Portal>
+            <Menu.Positioner sideOffset={6}>
+              <Menu.Popup>
+                <Menu.Item>Open command palette</Menu.Item>
+                <Menu.Item>Export report</Menu.Item>
+              </Menu.Popup>
+            </Menu.Positioner>
+          </Menu.Portal>
+        </Menu.Root>
 
         <Tabs.Root defaultValue="activity">
           <Tabs.List aria-label="Workspace view">

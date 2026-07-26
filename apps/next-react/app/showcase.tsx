@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@city-ds/react/button';
 import { Field } from '@city-ds/react/field';
 import { Input } from '@city-ds/react/input';
+import { Menu } from '@city-ds/react/menu';
 import { Popover } from '@city-ds/react/popover';
 import { Progress } from '@city-ds/react/progress';
 import { Tabs } from '@city-ds/react/tabs';
@@ -61,6 +62,18 @@ export function Showcase() {
           Client interactions remain isolated behind “use client”.
         </Tabs.Panel>
       </Tabs.Root>
+
+      <Menu.Root>
+        <Menu.Trigger aria-label="Deployment actions">Actions</Menu.Trigger>
+        <Menu.Portal>
+          <Menu.Positioner sideOffset={6}>
+            <Menu.Popup>
+              <Menu.Item>Promote release</Menu.Item>
+              <Menu.Item>Rollback release</Menu.Item>
+            </Menu.Popup>
+          </Menu.Positioner>
+        </Menu.Portal>
+      </Menu.Root>
 
       <div className="smoke-actions">
         <span aria-live="polite">{saved ? 'Settings saved.' : 'No pending changes.'}</span>

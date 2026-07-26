@@ -76,6 +76,10 @@
       "types": "./dist/components/input/index.d.ts",
       "import": "./dist/components/input/index.js"
     },
+    "./menu": {
+      "types": "./dist/components/menu/index.d.ts",
+      "import": "./dist/components/menu/index.js"
+    },
     "./pagination": {
       "types": "./dist/components/pagination/index.d.ts",
       "import": "./dist/components/pagination/index.js"

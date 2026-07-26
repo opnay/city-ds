@@ -91,9 +91,9 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 
 ## 컴포넌트
 
-`@city-ds/react`는 다음 16개 그룹을 제공합니다.
+`@city-ds/react`의 대표 컴포넌트는 다음과 같습니다.
 
-- Actions: Button
+- Actions: Button, Toggle, ToggleGroup
 - Status: Badge, Progress, Toast
 - Forms: Field, Input·Textarea·InputGroup, Checkbox, RadioGroup, Switch, Select, FileUpload
 - Navigation: Tabs, Pagination
@@ -101,6 +101,12 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 - Data display: Table
 
 각 컴포넌트는 `@city-ds/react/button`과 같은 명시적인 subpath export도 제공합니다.
+
+### ToggleGroup 접근성
+
+`ToggleGroup`은 보기 모드, 정렬 방향, 텍스트 스타일처럼 서로 관련된 토글 선택지를 하나의
+그룹으로 묶습니다. 그룹 자체에는 `aria-label` 또는 `aria-labelledby`로 접근 가능한 이름을
+제공하십시오. 아이콘만 있는 `ToggleGroup.Item`은 각 항목에도 `aria-label`을 제공해야 합니다.
 
 ### Storybook 브라우저 테스트
 

@@ -26,6 +26,7 @@ export * from './components/switch';
 export * from './components/table';
 export * from './components/tabs';
 export * from './components/toggle';
+export * from './components/toggle-group';
 export * from './components/toast';
 export * from './components/toolbar';
 export * from './components/tooltip';

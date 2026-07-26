@@ -15,6 +15,7 @@ import { RadioGroup } from '../../src/components/radio-group';
 import { SearchField } from '../../src/components/search-field';
 import { Switch } from '../../src/components/switch';
 import { Toggle } from '../../src/components/toggle';
+import { ToggleGroup } from '../../src/components/toggle-group';
 
 describe('form and display controls', () => {
   it('runs button actions and prevents disabled interaction', async () => {
@@ -453,6 +454,112 @@ describe('form and display controls', () => {
       false,
       expect.objectContaining({ reason: 'none' }),
     );
+  });
+
+  it('changes ToggleGroup single selection values', async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+
+    render(
+      <ToggleGroup aria-label="View mode" defaultValue={['grid']} onValueChange={onValueChange}>
+        <ToggleGroup.Item value="grid">Grid</ToggleGroup.Item>
+        <ToggleGroup.Item value="list">List</ToggleGroup.Item>
+      </ToggleGroup>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'List' }));
+
+    expect(screen.getByRole('button', { name: 'Grid' })).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('button', { name: 'List' })).toHaveAttribute('aria-pressed', 'true');
+    expect(onValueChange).toHaveBeenLastCalledWith(
+      ['list'],
+      expect.objectContaining({ reason: 'none' }),
+    );
+  });
+
+  it('changes ToggleGroup multiple values and leaves disabled groups unchanged', async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+
+    render(
+      <>
+        <ToggleGroup
+          aria-label="Text style"
+          defaultValue={['bold']}
+          multiple
+          onValueChange={onValueChange}
+        >
+          <ToggleGroup.Item value="bold">Bold</ToggleGroup.Item>
+          <ToggleGroup.Item value="italic">Italic</ToggleGroup.Item>
+        </ToggleGroup>
+        <ToggleGroup aria-label="Locked view mode" defaultValue={['grid']} disabled>
+          <ToggleGroup.Item value="grid">Grid</ToggleGroup.Item>
+          <ToggleGroup.Item value="list">List</ToggleGroup.Item>
+        </ToggleGroup>
+      </>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Italic' }));
+    await user.click(screen.getByRole('button', { name: 'List' }));
+
+    const disabledGroup = screen.getByRole('group', { name: 'Locked view mode' });
+    expect(screen.getByRole('button', { name: 'Bold' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Italic' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Grid' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'List' })).toHaveAttribute('aria-pressed', 'false');
+    expect(disabledGroup).not.toHaveClass('data-[disabled]:opacity-50');
+    expect(screen.getByRole('button', { name: 'Grid' })).toHaveClass('data-[disabled]:opacity-50');
+    expect(onValueChange).toHaveBeenLastCalledWith(
+      ['bold', 'italic'],
+      expect.objectContaining({ reason: 'none' }),
+    );
+  });
+
+  it('inherits ToggleGroup styles, preserves item overrides, and forwards the root ref', () => {
+    const ref = React.createRef<HTMLDivElement>();
+
+    render(
+      <ToggleGroup
+        ref={ref}
+        aria-label="Formatting"
+        defaultValue={['bold']}
+        size="lg"
+        variant="primary"
+      >
+        <ToggleGroup.Item value="bold">Bold</ToggleGroup.Item>
+        <ToggleGroup.Item size="sm" value="italic" variant="ghost">
+          Italic
+        </ToggleGroup.Item>
+      </ToggleGroup>,
+    );
+
+    const group = screen.getByRole('group', { name: 'Formatting' });
+    const inheritedItem = screen.getByRole('button', { name: 'Bold' });
+    const overriddenItem = screen.getByRole('button', { name: 'Italic' });
+
+    expect(ref.current).toBe(group);
+    expect(inheritedItem).toHaveClass('h-10', 'bg-city-primary');
+    expect(overriddenItem).toHaveClass('h-8', 'hover:bg-city-accent');
+  });
+
+  it('moves ToggleGroup focus with arrow keys', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <ToggleGroup aria-label="View mode" defaultValue={['grid']}>
+        <ToggleGroup.Item value="grid">Grid</ToggleGroup.Item>
+        <ToggleGroup.Item value="list">List</ToggleGroup.Item>
+        <ToggleGroup.Item value="split">Split</ToggleGroup.Item>
+      </ToggleGroup>,
+    );
+
+    const grid = screen.getByRole('button', { name: 'Grid' });
+    const list = screen.getByRole('button', { name: 'List' });
+
+    grid.focus();
+    await user.keyboard('[ArrowRight]');
+
+    expect(list).toHaveFocus();
   });
 
   it('toggles Switch while leaving disabled Switch unchanged', async () => {

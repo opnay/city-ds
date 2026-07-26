@@ -104,6 +104,10 @@
       "types": "./dist/components/toggle/index.d.ts",
       "import": "./dist/components/toggle/index.js"
     },
+    "./toggle-group": {
+      "types": "./dist/components/toggle-group/index.d.ts",
+      "import": "./dist/components/toggle-group/index.js"
+    },
     "./tabs": {
       "types": "./dist/components/tabs/index.d.ts",
       "import": "./dist/components/tabs/index.js"

@@ -42,6 +42,23 @@ export const Variants: Story = {
   ),
 };
 
+export const OnRaisedSurface: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '보조 버튼의 hover와 active 상태는 떠 있는 표면에서도 구분됩니다.',
+      },
+    },
+  },
+  render: () => (
+    <div className="border-city-border bg-city-surface-raised rounded-city-md flex flex-wrap items-center gap-2 border p-4">
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="outline">Outline</Button>
+    </div>
+  ),
+};
+
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-2">

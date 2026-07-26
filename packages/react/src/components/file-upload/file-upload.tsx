@@ -223,7 +223,7 @@ export const FileUploadTrigger = React.forwardRef<HTMLElement, FileUploadTrigger
         {...props}
         aria-controls={context.inputId}
         className={cn(
-          'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-muted focus-visible:outline-city-ring inline-flex h-9 w-fit items-center justify-center border px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:outline-city-ring inline-flex h-9 w-fit items-center justify-center border px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
           className,
         )}
         disabled={isDisabled}
@@ -352,7 +352,7 @@ export const FileUploadRemove = React.forwardRef<HTMLElement, FileUploadRemovePr
         {...props}
         aria-label={file ? `Remove ${file.name}` : 'Remove file'}
         className={cn(
-          'rounded-city-xs text-city-muted-foreground hover:bg-city-muted hover:text-city-foreground focus-visible:outline-city-ring inline-flex h-6 shrink-0 items-center justify-center px-1.5 text-xs focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          'rounded-city-xs text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:outline-city-ring inline-flex h-6 shrink-0 items-center justify-center px-1.5 text-xs focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
           className,
         )}
         disabled={isDisabled}

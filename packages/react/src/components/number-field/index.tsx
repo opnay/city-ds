@@ -103,7 +103,7 @@ const stepperSizeClasses: Record<ControlSize, string> = {
 };
 
 const stepperClasses =
-  'inline-flex shrink-0 items-center justify-center border-city-border text-city-muted-foreground transition-colors hover:bg-city-accent hover:text-city-accent-foreground focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-city-ring/30 disabled:cursor-not-allowed disabled:opacity-50';
+  'inline-flex shrink-0 items-center justify-center border-city-border text-city-muted-foreground transition-colors hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-city-ring/30 disabled:cursor-not-allowed disabled:opacity-50';
 
 export const NumberFieldIncrement = React.forwardRef<HTMLButtonElement, StepperProps>(
   function NumberFieldIncrement({ children, className, size = 'md', ...props }, ref) {

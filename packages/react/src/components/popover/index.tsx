@@ -38,13 +38,16 @@ export const PopoverRoot = BasePopover.Root;
 export const PopoverPortal = BasePopover.Portal;
 
 export const PopoverTrigger = React.forwardRef<HTMLButtonElement, PopoverTriggerProps>(
-  ({ className, ...props }, ref) => (
+  ({ className, render, ...props }, ref) => (
     <BasePopover.Trigger
       {...props}
       ref={ref}
+      render={render}
       className={classes(
         className,
-        'rounded-city-sm border-city-border bg-city-surface-raised text-city-foreground hover:bg-city-muted focus-visible:ring-city-ring inline-flex h-(--city-control-md) items-center justify-center border px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
+        render == null
+          ? 'rounded-city-sm border-city-border bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring inline-flex h-(--city-control-md) items-center justify-center border px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50'
+          : '',
       )}
     />
   ),
@@ -113,13 +116,16 @@ export const PopoverDescription = React.forwardRef<HTMLParagraphElement, Popover
 );
 
 export const PopoverClose = React.forwardRef<HTMLButtonElement, PopoverCloseProps>(
-  ({ className, ...props }, ref) => (
+  ({ className, render, ...props }, ref) => (
     <BasePopover.Close
       {...props}
       ref={ref}
+      render={render}
       className={classes(
         className,
-        'rounded-city-sm border-city-border bg-city-surface-raised text-city-foreground hover:bg-city-muted focus-visible:ring-city-ring inline-flex h-(--city-control-sm) items-center justify-center border px-2.5 text-sm font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
+        render == null
+          ? 'rounded-city-sm border-city-border bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring inline-flex h-(--city-control-sm) items-center justify-center border px-2.5 text-sm font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50'
+          : '',
       )}
     />
   ),

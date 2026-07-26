@@ -23,7 +23,9 @@ describe('form and display controls', () => {
     render(
       <>
         <Button onClick={onClick}>Save</Button>
+        <Button variant="secondary">Secondary</Button>
         <Button variant="outline">Outline</Button>
+        <Button variant="ghost">Ghost</Button>
         <Button disabled onClick={onClick}>
           Disabled
         </Button>
@@ -39,7 +41,16 @@ describe('form and display controls', () => {
       'focus-visible:ring-2',
       'focus-visible:ring-offset-2',
     );
+    expect(screen.getByRole('button', { name: 'Secondary' })).toHaveClass(
+      'bg-city-accent',
+      'hover:bg-city-accent-hover',
+      'active:bg-city-accent-active',
+    );
     expect(screen.getByRole('button', { name: 'Outline' })).toHaveClass('border-city-border');
+    expect(screen.getByRole('button', { name: 'Ghost' })).toHaveClass(
+      'hover:bg-city-accent',
+      'active:bg-city-accent-active',
+    );
   });
 
   it('renders Badge through the Base UI render API', () => {
@@ -184,6 +195,7 @@ describe('form and display controls', () => {
     const searchButton = screen.getByRole('button', { name: 'Search' });
 
     expect(screen.getByTestId('search-group')).toContainElement(input);
+    expect(searchButton).toHaveClass('hover:bg-city-accent', 'active:bg-city-accent-active');
     expect(input).toHaveAttribute('type', 'search');
     expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
 
@@ -350,6 +362,7 @@ describe('form and display controls', () => {
     );
 
     const toggle = screen.getByRole('button', { name: 'Bold' });
+    expect(toggle).toHaveClass('hover:bg-city-accent', 'active:bg-city-accent-active');
     await user.click(toggle);
     toggle.focus();
     await user.keyboard('[Space]');

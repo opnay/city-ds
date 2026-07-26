@@ -6,6 +6,7 @@ export * from './components/callout';
 export * from './components/checkbox';
 export * from './components/combobox';
 export * from './components/dialog';
+export * from './components/drawer';
 export * from './components/empty-state';
 export * from './components/field';
 export * from './components/fieldset';

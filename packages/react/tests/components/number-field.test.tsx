@@ -45,7 +45,10 @@ describe('NumberField', () => {
     render(<QuantityField defaultValue={5} step={2} />);
 
     const input = screen.getByRole('textbox', { name: 'Quantity' });
-    await user.click(screen.getByRole('button', { name: 'Increase quantity' }));
+    const increment = screen.getByRole('button', { name: 'Increase quantity' });
+    expect(increment).toHaveClass('hover:bg-city-accent', 'active:bg-city-accent-active');
+
+    await user.click(increment);
     expect(input).toHaveValue('7');
 
     await user.click(screen.getByRole('button', { name: 'Decrease quantity' }));

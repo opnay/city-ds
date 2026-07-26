@@ -10,7 +10,7 @@ describe('Toolbar', () => {
 
     render(
       <Toolbar.Root aria-label="Editor tools">
-        <Toolbar.Button>Bold</Toolbar.Button>
+        <Toolbar.Button variant="ghost">Bold</Toolbar.Button>
         <Toolbar.Button>Italic</Toolbar.Button>
         <Toolbar.Separator />
         <Toolbar.Button>Underline</Toolbar.Button>
@@ -20,6 +20,10 @@ describe('Toolbar', () => {
     expect(screen.getByRole('toolbar', { name: 'Editor tools' })).toHaveAttribute(
       'data-orientation',
       'horizontal',
+    );
+    expect(screen.getByRole('button', { name: 'Bold' })).toHaveClass(
+      'hover:bg-city-accent',
+      'active:bg-city-accent-active',
     );
 
     await user.tab();

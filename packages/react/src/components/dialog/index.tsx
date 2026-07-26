@@ -34,13 +34,16 @@ export const DialogRoot = BaseDialog.Root;
 export const DialogPortal = BaseDialog.Portal;
 
 export const DialogTrigger = React.forwardRef<HTMLButtonElement, DialogTriggerProps>(
-  ({ className, ...props }, ref) => (
+  ({ className, render, ...props }, ref) => (
     <BaseDialog.Trigger
       {...props}
       ref={ref}
+      render={render}
       className={classes(
         className,
-        'rounded-city-sm border-city-border bg-city-surface-raised text-city-foreground hover:bg-city-muted focus-visible:ring-city-ring inline-flex h-(--city-control-md) items-center justify-center border px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
+        render == null
+          ? 'rounded-city-sm border-city-border bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring inline-flex h-(--city-control-md) items-center justify-center border px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50'
+          : '',
       )}
     />
   ),
@@ -103,13 +106,16 @@ export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDe
 );
 
 export const DialogClose = React.forwardRef<HTMLButtonElement, DialogCloseProps>(
-  ({ className, ...props }, ref) => (
+  ({ className, render, ...props }, ref) => (
     <BaseDialog.Close
       {...props}
       ref={ref}
+      render={render}
       className={classes(
         className,
-        'rounded-city-sm border-city-border bg-city-surface-raised text-city-foreground hover:bg-city-muted focus-visible:ring-city-ring inline-flex h-(--city-control-sm) items-center justify-center border px-2.5 text-sm font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
+        render == null
+          ? 'rounded-city-sm border-city-border bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring inline-flex h-(--city-control-sm) items-center justify-center border px-2.5 text-sm font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50'
+          : '',
       )}
     />
   ),

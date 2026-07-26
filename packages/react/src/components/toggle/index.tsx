@@ -35,11 +35,11 @@ const toggleVariantClasses: Record<ToggleVariant, string> = {
   primary:
     'bg-city-primary text-city-primary-foreground hover:bg-city-primary/90 active:bg-city-primary/80 data-[pressed]:bg-city-primary/80',
   secondary:
-    'bg-city-muted text-city-foreground hover:bg-city-muted/70 active:bg-city-muted/50 data-[pressed]:bg-city-foreground data-[pressed]:text-city-background',
+    'bg-city-accent text-city-accent-foreground hover:bg-city-accent-hover active:bg-city-accent-active data-[pressed]:bg-city-foreground data-[pressed]:text-city-background',
   outline:
-    'border border-city-border bg-city-background text-city-foreground hover:bg-city-muted active:bg-city-muted/70 data-[pressed]:bg-city-foreground data-[pressed]:text-city-background',
+    'border border-city-border bg-city-background text-city-foreground hover:bg-city-accent active:bg-city-accent-active data-[pressed]:bg-city-foreground data-[pressed]:text-city-background',
   ghost:
-    'text-city-foreground hover:bg-city-muted active:bg-city-muted/70 data-[pressed]:bg-city-muted data-[pressed]:text-city-foreground',
+    'text-city-foreground hover:bg-city-accent active:bg-city-accent-active data-[pressed]:bg-city-accent data-[pressed]:text-city-accent-foreground',
   destructive:
     'bg-city-destructive text-city-destructive-foreground hover:bg-city-destructive/90 active:bg-city-destructive/80 data-[pressed]:bg-city-destructive/80',
 };

@@ -78,7 +78,7 @@ export const TableSortButton = React.forwardRef<HTMLButtonElement, TableSortButt
         aria-label={props['aria-label'] ?? `${textLabel} (${sortLabel})`}
         aria-pressed={direction !== false}
         className={cn(
-          'rounded-city-xs hover:bg-city-muted focus-visible:ring-city-ring focus-visible:ring-offset-city-background -mx-1 inline-flex items-center gap-1 px-1 py-0.5 text-inherit transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+          'rounded-city-xs hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring focus-visible:ring-offset-city-background -mx-1 inline-flex items-center gap-1 px-1 py-0.5 text-inherit transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
           className,
         )}
         data-city-table-sort-button=""

@@ -280,7 +280,7 @@ export const SearchFieldSubmit = React.forwardRef<HTMLElement, SearchFieldSubmit
         aria-label={props['aria-label'] ?? (typeof children === 'string' ? children : 'Search')}
         className={(state) =>
           cn(
-            'border-city-border text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground focus-visible:ring-city-ring/30 z-0 shrink-0 rounded-none border-l focus-visible:z-10 focus-visible:ring-offset-0',
+            'border-city-border text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring/30 z-0 shrink-0 rounded-none border-l focus-visible:z-10 focus-visible:ring-offset-0',
             children == null && actionButtonSizeClasses[resolvedSize],
             resolveClassName(className, state),
           )

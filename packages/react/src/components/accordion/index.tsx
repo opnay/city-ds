@@ -82,7 +82,7 @@ export const AccordionTrigger = React.forwardRef<HTMLElement, AccordionTriggerPr
       ref={ref}
       className={classes(
         className,
-        'focus-visible:ring-city-ring hover:bg-city-muted flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-medium transition-colors outline-none focus-visible:ring-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-45',
+        'focus-visible:ring-city-ring hover:bg-city-accent active:bg-city-accent-active flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-medium transition-colors outline-none focus-visible:ring-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-45',
       )}
     >
       <span className="min-w-0 flex-1">{children}</span>

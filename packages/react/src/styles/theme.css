@@ -60,6 +60,10 @@
   --city-color-surface-raised: oklch(1 0 0);
   --city-color-muted: oklch(0.967 0.001 286.375);
   --city-color-muted-foreground: oklch(0.54 0.016 285.938);
+  --city-color-accent: oklch(0.94 0.003 286.32);
+  --city-color-accent-hover: oklch(0.91 0.004 286.32);
+  --city-color-accent-active: oklch(0.88 0.005 286.32);
+  --city-color-accent-foreground: oklch(0.21 0.006 285.885);
   --city-color-border: oklch(0.92 0.004 286.32);
   --city-color-input: oklch(0.871 0.006 286.286);
   --city-color-ring: oklch(0.442 0.017 285.786);
@@ -83,6 +87,10 @@
   --city-color-surface-raised: oklch(0.274 0.006 286.033);
   --city-color-muted: oklch(0.274 0.006 286.033);
   --city-color-muted-foreground: oklch(0.705 0.015 286.067);
+  --city-color-accent: oklch(0.34 0.008 286.033);
+  --city-color-accent-hover: oklch(0.39 0.008 286.033);
+  --city-color-accent-active: oklch(0.44 0.008 286.033);
+  --city-color-accent-foreground: oklch(0.985 0 0);
   --city-color-border: oklch(1 0 0 / 0.12);
   --city-color-input: oklch(1 0 0 / 0.18);
   --city-color-ring: oklch(0.705 0.015 286.067);
@@ -107,6 +115,10 @@
     --city-color-surface-raised: oklch(0.274 0.006 286.033);
     --city-color-muted: oklch(0.274 0.006 286.033);
     --city-color-muted-foreground: oklch(0.705 0.015 286.067);
+    --city-color-accent: oklch(0.34 0.008 286.033);
+    --city-color-accent-hover: oklch(0.39 0.008 286.033);
+    --city-color-accent-active: oklch(0.44 0.008 286.033);
+    --city-color-accent-foreground: oklch(0.985 0 0);
     --city-color-border: oklch(1 0 0 / 0.12);
     --city-color-input: oklch(1 0 0 / 0.18);
     --city-color-ring: oklch(0.705 0.015 286.067);
@@ -131,6 +143,10 @@
   --color-city-surface-raised: var(--city-color-surface-raised);
   --color-city-muted: var(--city-color-muted);
   --color-city-muted-foreground: var(--city-color-muted-foreground);
+  --color-city-accent: var(--city-color-accent);
+  --color-city-accent-hover: var(--city-color-accent-hover);
+  --color-city-accent-active: var(--city-color-accent-active);
+  --color-city-accent-foreground: var(--city-color-accent-foreground);
   --color-city-border: var(--city-color-border);
   --color-city-input: var(--city-color-input);
   --color-city-ring: var(--city-color-ring);

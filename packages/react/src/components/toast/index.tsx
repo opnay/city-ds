@@ -116,7 +116,7 @@ export const ToastAction = React.forwardRef<HTMLButtonElement, ToastActionProps>
       ref={ref}
       className={classes(
         className,
-        'rounded-city-xs text-city-foreground hover:bg-city-muted focus-visible:ring-city-ring shrink-0 px-2 py-1 text-sm font-medium underline underline-offset-2 outline-none focus-visible:ring-2',
+        'rounded-city-xs text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring shrink-0 px-2 py-1 text-sm font-medium underline underline-offset-2 outline-none focus-visible:ring-2',
       )}
     />
   ),
@@ -130,7 +130,7 @@ export const ToastClose = React.forwardRef<HTMLButtonElement, ToastCloseProps>(
       aria-label={ariaLabel ?? 'Close notification'}
       className={classes(
         className,
-        'rounded-city-xs text-city-muted-foreground hover:bg-city-muted hover:text-city-foreground focus-visible:ring-city-ring ml-auto inline-flex size-7 shrink-0 items-center justify-center outline-none focus-visible:ring-2',
+        'rounded-city-xs text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring ml-auto inline-flex size-7 shrink-0 items-center justify-center outline-none focus-visible:ring-2',
       )}
     >
       {children ?? <X aria-hidden="true" size={16} strokeWidth={1.8} />}

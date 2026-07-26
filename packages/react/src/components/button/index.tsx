@@ -30,10 +30,11 @@ const buttonSizeClasses: Record<ControlSize, string> = {
 const buttonVariantClasses: Record<ButtonVariant, string> = {
   primary:
     'bg-city-primary text-city-primary-foreground hover:bg-city-primary/90 active:bg-city-primary/80',
-  secondary: 'bg-city-muted text-city-foreground hover:bg-city-muted/70 active:bg-city-muted/50',
+  secondary:
+    'bg-city-accent text-city-accent-foreground hover:bg-city-accent-hover active:bg-city-accent-active',
   outline:
-    'border border-city-border bg-city-background text-city-foreground hover:bg-city-muted active:bg-city-muted/70',
-  ghost: 'text-city-foreground hover:bg-city-muted active:bg-city-muted/70',
+    'border border-city-border bg-city-background text-city-foreground hover:bg-city-accent active:bg-city-accent-active',
+  ghost: 'text-city-foreground hover:bg-city-accent active:bg-city-accent-active',
   destructive:
     'bg-city-destructive text-city-destructive-foreground hover:bg-city-destructive/90 active:bg-city-destructive/80',
 };

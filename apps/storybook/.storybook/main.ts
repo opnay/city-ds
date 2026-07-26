@@ -12,6 +12,7 @@ const config: StorybookConfig = {
       optimizeDeps: {
         include: [
           '@city-ds/react > @base-ui/react/accordion',
+          '@city-ds/react > @base-ui/react/drawer',
           '@city-ds/react > @base-ui/react/number-field',
         ],
       },

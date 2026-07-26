@@ -303,7 +303,7 @@ const PaginationControl = React.forwardRef<HTMLElement, PaginationControlProps>(
         {...props}
         aria-label={ariaLabel}
         className={cn(
-          'rounded-city-sm text-city-foreground hover:bg-city-muted focus-visible:outline-city-ring inline-flex size-8 items-center justify-center border border-transparent text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          'rounded-city-sm text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:outline-city-ring inline-flex size-8 items-center justify-center border border-transparent text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
           className,
         )}
         disabled={isDisabled}

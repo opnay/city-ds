@@ -73,7 +73,7 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerPr
       ref={ref}
       className={classes(
         className,
-        'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-muted focus-visible:ring-city-ring data-[placeholder]:text-city-muted-foreground flex h-(--city-control-md) w-full items-center justify-between gap-2 border px-3 text-sm transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
+        'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring data-[placeholder]:text-city-muted-foreground flex h-(--city-control-md) w-full items-center justify-between gap-2 border px-3 text-sm transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
       )}
     />
   ),

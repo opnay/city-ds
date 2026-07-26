@@ -20,6 +20,10 @@ const colorTokens = [
   '--city-color-surface-raised',
   '--city-color-muted',
   '--city-color-muted-foreground',
+  '--city-color-accent',
+  '--city-color-accent-hover',
+  '--city-color-accent-active',
+  '--city-color-accent-foreground',
   '--city-color-border',
   '--city-color-input',
   '--city-color-ring',
@@ -181,6 +185,20 @@ describe('theme contract', () => {
     expect(themeCss).toContain('--ease-city-standard: var(--city-easing-standard);');
     expect(themeCss).toContain('--ease-city-enter: var(--city-easing-enter);');
     expect(themeCss).toContain('--ease-city-exit: var(--city-easing-exit);');
+  });
+
+  it('keeps the dark interaction surface distinct from the raised surface', () => {
+    const darkTheme = themeCss.match(/\[data-theme='dark'] \{([\s\S]*?)\n}/)?.[1];
+    const readToken = (token: string) => darkTheme?.match(new RegExp(`${token}:\\s*([^;]+);`))?.[1];
+    const interactionColors = [
+      readToken('--city-color-accent'),
+      readToken('--city-color-accent-hover'),
+      readToken('--city-color-accent-active'),
+    ];
+
+    expect(interactionColors.every(Boolean)).toBe(true);
+    expect(new Set(interactionColors)).toHaveLength(3);
+    expect(interactionColors).not.toContain(readToken('--city-color-surface-raised'));
   });
 
   it('keeps consumer examples on published variables', () => {

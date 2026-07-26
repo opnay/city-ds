@@ -3,6 +3,7 @@ export * from './components/alert';
 export * from './components/badge';
 export * from './components/button';
 export * from './components/callout';
+export * from './components/breadcrumbs';
 export * from './components/checkbox';
 export * from './components/combobox';
 export * from './components/dialog';

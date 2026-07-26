@@ -32,6 +32,10 @@
       "types": "./dist/components/callout/index.d.ts",
       "import": "./dist/components/callout/index.js"
     },
+    "./breadcrumbs": {
+      "types": "./dist/components/breadcrumbs/index.d.ts",
+      "import": "./dist/components/breadcrumbs/index.js"
+    },
     "./checkbox": {
       "types": "./dist/components/checkbox/index.d.ts",
       "import": "./dist/components/checkbox/index.js"

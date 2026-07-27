@@ -260,6 +260,9 @@ describe('Relay dashboard', () => {
     await user.click(within(sidebar).getByRole('switch', { name: '컴팩트 밀도' }));
     expect(document.querySelector('.relay-app')).toHaveAttribute('data-density', 'compact');
     expect(window.location.pathname).toBe('/');
+
+    await user.click(screen.getByRole('button', { name: '사용자 메뉴' }));
+    expect(await screen.findByRole('menu')).toHaveAttribute('data-city-density', 'compact');
   });
 
   it('supports direct entry and browser history navigation', async () => {

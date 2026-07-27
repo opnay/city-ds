@@ -5,6 +5,7 @@ import { Button as BaseButton } from '@base-ui/react/button';
 import { useRender } from '@base-ui/react/use-render';
 import { cn } from '../../lib/cn';
 import type { Density } from '../../types';
+import { useDensity } from '../density-provider';
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
@@ -146,7 +147,7 @@ export const PaginationRoot = React.forwardRef<HTMLElement, PaginationRootProps>
       onPageChange,
       children,
       className,
-      density = 'comfortable',
+      density: densityProp,
       render,
       siblingCount = 1,
       boundaryCount = 1,
@@ -156,6 +157,7 @@ export const PaginationRoot = React.forwardRef<HTMLElement, PaginationRootProps>
     },
     ref,
   ) => {
+    const density = useDensity(densityProp);
     const normalizedTotalPages = toPositiveInteger(totalPages, 1);
     const normalizedPage = clamp(toPositiveInteger(page, 1), 1, normalizedTotalPages);
     const normalizedSiblingCount = toNonNegativeInteger(siblingCount, 1);
@@ -374,12 +376,7 @@ export const PaginationFirst = React.forwardRef<HTMLElement, PaginationFirstProp
   const { labels } = usePaginationContext('Pagination.First');
 
   return (
-    <PaginationControl
-      {...props}
-      defaultAriaLabel={labels.first}
-      ref={ref}
-      targetPage={() => 1}
-    >
+    <PaginationControl {...props} defaultAriaLabel={labels.first} ref={ref} targetPage={() => 1}>
       <span aria-hidden="true">«</span>
     </PaginationControl>
   );

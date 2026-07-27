@@ -27,6 +27,7 @@ import { Check, ChevronRight, ChevronUp, Circle } from 'lucide-react';
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { Density } from '../../types';
+import { useDensity } from '../density-provider';
 
 function classes<State>(className: StateClassName<State> | undefined, defaults: string) {
   return (state: State) => cn(defaults, resolveClassName(className, state));
@@ -84,9 +85,11 @@ export type MenuScrollUpIndicatorProps = Omit<
 };
 
 export function MenuRoot<Payload = unknown>({
-  density = 'comfortable',
+  density: densityProp,
   ...props
 }: MenuRootProps<Payload>): React.JSX.Element {
+  const density = useDensity(densityProp);
+
   return (
     <MenuDensityContext.Provider value={density}>
       <BaseMenu.Root {...props} />

@@ -5,6 +5,7 @@ import { Button as BaseButton } from '@base-ui/react/button';
 import { useRender } from '@base-ui/react/use-render';
 import { cn } from '../../lib/cn';
 import type { Density } from '../../types';
+import { useDensity } from '../density-provider';
 
 function filesMatch(first: File, second: File): boolean {
   return (
@@ -117,7 +118,7 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
       children,
       className,
       defaultFiles = [],
-      density = 'comfortable',
+      density: densityProp,
       disabled = false,
       files: controlledFiles,
       labels,
@@ -129,6 +130,7 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
     },
     ref,
   ) => {
+    const density = useDensity(densityProp);
     const [uncontrolledFiles, setUncontrolledFiles] = React.useState<File[]>(() =>
       uniqueFiles(defaultFiles),
     );
@@ -202,8 +204,7 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
         <input
           accept={accept}
           aria-label={
-            props['aria-label'] ??
-            (props['aria-labelledby'] ? undefined : resolvedLabels.input)
+            props['aria-label'] ?? (props['aria-labelledby'] ? undefined : resolvedLabels.input)
           }
           aria-labelledby={props['aria-labelledby']}
           className="sr-only"
@@ -396,15 +397,7 @@ export interface FileUploadRemoveProps extends FileUploadButtonProps {
 
 export const FileUploadRemove = React.forwardRef<HTMLElement, FileUploadRemoveProps>(
   (
-    {
-      'aria-label': ariaLabel,
-      children,
-      className,
-      disabled,
-      index = -1,
-      onClick,
-      ...props
-    },
+    { 'aria-label': ariaLabel, children, className, disabled, index = -1, onClick, ...props },
     ref,
   ) => {
     const context = useFileUploadContext('FileUpload.Remove');

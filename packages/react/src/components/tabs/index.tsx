@@ -12,6 +12,7 @@ import type {
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { Density } from '../../types';
+import { useDensity } from '../density-provider';
 
 function classes<State>(className: StateClassName<State> | undefined, defaults: string) {
   return (state: State) => cn(defaults, resolveClassName(className, state));
@@ -28,16 +29,20 @@ export type TabsIndicatorProps = BaseTabsIndicatorProps;
 const TabsDensityContext = React.createContext<Density>('comfortable');
 
 export const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
-  ({ className, density = 'comfortable', ...props }, ref) => (
-    <TabsDensityContext.Provider value={density}>
-      <BaseTabs.Root
-        {...props}
-        ref={ref}
-        data-city-density={density}
-        className={classes(className, 'w-full')}
-      />
-    </TabsDensityContext.Provider>
-  ),
+  ({ className, density: densityProp, ...props }, ref) => {
+    const density = useDensity(densityProp);
+
+    return (
+      <TabsDensityContext.Provider value={density}>
+        <BaseTabs.Root
+          {...props}
+          ref={ref}
+          data-city-density={density}
+          className={classes(className, 'w-full')}
+        />
+      </TabsDensityContext.Provider>
+    );
+  },
 );
 
 TabsRoot.displayName = 'Tabs.Root';

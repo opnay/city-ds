@@ -21,6 +21,7 @@ import {
   Badge,
   Breadcrumbs,
   Button,
+  DensityProvider,
   Drawer,
   EmptyState,
   Menu,
@@ -426,7 +427,11 @@ function RelayDashboard() {
   };
 
   return (
-    <div className="relay-app" data-density={compact ? 'compact' : 'comfortable'}>
+    <DensityProvider
+      className="relay-app"
+      data-density={compact ? 'compact' : 'comfortable'}
+      density={compact ? 'compact' : 'comfortable'}
+    >
       <aside className="relay-sidebar">
         <SidebarContent
           activePath={pathname}
@@ -910,7 +915,7 @@ function RelayDashboard() {
           ))}
         </Toast.Viewport>
       </Toast.Portal>
-    </div>
+    </DensityProvider>
   );
 }
 

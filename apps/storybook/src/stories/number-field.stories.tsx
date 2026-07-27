@@ -20,16 +20,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 function NumberFieldControl(props: NumberFieldRootPropsWithLabel) {
-  const { label, size = 'md', ...rootProps } = props;
+  const { label, ...rootProps } = props;
 
   return (
     <Field.Root className="w-80">
       <Field.Label>{label}</Field.Label>
       <NumberField.Root {...rootProps}>
-        <NumberField.Group size={size}>
-          <NumberField.Input aria-label={label} size={size} />
-          <NumberField.Decrement aria-label={`Decrease ${label}`} size={size} />
-          <NumberField.Increment aria-label={`Increase ${label}`} size={size} />
+        <NumberField.Group>
+          <NumberField.Input aria-label={label} />
+          <NumberField.Decrement aria-label={`Decrease ${label}`} />
+          <NumberField.Increment aria-label={`Increase ${label}`} />
         </NumberField.Group>
       </NumberField.Root>
     </Field.Root>

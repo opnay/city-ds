@@ -20,17 +20,21 @@ export interface RadioGroupProps<Value = unknown> extends Omit<
   size?: ControlSize;
 }
 
+const RadioGroupSizeContext = React.createContext<ControlSize>('md');
+
 export function RadioGroupRoot<Value>({
   className,
   size = 'md',
   ...props
 }: RadioGroupProps<Value>): React.JSX.Element {
   return (
-    <BaseRadioGroup
-      {...props}
-      data-city-size={size}
-      className={(state) => cn('grid gap-2', resolveClassName(className, state))}
-    />
+    <RadioGroupSizeContext.Provider value={size}>
+      <BaseRadioGroup
+        {...props}
+        data-city-size={size}
+        className={(state) => cn('grid gap-2', resolveClassName(className, state))}
+      />
+    </RadioGroupSizeContext.Provider>
   );
 }
 
@@ -51,11 +55,19 @@ const radioSizeClasses: Record<ControlSize, string> = {
   lg: 'size-5',
 };
 
+const radioIndicatorSizeClasses: Record<ControlSize, string> = {
+  sm: 'size-1.5',
+  md: 'size-2',
+  lg: 'size-2.5',
+};
+
 const RadioGroupItemBase = React.forwardRef(function RadioGroupItem(
-  { children, className, labelClassName, size = 'md', ...props }: RadioGroupItemProps,
+  { children, className, labelClassName, size: sizeProp, ...props }: RadioGroupItemProps,
   ref: React.ForwardedRef<HTMLElement>,
 ) {
   const labelId = React.useId();
+  const rootSize = React.useContext(RadioGroupSizeContext);
+  const size = sizeProp ?? rootSize;
 
   return (
     <label
@@ -67,6 +79,7 @@ const RadioGroupItemBase = React.forwardRef(function RadioGroupItem(
       <BaseRadio.Root
         {...props}
         aria-labelledby={props['aria-labelledby'] ?? labelId}
+        data-city-size={size}
         ref={ref}
         className={(state) =>
           cn(
@@ -76,7 +89,9 @@ const RadioGroupItemBase = React.forwardRef(function RadioGroupItem(
           )
         }
       >
-        <BaseRadio.Indicator className="bg-city-primary size-2 rounded-full" />
+        <BaseRadio.Indicator
+          className={cn('bg-city-primary rounded-full', radioIndicatorSizeClasses[size])}
+        />
       </BaseRadio.Root>
       <span id={labelId}>{children}</span>
     </label>

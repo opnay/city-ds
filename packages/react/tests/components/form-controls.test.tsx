@@ -418,6 +418,26 @@ describe('form and display controls', () => {
     );
   });
 
+  it('inherits RadioGroup root size while preserving item overrides', () => {
+    render(
+      <RadioGroup aria-label="Density" defaultValue="comfortable" size="lg">
+        <RadioGroup.Item value="comfortable">Comfortable</RadioGroup.Item>
+        <RadioGroup.Item size="sm" value="compact">
+          Compact
+        </RadioGroup.Item>
+      </RadioGroup>,
+    );
+
+    const comfortable = screen.getByRole('radio', { name: 'Comfortable' });
+    const compact = screen.getByRole('radio', { name: 'Compact' });
+
+    expect(comfortable).toHaveAttribute('data-city-size', 'lg');
+    expect(comfortable).toHaveClass('size-5');
+    expect(comfortable.querySelector('span')).toHaveClass('size-2.5');
+    expect(compact).toHaveAttribute('data-city-size', 'sm');
+    expect(compact).toHaveClass('size-3.5');
+  });
+
   it('groups CheckboxGroup items with shared label, value changes, keyboard, and form values', async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();

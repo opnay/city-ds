@@ -137,7 +137,7 @@ describe('overlay and selection controls', () => {
     );
 
     const trigger = screen.getByRole('button', { name: 'Delete project' });
-    expect(trigger).toHaveClass('h-9', 'bg-city-destructive');
+    expect(trigger).toHaveClass('h-(--city-control-md)', 'bg-city-destructive');
     expect(trigger).not.toHaveClass('bg-city-surface-raised');
     await user.click(trigger);
 
@@ -145,7 +145,7 @@ describe('overlay and selection controls', () => {
     expect(dialog).toBeVisible();
     expect(screen.getByText('This action cannot be undone.')).toBeVisible();
     const cancel = screen.getByRole('button', { name: 'Cancel' });
-    expect(cancel).toHaveClass('h-9', 'bg-city-accent');
+    expect(cancel).toHaveClass('h-(--city-control-md)', 'bg-city-accent');
     expect(cancel).not.toHaveClass('bg-city-background');
     expect(screen.getByRole('button', { name: 'Delete' })).toHaveClass('bg-city-destructive');
     await waitFor(() => expect(cancel).toHaveFocus());
@@ -183,7 +183,10 @@ describe('overlay and selection controls', () => {
     await user.click(screen.getByRole('button', { name: 'Publish changes' }));
     const dialog = await screen.findByRole('alertdialog', { name: 'Publish these changes?' });
     expect(dialog).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Publish' })).toHaveClass('h-9', 'bg-city-primary');
+    expect(screen.getByRole('button', { name: 'Publish' })).toHaveClass(
+      'h-(--city-control-md)',
+      'bg-city-primary',
+    );
     expect(onOpenChange).toHaveBeenCalledWith(
       true,
       expect.objectContaining({ reason: 'trigger-press' }),

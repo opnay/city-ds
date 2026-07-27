@@ -88,8 +88,14 @@ describe('Toolbar', () => {
       </Toolbar.Root>,
     );
 
-    expect(screen.getByRole('button', { name: 'Inherited' })).toHaveClass('h-8', 'text-xs');
-    expect(screen.getByRole('link', { name: 'Large' })).toHaveClass('h-10', 'text-sm');
+    expect(screen.getByRole('button', { name: 'Inherited' })).toHaveClass(
+      'h-(--city-control-sm)',
+      'text-xs',
+    );
+    expect(screen.getByRole('link', { name: 'Large' })).toHaveClass(
+      'h-(--city-control-lg)',
+      'text-sm',
+    );
   });
 
   it('keeps vertical items and groups at a consistent width', () => {
@@ -130,7 +136,7 @@ describe('Toolbar', () => {
     const grid = screen.getByRole('button', { name: 'Grid' });
 
     expect(list).toHaveAttribute('aria-pressed', 'true');
-    expect(list).toHaveClass('h-8');
+    expect(list).toHaveClass('h-(--city-control-sm)');
     await user.click(grid);
     expect(list).toHaveAttribute('aria-pressed', 'false');
     expect(grid).toHaveAttribute('aria-pressed', 'true');

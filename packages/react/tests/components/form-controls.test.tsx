@@ -55,6 +55,32 @@ describe('form and display controls', () => {
     );
   });
 
+  it('uses shared control-height tokens for adjacent control sizes', () => {
+    render(
+      <>
+        <Button size="sm">Small button</Button>
+        <Toggle aria-label="Medium toggle" size="md" />
+        <Input aria-label="Large input" size="lg" />
+        <InputGroup.Root data-testid="small-input-group" size="sm">
+          <Input aria-label="Grouped input" size="sm" />
+        </InputGroup.Root>
+      </>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Small button' })).toHaveClass(
+      'h-(--city-control-sm)',
+    );
+    expect(screen.getByRole('button', { name: 'Medium toggle' })).toHaveClass(
+      'h-(--city-control-md)',
+    );
+    expect(screen.getByRole('textbox', { name: 'Large input' })).toHaveClass(
+      'h-(--city-control-lg)',
+    );
+    expect(screen.getByTestId('small-input-group')).toHaveClass(
+      'min-h-(--city-control-sm)',
+    );
+  });
+
   it('renders Badge through the Base UI render API', () => {
     render(
       <Badge render={<a href="/release" />} variant="outline">
@@ -538,8 +564,8 @@ describe('form and display controls', () => {
     const overriddenItem = screen.getByRole('button', { name: 'Italic' });
 
     expect(ref.current).toBe(group);
-    expect(inheritedItem).toHaveClass('h-10', 'bg-city-primary');
-    expect(overriddenItem).toHaveClass('h-8', 'hover:bg-city-accent');
+    expect(inheritedItem).toHaveClass('h-(--city-control-lg)', 'bg-city-primary');
+    expect(overriddenItem).toHaveClass('h-(--city-control-sm)', 'hover:bg-city-accent');
   });
 
   it('moves ToggleGroup focus with arrow keys', async () => {

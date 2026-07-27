@@ -90,9 +90,7 @@ describe('form and display controls', () => {
     expect(screen.getByRole('textbox', { name: 'Large input' })).toHaveClass(
       'h-(--city-control-lg)',
     );
-    expect(screen.getByTestId('small-input-group')).toHaveClass(
-      'min-h-(--city-control-sm)',
-    );
+    expect(screen.getByTestId('small-input-group')).toHaveClass('min-h-(--city-control-sm)');
   });
 
   it('sizes Select and Combobox from their roots and styles invalid fields', () => {
@@ -125,10 +123,7 @@ describe('form and display controls', () => {
 
     expect(select).toHaveAttribute('data-city-size', 'sm');
     expect(select).toHaveAttribute('data-invalid');
-    expect(select).toHaveClass(
-      'h-(--city-control-sm)',
-      'data-[invalid]:border-city-destructive',
-    );
+    expect(select).toHaveClass('h-(--city-control-sm)', 'data-[invalid]:border-city-destructive');
     expect(combobox).toHaveAttribute('data-city-size', 'lg');
     expect(combobox).toHaveClass('h-(--city-control-lg)');
     expect(comboboxGroup).toHaveAttribute('data-city-size', 'lg');
@@ -152,10 +147,7 @@ describe('form and display controls', () => {
 
     expect(screen.getByRole('link', { name: 'v1' })).toHaveAttribute('href', '/release');
     expect(screen.getByRole('link', { name: 'v1' })).toHaveClass('border-city-border');
-    expect(screen.getByRole('link', { name: 'v1' })).toHaveAttribute(
-      'data-city-badge',
-      'label',
-    );
+    expect(screen.getByRole('link', { name: 'v1' })).toHaveAttribute('data-city-badge', 'label');
     expect(screen.getByText('7')).toHaveAttribute('data-city-badge', 'count');
     expect(screen.getByText('7')).toHaveAttribute('data-city-size', 'sm');
     expect(screen.getByText('7')).toHaveClass('h-4', 'min-w-4', 'rounded-city-full');
@@ -197,6 +189,32 @@ describe('form and display controls', () => {
     expect(screen.getByText('Choose every channel this project can use.')).toHaveClass(
       'text-city-muted-foreground',
     );
+  });
+
+  it('supports plain and band Fieldset appearances while preserving outline defaults', () => {
+    render(
+      <>
+        <Fieldset.Root appearance="plain">
+          <Fieldset.Legend>Plain group</Fieldset.Legend>
+        </Fieldset.Root>
+        <Fieldset.Root appearance="band">
+          <Fieldset.Legend>Band group</Fieldset.Legend>
+        </Fieldset.Root>
+        <Fieldset.Root>
+          <Fieldset.Legend>Outline group</Fieldset.Legend>
+        </Fieldset.Root>
+      </>,
+    );
+
+    const plain = screen.getByRole('group', { name: 'Plain group' });
+    const band = screen.getByRole('group', { name: 'Band group' });
+    const outline = screen.getByRole('group', { name: 'Outline group' });
+
+    expect(plain).toHaveAttribute('data-appearance', 'plain');
+    expect(plain).toHaveClass('border-0', 'p-0');
+    expect(band).toHaveClass('border-y', 'py-4');
+    expect(outline).toHaveAttribute('data-appearance', 'outline');
+    expect(outline).toHaveClass('rounded-city-md', 'border', 'p-4');
   });
 
   it('propagates disabled Fieldset state to native controls and composed radio groups', async () => {

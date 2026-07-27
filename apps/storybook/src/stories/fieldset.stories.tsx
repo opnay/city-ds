@@ -30,6 +30,23 @@ export const Default: Story = {
   ),
 };
 
+export const Plain: Story = {
+  render: () => (
+    <Fieldset.Root appearance="plain" className="w-96">
+      <Fieldset.Legend>Workspace defaults</Fieldset.Legend>
+      <Fieldset.Description>
+        Use a plain group when the surrounding panel owns the surface.
+      </Fieldset.Description>
+      <Fieldset.Content>
+        <Field.Root>
+          <Field.Label>Workspace name</Field.Label>
+          <Input defaultValue="City Labs" />
+        </Field.Root>
+      </Fieldset.Content>
+    </Fieldset.Root>
+  ),
+};
+
 export const WithDescription: Story = {
   render: () => (
     <Fieldset.Root className="w-96">

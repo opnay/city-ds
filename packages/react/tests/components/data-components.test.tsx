@@ -200,6 +200,26 @@ describe('Table', () => {
     expect(scrollArea).toHaveFocus();
   });
 
+  it('supports plain and band scroll areas while preserving outline defaults', () => {
+    render(
+      <>
+        <Table.ScrollArea appearance="plain" data-testid="plain-scroll" />
+        <Table.ScrollArea appearance="band" data-testid="band-scroll" />
+        <Table.ScrollArea data-testid="outline-scroll" />
+      </>,
+    );
+
+    const plain = screen.getByTestId('plain-scroll');
+    const band = screen.getByTestId('band-scroll');
+    const outline = screen.getByTestId('outline-scroll');
+
+    expect(plain).toHaveAttribute('data-appearance', 'plain');
+    expect(plain).not.toHaveClass('border');
+    expect(band).toHaveClass('border-y');
+    expect(outline).toHaveAttribute('data-appearance', 'outline');
+    expect(outline).toHaveClass('rounded-city-md', 'border');
+  });
+
   it('renders empty and loading state rows across all columns', () => {
     render(
       <Table.Root aria-label="Projects">
@@ -219,14 +239,7 @@ describe('Table', () => {
 
 describe('Pagination', () => {
   it('propagates compact density to generated controls', () => {
-    render(
-      <Pagination.Root
-        density="compact"
-        onPageChange={vi.fn()}
-        page={2}
-        totalPages={4}
-      />,
-    );
+    render(<Pagination.Root density="compact" onPageChange={vi.fn()} page={2} totalPages={4} />);
 
     const navigation = screen.getByRole('navigation', { name: 'Pagination' });
     const currentPage = screen.getByRole('button', { name: 'Page 2' });
@@ -450,8 +463,7 @@ describe('FileUpload', () => {
           labels={{
             input: '파일 업로드',
             trigger: (multiple) => (multiple ? '파일들 선택' : '파일 선택'),
-            remove: (selectedFile) =>
-              selectedFile ? `${selectedFile.name} 제거` : '파일 제거',
+            remove: (selectedFile) => (selectedFile ? `${selectedFile.name} 제거` : '파일 제거'),
           }}
         >
           <FileUpload.Trigger />

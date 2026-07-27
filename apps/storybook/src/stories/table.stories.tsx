@@ -170,7 +170,7 @@ export const Loading: Story = {
 export const HorizontalOverflow: Story = {
   args: { size: 'md', variant: 'line' },
   render: (args) => (
-    <Table.ScrollArea style={{ maxWidth: 420 }}>
+    <Table.ScrollArea appearance="plain" style={{ maxWidth: 420 }}>
       <Table.Root aria-label="Wide project inventory" size={args.size} variant={args.variant}>
         <Table.Header>
           <Table.Row>

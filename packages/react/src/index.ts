@@ -34,4 +34,11 @@ export * from './components/toolbar';
 export * from './components/tooltip';
 export { cn } from './lib/cn';
 export { CITY_THEMES, type CityTheme } from './theme';
-export { CONTROL_SIZES, DENSITIES, type ControlSize, type Density } from './types';
+export {
+  CONTROL_SIZES,
+  DENSITIES,
+  SURFACE_APPEARANCES,
+  type ControlSize,
+  type Density,
+  type SurfaceAppearance,
+} from './types';

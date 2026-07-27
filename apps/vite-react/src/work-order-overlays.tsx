@@ -130,7 +130,7 @@ export function CreateWorkOrderDialog({ onCreate }: CreateWorkOrderDialogProps) 
               </Dialog.Header>
 
               <Dialog.Body>
-                <Fieldset.Root className="relay-work-order-fieldset">
+                <Fieldset.Root appearance="plain">
                   <Fieldset.Legend>작업 정보</Fieldset.Legend>
                   <Fieldset.Description>
                     필수 항목은 작업 목록과 상세 화면에 표시됩니다.

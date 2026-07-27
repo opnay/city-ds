@@ -542,17 +542,10 @@ a {
   align-items: center;
   gap: var(--city-space-3);
   padding: var(--city-space-3) var(--city-space-5);
-  border-width: 0 0 1px;
-  border-style: solid;
-  border-color: var(--city-color-border);
-  border-radius: 0;
-  background: var(--city-color-surface);
 }
 
 .relay-filter-bar--standalone {
   margin-bottom: var(--city-space-4);
-  border-width: 1px;
-  border-radius: var(--city-radius-lg);
 }
 
 .relay-filter-search {
@@ -579,11 +572,6 @@ a {
   max-width: 100%;
   overflow-x: clip;
   contain: inline-size paint;
-}
-
-.relay-table-region [data-city-table-scroll-area] {
-  border: 0;
-  border-radius: 0;
 }
 
 .relay-table-scroll-area:focus-visible {
@@ -837,12 +825,6 @@ a {
 
 .relay-dialog-form {
   display: contents;
-}
-
-.relay-work-order-fieldset {
-  padding: 0;
-  border: 0;
-  border-radius: 0;
 }
 
 .relay-form-grid {

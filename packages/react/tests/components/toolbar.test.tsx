@@ -5,6 +5,28 @@ import { describe, expect, it, vi } from 'vitest';
 import { Toolbar } from '../../src/components/toolbar';
 
 describe('Toolbar', () => {
+  it('supports plain, band, and outline surface appearances', () => {
+    render(
+      <>
+        <Toolbar.Root appearance="plain" aria-label="Plain tools" />
+        <Toolbar.Root appearance="band" aria-label="Band tools" />
+        <Toolbar.Root aria-label="Outline tools" />
+      </>,
+    );
+
+    const plain = screen.getByRole('toolbar', { name: 'Plain tools' });
+    const band = screen.getByRole('toolbar', { name: 'Band tools' });
+    const outline = screen.getByRole('toolbar', { name: 'Outline tools' });
+
+    expect(plain).toHaveAttribute('data-appearance', 'plain');
+    expect(plain).toHaveClass('bg-transparent');
+    expect(plain).not.toHaveClass('border');
+    expect(band).toHaveAttribute('data-appearance', 'band');
+    expect(band).toHaveClass('border-b', 'bg-city-surface');
+    expect(outline).toHaveAttribute('data-appearance', 'outline');
+    expect(outline).toHaveClass('rounded-city-md', 'border');
+  });
+
   it('keeps toolbar semantics and roving focus for arrow-key navigation', async () => {
     const user = userEvent.setup();
 

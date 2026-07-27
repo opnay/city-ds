@@ -9,6 +9,10 @@ const meta = {
   component: Toolbar.Root,
   tags: ['autodocs'],
   argTypes: {
+    appearance: {
+      control: 'inline-radio',
+      options: ['plain', 'band', 'outline'],
+    },
     orientation: {
       control: 'inline-radio',
       options: ['horizontal', 'vertical'],
@@ -27,6 +31,7 @@ type Story = StoryObj<typeof meta>;
 export const EditingTools: Story = {
   args: {
     'aria-label': 'Editing tools',
+    appearance: 'outline',
     size: 'md',
   },
   render: (args) => (
@@ -52,6 +57,17 @@ export const EditingTools: Story = {
     await userEvent.keyboard('{ArrowRight}');
     await expect(canvas.getByRole('button', { name: 'Italic' })).toHaveFocus();
   },
+};
+
+export const EmbeddedBand: Story = {
+  render: () => (
+    <Toolbar.Root appearance="band" aria-label="Embedded filters" className="w-full" size="sm">
+      <Toolbar.Button variant="ghost">All</Toolbar.Button>
+      <Toolbar.Button variant="ghost">Active</Toolbar.Button>
+      <Toolbar.Separator />
+      <Toolbar.Button variant="outline">Reset</Toolbar.Button>
+    </Toolbar.Root>
+  ),
 };
 
 export const ViewSwitcher: Story = {

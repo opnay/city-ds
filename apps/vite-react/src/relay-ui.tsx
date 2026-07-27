@@ -38,6 +38,7 @@ interface FilterBarProps {
 export function FilterBar({ actions, children, label, surface = 'embedded' }: FilterBarProps) {
   return (
     <Toolbar.Root
+      appearance={surface === 'embedded' ? 'band' : 'outline'}
       aria-label={label}
       className={`relay-filter-bar relay-filter-bar--${surface}`}
       size="sm"
@@ -109,6 +110,7 @@ export function DataTableRegion({
         </p>
       ) : null}
       <Table.ScrollArea
+        appearance="plain"
         aria-describedby={showHint ? hintId : undefined}
         aria-label={label}
         className="relay-table-scroll-area"

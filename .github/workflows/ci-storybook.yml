@@ -2,6 +2,8 @@ name: CI · Storybook
 
 on:
   push:
+    branches:
+      - main
     paths:
       - '.github/workflows/ci-storybook.yml'
       - '.nvmrc'

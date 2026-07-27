@@ -270,8 +270,13 @@ function AssetDetailsDrawer({
       <Drawer.Portal>
         <Drawer.Backdrop />
         <Drawer.Viewport side="right">
-          <Drawer.Popup className="relay-details-drawer" finalFocus={finalFocus} side="right">
-            <div className="relay-details-drawer-header relay-overlay-heading">
+          <Drawer.Popup
+            className="relay-details-drawer"
+            finalFocus={finalFocus}
+            side="right"
+            size="lg"
+          >
+            <Drawer.Header>
               <div>
                 <Badge variant={ASSET_STATUS_VARIANTS[asset.status]}>{asset.status}</Badge>
                 <Drawer.Title>{asset.name}</Drawer.Title>
@@ -285,55 +290,53 @@ function AssetDetailsDrawer({
               >
                 <X aria-hidden="true" size={18} />
               </Drawer.Close>
-            </div>
-            <Drawer.Content className="relay-details-drawer-content">
-              <div className="relay-drawer-body">
-                <div className="relay-progress-label">
-                  <strong>자산 건강도</strong>
-                  <span>{asset.health}%</span>
-                </div>
-                <Progress.Root aria-label={`${asset.name} 상세 건강도`} value={asset.health}>
-                  <Progress.Track>
-                    <Progress.Indicator />
-                  </Progress.Track>
-                </Progress.Root>
-
-                <dl className="relay-detail-list">
-                  <div>
-                    <dt>위치</dt>
-                    <dd>
-                      {asset.district} · {asset.location}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>최근 점검</dt>
-                    <dd>{asset.lastInspection}</dd>
-                  </div>
-                  <div>
-                    <dt>다음 점검</dt>
-                    <dd>{asset.nextInspection}</dd>
-                  </div>
-                  <div>
-                    <dt>열린 작업</dt>
-                    <dd>{asset.openOrders}건</dd>
-                  </div>
-                </dl>
-
-                <section aria-labelledby="asset-history-heading">
-                  <h3 id="asset-history-heading">최근 점검 기록</h3>
-                  <ol className="relay-activity-list">
-                    <li>
-                      <strong>2026. 7. 27.</strong>
-                      <span>원격 상태 데이터와 현장 점검 결과를 동기화했습니다.</span>
-                    </li>
-                    <li>
-                      <strong>{asset.lastInspection}</strong>
-                      <span>정기 점검 체크리스트를 완료했습니다.</span>
-                    </li>
-                  </ol>
-                </section>
+            </Drawer.Header>
+            <Drawer.Body className="relay-drawer-body">
+              <div className="relay-progress-label">
+                <strong>자산 건강도</strong>
+                <span>{asset.health}%</span>
               </div>
-            </Drawer.Content>
+              <Progress.Root aria-label={`${asset.name} 상세 건강도`} value={asset.health}>
+                <Progress.Track>
+                  <Progress.Indicator />
+                </Progress.Track>
+              </Progress.Root>
+
+              <dl className="relay-detail-list">
+                <div>
+                  <dt>위치</dt>
+                  <dd>
+                    {asset.district} · {asset.location}
+                  </dd>
+                </div>
+                <div>
+                  <dt>최근 점검</dt>
+                  <dd>{asset.lastInspection}</dd>
+                </div>
+                <div>
+                  <dt>다음 점검</dt>
+                  <dd>{asset.nextInspection}</dd>
+                </div>
+                <div>
+                  <dt>열린 작업</dt>
+                  <dd>{asset.openOrders}건</dd>
+                </div>
+              </dl>
+
+              <section aria-labelledby="asset-history-heading">
+                <h3 id="asset-history-heading">최근 점검 기록</h3>
+                <ol className="relay-activity-list">
+                  <li>
+                    <strong>2026. 7. 27.</strong>
+                    <span>원격 상태 데이터와 현장 점검 결과를 동기화했습니다.</span>
+                  </li>
+                  <li>
+                    <strong>{asset.lastInspection}</strong>
+                    <span>정기 점검 체크리스트를 완료했습니다.</span>
+                  </li>
+                </ol>
+              </section>
+            </Drawer.Body>
           </Drawer.Popup>
         </Drawer.Viewport>
       </Drawer.Portal>
@@ -534,23 +537,23 @@ function CreateMaintenanceDialog({
       <Dialog.Portal>
         <Dialog.Backdrop />
         <Dialog.Viewport>
-          <Dialog.Popup className="relay-form-dialog relay-form-dialog--compact">
-            <div className="relay-overlay-heading">
-              <div>
-                <Dialog.Title>새 정비 계획</Dialog.Title>
-                <Dialog.Description>
-                  정비 대상과 일정을 입력해 운영 캘린더에 추가하십시오.
-                </Dialog.Description>
-              </div>
-              <Dialog.Close
-                aria-label="정비 계획 닫기"
-                render={<Button iconOnly size="sm" variant="ghost" />}
-              >
-                <X aria-hidden="true" size={18} />
-              </Dialog.Close>
-            </div>
+          <Dialog.Popup scroll="body" size="md">
             <form className="relay-dialog-form" noValidate onSubmit={handleSubmit}>
-              <div className="relay-dialog-body">
+              <Dialog.Header>
+                <div>
+                  <Dialog.Title>새 정비 계획</Dialog.Title>
+                  <Dialog.Description>
+                    정비 대상과 일정을 입력해 운영 캘린더에 추가하십시오.
+                  </Dialog.Description>
+                </div>
+                <Dialog.Close
+                  aria-label="정비 계획 닫기"
+                  render={<Button iconOnly size="sm" variant="ghost" />}
+                >
+                  <X aria-hidden="true" size={18} />
+                </Dialog.Close>
+              </Dialog.Header>
+              <Dialog.Body>
                 <Field.Root invalid={submitted && !title.trim()}>
                   <Field.Label>계획 제목</Field.Label>
                   <Input
@@ -643,13 +646,13 @@ function CreateMaintenanceDialog({
                     일정을 입력하십시오.
                   </Field.Error>
                 </Field.Root>
-              </div>
-              <div className="relay-dialog-footer">
+              </Dialog.Body>
+              <Dialog.Footer>
                 <Dialog.Close render={<Button size="md" variant="secondary" />}>취소</Dialog.Close>
                 <Button size="md" type="submit">
                   계획 추가
                 </Button>
-              </div>
+              </Dialog.Footer>
             </form>
           </Dialog.Popup>
         </Dialog.Viewport>

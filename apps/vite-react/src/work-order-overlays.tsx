@@ -112,24 +112,24 @@ export function CreateWorkOrderDialog({ onCreate }: CreateWorkOrderDialogProps) 
       <Dialog.Portal>
         <Dialog.Backdrop />
         <Dialog.Viewport>
-          <Dialog.Popup className="relay-form-dialog relay-form-dialog--wide">
-            <div className="relay-overlay-heading">
-              <div>
-                <Dialog.Title>새 작업 요청</Dialog.Title>
-                <Dialog.Description>
-                  현장팀이 바로 판단할 수 있도록 위치와 대응 기준을 입력하십시오.
-                </Dialog.Description>
-              </div>
-              <Dialog.Close
-                aria-label="작업 생성 닫기"
-                render={<Button iconOnly size="sm" variant="ghost" />}
-              >
-                <X aria-hidden="true" size={18} />
-              </Dialog.Close>
-            </div>
-
+          <Dialog.Popup scroll="body" size="lg">
             <form className="relay-dialog-form" noValidate onSubmit={handleSubmit}>
-              <div className="relay-dialog-body">
+              <Dialog.Header>
+                <div>
+                  <Dialog.Title>새 작업 요청</Dialog.Title>
+                  <Dialog.Description>
+                    현장팀이 바로 판단할 수 있도록 위치와 대응 기준을 입력하십시오.
+                  </Dialog.Description>
+                </div>
+                <Dialog.Close
+                  aria-label="작업 생성 닫기"
+                  render={<Button iconOnly size="sm" variant="ghost" />}
+                >
+                  <X aria-hidden="true" size={18} />
+                </Dialog.Close>
+              </Dialog.Header>
+
+              <Dialog.Body>
                 <Fieldset.Root className="relay-work-order-fieldset">
                   <Fieldset.Legend>작업 정보</Fieldset.Legend>
                   <Fieldset.Description>
@@ -287,14 +287,14 @@ export function CreateWorkOrderDialog({ onCreate }: CreateWorkOrderDialogProps) 
                     </Field.Root>
                   </Fieldset.Content>
                 </Fieldset.Root>
-              </div>
+              </Dialog.Body>
 
-              <div className="relay-dialog-footer">
+              <Dialog.Footer>
                 <Dialog.Close render={<Button size="md" variant="secondary" />}>취소</Dialog.Close>
                 <Button size="md" type="submit">
                   작업 생성
                 </Button>
-              </div>
+              </Dialog.Footer>
             </form>
           </Dialog.Popup>
         </Dialog.Viewport>
@@ -337,8 +337,13 @@ export function WorkOrderDetailsDrawer({
       <Drawer.Portal>
         <Drawer.Backdrop />
         <Drawer.Viewport side="right">
-          <Drawer.Popup className="relay-details-drawer" finalFocus={finalFocus} side="right">
-            <div className="relay-overlay-heading relay-details-drawer-header">
+          <Drawer.Popup
+            className="relay-details-drawer"
+            finalFocus={finalFocus}
+            side="right"
+            size="lg"
+          >
+            <Drawer.Header>
               <div>
                 <Badge variant={WORK_ORDER_STATUS_VARIANTS[order.status]}>{order.status}</Badge>
                 <Drawer.Title>{order.title}</Drawer.Title>
@@ -352,129 +357,127 @@ export function WorkOrderDetailsDrawer({
               >
                 <X aria-hidden="true" size={18} />
               </Drawer.Close>
-            </div>
+            </Drawer.Header>
 
-            <Drawer.Content className="relay-details-drawer-content">
-              <div className="relay-drawer-body">
-                <dl className="relay-detail-list">
-                  <div>
-                    <dt>우선순위</dt>
-                    <dd>{order.priority}</dd>
-                  </div>
-                  <div>
-                    <dt>최근 업데이트</dt>
-                    <dd>{order.updatedAt}</dd>
-                  </div>
-                  <div>
-                    <dt>SLA 마감</dt>
-                    <dd>{order.slaDueAt}</dd>
-                  </div>
+            <Drawer.Body className="relay-drawer-body">
+              <dl className="relay-detail-list">
+                <div>
+                  <dt>우선순위</dt>
+                  <dd>{order.priority}</dd>
+                </div>
+                <div>
+                  <dt>최근 업데이트</dt>
+                  <dd>{order.updatedAt}</dd>
+                </div>
+                <div>
+                  <dt>SLA 마감</dt>
+                  <dd>{order.slaDueAt}</dd>
+                </div>
+              </dl>
+
+              <Progress.Root aria-label={`${order.id} SLA 진행`} value={order.progress}>
+                <div className="relay-progress-label">
+                  <Progress.Label>SLA 진행</Progress.Label>
+                  <Progress.Value />
+                </div>
+                <Progress.Track>
+                  <Progress.Indicator />
+                </Progress.Track>
+              </Progress.Root>
+
+              <Select.Root
+                disabled={isTerminalStatus(order.status)}
+                items={CREW_ITEMS}
+                onValueChange={(value) => value && onCrewChange(order.id, value)}
+                value={order.crew}
+              >
+                <Select.Label>담당 현장팀</Select.Label>
+                <Select.Trigger>
+                  <Select.Value />
+                  <Select.Icon />
+                </Select.Trigger>
+                <Select.Portal>
+                  <Select.Positioner sideOffset={6}>
+                    <Select.Popup>
+                      <Select.List>
+                        {Object.keys(CREW_ITEMS).map((crew) => (
+                          <Select.Item
+                            disabled={order.status === '진행 중' && crew === '미배정'}
+                            key={crew}
+                            value={crew}
+                          >
+                            <Select.ItemIndicator />
+                            <Select.ItemText>{crew}</Select.ItemText>
+                          </Select.Item>
+                        ))}
+                      </Select.List>
+                    </Select.Popup>
+                  </Select.Positioner>
+                </Select.Portal>
+              </Select.Root>
+
+              {order.responseMinutes ||
+              order.notificationChannels?.length ||
+              order.attachmentNames?.length ? (
+                <dl className="relay-detail-list relay-detail-list-secondary">
+                  {order.responseMinutes ? (
+                    <div>
+                      <dt>예상 대응시간</dt>
+                      <dd>{order.responseMinutes}분</dd>
+                    </div>
+                  ) : null}
+                  {order.notificationChannels?.length ? (
+                    <div>
+                      <dt>알림 채널</dt>
+                      <dd>
+                        {order.notificationChannels
+                          .map((channel) => NOTIFICATION_CHANNEL_LABELS[channel])
+                          .join(', ')}
+                      </dd>
+                    </div>
+                  ) : null}
+                  {order.attachmentNames?.length ? (
+                    <div>
+                      <dt>현장 첨부</dt>
+                      <dd>{order.attachmentNames.join(', ')}</dd>
+                    </div>
+                  ) : null}
                 </dl>
+              ) : null}
 
-                <Progress.Root aria-label={`${order.id} SLA 진행`} value={order.progress}>
-                  <div className="relay-progress-label">
-                    <Progress.Label>SLA 진행</Progress.Label>
-                    <Progress.Value />
-                  </div>
-                  <Progress.Track>
-                    <Progress.Indicator />
-                  </Progress.Track>
-                </Progress.Root>
-
-                <Select.Root
-                  disabled={isTerminalStatus(order.status)}
-                  items={CREW_ITEMS}
-                  onValueChange={(value) => value && onCrewChange(order.id, value)}
-                  value={order.crew}
-                >
-                  <Select.Label>담당 현장팀</Select.Label>
-                  <Select.Trigger>
-                    <Select.Value />
-                    <Select.Icon />
-                  </Select.Trigger>
-                  <Select.Portal>
-                    <Select.Positioner sideOffset={6}>
-                      <Select.Popup>
-                        <Select.List>
-                          {Object.keys(CREW_ITEMS).map((crew) => (
-                            <Select.Item
-                              disabled={order.status === '진행 중' && crew === '미배정'}
-                              key={crew}
-                              value={crew}
-                            >
-                              <Select.ItemIndicator />
-                              <Select.ItemText>{crew}</Select.ItemText>
-                            </Select.Item>
-                          ))}
-                        </Select.List>
-                      </Select.Popup>
-                    </Select.Positioner>
-                  </Select.Portal>
-                </Select.Root>
-
-                {order.responseMinutes ||
-                order.notificationChannels?.length ||
-                order.attachmentNames?.length ? (
-                  <dl className="relay-detail-list relay-detail-list-secondary">
-                    {order.responseMinutes ? (
-                      <div>
-                        <dt>예상 대응시간</dt>
-                        <dd>{order.responseMinutes}분</dd>
-                      </div>
-                    ) : null}
-                    {order.notificationChannels?.length ? (
-                      <div>
-                        <dt>알림 채널</dt>
-                        <dd>
-                          {order.notificationChannels
-                            .map((channel) => NOTIFICATION_CHANNEL_LABELS[channel])
-                            .join(', ')}
-                        </dd>
-                      </div>
-                    ) : null}
-                    {order.attachmentNames?.length ? (
-                      <div>
-                        <dt>현장 첨부</dt>
-                        <dd>{order.attachmentNames.join(', ')}</dd>
-                      </div>
-                    ) : null}
-                  </dl>
-                ) : null}
-
-                <Accordion.Root defaultValue={['activity']}>
-                  <Accordion.Item value="activity">
-                    <Accordion.Header>
-                      <Accordion.Trigger>최근 활동</Accordion.Trigger>
-                    </Accordion.Header>
-                    <Accordion.Panel>
-                      <ol className="relay-activity-list">
-                        <li>
-                          <strong>{order.updatedAt}</strong>
-                          <span>현장 상태가 “{order.status}”로 변경되었습니다.</span>
-                        </li>
-                        <li>
-                          <strong>오늘 09:40</strong>
-                          <span>{order.crew}에 작업이 전달되었습니다.</span>
-                        </li>
-                        <li>
-                          <strong>오늘 09:12</strong>
-                          <span>운영 센터에서 작업 요청을 접수했습니다.</span>
-                        </li>
-                      </ol>
-                    </Accordion.Panel>
-                  </Accordion.Item>
-                  <Accordion.Item value="checklist">
-                    <Accordion.Header>
-                      <Accordion.Trigger>현장 체크리스트</Accordion.Trigger>
-                    </Accordion.Header>
-                    <Accordion.Panel>
-                      안전 구역 확보, 설비 전원 확인, 조치 전후 사진 기록을 완료하십시오.
-                    </Accordion.Panel>
-                  </Accordion.Item>
-                </Accordion.Root>
-              </div>
-            </Drawer.Content>
-            <div className="relay-drawer-actions">
+              <Accordion.Root defaultValue={['activity']}>
+                <Accordion.Item value="activity">
+                  <Accordion.Header>
+                    <Accordion.Trigger>최근 활동</Accordion.Trigger>
+                  </Accordion.Header>
+                  <Accordion.Panel>
+                    <ol className="relay-activity-list">
+                      <li>
+                        <strong>{order.updatedAt}</strong>
+                        <span>현장 상태가 “{order.status}”로 변경되었습니다.</span>
+                      </li>
+                      <li>
+                        <strong>오늘 09:40</strong>
+                        <span>{order.crew}에 작업이 전달되었습니다.</span>
+                      </li>
+                      <li>
+                        <strong>오늘 09:12</strong>
+                        <span>운영 센터에서 작업 요청을 접수했습니다.</span>
+                      </li>
+                    </ol>
+                  </Accordion.Panel>
+                </Accordion.Item>
+                <Accordion.Item value="checklist">
+                  <Accordion.Header>
+                    <Accordion.Trigger>현장 체크리스트</Accordion.Trigger>
+                  </Accordion.Header>
+                  <Accordion.Panel>
+                    안전 구역 확보, 설비 전원 확인, 조치 전후 사진 기록을 완료하십시오.
+                  </Accordion.Panel>
+                </Accordion.Item>
+              </Accordion.Root>
+            </Drawer.Body>
+            <Drawer.Footer>
               <Button
                 data-order-cancel={order.id}
                 disabled={isTerminalStatus(order.status)}
@@ -485,7 +488,7 @@ export function WorkOrderDetailsDrawer({
                 작업 취소
               </Button>
               <Drawer.Close render={<Button size="md" variant="secondary" />}>닫기</Drawer.Close>
-            </div>
+            </Drawer.Footer>
           </Drawer.Popup>
         </Drawer.Viewport>
       </Drawer.Portal>

@@ -1058,8 +1058,8 @@ function MobileNavigation(props: SidebarContentProps) {
       <Drawer.Portal>
         <Drawer.Backdrop />
         <Drawer.Viewport side="left">
-          <Drawer.Popup className="relay-mobile-drawer" side="left">
-            <div className="relay-mobile-drawer-heading">
+          <Drawer.Popup className="relay-mobile-drawer" side="left" size="sm">
+            <Drawer.Header>
               <Drawer.Title>Relay 메뉴</Drawer.Title>
               <Drawer.Close
                 aria-label="주요 메뉴 닫기"
@@ -1067,8 +1067,8 @@ function MobileNavigation(props: SidebarContentProps) {
               >
                 <X aria-hidden="true" size={18} />
               </Drawer.Close>
-            </div>
-            <Drawer.Content className="relay-mobile-drawer-content">
+            </Drawer.Header>
+            <Drawer.Body className="relay-mobile-drawer-content">
               <Drawer.Description className="city-sr-only">
                 워크스페이스 탐색과 화면 설정
               </Drawer.Description>
@@ -1079,7 +1079,7 @@ function MobileNavigation(props: SidebarContentProps) {
                   props.onNavigate(section);
                 }}
               />
-            </Drawer.Content>
+            </Drawer.Body>
           </Drawer.Popup>
         </Drawer.Viewport>
       </Drawer.Portal>

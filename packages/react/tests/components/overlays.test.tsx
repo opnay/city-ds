@@ -48,6 +48,50 @@ describe('overlay and selection controls', () => {
     expect(trigger).toHaveFocus();
   });
 
+  it('applies dialog size and body-scroll shell contracts', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Dialog.Root>
+        <Dialog.Trigger>Open activity</Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Backdrop />
+          <Dialog.Viewport>
+            <Dialog.Popup scroll="body" size="lg">
+              <Dialog.Header>
+                <div>
+                  <Dialog.Title>Project activity</Dialog.Title>
+                  <Dialog.Description>Recent project updates.</Dialog.Description>
+                </div>
+              </Dialog.Header>
+              <Dialog.Body>Scrollable activity</Dialog.Body>
+              <Dialog.Footer>
+                <Dialog.Close>Close</Dialog.Close>
+              </Dialog.Footer>
+            </Dialog.Popup>
+          </Dialog.Viewport>
+        </Dialog.Portal>
+      </Dialog.Root>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open activity' }));
+
+    const dialog = await screen.findByRole('dialog', { name: 'Project activity' });
+    const body = screen.getByText('Scrollable activity');
+
+    expect(dialog).toHaveAttribute('data-size', 'lg');
+    expect(dialog).toHaveAttribute('data-scroll', 'body');
+    expect(dialog).toHaveClass('max-w-2xl', 'flex', 'overflow-hidden', 'p-0');
+    expect(
+      screen.getByText('Recent project updates.').closest('[data-city-dialog-header]'),
+    ).toHaveClass('border-b', 'px-5');
+    expect(body).toHaveAttribute('data-city-dialog-body');
+    expect(body).toHaveClass('min-h-0', 'overflow-y-auto', 'p-5');
+    expect(screen.getByRole('button', { name: 'Close' }).parentElement).toHaveAttribute(
+      'data-city-dialog-footer',
+    );
+  });
+
   it('opens a drawer, closes on Escape, and restores trigger focus', async () => {
     const user = userEvent.setup();
 
@@ -82,6 +126,46 @@ describe('overlay and selection controls', () => {
 
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     expect(trigger).toHaveFocus();
+  });
+
+  it('applies drawer size and header, body, and footer shell contracts', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Drawer.Root>
+        <Drawer.Trigger>Open asset details</Drawer.Trigger>
+        <Drawer.Portal>
+          <Drawer.Backdrop />
+          <Drawer.Viewport side="right">
+            <Drawer.Popup side="right" size="lg">
+              <Drawer.Header>
+                <Drawer.Title>Asset details</Drawer.Title>
+              </Drawer.Header>
+              <Drawer.Body>Asset health</Drawer.Body>
+              <Drawer.Footer>
+                <Drawer.Close>Close asset details</Drawer.Close>
+              </Drawer.Footer>
+            </Drawer.Popup>
+          </Drawer.Viewport>
+        </Drawer.Portal>
+      </Drawer.Root>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open asset details' }));
+
+    const drawer = await screen.findByRole('dialog', { name: 'Asset details' });
+    const body = screen.getByText('Asset health');
+
+    expect(drawer).toHaveAttribute('data-size', 'lg');
+    expect(drawer).toHaveAttribute('data-side', 'right');
+    expect(drawer).toHaveClass('w-[min(32rem,calc(100vw-2rem))]');
+    expect(screen.getByText('Asset details').parentElement).toHaveAttribute(
+      'data-city-drawer-header',
+    );
+    expect(body).toHaveAttribute('data-city-drawer-body');
+    expect(
+      screen.getByRole('button', { name: 'Close asset details' }).parentElement,
+    ).toHaveAttribute('data-city-drawer-footer');
   });
 
   it('keeps outside controls available for non-modal drawers', async () => {

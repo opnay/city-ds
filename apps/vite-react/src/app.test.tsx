@@ -113,10 +113,7 @@ describe('Relay dashboard', () => {
     expect(sortButton).toHaveAttribute('data-sort-direction', 'asc');
 
     await user.click(screen.getByRole('button', { name: '다음 페이지로' }));
-    expect(screen.getByRole('button', { name: '2페이지' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    );
+    expect(screen.getByRole('button', { name: '2페이지' })).toHaveAttribute('aria-current', 'page');
     expect(within(table).getByText('WO-2808')).toBeVisible();
   });
 
@@ -398,14 +395,18 @@ describe('Relay dashboard', () => {
 
     await user.click(screen.getByRole('button', { name: '새 작업 만들기' }));
     expect(
-      screen.getByRole('dialog', { name: '새 작업 요청' }).querySelector('.relay-dialog-footer'),
+      screen
+        .getByRole('dialog', { name: '새 작업 요청' })
+        .querySelector('[data-city-dialog-footer]'),
     ).not.toBeNull();
     await user.keyboard('{Escape}');
 
     await user.click(screen.getByRole('link', { name: '정비 계획' }));
     await user.click(screen.getByRole('button', { name: '정비 계획 추가' }));
     expect(
-      screen.getByRole('dialog', { name: '새 정비 계획' }).querySelector('.relay-dialog-footer'),
+      screen
+        .getByRole('dialog', { name: '새 정비 계획' })
+        .querySelector('[data-city-dialog-footer]'),
     ).not.toBeNull();
   });
 

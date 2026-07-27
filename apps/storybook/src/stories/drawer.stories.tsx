@@ -29,29 +29,31 @@ function DrawerExample({ side = 'right', modal = true }: { side?: DrawerSide; mo
       <Drawer.Portal>
         {modal ? <Drawer.Backdrop /> : null}
         <Drawer.Viewport side={side}>
-          <Drawer.Popup side={side}>
-            <Drawer.Content>
-              <div className="flex items-start gap-3">
+          <Drawer.Popup side={side} size={side === 'bottom' ? 'lg' : 'md'}>
+            <Drawer.Header>
+              <div className="min-w-0 flex-1">
                 <Drawer.Title className="min-w-0 flex-1">
                   {side === 'bottom' ? 'Task queue' : 'Mobile navigation'}
                 </Drawer.Title>
-                {side === 'bottom' ? null : (
-                  <Drawer.Close
-                    aria-label="Close drawer"
-                    render={
-                      <Button
-                        className="text-city-muted-foreground hover:text-city-accent-foreground -mt-1 -mr-1 size-8 p-0"
-                        variant="ghost"
-                      />
-                    }
-                  >
-                    <X aria-hidden="true" size={18} strokeWidth={1.8} />
-                  </Drawer.Close>
-                )}
+                <Drawer.Description>
+                  Use drawers for focused navigation and secondary workflows on compact screens.
+                </Drawer.Description>
               </div>
-              <Drawer.Description>
-                Use drawers for focused navigation and secondary workflows on compact screens.
-              </Drawer.Description>
+              {side === 'bottom' ? null : (
+                <Drawer.Close
+                  aria-label="Close drawer"
+                  render={
+                    <Button
+                      className="text-city-muted-foreground hover:text-city-accent-foreground -mt-1 -mr-1 size-8 p-0"
+                      variant="ghost"
+                    />
+                  }
+                >
+                  <X aria-hidden="true" size={18} strokeWidth={1.8} />
+                </Drawer.Close>
+              )}
+            </Drawer.Header>
+            <Drawer.Body>
               <nav aria-label="Workspace" className="mt-5 grid gap-2 text-sm">
                 {['Overview', 'Projects', 'Deployments', 'Settings'].map((item) => (
                   <a key={item} className="rounded-city-sm hover:bg-city-accent px-3 py-2" href="#">
@@ -59,12 +61,12 @@ function DrawerExample({ side = 'right', modal = true }: { side?: DrawerSide; mo
                   </a>
                 ))}
               </nav>
-              {side === 'bottom' ? (
-                <div className="mt-6 flex justify-end gap-2">
-                  <Drawer.Close render={<Button variant="secondary" />}>Close</Drawer.Close>
-                </div>
-              ) : null}
-            </Drawer.Content>
+            </Drawer.Body>
+            {side === 'bottom' ? (
+              <Drawer.Footer>
+                <Drawer.Close render={<Button variant="secondary" />}>Close</Drawer.Close>
+              </Drawer.Footer>
+            ) : null}
           </Drawer.Popup>
         </Drawer.Viewport>
       </Drawer.Portal>
@@ -109,7 +111,7 @@ export const BottomSheet: Story = {
       <Drawer.Portal>
         <Drawer.Backdrop />
         <Drawer.Viewport side="bottom">
-          <Drawer.Popup side="bottom">
+          <Drawer.Popup side="bottom" size="xl">
             <div
               aria-hidden
               className="flex h-8 shrink-0 cursor-grab touch-none items-center justify-center active:cursor-grabbing"
@@ -156,7 +158,7 @@ export const LongBottomContent: Story = {
         <Drawer.Backdrop />
         <Drawer.Viewport side="bottom">
           <Drawer.Popup side="bottom">
-            <Drawer.Content>
+            <Drawer.Body>
               <Drawer.Title>Release checklist</Drawer.Title>
               <Drawer.Description>
                 Review every item before publishing the mobile build.
@@ -168,11 +170,11 @@ export const LongBottomContent: Story = {
                   </li>
                 ))}
               </ol>
-            </Drawer.Content>
-            <div className="border-city-border bg-city-surface-raised flex shrink-0 justify-end gap-2 border-t px-5 py-4">
+            </Drawer.Body>
+            <Drawer.Footer>
               <Drawer.Close render={<Button variant="secondary" />}>Dismiss</Drawer.Close>
               <Drawer.Close render={<Button />}>Publish</Drawer.Close>
-            </div>
+            </Drawer.Footer>
           </Drawer.Popup>
         </Drawer.Viewport>
       </Drawer.Portal>

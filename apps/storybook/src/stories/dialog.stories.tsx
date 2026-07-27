@@ -131,14 +131,16 @@ function ActivityLogDialog() {
       <Dialog.Portal>
         <Dialog.Backdrop />
         <Dialog.Viewport>
-          <Dialog.Popup className="flex max-h-[min(40rem,calc(100dvh-2rem))] flex-col p-0">
-            <div className="px-5 pt-5 pb-4">
-              <Dialog.Title>Project activity</Dialog.Title>
-              <Dialog.Description>
-                Recent changes made by workspace members, newest first.
-              </Dialog.Description>
-            </div>
-            <div className="min-h-0 flex-1 overflow-y-auto px-5">
+          <Dialog.Popup scroll="body" size="lg">
+            <Dialog.Header>
+              <div>
+                <Dialog.Title>Project activity</Dialog.Title>
+                <Dialog.Description>
+                  Recent changes made by workspace members, newest first.
+                </Dialog.Description>
+              </div>
+            </Dialog.Header>
+            <Dialog.Body>
               <ul className="divide-city-border divide-y">
                 {Array.from({ length: 12 }, (_, index) => (
                   <li key={index} className="py-3">
@@ -149,10 +151,10 @@ function ActivityLogDialog() {
                   </li>
                 ))}
               </ul>
-            </div>
-            <div className="border-city-border flex shrink-0 justify-end border-t px-5 py-4">
+            </Dialog.Body>
+            <Dialog.Footer>
               <Dialog.Close render={<Button variant="secondary" />}>Close</Dialog.Close>
-            </div>
+            </Dialog.Footer>
           </Dialog.Popup>
         </Dialog.Viewport>
       </Dialog.Portal>

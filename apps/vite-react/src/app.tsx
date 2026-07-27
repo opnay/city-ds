@@ -692,6 +692,7 @@ function RelayDashboard() {
                         resetPage();
                       }
                     }}
+                    size="sm"
                     value={district}
                   >
                     <Select.Label className="city-sr-only">권역 필터</Select.Label>

@@ -13,6 +13,7 @@ import { Fieldset } from '../../src/components/fieldset';
 import { Input, InputGroup, Textarea } from '../../src/components/input';
 import { RadioGroup } from '../../src/components/radio-group';
 import { SearchField } from '../../src/components/search-field';
+import { Select } from '../../src/components/select';
 import { Switch } from '../../src/components/switch';
 import { Toggle } from '../../src/components/toggle';
 import { ToggleGroup } from '../../src/components/toggle-group';
@@ -78,6 +79,50 @@ describe('form and display controls', () => {
     );
     expect(screen.getByTestId('small-input-group')).toHaveClass(
       'min-h-(--city-control-sm)',
+    );
+  });
+
+  it('sizes Select and Combobox from their roots and styles invalid fields', () => {
+    render(
+      <>
+        <Field.Root invalid>
+          <Select.Root defaultValue="central" items={{ central: 'Central' }} size="sm">
+            <Field.Label>District</Field.Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Icon />
+            </Select.Trigger>
+          </Select.Root>
+        </Field.Root>
+        <Field.Root invalid>
+          <Combobox.Root items={comboboxProjects} size="lg">
+            <Field.Label>Facility</Field.Label>
+            <Combobox.InputGroup>
+              <Combobox.Input />
+              <Combobox.Trigger />
+            </Combobox.InputGroup>
+          </Combobox.Root>
+        </Field.Root>
+      </>,
+    );
+
+    const select = screen.getByRole('combobox', { name: 'District' });
+    const combobox = screen.getByRole('combobox', { name: 'Facility' });
+    const comboboxGroup = combobox.parentElement;
+
+    expect(select).toHaveAttribute('data-city-size', 'sm');
+    expect(select).toHaveAttribute('data-invalid');
+    expect(select).toHaveClass(
+      'h-(--city-control-sm)',
+      'data-[invalid]:border-city-destructive',
+    );
+    expect(combobox).toHaveAttribute('data-city-size', 'lg');
+    expect(combobox).toHaveClass('h-(--city-control-lg)');
+    expect(comboboxGroup).toHaveAttribute('data-city-size', 'lg');
+    expect(comboboxGroup).toHaveAttribute('data-invalid');
+    expect(comboboxGroup).toHaveClass(
+      'min-h-(--city-control-lg)',
+      'data-[invalid]:border-city-destructive',
     );
   });
 

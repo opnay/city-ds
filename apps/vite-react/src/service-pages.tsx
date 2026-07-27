@@ -132,6 +132,7 @@ export function AssetsPage({ compact }: { compact: boolean }) {
           <Select.Root
             items={ASSET_STATUS_ITEMS}
             onValueChange={(value) => value && setStatus(value)}
+            size="sm"
             value={status}
           >
             <Select.Label className="city-sr-only">자산 상태 필터</Select.Label>
@@ -699,6 +700,7 @@ export function ReportsPage({ compact }: { compact: boolean }) {
         <Select.Root
           items={DISTRICT_ITEMS}
           onValueChange={(value) => value && setDistrict(value)}
+          size="sm"
           value={district}
         >
           <Select.Label className="city-sr-only">리포트 권역</Select.Label>
@@ -882,6 +884,7 @@ export function ActivityPage({ compact }: { compact: boolean }) {
           <Select.Root
             items={ACTIVITY_CATEGORY_ITEMS}
             onValueChange={(value) => value && setCategory(value)}
+            size="sm"
             value={category}
           >
             <Select.Label className="city-sr-only">활동 유형 필터</Select.Label>

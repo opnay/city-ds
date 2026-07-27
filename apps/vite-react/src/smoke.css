@@ -583,10 +583,6 @@ a {
 
 .relay-filter-select {
   width: 10rem;
-  height: var(--city-control-sm);
-  padding-inline: var(--city-space-2-5);
-  font-size: var(--city-font-size-xs);
-  line-height: var(--city-line-height-xs);
 }
 
 .relay-filter-bar [role='group'] {
@@ -1103,10 +1099,6 @@ a {
 .relay-app[data-density='compact'] .relay-filter-bar {
   min-height: var(--city-space-10);
   padding-block: var(--city-space-1);
-}
-
-.relay-app[data-density='compact'] .relay-filter-select {
-  height: var(--city-control-sm);
 }
 
 @media (max-width: 72rem) {

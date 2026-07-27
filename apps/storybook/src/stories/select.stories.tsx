@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
-import { Select } from '@city-ds/react';
+import { Field, Select, type ControlSize } from '@city-ds/react';
 
 const meta = {
   title: 'Forms/Select',
@@ -27,9 +27,15 @@ const regionItems = {
   oregon: 'Oregon (unavailable)',
 } as const;
 
-function StatusSelect({ disabled = false }: { disabled?: boolean }) {
+function StatusSelect({
+  disabled = false,
+  size = 'md',
+}: {
+  disabled?: boolean;
+  size?: ControlSize;
+}) {
   return (
-    <Select.Root defaultValue="in-progress" disabled={disabled} items={statusItems}>
+    <Select.Root defaultValue="in-progress" disabled={disabled} items={statusItems} size={size}>
       <Select.Label>Status</Select.Label>
       <Select.Trigger className="w-56">
         <Select.Value placeholder="Choose a status" />
@@ -76,6 +82,31 @@ export const Default: Story = {
 
 export const Disabled: Story = {
   render: () => <StatusSelect disabled />,
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="grid gap-3">
+      <StatusSelect size="sm" />
+      <StatusSelect size="md" />
+      <StatusSelect size="lg" />
+    </div>
+  ),
+};
+
+export const Invalid: Story = {
+  render: () => (
+    <Field.Root invalid>
+      <Select.Root items={statusItems}>
+        <Field.Label>Status</Field.Label>
+        <Select.Trigger className="w-56">
+          <Select.Value placeholder="Choose a status" />
+          <Select.Icon />
+        </Select.Trigger>
+        <Field.Error match>Choose a valid status.</Field.Error>
+      </Select.Root>
+    </Field.Root>
+  ),
 };
 
 export const Grouped: Story = {

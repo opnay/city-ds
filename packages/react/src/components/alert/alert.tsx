@@ -33,16 +33,16 @@ function useAlertContext(componentName: string): AlertContextValue {
 }
 
 const variantClasses: Record<AlertVariant, string> = {
-  info: 'border-city-border bg-city-muted text-city-foreground',
-  success: 'border-city-border bg-city-muted text-city-foreground',
-  warning: 'border-city-border bg-city-muted text-city-foreground',
+  info: 'border-city-info/30 bg-city-info/10 text-city-foreground',
+  success: 'border-city-success/30 bg-city-success/10 text-city-foreground',
+  warning: 'border-city-warning/30 bg-city-warning/10 text-city-foreground',
   error: 'border-city-destructive/30 bg-city-destructive/10 text-city-foreground',
 };
 
 const iconClasses: Record<AlertVariant, string> = {
-  info: 'text-city-foreground',
-  success: 'text-city-foreground',
-  warning: 'text-city-foreground',
+  info: 'text-city-info',
+  success: 'text-city-success',
+  warning: 'text-city-warning',
   error: 'text-city-destructive',
 };
 
@@ -192,11 +192,7 @@ export const AlertDescription = React.forwardRef<HTMLDivElement, AlertDescriptio
       props: {
         ...props,
         id: id ?? context.descriptionId,
-        className: cn(
-          'leading-6',
-          context.variant === 'error' ? 'text-city-foreground' : 'text-city-muted-foreground',
-          resolveClassName(className, state),
-        ),
+        className: cn('text-city-foreground leading-6', resolveClassName(className, state)),
       },
     });
   },

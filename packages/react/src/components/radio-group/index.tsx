@@ -55,6 +55,8 @@ const RadioGroupItemBase = React.forwardRef(function RadioGroupItem(
   { children, className, labelClassName, size = 'md', ...props }: RadioGroupItemProps,
   ref: React.ForwardedRef<HTMLElement>,
 ) {
+  const labelId = React.useId();
+
   return (
     <label
       className={cn(
@@ -64,6 +66,7 @@ const RadioGroupItemBase = React.forwardRef(function RadioGroupItem(
     >
       <BaseRadio.Root
         {...props}
+        aria-labelledby={props['aria-labelledby'] ?? labelId}
         ref={ref}
         className={(state) =>
           cn(
@@ -75,7 +78,7 @@ const RadioGroupItemBase = React.forwardRef(function RadioGroupItem(
       >
         <BaseRadio.Indicator className="bg-city-primary size-2 rounded-full" />
       </BaseRadio.Root>
-      {children}
+      <span id={labelId}>{children}</span>
     </label>
   );
 });

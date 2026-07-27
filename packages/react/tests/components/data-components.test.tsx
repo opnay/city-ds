@@ -28,7 +28,29 @@ describe('Alert', () => {
     expect(status).toHaveAttribute('aria-live', 'polite');
     expect(status).toHaveAttribute('data-variant', 'info');
     expect(status).toHaveAccessibleDescription('Records are ready.');
-    expect(status.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-foreground');
+    expect(status).toHaveClass('border-city-info/30', 'bg-city-info/10');
+    expect(status.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-info');
+  });
+
+  it('gives success and warning messages distinct semantic treatments', () => {
+    render(
+      <>
+        <Alert.Root variant="success">
+          <Alert.Title>Sync complete</Alert.Title>
+        </Alert.Root>
+        <Alert.Root variant="warning">
+          <Alert.Title>SLA at risk</Alert.Title>
+        </Alert.Root>
+      </>,
+    );
+
+    const success = screen.getByRole('status', { name: 'Sync complete' });
+    const warning = screen.getByRole('status', { name: 'SLA at risk' });
+
+    expect(success).toHaveClass('border-city-success/30', 'bg-city-success/10');
+    expect(success.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-success');
+    expect(warning).toHaveClass('border-city-warning/30', 'bg-city-warning/10');
+    expect(warning.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-warning');
   });
 
   it('uses assertive alert defaults for errors and allows live region overrides', () => {

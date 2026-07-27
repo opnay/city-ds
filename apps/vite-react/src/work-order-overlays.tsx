@@ -122,7 +122,7 @@ export function CreateWorkOrderDialog({ onCreate }: CreateWorkOrderDialogProps) 
               </div>
               <Dialog.Close
                 aria-label="작업 생성 닫기"
-                render={<Button className="relay-icon-button" size="sm" variant="ghost" />}
+                render={<Button iconOnly size="sm" variant="ghost" />}
               >
                 <X aria-hidden="true" size={18} />
               </Dialog.Close>
@@ -345,7 +345,7 @@ export function WorkOrderDetailsDrawer({
               </div>
               <Drawer.Close
                 aria-label="작업 상세 닫기"
-                render={<Button className="relay-icon-button" size="sm" variant="ghost" />}
+                render={<Button iconOnly size="sm" variant="ghost" />}
               >
                 <X aria-hidden="true" size={18} />
               </Drawer.Close>

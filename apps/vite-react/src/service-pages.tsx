@@ -281,7 +281,7 @@ function AssetDetailsDrawer({
               </div>
               <Drawer.Close
                 aria-label="자산 상세 닫기"
-                render={<Button className="relay-icon-button" size="sm" variant="ghost" />}
+                render={<Button iconOnly size="sm" variant="ghost" />}
               >
                 <X aria-hidden="true" size={18} />
               </Drawer.Close>
@@ -544,7 +544,7 @@ function CreateMaintenanceDialog({
               </div>
               <Dialog.Close
                 aria-label="정비 계획 닫기"
-                render={<Button className="relay-icon-button" size="sm" variant="ghost" />}
+                render={<Button iconOnly size="sm" variant="ghost" />}
               >
                 <X aria-hidden="true" size={18} />
               </Dialog.Close>

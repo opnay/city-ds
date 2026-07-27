@@ -80,7 +80,12 @@ const radiusTokens = [
   '--city-radius-full',
 ];
 
-const controlTokens = ['--city-control-sm', '--city-control-md', '--city-control-lg'];
+const controlTokens = [
+  '--city-control-sm',
+  '--city-control-md',
+  '--city-control-lg',
+  '--city-hit-target-min',
+];
 
 const motionTokens = [
   '--city-duration-fast',
@@ -131,6 +136,13 @@ describe('theme contract', () => {
   it('derives text Skeleton height from hidden typography content', () => {
     expect(stylesCss).toMatch(
       /\.city-skeleton\[data-variant='text']::before \{\s*content: '\\00a0';\s*visibility: hidden;\s*}/,
+    );
+  });
+
+  it('expands icon-only button hit areas without changing visual control sizes', () => {
+    expect(themeCss).toContain('--city-hit-target-min: 2.75rem;');
+    expect(stylesCss).toMatch(
+      /@media \(pointer: coarse\) \{[\s\S]*?\.city-button\[data-city-icon-only]::after \{[\s\S]*?height: var\(--city-hit-target-min\);[\s\S]*?width: var\(--city-hit-target-min\);[\s\S]*?\n  }\n}/,
     );
   });
 

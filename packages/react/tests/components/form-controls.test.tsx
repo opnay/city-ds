@@ -29,6 +29,9 @@ describe('form and display controls', () => {
         <Button variant="secondary">Secondary</Button>
         <Button variant="outline">Outline</Button>
         <Button variant="ghost">Ghost</Button>
+        <Button aria-label="Open settings" iconOnly size="sm" variant="ghost">
+          <span aria-hidden="true">S</span>
+        </Button>
         <Button disabled onClick={onClick}>
           Disabled
         </Button>
@@ -53,6 +56,16 @@ describe('form and display controls', () => {
     expect(screen.getByRole('button', { name: 'Ghost' })).toHaveClass(
       'hover:bg-city-accent',
       'active:bg-city-accent-active',
+    );
+    expect(screen.getByRole('button', { name: 'Open settings' })).toHaveAttribute(
+      'data-city-icon-only',
+      '',
+    );
+    expect(screen.getByRole('button', { name: 'Open settings' })).toHaveClass(
+      'city-button',
+      'h-(--city-control-sm)',
+      'w-(--city-control-sm)',
+      'px-0',
     );
   });
 

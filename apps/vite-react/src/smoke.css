@@ -244,13 +244,6 @@ a {
   background: var(--city-color-accent);
 }
 
-.relay-icon-button {
-  width: var(--city-control-sm);
-  min-width: var(--city-control-sm);
-  height: var(--city-control-sm);
-  padding: 0;
-}
-
 .relay-notification-trigger {
   position: relative;
 }
@@ -1389,7 +1382,6 @@ a {
   .relay-mobile-menu-trigger,
   .relay-icon-trigger,
   .relay-account-trigger,
-  .relay-icon-button,
   .relay-row-menu-trigger,
   .relay-filter-bar [aria-label='작업 새로고침'],
   .relay-pagination [data-city-pagination-root] button,
@@ -1414,7 +1406,6 @@ a {
     content: '';
   }
 
-  .relay-icon-button::after,
   .relay-row-menu-trigger::after,
   .relay-filter-bar [aria-label='작업 새로고침']::after,
   .relay-pagination [data-city-pagination-root] button::after,

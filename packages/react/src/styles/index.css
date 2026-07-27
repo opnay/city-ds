@@ -53,6 +53,18 @@
   }
 }
 
+@media (pointer: coarse) {
+  .city-button[data-city-icon-only]::after {
+    content: '';
+    height: var(--city-hit-target-min);
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--city-hit-target-min);
+  }
+}
+
 @keyframes city-skeleton-shimmer {
   100% {
     transform: translateX(100%);

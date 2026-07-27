@@ -646,8 +646,8 @@ function RelayDashboard() {
                           render={
                             <Button
                               aria-label="작업 새로고침"
-                              className="relay-icon-button"
                               disabled={loading}
+                              iconOnly
                               onClick={() => setLoading(true)}
                               size="sm"
                               variant="ghost"
@@ -1063,7 +1063,7 @@ function MobileNavigation(props: SidebarContentProps) {
               <Drawer.Title>Relay 메뉴</Drawer.Title>
               <Drawer.Close
                 aria-label="주요 메뉴 닫기"
-                render={<Button className="relay-icon-button" size="sm" variant="ghost" />}
+                render={<Button iconOnly size="sm" variant="ghost" />}
               >
                 <X aria-hidden="true" size={18} />
               </Drawer.Close>

@@ -39,10 +39,10 @@ import {
 } from './dashboard-data';
 import { PageHeading } from './page-heading';
 import {
-  ASSET_STATUS_VARIANTS,
+  ASSET_STATUS_BADGES,
   DataTableRegion,
   FilterBar,
-  MAINTENANCE_STATUS_VARIANTS,
+  MAINTENANCE_STATUS_BADGES,
   MetricItem,
 } from './relay-ui';
 
@@ -92,7 +92,7 @@ export function AssetsPage({ compact }: { compact: boolean }) {
     <>
       <PageHeading
         description="시설의 상태와 점검 일정을 확인하고 이상 징후가 있는 자산을 추적합니다."
-        meta={<Badge variant="outline">등록 자산 {INITIAL_ASSETS.length}개</Badge>}
+        meta={<Badge appearance="outline">등록 자산 {INITIAL_ASSETS.length}개</Badge>}
         title="시설 자산"
       />
 
@@ -219,7 +219,7 @@ export function AssetsPage({ compact }: { compact: boolean }) {
                       <small className="relay-cell-detail">{asset.location}</small>
                     </Table.Cell>
                     <Table.Cell>
-                      <Badge variant={ASSET_STATUS_VARIANTS[asset.status]}>{asset.status}</Badge>
+                      <Badge {...ASSET_STATUS_BADGES[asset.status]}>{asset.status}</Badge>
                     </Table.Cell>
                     <Table.Cell>
                       <span className="relay-health-cell">
@@ -278,7 +278,7 @@ function AssetDetailsDrawer({
           >
             <Drawer.Header>
               <div>
-                <Badge variant={ASSET_STATUS_VARIANTS[asset.status]}>{asset.status}</Badge>
+                <Badge {...ASSET_STATUS_BADGES[asset.status]}>{asset.status}</Badge>
                 <Drawer.Title>{asset.name}</Drawer.Title>
                 <Drawer.Description>
                   {asset.id} · {asset.type}
@@ -449,7 +449,7 @@ export function MaintenancePage({ compact, onNotify }: { compact: boolean; onNot
                 <div className="relay-maintenance-copy">
                   <div>
                     <strong>{plan.title}</strong>
-                    <Badge variant={MAINTENANCE_STATUS_VARIANTS[plan.status]}>{plan.status}</Badge>
+                    <Badge {...MAINTENANCE_STATUS_BADGES[plan.status]}>{plan.status}</Badge>
                   </div>
                   <span>
                     {plan.id} · {plan.asset}
@@ -460,7 +460,7 @@ export function MaintenancePage({ compact, onNotify }: { compact: boolean; onNot
                 </div>
                 <div className="relay-maintenance-action">
                   {plan.workOrderCreated ? (
-                    <Badge variant="outline">작업 연결됨</Badge>
+                    <Badge appearance="outline">작업 연결됨</Badge>
                   ) : (
                     <Button onClick={() => createWorkOrder(plan.id)} size="sm" variant="outline">
                       작업 요청 만들기
@@ -679,7 +679,7 @@ export function ReportsPage({ compact }: { compact: boolean }) {
     <>
       <PageHeading
         description="권역별 작업 대응 성과와 시설 가용성을 기간 단위로 비교합니다."
-        meta={<Badge variant="outline">마지막 집계 오늘 11:50</Badge>}
+        meta={<Badge appearance="outline">마지막 집계 오늘 11:50</Badge>}
         title="운영 리포트"
       />
 
@@ -841,7 +841,7 @@ export function ActivityPage({ compact }: { compact: boolean }) {
     <>
       <PageHeading
         description="작업·자산·배정 변경의 주체와 전후 상태를 시간순으로 추적합니다."
-        meta={<Badge variant="outline">감사 보존 180일</Badge>}
+        meta={<Badge appearance="outline">감사 보존 180일</Badge>}
         title="활동 기록"
       />
 
@@ -957,7 +957,7 @@ export function ActivityPage({ compact }: { compact: boolean }) {
                       />
                     </Table.Cell>
                     <Table.Cell>
-                      <Badge variant="outline">{activity.category}</Badge>
+                      <Badge appearance="outline">{activity.category}</Badge>
                     </Table.Cell>
                     <Table.Cell>{activity.target}</Table.Cell>
                     <Table.Cell>{activity.summary}</Table.Cell>

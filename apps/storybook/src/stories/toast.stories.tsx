@@ -23,6 +23,7 @@ function ToastExample({ withAction = false }: { withAction?: boolean }) {
       description: withAction
         ? 'Two environment variables require confirmation before release.'
         : 'Your project configuration is up to date.',
+      type: withAction ? 'warning' : 'success',
     });
   };
 

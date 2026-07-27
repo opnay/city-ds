@@ -31,7 +31,7 @@ import {
   type Priority,
   type WorkOrder,
 } from './dashboard-data';
-import { WORK_ORDER_STATUS_VARIANTS } from './relay-ui';
+import { WORK_ORDER_STATUS_BADGES } from './relay-ui';
 
 export interface CreateWorkOrderInput {
   attachmentNames: string[];
@@ -345,7 +345,7 @@ export function WorkOrderDetailsDrawer({
           >
             <Drawer.Header>
               <div>
-                <Badge variant={WORK_ORDER_STATUS_VARIANTS[order.status]}>{order.status}</Badge>
+                <Badge {...WORK_ORDER_STATUS_BADGES[order.status]}>{order.status}</Badge>
                 <Drawer.Title>{order.title}</Drawer.Title>
                 <Drawer.Description>
                   {order.id} · {order.district} · {order.location}

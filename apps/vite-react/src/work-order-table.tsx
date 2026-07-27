@@ -10,7 +10,7 @@ import {
 } from '@city-ds/react';
 
 import { isTerminalStatus, type WorkOrder } from './dashboard-data';
-import { DataTableRegion, WORK_ORDER_STATUS_VARIANTS } from './relay-ui';
+import { DataTableRegion, WORK_ORDER_STATUS_BADGES } from './relay-ui';
 
 interface WorkOrderTableProps {
   compact: boolean;
@@ -166,14 +166,15 @@ export function WorkOrderTable({
                       <small className="relay-cell-detail">{order.location}</small>
                     </Table.Cell>
                     <Table.Cell>
-                      <Badge variant={order.priority === '긴급' ? 'destructive' : 'outline'}>
+                      <Badge
+                        appearance={order.priority === '긴급' ? 'subtle' : 'outline'}
+                        tone={order.priority === '긴급' ? 'destructive' : 'neutral'}
+                      >
                         {order.priority}
                       </Badge>
                     </Table.Cell>
                     <Table.Cell>
-                      <Badge variant={WORK_ORDER_STATUS_VARIANTS[order.status]}>
-                        {order.status}
-                      </Badge>
+                      <Badge {...WORK_ORDER_STATUS_BADGES[order.status]}>{order.status}</Badge>
                     </Table.Cell>
                     <Table.Cell>{order.crew}</Table.Cell>
                     <Table.Cell>

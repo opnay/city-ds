@@ -26,6 +26,9 @@ describe('Alert', () => {
     });
 
     expect(status).toHaveAttribute('aria-live', 'polite');
+    expect(status).toHaveAttribute('data-city-alert-root');
+    expect(status).toHaveAttribute('data-appearance', 'subtle');
+    expect(status).toHaveAttribute('data-tone', 'info');
     expect(status).toHaveAttribute('data-variant', 'info');
     expect(status).toHaveAccessibleDescription('Records are ready.');
     expect(status).toHaveClass('border-city-info/30', 'bg-city-info/10');
@@ -78,6 +81,29 @@ describe('Alert', () => {
       'aria-live',
       'polite',
     );
+  });
+
+  it('separates feedback tone from visual appearance while keeping legacy variants', () => {
+    render(
+      <>
+        <Alert.Root appearance="outline" tone="destructive">
+          <Alert.Title>Connection lost</Alert.Title>
+        </Alert.Root>
+        <Alert.Root tone="neutral">
+          <Alert.Title>Scheduled update</Alert.Title>
+        </Alert.Root>
+      </>,
+    );
+
+    const destructive = screen.getByRole('alert', { name: 'Connection lost' });
+    const neutral = screen.getByRole('status', { name: 'Scheduled update' });
+
+    expect(destructive).toHaveAttribute('data-tone', 'destructive');
+    expect(destructive).toHaveAttribute('data-appearance', 'outline');
+    expect(destructive).toHaveAttribute('data-variant', 'error');
+    expect(destructive).toHaveClass('border-city-destructive/40', 'bg-city-surface-raised');
+    expect(neutral).toHaveAttribute('data-tone', 'neutral');
+    expect(neutral).toHaveAttribute('data-variant', 'info');
   });
 });
 

@@ -621,7 +621,12 @@ describe('overlay and selection controls', () => {
     await user.click(screen.getByRole('button', { name: 'Show notification' }));
 
     expect(await screen.findByText('Changes saved')).toBeVisible();
-    await user.hover(screen.getByRole('dialog', { name: 'Changes saved' }));
+    const notification = screen.getByRole('dialog', { name: 'Changes saved' });
+    expect(notification).toHaveAttribute('data-city-toast-root');
+    expect(notification).toHaveAttribute('data-tone', 'success');
+    expect(notification).toHaveAttribute('data-appearance', 'outline');
+    expect(notification).toHaveClass('border-city-success/40');
+    await user.hover(notification);
     await user.click(screen.getByRole('button', { name: 'Close notification' }));
 
     await waitFor(() => expect(screen.queryByText('Changes saved')).not.toBeInTheDocument());
@@ -636,7 +641,11 @@ function ToastExample() {
       <button
         type="button"
         onClick={() =>
-          manager.add({ title: 'Changes saved', description: 'Your project is up to date.' })
+          manager.add({
+            title: 'Changes saved',
+            description: 'Your project is up to date.',
+            type: 'success',
+          })
         }
       >
         Show notification

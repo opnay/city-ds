@@ -21,6 +21,7 @@ import type {
 import { X } from 'lucide-react';
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
+import type { FeedbackTone } from '../../types';
 
 function classes<State>(className: StateClassName<State> | undefined, defaults: string) {
   return (state: State) => cn(defaults, resolveClassName(className, state));
@@ -28,7 +29,13 @@ function classes<State>(className: StateClassName<State> | undefined, defaults: 
 
 export type ToastProviderProps = BaseToastProviderProps;
 export type ToastViewportProps = BaseToastViewportProps;
-export type ToastRootProps = BaseToastRootProps;
+export const TOAST_APPEARANCES = ['outline', 'subtle'] as const;
+export type ToastAppearance = (typeof TOAST_APPEARANCES)[number];
+export type ToastRootProps = Omit<BaseToastRootProps, 'className'> & {
+  appearance?: ToastAppearance;
+  className?: BaseToastRootProps['className'];
+  tone?: FeedbackTone;
+};
 export type ToastContentProps = BaseToastContentProps;
 export type ToastTitleProps = BaseToastTitleProps;
 export type ToastDescriptionProps = BaseToastDescriptionProps;
@@ -66,17 +73,63 @@ export const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps
   ),
 );
 
+const toastAppearanceClasses: Record<FeedbackTone, Record<ToastAppearance, string>> = {
+  neutral: {
+    outline: 'border-city-border bg-city-surface-raised',
+    subtle: 'border-city-border bg-city-muted',
+  },
+  info: {
+    outline: 'border-city-info/40 bg-city-surface-raised',
+    subtle: 'border-city-info/30 bg-city-info/10',
+  },
+  success: {
+    outline: 'border-city-success/40 bg-city-surface-raised',
+    subtle: 'border-city-success/30 bg-city-success/10',
+  },
+  warning: {
+    outline: 'border-city-warning/40 bg-city-surface-raised',
+    subtle: 'border-city-warning/30 bg-city-warning/10',
+  },
+  destructive: {
+    outline: 'border-city-destructive/40 bg-city-surface-raised',
+    subtle: 'border-city-destructive/30 bg-city-destructive/10',
+  },
+};
+
+function getToastTone(type: string | undefined): FeedbackTone {
+  if (type === 'error' || type === 'destructive') {
+    return 'destructive';
+  }
+
+  if (type === 'info' || type === 'success' || type === 'warning') {
+    return type;
+  }
+
+  return 'neutral';
+}
+
 export const ToastRoot = React.forwardRef<HTMLDivElement, ToastRootProps>(
-  ({ className, ...props }, ref) => (
-    <BaseToast.Root
-      {...props}
-      ref={ref}
-      className={classes(
-        className,
-        'rounded-city-md border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup w-full border data-[limited]:hidden',
-      )}
-    />
-  ),
+  ({ appearance = 'outline', className, toast, tone: toneProp, ...props }, ref) => {
+    const tone = toneProp ?? getToastTone(toast.type);
+
+    return (
+      <BaseToast.Root
+        {...props}
+        ref={ref}
+        toast={toast}
+        data-appearance={appearance}
+        data-city-toast-root=""
+        data-tone={tone}
+        className={classes(
+          className,
+          cn(
+            'rounded-city-md text-city-foreground shadow-city-popup w-full border data-[limited]:hidden',
+            toastAppearanceClasses[tone][appearance],
+          ),
+        )}
+      />
+    );
+  },
 );
 
 export const ToastContent = React.forwardRef<HTMLDivElement, ToastContentProps>(

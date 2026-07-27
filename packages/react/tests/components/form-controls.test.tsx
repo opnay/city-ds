@@ -142,6 +142,10 @@ describe('form and display controls', () => {
         </Badge>
         <Badge aria-hidden="true" count={7} size="sm" variant="destructive" />
         <Badge data-testid="status-dot" dot />
+        <Badge appearance="outline" tone="warning">
+          Attention
+        </Badge>
+        <Badge aria-label="Healthy" data-testid="success-dot" dot tone="success" />
       </>,
     );
 
@@ -154,6 +158,11 @@ describe('form and display controls', () => {
     expect(screen.getByTestId('status-dot')).toHaveAttribute('data-city-badge', 'dot');
     expect(screen.getByTestId('status-dot')).toHaveAttribute('aria-hidden', 'true');
     expect(screen.getByTestId('status-dot')).toHaveClass('size-2', 'rounded-city-full');
+    expect(screen.getByText('Attention')).toHaveAttribute('data-appearance', 'outline');
+    expect(screen.getByText('Attention')).toHaveAttribute('data-tone', 'warning');
+    expect(screen.getByText('Attention')).toHaveClass('border-city-warning/40');
+    expect(screen.getByTestId('success-dot')).toHaveAttribute('data-tone', 'success');
+    expect(screen.getByTestId('success-dot')).toHaveClass('bg-city-success');
   });
 
   it('connects Field label, description, error, and Input state', () => {

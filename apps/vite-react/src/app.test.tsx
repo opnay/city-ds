@@ -23,6 +23,9 @@ describe('Relay dashboard', () => {
       '/work-orders',
     );
     expect(screen.getByText('SLA 위험 작업 3건을 확인하십시오')).toBeVisible();
+    expect(
+      screen.getByRole('status', { name: 'SLA 위험 작업 3건을 확인하십시오' }),
+    ).toHaveAttribute('data-tone', 'warning');
   });
 
   it('filters the work queue and exposes the empty state', async () => {
@@ -73,6 +76,8 @@ describe('Relay dashboard', () => {
 
     const table = screen.getByRole('table', { name: '작업 요청 목록' });
     expect(within(table).getByText('WO-2808')).toBeVisible();
+    expect(within(table).getByText('진행 중')).toHaveAttribute('data-appearance', 'solid');
+    expect(within(table).getByText('진행 중')).toHaveAttribute('data-tone', 'info');
     expect(within(table).queryByText('WO-2841')).toBeNull();
     expect(screen.getByText('1건 표시 · 최근 동기화 방금 전')).toBeVisible();
   });

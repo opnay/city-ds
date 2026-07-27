@@ -37,8 +37,10 @@ export { CITY_THEMES, type CityTheme } from './theme';
 export {
   CONTROL_SIZES,
   DENSITIES,
+  FEEDBACK_TONES,
   SURFACE_APPEARANCES,
   type ControlSize,
   type Density,
+  type FeedbackTone,
   type SurfaceAppearance,
 } from './types';

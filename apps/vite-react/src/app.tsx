@@ -511,7 +511,7 @@ function RelayDashboard() {
               <Alert.Root
                 className="relay-risk-alert"
                 showIcon
-                variant={riskOrders.length > 0 ? 'warning' : 'success'}
+                tone={riskOrders.length > 0 ? 'warning' : 'success'}
               >
                 <Alert.Title>
                   {riskOrders.length > 0
@@ -767,7 +767,7 @@ function RelayDashboard() {
             <>
               <PageHeading
                 description="현장팀별 배정 부하와 추가 작업 수용 가능 여부를 확인합니다."
-                meta={<Badge variant="outline">18 / 24팀 가동</Badge>}
+                meta={<Badge appearance="outline">18 / 24팀 가동</Badge>}
                 title="현장팀"
               />
 
@@ -787,7 +787,10 @@ function RelayDashboard() {
                           작업 {crew.assignments} / 수용 {crew.capacity}
                         </span>
                       </div>
-                      <Badge variant={crew.progress === 100 ? 'destructive' : 'subtle'}>
+                      <Badge
+                        appearance="subtle"
+                        tone={crew.progress === 100 ? 'destructive' : 'success'}
+                      >
                         {crew.status}
                       </Badge>
                       <Progress.Root aria-label={`${crew.name} 배정 부하`} value={crew.progress}>
@@ -810,7 +813,11 @@ function RelayDashboard() {
             <>
               <PageHeading
                 description="운영 데이터와 현장 통신 채널의 현재 상태를 점검합니다."
-                meta={<Badge variant="subtle">정상 운영</Badge>}
+                meta={
+                  <Badge appearance="subtle" tone="success">
+                    정상 운영
+                  </Badge>
+                }
                 title="서비스 상태"
               />
 
@@ -949,7 +956,7 @@ function OverviewLink({
         <strong>{label}</strong>
         <small>{description}</small>
       </span>
-      <Badge variant="outline">{meta}</Badge>
+      <Badge appearance="outline">{meta}</Badge>
     </a>
   );
 }
@@ -1106,9 +1113,10 @@ function NotificationPopover({ riskOrders }: { riskOrders: readonly WorkOrder[] 
           {riskCount > 0 ? (
             <Badge
               aria-hidden="true"
-              className="relay-notification-badge bg-city-destructive text-city-destructive-foreground"
+              appearance="solid"
+              className="relay-notification-badge"
               count={riskCount}
-              variant="destructive"
+              tone="destructive"
             />
           ) : null}
         </Tooltip.Trigger>
@@ -1219,7 +1227,9 @@ function ServiceHealthItem({
           <span className="relay-health-trigger">
             <CheckCircle2 aria-hidden="true" size={17} />
             {label}
-            <Badge variant="subtle">정상</Badge>
+            <Badge appearance="subtle" tone="success">
+              정상
+            </Badge>
           </span>
         </Accordion.Trigger>
       </Accordion.Header>

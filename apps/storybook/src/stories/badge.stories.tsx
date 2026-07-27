@@ -10,6 +10,10 @@ const meta = {
     children: 'Stable',
   },
   argTypes: {
+    appearance: {
+      control: 'inline-radio',
+      options: ['solid', 'subtle', 'outline'],
+    },
     variant: {
       control: 'select',
       options: ['solid', 'subtle', 'outline', 'destructive'],
@@ -17,6 +21,10 @@ const meta = {
     size: {
       control: 'inline-radio',
       options: ['sm', 'md', 'lg'],
+    },
+    tone: {
+      control: 'select',
+      options: ['neutral', 'info', 'success', 'warning', 'destructive'],
     },
     children: { control: 'text' },
   },
@@ -27,6 +35,36 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const SemanticTones: Story = {
+  render: () => (
+    <div className="grid gap-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <Badge appearance="outline" tone="neutral">
+          Queued
+        </Badge>
+        <Badge appearance="solid" tone="info">
+          In progress
+        </Badge>
+        <Badge appearance="subtle" tone="success">
+          Healthy
+        </Badge>
+        <Badge appearance="outline" tone="warning">
+          Needs review
+        </Badge>
+        <Badge appearance="subtle" tone="destructive">
+          Stopped
+        </Badge>
+      </div>
+      <div className="flex items-center gap-2">
+        <Badge aria-label="Informational" dot tone="info" />
+        <Badge aria-label="Healthy" dot tone="success" />
+        <Badge aria-label="Warning" dot tone="warning" />
+        <Badge aria-label="Error" dot tone="destructive" />
+      </div>
+    </div>
+  ),
+};
 
 export const Variants: Story = {
   render: () => (

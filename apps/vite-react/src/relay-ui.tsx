@@ -1,31 +1,31 @@
-import type { ComponentProps, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { ArrowLeftRight } from 'lucide-react';
-import { Progress, Skeleton, Table, Toolbar, type Badge } from '@city-ds/react';
+import { Progress, Skeleton, Table, Toolbar, type BadgeProps } from '@city-ds/react';
 
 import type { AssetStatus, MaintenanceStatus, WorkOrderStatus } from './dashboard-data';
 
-export type BadgeVariant = NonNullable<ComponentProps<typeof Badge>['variant']>;
+export type BadgePresentation = Pick<BadgeProps, 'appearance' | 'tone'>;
 
-export const WORK_ORDER_STATUS_VARIANTS: Record<WorkOrderStatus, BadgeVariant> = {
-  접수: 'outline',
-  배정됨: 'subtle',
-  '진행 중': 'solid',
-  대기: 'outline',
-  완료: 'subtle',
-  취소: 'destructive',
+export const WORK_ORDER_STATUS_BADGES: Record<WorkOrderStatus, BadgePresentation> = {
+  접수: { appearance: 'outline', tone: 'neutral' },
+  배정됨: { appearance: 'outline', tone: 'info' },
+  '진행 중': { appearance: 'solid', tone: 'info' },
+  대기: { appearance: 'outline', tone: 'warning' },
+  완료: { appearance: 'subtle', tone: 'success' },
+  취소: { appearance: 'subtle', tone: 'destructive' },
 };
 
-export const ASSET_STATUS_VARIANTS: Record<AssetStatus, BadgeVariant> = {
-  정상: 'subtle',
-  '점검 필요': 'outline',
-  '운영 중단': 'destructive',
+export const ASSET_STATUS_BADGES: Record<AssetStatus, BadgePresentation> = {
+  정상: { appearance: 'subtle', tone: 'success' },
+  '점검 필요': { appearance: 'outline', tone: 'warning' },
+  '운영 중단': { appearance: 'subtle', tone: 'destructive' },
 };
 
-export const MAINTENANCE_STATUS_VARIANTS: Record<MaintenanceStatus, BadgeVariant> = {
-  예정: 'outline',
-  '준비 중': 'outline',
-  '진행 중': 'solid',
-  완료: 'subtle',
+export const MAINTENANCE_STATUS_BADGES: Record<MaintenanceStatus, BadgePresentation> = {
+  예정: { appearance: 'outline', tone: 'neutral' },
+  '준비 중': { appearance: 'outline', tone: 'info' },
+  '진행 중': { appearance: 'solid', tone: 'info' },
+  완료: { appearance: 'subtle', tone: 'success' },
 };
 
 interface FilterBarProps {

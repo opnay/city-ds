@@ -379,7 +379,7 @@ describe('Relay dashboard', () => {
   it('uses one filter and table-detail contract across list pages', async () => {
     const { rerender } = renderApp('/assets');
 
-    expect(screen.getByRole('toolbar', { name: '시설 자산 필터' })).toBeVisible();
+    expect(screen.getByRole('group', { name: '시설 자산 필터' })).toBeVisible();
     const assetTable = screen.getByRole('table', { name: '시설 자산 목록' });
     expect(within(assetTable).queryByRole('button', { name: /메뉴/ })).toBeNull();
     expect(screen.getByRole('region', { name: '시설 자산 가로 스크롤 영역' })).toHaveAttribute(
@@ -392,7 +392,7 @@ describe('Relay dashboard', () => {
     fireEvent(window, new PopStateEvent('popstate'));
 
     const activityTable = await screen.findByRole('table', { name: 'Relay 활동 기록' });
-    expect(screen.getByRole('toolbar', { name: '활동 기록 필터' })).toBeVisible();
+    expect(screen.getByRole('group', { name: '활동 기록 필터' })).toBeVisible();
     expect(within(activityTable).queryByRole('button', { name: /메뉴/ })).toBeNull();
     expect(within(activityTable).getByRole('button', { name: 'EV-8421 변경 상세' })).toBeVisible();
   });

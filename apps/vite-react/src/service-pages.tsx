@@ -115,7 +115,7 @@ export function AssetsPage({ compact }: { compact: boolean }) {
               자산 필터 초기화
             </Button>
           }
-          label="시설 자산 필터"
+          aria-label="시설 자산 필터"
         >
           <SearchField.Root
             className="relay-filter-search"
@@ -160,6 +160,7 @@ export function AssetsPage({ compact }: { compact: boolean }) {
         </FilterBar>
 
         <DataTableRegion
+          hint="표를 좌우로 스크롤하여 나머지 열을 확인하십시오."
           hintId="asset-table-scroll-hint"
           label="시설 자산 가로 스크롤 영역"
           showHint={assets.length > 0}
@@ -406,7 +407,7 @@ export function MaintenancePage({ compact, onNotify }: { compact: boolean; onNot
               정비 필터 초기화
             </Button>
           }
-          label="정비 계획 필터"
+          aria-label="정비 계획 필터"
         >
           <ToggleGroup
             aria-label="정비 계획 상태"
@@ -697,8 +698,9 @@ export function ReportsPage({ compact }: { compact: boolean }) {
             리포트 조건 초기화
           </Button>
         }
-        label="리포트 조건"
-        surface="standalone"
+        appearance="outline"
+        aria-label="리포트 조건"
+        className="relay-filter-bar--standalone"
       >
         <Select.Root
           items={DISTRICT_ITEMS}
@@ -775,7 +777,11 @@ export function ReportsPage({ compact }: { compact: boolean }) {
             <p>{period} 집계 · 백분율은 소수점 첫째 자리까지 표시합니다.</p>
           </div>
         </div>
-        <DataTableRegion hintId="report-table-scroll-hint" label="운영 리포트 가로 스크롤 영역">
+        <DataTableRegion
+          hint="표를 좌우로 스크롤하여 나머지 열을 확인하십시오."
+          hintId="report-table-scroll-hint"
+          label="운영 리포트 가로 스크롤 영역"
+        >
           <Table.Root aria-label="권역별 운영 리포트" size={compact ? 'sm' : 'md'} variant="line">
             <Table.Header>
               <Table.Row>
@@ -870,7 +876,7 @@ export function ActivityPage({ compact }: { compact: boolean }) {
               </Button>
             </>
           }
-          label="활동 기록 필터"
+          aria-label="활동 기록 필터"
         >
           <SearchField.Root
             className="relay-filter-search"
@@ -913,6 +919,7 @@ export function ActivityPage({ compact }: { compact: boolean }) {
         </FilterBar>
 
         <DataTableRegion
+          hint="표를 좌우로 스크롤하여 나머지 열을 확인하십시오."
           hintId="activity-table-scroll-hint"
           label="활동 기록 가로 스크롤 영역"
           showHint={activities.length > 0}

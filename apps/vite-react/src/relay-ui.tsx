@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
-import { ArrowLeftRight } from 'lucide-react';
-import { Progress, Skeleton, Table, Toolbar, type BadgeProps } from '@city-ds/react';
+import { Progress, Skeleton, type BadgeProps } from '@city-ds/react';
 
 import type { AssetStatus, MaintenanceStatus, WorkOrderStatus } from './dashboard-data';
+
+export { DataTableRegion, FilterBar } from '@city-ds/react';
 
 export type BadgePresentation = Pick<BadgeProps, 'appearance' | 'tone'>;
 
@@ -27,32 +27,6 @@ export const MAINTENANCE_STATUS_BADGES: Record<MaintenanceStatus, BadgePresentat
   '진행 중': { appearance: 'solid', tone: 'info' },
   완료: { appearance: 'subtle', tone: 'success' },
 };
-
-interface FilterBarProps {
-  actions?: ReactNode;
-  children: ReactNode;
-  label: string;
-  surface?: 'embedded' | 'standalone';
-}
-
-export function FilterBar({ actions, children, label, surface = 'embedded' }: FilterBarProps) {
-  return (
-    <Toolbar.Root
-      appearance={surface === 'embedded' ? 'band' : 'outline'}
-      aria-label={label}
-      className={`relay-filter-bar relay-filter-bar--${surface}`}
-      size="sm"
-    >
-      {children}
-      {actions ? (
-        <>
-          <Toolbar.Separator />
-          <div className="relay-filter-bar-actions">{actions}</div>
-        </>
-      ) : null}
-    </Toolbar.Root>
-  );
-}
 
 interface MetricItemProps {
   detail: string;
@@ -85,39 +59,5 @@ export function MetricItem({ detail, label, loading = false, progress, value }: 
         </>
       )}
     </article>
-  );
-}
-
-interface DataTableRegionProps {
-  children: ReactNode;
-  hintId: string;
-  label: string;
-  showHint?: boolean;
-}
-
-export function DataTableRegion({
-  children,
-  hintId,
-  label,
-  showHint = true,
-}: DataTableRegionProps) {
-  return (
-    <div className="relay-table-region">
-      {showHint ? (
-        <p className="relay-table-scroll-hint" id={hintId}>
-          <ArrowLeftRight aria-hidden="true" size={16} />
-          표를 좌우로 스크롤하여 나머지 열을 확인하십시오.
-        </p>
-      ) : null}
-      <Table.ScrollArea
-        appearance="plain"
-        aria-describedby={showHint ? hintId : undefined}
-        aria-label={label}
-        className="relay-table-scroll-area"
-        role="region"
-      >
-        {children}
-      </Table.ScrollArea>
-    </div>
   );
 }

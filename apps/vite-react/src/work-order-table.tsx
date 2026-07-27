@@ -69,6 +69,7 @@ export function WorkOrderTable({
   return (
     <>
       <DataTableRegion
+        hint="표를 좌우로 스크롤하여 나머지 열을 확인하십시오."
         hintId="work-order-scroll-hint"
         label="작업 요청 표 가로 스크롤 영역"
         showHint={!isStateView}

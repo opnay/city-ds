@@ -1,4 +1,4 @@
-name: CI
+name: CI · Static
 
 on:
   push:
@@ -9,14 +9,14 @@ permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
+  group: ci-static-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  verify:
-    name: Verify and build
+  format:
+    name: Formatting
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     steps:
       - name: Check out repository
@@ -35,19 +35,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install Storybook test browser
-        run: pnpm --filter @city-ds/storybook exec playwright install chromium
-
-      - name: Run repository quality gate
-        run: pnpm check
-
-      - name: Validate package exports
-        run: pnpm --filter @city-ds/react pack:check
-
-      - name: Upload Storybook
-        uses: actions/upload-artifact@v7
-        with:
-          name: city-ds-storybook
-          path: apps/storybook/storybook-static
-          if-no-files-found: error
-          retention-days: 14
+      - name: Check formatting
+        run: pnpm format:check

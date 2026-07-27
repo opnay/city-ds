@@ -163,6 +163,7 @@ describe('form and display controls', () => {
     expect(screen.getByText('Attention')).toHaveClass('border-city-warning/40');
     expect(screen.getByTestId('success-dot')).toHaveAttribute('data-tone', 'success');
     expect(screen.getByTestId('success-dot')).toHaveClass('bg-city-success');
+    expect(screen.getByRole('img', { name: 'Healthy' })).toBe(screen.getByTestId('success-dot'));
   });
 
   it('connects Field label, description, error, and Input state', () => {

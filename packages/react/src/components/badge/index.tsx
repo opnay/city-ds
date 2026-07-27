@@ -124,6 +124,10 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badg
   const tone = toneProp ?? legacyPresentation.tone;
   const usesLegacyVariant = appearanceProp === undefined && toneProp === undefined;
   const hasAccessibleName = props['aria-label'] != null || props['aria-labelledby'] != null;
+  const role =
+    mode === 'dot' && hasAccessibleName && render === undefined
+      ? (props.role ?? 'img')
+      : props.role;
 
   return useRender({
     defaultTagName: 'span',
@@ -133,6 +137,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badg
     props: {
       ...props,
       'aria-hidden': mode === 'dot' && !hasAccessibleName ? true : props['aria-hidden'],
+      role,
       children: mode === 'dot' ? undefined : mode === 'count' ? count : children,
       'data-appearance': appearance,
       'data-city-badge': mode,

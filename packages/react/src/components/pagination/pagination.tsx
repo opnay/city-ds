@@ -80,7 +80,30 @@ export interface PaginationState extends Record<string, unknown> {
   groupSize: number;
 }
 
+export interface PaginationLabels {
+  navigation: string;
+  first: string;
+  previous: string;
+  previousGroup: (count: number) => string;
+  page: (page: number) => string;
+  nextGroup: (count: number) => string;
+  next: string;
+  last: string;
+}
+
+export const DEFAULT_PAGINATION_LABELS: PaginationLabels = {
+  navigation: 'Pagination',
+  first: 'Go to first page',
+  previous: 'Go to previous page',
+  previousGroup: (count) => `Go back ${count} pages`,
+  page: (page) => `Page ${page}`,
+  nextGroup: (count) => `Go forward ${count} pages`,
+  next: 'Go to next page',
+  last: 'Go to last page',
+};
+
 interface PaginationContextValue extends PaginationState {
+  labels: PaginationLabels;
   onPageChange: (page: number) => void;
 }
 
@@ -105,6 +128,7 @@ export interface PaginationRootProps extends Omit<
   onPageChange: (page: number) => void;
   children?: React.ReactNode;
   className?: string;
+  labels?: Partial<PaginationLabels>;
   render?: useRender.ComponentProps<'nav', PaginationState>['render'];
   siblingCount?: number;
   boundaryCount?: number;
@@ -123,6 +147,7 @@ export const PaginationRoot = React.forwardRef<HTMLElement, PaginationRootProps>
       siblingCount = 1,
       boundaryCount = 1,
       groupSize = 5,
+      labels,
       ...props
     },
     ref,
@@ -132,6 +157,10 @@ export const PaginationRoot = React.forwardRef<HTMLElement, PaginationRootProps>
     const normalizedSiblingCount = toNonNegativeInteger(siblingCount, 1);
     const normalizedBoundaryCount = toNonNegativeInteger(boundaryCount, 1);
     const normalizedGroupSize = toPositiveInteger(groupSize, 5);
+    const resolvedLabels = React.useMemo(
+      () => ({ ...DEFAULT_PAGINATION_LABELS, ...labels }),
+      [labels],
+    );
     const state = React.useMemo<PaginationState>(
       () => ({
         page: normalizedPage,
@@ -149,8 +178,8 @@ export const PaginationRoot = React.forwardRef<HTMLElement, PaginationRootProps>
       ],
     );
     const context = React.useMemo<PaginationContextValue>(
-      () => ({ ...state, onPageChange }),
-      [onPageChange, state],
+      () => ({ ...state, labels: resolvedLabels, onPageChange }),
+      [onPageChange, resolvedLabels, state],
     );
     const content = children ?? <PaginationList />;
     const navigation = useRender<PaginationState, HTMLElement>({
@@ -162,7 +191,7 @@ export const PaginationRoot = React.forwardRef<HTMLElement, PaginationRootProps>
         ...props,
         children: content,
         className: cn('flex min-w-0 max-w-full items-center overflow-x-auto', className),
-        'aria-label': props['aria-label'] ?? 'Pagination',
+        'aria-label': props['aria-label'] ?? resolvedLabels.navigation,
         'data-city-pagination-root': '',
         'data-invalid-page': normalizedPage !== page ? '' : undefined,
         'data-invalid-total-pages': normalizedTotalPages !== totalPages ? '' : undefined,
@@ -287,13 +316,13 @@ type PaginationButtonProps = Omit<
 };
 
 interface PaginationControlProps extends PaginationButtonProps {
-  ariaLabel: string;
   children: React.ReactNode;
+  defaultAriaLabel: string;
   targetPage: (state: PaginationState) => number;
 }
 
 const PaginationControl = React.forwardRef<HTMLElement, PaginationControlProps>(
-  ({ ariaLabel, children, className, disabled, onClick, targetPage, ...props }, ref) => {
+  ({ children, className, defaultAriaLabel, disabled, onClick, targetPage, ...props }, ref) => {
     const context = usePaginationContext('Pagination control');
     const target = clamp(targetPage(context), 1, context.totalPages);
     const isDisabled = disabled || target === context.page;
@@ -301,7 +330,7 @@ const PaginationControl = React.forwardRef<HTMLElement, PaginationControlProps>(
     return (
       <BaseButton
         {...props}
-        aria-label={ariaLabel}
+        aria-label={props['aria-label'] ?? defaultAriaLabel}
         className={cn(
           'rounded-city-sm text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:outline-city-ring inline-flex size-8 items-center justify-center border border-transparent text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
           className,
@@ -327,27 +356,40 @@ PaginationControl.displayName = 'Pagination.Control';
 
 export type PaginationFirstProps = PaginationButtonProps;
 
-export const PaginationFirst = React.forwardRef<HTMLElement, PaginationFirstProps>((props, ref) => (
-  <PaginationControl {...props} ariaLabel="Go to first page" ref={ref} targetPage={() => 1}>
-    <span aria-hidden="true">«</span>
-  </PaginationControl>
-));
+export const PaginationFirst = React.forwardRef<HTMLElement, PaginationFirstProps>((props, ref) => {
+  const { labels } = usePaginationContext('Pagination.First');
+
+  return (
+    <PaginationControl
+      {...props}
+      defaultAriaLabel={labels.first}
+      ref={ref}
+      targetPage={() => 1}
+    >
+      <span aria-hidden="true">«</span>
+    </PaginationControl>
+  );
+});
 
 PaginationFirst.displayName = 'Pagination.First';
 
 export type PaginationPreviousProps = PaginationButtonProps;
 
 export const PaginationPrevious = React.forwardRef<HTMLElement, PaginationPreviousProps>(
-  (props, ref) => (
-    <PaginationControl
-      {...props}
-      ariaLabel="Go to previous page"
-      ref={ref}
-      targetPage={(state) => state.page - 1}
-    >
-      <span aria-hidden="true">‹</span>
-    </PaginationControl>
-  ),
+  (props, ref) => {
+    const { labels } = usePaginationContext('Pagination.Previous');
+
+    return (
+      <PaginationControl
+        {...props}
+        defaultAriaLabel={labels.previous}
+        ref={ref}
+        targetPage={(state) => state.page - 1}
+      >
+        <span aria-hidden="true">‹</span>
+      </PaginationControl>
+    );
+  },
 );
 
 PaginationPrevious.displayName = 'Pagination.Previous';
@@ -356,12 +398,12 @@ export type PaginationPreviousGroupProps = PaginationButtonProps;
 
 export const PaginationPreviousGroup = React.forwardRef<HTMLElement, PaginationPreviousGroupProps>(
   (props, ref) => {
-    const { groupSize } = usePaginationContext('Pagination.PreviousGroup');
+    const { groupSize, labels } = usePaginationContext('Pagination.PreviousGroup');
 
     return (
       <PaginationControl
         {...props}
-        ariaLabel={`Go back ${groupSize} pages`}
+        defaultAriaLabel={labels.previousGroup(groupSize)}
         ref={ref}
         targetPage={(state) => state.page - state.groupSize}
       >
@@ -387,7 +429,7 @@ export const PaginationPage = React.forwardRef<HTMLElement, PaginationPageProps>
       <PaginationControl
         {...props}
         aria-current={isCurrent ? 'page' : undefined}
-        ariaLabel={`Page ${target}`}
+        defaultAriaLabel={context.labels.page(target)}
         className={cn(
           isCurrent &&
             'border-city-border bg-city-primary text-city-primary-foreground hover:bg-city-primary',
@@ -408,12 +450,12 @@ export type PaginationNextGroupProps = PaginationButtonProps;
 
 export const PaginationNextGroup = React.forwardRef<HTMLElement, PaginationNextGroupProps>(
   (props, ref) => {
-    const { groupSize } = usePaginationContext('Pagination.NextGroup');
+    const { groupSize, labels } = usePaginationContext('Pagination.NextGroup');
 
     return (
       <PaginationControl
         {...props}
-        ariaLabel={`Go forward ${groupSize} pages`}
+        defaultAriaLabel={labels.nextGroup(groupSize)}
         ref={ref}
         targetPage={(state) => state.page + state.groupSize}
       >
@@ -427,31 +469,39 @@ PaginationNextGroup.displayName = 'Pagination.NextGroup';
 
 export type PaginationNextProps = PaginationButtonProps;
 
-export const PaginationNext = React.forwardRef<HTMLElement, PaginationNextProps>((props, ref) => (
-  <PaginationControl
-    {...props}
-    ariaLabel="Go to next page"
-    ref={ref}
-    targetPage={(state) => state.page + 1}
-  >
-    <span aria-hidden="true">›</span>
-  </PaginationControl>
-));
+export const PaginationNext = React.forwardRef<HTMLElement, PaginationNextProps>((props, ref) => {
+  const { labels } = usePaginationContext('Pagination.Next');
+
+  return (
+    <PaginationControl
+      {...props}
+      defaultAriaLabel={labels.next}
+      ref={ref}
+      targetPage={(state) => state.page + 1}
+    >
+      <span aria-hidden="true">›</span>
+    </PaginationControl>
+  );
+});
 
 PaginationNext.displayName = 'Pagination.Next';
 
 export type PaginationLastProps = PaginationButtonProps;
 
-export const PaginationLast = React.forwardRef<HTMLElement, PaginationLastProps>((props, ref) => (
-  <PaginationControl
-    {...props}
-    ariaLabel="Go to last page"
-    ref={ref}
-    targetPage={(state) => state.totalPages}
-  >
-    <span aria-hidden="true">»</span>
-  </PaginationControl>
-));
+export const PaginationLast = React.forwardRef<HTMLElement, PaginationLastProps>((props, ref) => {
+  const { labels } = usePaginationContext('Pagination.Last');
+
+  return (
+    <PaginationControl
+      {...props}
+      defaultAriaLabel={labels.last}
+      ref={ref}
+      targetPage={(state) => state.totalPages}
+    >
+      <span aria-hidden="true">»</span>
+    </PaginationControl>
+  );
+});
 
 PaginationLast.displayName = 'Pagination.Last';
 

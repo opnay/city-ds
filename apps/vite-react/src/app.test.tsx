@@ -112,8 +112,11 @@ describe('Relay dashboard', () => {
     await user.click(sortButton);
     expect(sortButton).toHaveAttribute('data-sort-direction', 'asc');
 
-    await user.click(screen.getByRole('button', { name: 'Go to next page' }));
-    expect(screen.getByRole('button', { name: 'Page 2' })).toHaveAttribute('aria-current', 'page');
+    await user.click(screen.getByRole('button', { name: '다음 페이지로' }));
+    expect(screen.getByRole('button', { name: '2페이지' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
     expect(within(table).getByText('WO-2808')).toBeVisible();
   });
 

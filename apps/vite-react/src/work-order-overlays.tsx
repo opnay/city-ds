@@ -269,6 +269,9 @@ export function CreateWorkOrderDialog({ onCreate }: CreateWorkOrderDialogProps) 
                         accept=".jpg,.jpeg,.png,.pdf"
                         aria-labelledby="files-label"
                         files={files}
+                        labels={{
+                          remove: (file) => (file ? `${file.name} 제거` : '파일 제거'),
+                        }}
                         multiple
                         onFilesChange={setFiles}
                       >

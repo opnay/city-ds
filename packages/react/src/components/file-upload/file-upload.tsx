@@ -56,10 +56,23 @@ export interface FileUploadState extends Record<string, unknown> {
   multiple: boolean;
 }
 
+export interface FileUploadLabels {
+  input: string;
+  trigger: (multiple: boolean) => string;
+  remove: (file?: File) => string;
+}
+
+export const DEFAULT_FILE_UPLOAD_LABELS: FileUploadLabels = {
+  input: 'File upload',
+  trigger: () => 'Choose files',
+  remove: (file) => (file ? `Remove ${file.name}` : 'Remove file'),
+};
+
 interface FileUploadContextValue extends FileUploadState {
   accept?: string | undefined;
   inputId: string;
   inputRef: React.RefObject<HTMLInputElement | null>;
+  labels: FileUploadLabels;
   name?: string | undefined;
   openFileDialog: () => void;
   removeFile: (index: number) => void;
@@ -87,6 +100,7 @@ export interface FileUploadRootProps extends Omit<
   defaultFiles?: readonly File[];
   disabled?: boolean;
   files?: readonly File[];
+  labels?: Partial<FileUploadLabels>;
   multiple?: boolean;
   name?: string;
   onFilesChange?: (files: File[]) => void;
@@ -102,6 +116,7 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
       defaultFiles = [],
       disabled = false,
       files: controlledFiles,
+      labels,
       multiple = false,
       name,
       onFilesChange,
@@ -116,6 +131,10 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
     const inputRef = React.useRef<HTMLInputElement>(null);
     const inputId = React.useId();
     const files = controlledFiles === undefined ? uncontrolledFiles : uniqueFiles(controlledFiles);
+    const resolvedLabels = React.useMemo(
+      () => ({ ...DEFAULT_FILE_UPLOAD_LABELS, ...labels }),
+      [labels],
+    );
     const state = React.useMemo<FileUploadState>(
       () => ({ disabled, files, multiple }),
       [disabled, files, multiple],
@@ -154,18 +173,32 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
         files,
         inputId,
         inputRef,
+        labels: resolvedLabels,
         multiple,
         name,
         openFileDialog,
         removeFile,
       }),
-      [accept, disabled, files, inputId, multiple, name, openFileDialog, removeFile],
+      [
+        accept,
+        disabled,
+        files,
+        inputId,
+        multiple,
+        name,
+        openFileDialog,
+        removeFile,
+        resolvedLabels,
+      ],
     );
     const content = (
       <>
         <input
           accept={accept}
-          aria-label={props['aria-label'] ?? 'File upload'}
+          aria-label={
+            props['aria-label'] ??
+            (props['aria-labelledby'] ? undefined : resolvedLabels.input)
+          }
           aria-labelledby={props['aria-labelledby']}
           className="sr-only"
           data-city-file-upload-input=""
@@ -237,7 +270,7 @@ export const FileUploadTrigger = React.forwardRef<HTMLElement, FileUploadTrigger
         ref={ref}
         type="button"
       >
-        {children ?? 'Choose files'}
+        {children ?? context.labels.trigger(context.multiple)}
       </BaseButton>
     );
   },
@@ -342,7 +375,18 @@ export interface FileUploadRemoveProps extends FileUploadButtonProps {
 }
 
 export const FileUploadRemove = React.forwardRef<HTMLElement, FileUploadRemoveProps>(
-  ({ children, className, disabled, index = -1, onClick, ...props }, ref) => {
+  (
+    {
+      'aria-label': ariaLabel,
+      children,
+      className,
+      disabled,
+      index = -1,
+      onClick,
+      ...props
+    },
+    ref,
+  ) => {
     const context = useFileUploadContext('FileUpload.Remove');
     const file = context.files[index];
     const isDisabled = (disabled ?? context.disabled) || !file;
@@ -350,7 +394,7 @@ export const FileUploadRemove = React.forwardRef<HTMLElement, FileUploadRemovePr
     return (
       <BaseButton
         {...props}
-        aria-label={file ? `Remove ${file.name}` : 'Remove file'}
+        aria-label={ariaLabel ?? context.labels.remove(file)}
         className={cn(
           'rounded-city-xs text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:outline-city-ring inline-flex h-6 shrink-0 items-center justify-center px-1.5 text-xs focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
           className,

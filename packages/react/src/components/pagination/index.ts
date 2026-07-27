@@ -1,4 +1,5 @@
 export {
+  DEFAULT_PAGINATION_LABELS,
   Pagination,
   PaginationEllipsis,
   PaginationFirst,
@@ -16,6 +17,7 @@ export type {
   PaginationEllipsisProps,
   PaginationFirstProps,
   PaginationItemProps,
+  PaginationLabels,
   PaginationLastProps,
   PaginationListProps,
   PaginationNextGroupProps,

@@ -263,6 +263,59 @@ describe('Pagination', () => {
     );
     expect(onPageChange).toHaveBeenCalledWith(12);
   });
+
+  it('localizes generated labels while preserving direct control overrides', () => {
+    render(
+      <Pagination.Root
+        labels={{
+          navigation: '작업 페이지',
+          first: '첫 페이지로',
+          previous: '이전 페이지로',
+          previousGroup: (count) => `${count}페이지 뒤로`,
+          page: (page) => `${page}페이지`,
+          nextGroup: (count) => `${count}페이지 앞으로`,
+          next: '다음 페이지로',
+          last: '마지막 페이지로',
+        }}
+        onPageChange={vi.fn()}
+        page={7}
+        totalPages={20}
+      >
+        <Pagination.List>
+          <Pagination.Item>
+            <Pagination.First />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.Previous />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.PreviousGroup />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.Page aria-label="현재 7페이지" page={7} />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.NextGroup />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.Next aria-label="직접 지정한 다음" />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.Last />
+          </Pagination.Item>
+        </Pagination.List>
+      </Pagination.Root>,
+    );
+
+    expect(screen.getByRole('navigation', { name: '작업 페이지' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '첫 페이지로' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '이전 페이지로' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '5페이지 뒤로' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '현재 7페이지' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '5페이지 앞으로' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '직접 지정한 다음' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '마지막 페이지로' })).toBeVisible();
+  });
 });
 
 describe('Progress', () => {
@@ -338,6 +391,42 @@ describe('FileUpload', () => {
 
     expect(screen.queryByText('report.txt')).not.toBeInTheDocument();
     expect(onFilesChange).toHaveBeenLastCalledWith([]);
+  });
+
+  it('localizes default labels and preserves direct accessible-name overrides', () => {
+    const file = new File(['content'], '도면.pdf', {
+      lastModified: 1,
+      type: 'application/pdf',
+    });
+    const { container } = render(
+      <>
+        <span id="attachment-label">첨부 파일</span>
+        <FileUpload.Root
+          aria-labelledby="attachment-label"
+          defaultFiles={[file]}
+          labels={{
+            input: '파일 업로드',
+            trigger: (multiple) => (multiple ? '파일들 선택' : '파일 선택'),
+            remove: (selectedFile) =>
+              selectedFile ? `${selectedFile.name} 제거` : '파일 제거',
+          }}
+        >
+          <FileUpload.Trigger />
+          <FileUpload.List>
+            {(selectedFile, index) => (
+              <FileUpload.Item file={selectedFile} index={index}>
+                <span>{selectedFile.name}</span>
+                <FileUpload.Remove aria-label="직접 지정한 제거" index={index} />
+              </FileUpload.Item>
+            )}
+          </FileUpload.List>
+        </FileUpload.Root>
+      </>,
+    );
+
+    expect(container.querySelector('input[type="file"]')).toHaveAccessibleName('첨부 파일');
+    expect(screen.getByRole('button', { name: '파일 선택' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '직접 지정한 제거' })).toBeVisible();
   });
 });
 

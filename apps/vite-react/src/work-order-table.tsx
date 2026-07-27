@@ -251,6 +251,15 @@ export function WorkOrderTable({
           </span>
           <Pagination.Root
             aria-label="작업 요청 페이지"
+            labels={{
+              first: '첫 페이지로',
+              previous: '이전 페이지로',
+              previousGroup: (count) => `${count}페이지 뒤로`,
+              page: (page) => `${page}페이지`,
+              nextGroup: (count) => `${count}페이지 앞으로`,
+              next: '다음 페이지로',
+              last: '마지막 페이지로',
+            }}
             onPageChange={onPageChange}
             page={currentPage}
             totalPages={totalPages}

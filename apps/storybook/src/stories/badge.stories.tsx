@@ -14,6 +14,10 @@ const meta = {
       control: 'select',
       options: ['solid', 'subtle', 'outline', 'destructive'],
     },
+    size: {
+      control: 'inline-radio',
+      options: ['sm', 'md', 'lg'],
+    },
     children: { control: 'text' },
   },
 } satisfies Meta<typeof Badge>;
@@ -31,6 +35,23 @@ export const Variants: Story = {
       <Badge variant="subtle">Draft</Badge>
       <Badge variant="outline">v2.1.0</Badge>
       <Badge variant="destructive">Failed</Badge>
+    </div>
+  ),
+};
+
+export const SizesAndModes: Story = {
+  render: () => (
+    <div className="grid gap-3">
+      <div className="flex items-center gap-2">
+        <Badge size="sm">Small</Badge>
+        <Badge size="md">Medium</Badge>
+        <Badge size="lg">Large</Badge>
+      </div>
+      <div className="flex items-center gap-2">
+        <Badge aria-label="3 notifications" count={3} size="sm" variant="destructive" />
+        <Badge aria-label="12 notifications" count={12} variant="destructive" />
+        <Badge aria-label="Online" dot variant="subtle" />
+      </div>
     </div>
   ),
 };

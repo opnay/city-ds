@@ -1103,7 +1103,14 @@ function NotificationPopover({ riskOrders }: { riskOrders: readonly WorkOrder[] 
           }
         >
           <Bell aria-hidden="true" size={18} strokeWidth={1.8} />
-          {riskCount > 0 ? <span aria-hidden="true">{riskCount}</span> : null}
+          {riskCount > 0 ? (
+            <Badge
+              aria-hidden="true"
+              className="relay-notification-badge bg-city-destructive text-city-destructive-foreground"
+              count={riskCount}
+              variant="destructive"
+            />
+          ) : null}
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Positioner sideOffset={8}>

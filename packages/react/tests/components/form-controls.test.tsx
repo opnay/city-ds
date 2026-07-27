@@ -141,13 +141,27 @@ describe('form and display controls', () => {
 
   it('renders Badge through the Base UI render API', () => {
     render(
-      <Badge render={<a href="/release" />} variant="outline">
-        v1
-      </Badge>,
+      <>
+        <Badge render={<a href="/release" />} variant="outline">
+          v1
+        </Badge>
+        <Badge aria-hidden="true" count={7} size="sm" variant="destructive" />
+        <Badge data-testid="status-dot" dot />
+      </>,
     );
 
     expect(screen.getByRole('link', { name: 'v1' })).toHaveAttribute('href', '/release');
     expect(screen.getByRole('link', { name: 'v1' })).toHaveClass('border-city-border');
+    expect(screen.getByRole('link', { name: 'v1' })).toHaveAttribute(
+      'data-city-badge',
+      'label',
+    );
+    expect(screen.getByText('7')).toHaveAttribute('data-city-badge', 'count');
+    expect(screen.getByText('7')).toHaveAttribute('data-city-size', 'sm');
+    expect(screen.getByText('7')).toHaveClass('h-4', 'min-w-4', 'rounded-city-full');
+    expect(screen.getByTestId('status-dot')).toHaveAttribute('data-city-badge', 'dot');
+    expect(screen.getByTestId('status-dot')).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.getByTestId('status-dot')).toHaveClass('size-2', 'rounded-city-full');
   });
 
   it('connects Field label, description, error, and Input state', () => {

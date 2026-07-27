@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Button as BaseButton } from '@base-ui/react/button';
 import { useRender } from '@base-ui/react/use-render';
 import { cn } from '../../lib/cn';
+import type { Density } from '../../types';
 
 function filesMatch(first: File, second: File): boolean {
   return (
@@ -51,6 +52,7 @@ function formatFileSize(bytes: number): string {
 }
 
 export interface FileUploadState extends Record<string, unknown> {
+  density: Density;
   disabled: boolean;
   files: readonly File[];
   multiple: boolean;
@@ -98,6 +100,7 @@ export interface FileUploadRootProps extends Omit<
   children?: React.ReactNode;
   className?: string;
   defaultFiles?: readonly File[];
+  density?: Density;
   disabled?: boolean;
   files?: readonly File[];
   labels?: Partial<FileUploadLabels>;
@@ -114,6 +117,7 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
       children,
       className,
       defaultFiles = [],
+      density = 'comfortable',
       disabled = false,
       files: controlledFiles,
       labels,
@@ -136,8 +140,8 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
       [labels],
     );
     const state = React.useMemo<FileUploadState>(
-      () => ({ disabled, files, multiple }),
-      [disabled, files, multiple],
+      () => ({ density, disabled, files, multiple }),
+      [density, disabled, files, multiple],
     );
     const setFiles = React.useCallback(
       (nextFiles: File[]) => {
@@ -169,6 +173,7 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
     const context = React.useMemo<FileUploadContextValue>(
       () => ({
         accept,
+        density,
         disabled,
         files,
         inputId,
@@ -181,6 +186,7 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
       }),
       [
         accept,
+        density,
         disabled,
         files,
         inputId,
@@ -224,6 +230,7 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
         children: content,
         className: cn('grid gap-2', className),
         'data-city-file-upload-root': '',
+        'data-city-density': density,
         'data-disabled': disabled ? '' : undefined,
         'data-file-count': String(files.length),
       },
@@ -256,9 +263,13 @@ export const FileUploadTrigger = React.forwardRef<HTMLElement, FileUploadTrigger
         {...props}
         aria-controls={context.inputId}
         className={cn(
-          'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:outline-city-ring inline-flex h-9 w-fit items-center justify-center border px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:outline-city-ring inline-flex w-fit items-center justify-center border font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          context.density === 'compact'
+            ? 'h-(--city-control-sm) px-2.5 text-xs'
+            : 'h-(--city-control-md) px-3 text-sm',
           className,
         )}
+        data-city-density={context.density}
         disabled={isDisabled}
         onClick={(event) => {
           onClick?.(event);
@@ -313,8 +324,13 @@ export const FileUploadList = React.forwardRef<HTMLUListElement, FileUploadListP
       props: {
         ...props,
         children: content,
-        className: cn('grid list-none gap-1 p-0', className),
+        className: cn(
+          'grid list-none p-0',
+          context.density === 'compact' ? 'gap-0.5' : 'gap-1',
+          className,
+        ),
         'data-city-file-upload-list': '',
+        'data-city-density': context.density,
       },
     });
   },
@@ -359,10 +375,14 @@ export const FileUploadItem = React.forwardRef<HTMLLIElement, FileUploadItemProp
         ...props,
         children: content,
         className: cn(
-          'flex min-w-0 items-center gap-2 rounded-city-sm border border-city-border bg-city-surface px-2 py-1.5 text-sm text-city-foreground',
+          'flex min-w-0 items-center rounded-city-sm border border-city-border bg-city-surface text-city-foreground',
+          context.density === 'compact'
+            ? 'gap-1.5 px-1.5 py-1 text-xs'
+            : 'gap-2 px-2 py-1.5 text-sm',
           className,
         ),
         'data-city-file-upload-item': '',
+        'data-city-density': context.density,
       },
     });
   },
@@ -396,9 +416,11 @@ export const FileUploadRemove = React.forwardRef<HTMLElement, FileUploadRemovePr
         {...props}
         aria-label={ariaLabel ?? context.labels.remove(file)}
         className={cn(
-          'rounded-city-xs text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:outline-city-ring inline-flex h-6 shrink-0 items-center justify-center px-1.5 text-xs focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          'rounded-city-xs text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:outline-city-ring inline-flex shrink-0 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          context.density === 'compact' ? 'h-5 px-1 text-[0.625rem]' : 'h-6 px-1.5 text-xs',
           className,
         )}
+        data-city-density={context.density}
         disabled={isDisabled}
         onClick={(event) => {
           onClick?.(event);

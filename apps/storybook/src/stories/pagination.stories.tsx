@@ -69,6 +69,25 @@ export const Default: Story = {
   },
 };
 
+export const Compact: Story = {
+  args: {
+    boundaryCount: 1,
+    groupSize: 5,
+    initialPage: 4,
+    siblingCount: 1,
+    totalPages: 9,
+  },
+  render: ({ initialPage, totalPages }) => (
+    <Pagination.Root
+      aria-label="Compact project pages"
+      density="compact"
+      onPageChange={() => undefined}
+      page={initialPage}
+      totalPages={totalPages}
+    />
+  ),
+};
+
 export const ManyPages: Story = {
   args: {
     boundaryCount: 1,

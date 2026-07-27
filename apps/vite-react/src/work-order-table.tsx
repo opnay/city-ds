@@ -183,7 +183,7 @@ export function WorkOrderTable({
                       </span>
                     </Table.Cell>
                     <Table.Cell>
-                      <Menu.Root>
+                      <Menu.Root density={compact ? 'compact' : 'comfortable'}>
                         <Menu.Trigger
                           aria-label={`${order.id} 작업 메뉴`}
                           className="relay-icon-trigger relay-row-menu-trigger"
@@ -251,6 +251,7 @@ export function WorkOrderTable({
           </span>
           <Pagination.Root
             aria-label="작업 요청 페이지"
+            density={compact ? 'compact' : 'comfortable'}
             labels={{
               first: '첫 페이지로',
               previous: '이전 페이지로',

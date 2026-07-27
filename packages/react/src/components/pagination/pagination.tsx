@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Button as BaseButton } from '@base-ui/react/button';
 import { useRender } from '@base-ui/react/use-render';
 import { cn } from '../../lib/cn';
+import type { Density } from '../../types';
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
@@ -77,6 +78,7 @@ export interface PaginationState extends Record<string, unknown> {
   totalPages: number;
   siblingCount: number;
   boundaryCount: number;
+  density: Density;
   groupSize: number;
 }
 
@@ -128,6 +130,7 @@ export interface PaginationRootProps extends Omit<
   onPageChange: (page: number) => void;
   children?: React.ReactNode;
   className?: string;
+  density?: Density;
   labels?: Partial<PaginationLabels>;
   render?: useRender.ComponentProps<'nav', PaginationState>['render'];
   siblingCount?: number;
@@ -143,6 +146,7 @@ export const PaginationRoot = React.forwardRef<HTMLElement, PaginationRootProps>
       onPageChange,
       children,
       className,
+      density = 'comfortable',
       render,
       siblingCount = 1,
       boundaryCount = 1,
@@ -167,10 +171,12 @@ export const PaginationRoot = React.forwardRef<HTMLElement, PaginationRootProps>
         totalPages: normalizedTotalPages,
         siblingCount: normalizedSiblingCount,
         boundaryCount: normalizedBoundaryCount,
+        density,
         groupSize: normalizedGroupSize,
       }),
       [
         normalizedBoundaryCount,
+        density,
         normalizedGroupSize,
         normalizedPage,
         normalizedSiblingCount,
@@ -193,6 +199,7 @@ export const PaginationRoot = React.forwardRef<HTMLElement, PaginationRootProps>
         className: cn('flex min-w-0 max-w-full items-center overflow-x-auto', className),
         'aria-label': props['aria-label'] ?? resolvedLabels.navigation,
         'data-city-pagination-root': '',
+        'data-city-density': density,
         'data-invalid-page': normalizedPage !== page ? '' : undefined,
         'data-invalid-total-pages': normalizedTotalPages !== totalPages ? '' : undefined,
       },
@@ -268,7 +275,12 @@ export const PaginationList = React.forwardRef<HTMLUListElement, PaginationListP
       props: {
         ...props,
         children: content,
-        className: cn('flex list-none items-center gap-1 p-0', className),
+        className: cn(
+          'flex list-none items-center p-0',
+          state.density === 'compact' ? 'gap-0.5' : 'gap-1',
+          className,
+        ),
+        'data-city-density': state.density,
         'data-city-pagination-list': '',
       },
     });
@@ -332,9 +344,11 @@ const PaginationControl = React.forwardRef<HTMLElement, PaginationControlProps>(
         {...props}
         aria-label={props['aria-label'] ?? defaultAriaLabel}
         className={cn(
-          'rounded-city-sm text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:outline-city-ring inline-flex size-8 items-center justify-center border border-transparent text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          'rounded-city-sm text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:outline-city-ring inline-flex items-center justify-center border border-transparent transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          context.density === 'compact' ? 'size-7 text-xs' : 'size-8 text-sm',
           className,
         )}
+        data-city-density={context.density}
         disabled={isDisabled}
         onClick={(event) => {
           onClick?.(event);
@@ -525,11 +539,13 @@ export const PaginationEllipsis = React.forwardRef<HTMLSpanElement, PaginationEl
         ...props,
         children,
         className: cn(
-          'inline-flex size-8 items-center justify-center text-city-muted-foreground',
+          'inline-flex items-center justify-center text-city-muted-foreground',
+          state.density === 'compact' ? 'size-7 text-xs' : 'size-8 text-sm',
           className,
         ),
         'aria-hidden': true,
         'data-city-pagination-ellipsis': '',
+        'data-city-density': state.density,
       },
     });
   },

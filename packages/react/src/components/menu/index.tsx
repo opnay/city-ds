@@ -26,22 +26,33 @@ import type {
 import { Check, ChevronRight, ChevronUp, Circle } from 'lucide-react';
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
+import type { Density } from '../../types';
 
 function classes<State>(className: StateClassName<State> | undefined, defaults: string) {
   return (state: State) => cn(defaults, resolveClassName(className, state));
 }
 
 const itemStyles =
-  'rounded-city-xs hover:bg-city-accent hover:text-city-accent-foreground data-[highlighted]:bg-city-accent data-[highlighted]:text-city-accent-foreground relative flex min-h-8 w-full cursor-default items-center gap-2 py-1.5 pr-2 pl-2 text-left text-sm transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45';
-const selectionItemStyles = cn(itemStyles, 'pl-8');
+  'rounded-city-xs hover:bg-city-accent hover:text-city-accent-foreground data-[highlighted]:bg-city-accent data-[highlighted]:text-city-accent-foreground relative flex w-full cursor-default items-center text-left transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45';
+const itemDensityStyles: Record<Density, string> = {
+  comfortable: 'min-h-8 gap-2 py-1.5 pr-2 pl-2 text-sm',
+  compact: 'min-h-7 gap-1.5 py-1 pr-1.5 pl-1.5 text-xs',
+};
+const selectionItemDensityStyles: Record<Density, string> = {
+  comfortable: 'pl-8',
+  compact: 'pl-7',
+};
 const itemVariantStyles = {
   default: '',
   destructive:
     'text-city-destructive hover:text-city-destructive data-[highlighted]:text-city-destructive',
 } as const;
 const MenuScrollContext = React.createContext(false);
+const MenuDensityContext = React.createContext<Density>('comfortable');
 
-export type MenuRootProps<Payload = unknown> = BaseMenuRootProps<Payload>;
+export type MenuRootProps<Payload = unknown> = BaseMenuRootProps<Payload> & {
+  density?: Density;
+};
 export type MenuTriggerProps<Payload = unknown> = BaseMenuTriggerProps<Payload>;
 export type MenuPortalProps = BaseMenuPortalProps;
 export type MenuBackdropProps = BaseMenuBackdropProps;
@@ -72,24 +83,46 @@ export type MenuScrollUpIndicatorProps = Omit<
   className?: StateClassName<MenuScrollUpIndicatorState>;
 };
 
-export const MenuRoot = BaseMenu.Root;
+export function MenuRoot<Payload = unknown>({
+  density = 'comfortable',
+  ...props
+}: MenuRootProps<Payload>): React.JSX.Element {
+  return (
+    <MenuDensityContext.Provider value={density}>
+      <BaseMenu.Root {...props} />
+    </MenuDensityContext.Provider>
+  );
+}
+
+MenuRoot.displayName = 'Menu.Root';
+
 export const MenuPortal = BaseMenu.Portal;
 export const MenuSubmenuRoot = BaseMenu.SubmenuRoot;
 
 export const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
-  ({ className, render, ...props }, ref) => (
-    <BaseMenu.Trigger
-      {...props}
-      ref={ref}
-      render={render}
-      className={classes(
-        className,
-        render == null
-          ? 'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring inline-flex h-(--city-control-md) items-center justify-center gap-2 border px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50'
-          : '',
-      )}
-    />
-  ),
+  ({ className, render, ...props }, ref) => {
+    const density = React.useContext(MenuDensityContext);
+
+    return (
+      <BaseMenu.Trigger
+        {...props}
+        ref={ref}
+        render={render}
+        data-city-density={density}
+        className={classes(
+          className,
+          render == null
+            ? cn(
+                'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring inline-flex items-center justify-center border font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
+                density === 'compact'
+                  ? 'h-(--city-control-sm) gap-1.5 px-2.5 text-xs'
+                  : 'h-(--city-control-md) gap-2 px-3 text-sm',
+              )
+            : '',
+        )}
+      />
+    );
+  },
 );
 
 export const MenuBackdrop = React.forwardRef<HTMLDivElement, MenuBackdropProps>(
@@ -107,6 +140,7 @@ export const MenuPositioner = React.forwardRef<HTMLDivElement, MenuPositionerPro
 export const MenuPopup = React.forwardRef<HTMLDivElement, MenuPopupProps>(
   ({ children, className, onScroll, tabIndex = 0, ...props }, ref) => {
     const [canScrollUp, setCanScrollUp] = React.useState(false);
+    const density = React.useContext(MenuDensityContext);
 
     return (
       <MenuScrollContext.Provider value={canScrollUp}>
@@ -114,13 +148,17 @@ export const MenuPopup = React.forwardRef<HTMLDivElement, MenuPopupProps>(
           {...props}
           ref={ref}
           tabIndex={tabIndex}
+          data-city-density={density}
           onScroll={(event) => {
             setCanScrollUp(event.currentTarget.scrollTop > 0);
             onScroll?.(event);
           }}
           className={classes(
             className,
-            'rounded-city-md border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup max-h-(--available-height) min-w-44 overflow-y-auto overscroll-contain border p-1 text-sm outline-none',
+            cn(
+              'rounded-city-md border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup max-h-(--available-height) min-w-44 overflow-y-auto overscroll-contain border outline-none',
+              density === 'compact' ? 'p-0.5 text-xs' : 'p-1 text-sm',
+            ),
           )}
         >
           {children}
@@ -137,33 +175,57 @@ export const MenuViewport = React.forwardRef<HTMLDivElement, MenuViewportProps>(
 );
 
 export const MenuItem = React.forwardRef<HTMLElement, MenuItemProps>(
-  ({ className, variant = 'default', ...props }, ref) => (
-    <BaseMenu.Item
-      {...props}
-      ref={ref}
-      className={classes(className, cn(itemStyles, itemVariantStyles[variant]))}
-    />
-  ),
+  ({ className, variant = 'default', ...props }, ref) => {
+    const density = React.useContext(MenuDensityContext);
+
+    return (
+      <BaseMenu.Item
+        {...props}
+        ref={ref}
+        data-city-density={density}
+        className={classes(
+          className,
+          cn(itemStyles, itemDensityStyles[density], itemVariantStyles[variant]),
+        )}
+      />
+    );
+  },
 );
 
 export const MenuLinkItem = React.forwardRef<Element, MenuLinkItemProps>(
-  ({ className, variant = 'default', ...props }, ref) => (
-    <BaseMenu.LinkItem
-      {...props}
-      ref={ref}
-      className={classes(className, cn(itemStyles, itemVariantStyles[variant]))}
-    />
-  ),
+  ({ className, variant = 'default', ...props }, ref) => {
+    const density = React.useContext(MenuDensityContext);
+
+    return (
+      <BaseMenu.LinkItem
+        {...props}
+        ref={ref}
+        data-city-density={density}
+        className={classes(
+          className,
+          cn(itemStyles, itemDensityStyles[density], itemVariantStyles[variant]),
+        )}
+      />
+    );
+  },
 );
 
 export const MenuCheckboxItem = React.forwardRef<HTMLElement, MenuCheckboxItemProps>(
-  ({ className, ...props }, ref) => (
-    <BaseMenu.CheckboxItem
-      {...props}
-      ref={ref}
-      className={classes(className, selectionItemStyles)}
-    />
-  ),
+  ({ className, ...props }, ref) => {
+    const density = React.useContext(MenuDensityContext);
+
+    return (
+      <BaseMenu.CheckboxItem
+        {...props}
+        ref={ref}
+        data-city-density={density}
+        className={classes(
+          className,
+          cn(itemStyles, itemDensityStyles[density], selectionItemDensityStyles[density]),
+        )}
+      />
+    );
+  },
 );
 
 export const MenuCheckboxItemIndicator = React.forwardRef<
@@ -182,9 +244,21 @@ export const MenuCheckboxItemIndicator = React.forwardRef<
 export const MenuRadioGroup = BaseMenu.RadioGroup;
 
 export const MenuRadioItem = React.forwardRef<HTMLElement, MenuRadioItemProps>(
-  ({ className, ...props }, ref) => (
-    <BaseMenu.RadioItem {...props} ref={ref} className={classes(className, selectionItemStyles)} />
-  ),
+  ({ className, ...props }, ref) => {
+    const density = React.useContext(MenuDensityContext);
+
+    return (
+      <BaseMenu.RadioItem
+        {...props}
+        ref={ref}
+        data-city-density={density}
+        className={classes(
+          className,
+          cn(itemStyles, itemDensityStyles[density], selectionItemDensityStyles[density]),
+        )}
+      />
+    );
+  },
 );
 
 export const MenuRadioItemIndicator = React.forwardRef<
@@ -201,42 +275,82 @@ export const MenuRadioItemIndicator = React.forwardRef<
 ));
 
 export const MenuGroup = React.forwardRef<HTMLDivElement, MenuGroupProps>(
-  ({ className, ...props }, ref) => (
-    <BaseMenu.Group {...props} ref={ref} className={classes(className, 'py-1')} />
-  ),
+  ({ className, ...props }, ref) => {
+    const density = React.useContext(MenuDensityContext);
+
+    return (
+      <BaseMenu.Group
+        {...props}
+        ref={ref}
+        data-city-density={density}
+        className={classes(className, density === 'compact' ? 'py-0.5' : 'py-1')}
+      />
+    );
+  },
 );
 
 export const MenuGroupLabel = React.forwardRef<HTMLDivElement, MenuGroupLabelProps>(
-  ({ className, ...props }, ref) => (
-    <BaseMenu.GroupLabel
-      {...props}
-      ref={ref}
-      className={classes(className, 'text-city-muted-foreground px-2 py-1.5 text-xs font-medium')}
-    />
-  ),
+  ({ className, ...props }, ref) => {
+    const density = React.useContext(MenuDensityContext);
+
+    return (
+      <BaseMenu.GroupLabel
+        {...props}
+        ref={ref}
+        data-city-density={density}
+        className={classes(
+          className,
+          cn(
+            'text-city-muted-foreground font-medium',
+            density === 'compact' ? 'px-1.5 py-1 text-[0.625rem]' : 'px-2 py-1.5 text-xs',
+          ),
+        )}
+      />
+    );
+  },
 );
 
 export const MenuSeparator = React.forwardRef<HTMLDivElement, MenuSeparatorProps>(
-  ({ className, ...props }, ref) => (
-    <BaseMenu.Separator
-      {...props}
-      ref={ref}
-      className={classes(className, 'bg-city-border my-1 h-px')}
-    />
-  ),
+  ({ className, ...props }, ref) => {
+    const density = React.useContext(MenuDensityContext);
+
+    return (
+      <BaseMenu.Separator
+        {...props}
+        ref={ref}
+        data-city-density={density}
+        className={classes(
+          className,
+          cn('bg-city-border h-px', density === 'compact' ? 'my-0.5' : 'my-1'),
+        )}
+      />
+    );
+  },
 );
 
 export const MenuSubmenuTrigger = React.forwardRef<HTMLElement, MenuSubmenuTriggerProps>(
-  ({ className, children, ...props }, ref) => (
-    <BaseMenu.SubmenuTrigger
-      {...props}
-      ref={ref}
-      className={classes(className, cn(itemStyles, 'pr-1'))}
-    >
-      <span className="min-w-0 flex-1 truncate">{children}</span>
-      <ChevronRight aria-hidden="true" className="text-city-muted-foreground ml-auto" size={16} />
-    </BaseMenu.SubmenuTrigger>
-  ),
+  ({ className, children, ...props }, ref) => {
+    const density = React.useContext(MenuDensityContext);
+
+    return (
+      <BaseMenu.SubmenuTrigger
+        {...props}
+        ref={ref}
+        data-city-density={density}
+        className={classes(
+          className,
+          cn(itemStyles, itemDensityStyles[density], density === 'compact' ? 'pr-0.5' : 'pr-1'),
+        )}
+      >
+        <span className="min-w-0 flex-1 truncate">{children}</span>
+        <ChevronRight
+          aria-hidden="true"
+          className="text-city-muted-foreground ml-auto"
+          size={density === 'compact' ? 14 : 16}
+        />
+      </BaseMenu.SubmenuTrigger>
+    );
+  },
 );
 
 export const MenuArrow = React.forwardRef<HTMLDivElement, MenuArrowProps>(
@@ -255,6 +369,7 @@ export const MenuArrow = React.forwardRef<HTMLDivElement, MenuArrowProps>(
 export const MenuScrollUpIndicator = React.forwardRef<HTMLDivElement, MenuScrollUpIndicatorProps>(
   ({ className, children, ...props }, ref) => {
     const visible = React.useContext(MenuScrollContext);
+    const density = React.useContext(MenuDensityContext);
     const state = { visible };
 
     return (
@@ -268,7 +383,12 @@ export const MenuScrollUpIndicator = React.forwardRef<HTMLDivElement, MenuScroll
           resolveClassName(className, state),
         )}
       >
-        <span className="border-city-border bg-city-surface-raised text-city-muted-foreground absolute -inset-x-1 -top-1 flex h-8 items-center justify-center border-b shadow-sm">
+        <span
+          className={cn(
+            'border-city-border bg-city-surface-raised text-city-muted-foreground absolute -inset-x-1 -top-1 flex items-center justify-center border-b shadow-sm',
+            density === 'compact' ? 'h-7' : 'h-8',
+          )}
+        >
           {children ?? <ChevronUp aria-hidden="true" size={16} />}
         </span>
       </div>

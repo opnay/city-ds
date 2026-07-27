@@ -372,6 +372,37 @@ describe('overlay and selection controls', () => {
     expect(trigger).toHaveFocus();
   });
 
+  it('propagates compact density through menu surfaces and items', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Menu.Root density="compact">
+        <Menu.Trigger>Compact actions</Menu.Trigger>
+        <Menu.Portal>
+          <Menu.Positioner>
+            <Menu.Popup>
+              <Menu.Group>
+                <Menu.GroupLabel>Project</Menu.GroupLabel>
+                <Menu.Item>Open</Menu.Item>
+              </Menu.Group>
+            </Menu.Popup>
+          </Menu.Positioner>
+        </Menu.Portal>
+      </Menu.Root>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Compact actions' }));
+
+    const menu = await screen.findByRole('menu');
+    const item = screen.getByRole('menuitem', { name: 'Open' });
+
+    expect(menu).toHaveAttribute('data-city-density', 'compact');
+    expect(menu).toHaveClass('p-0.5', 'text-xs');
+    expect(item).toHaveAttribute('data-city-density', 'compact');
+    expect(item).toHaveClass('min-h-7', 'text-xs');
+    expect(screen.getByText('Project')).toHaveClass('py-1', 'text-[0.625rem]');
+  });
+
   it('toggles menu checkbox items and selects radio items without closing the menu', async () => {
     const user = userEvent.setup();
     const onCheckedChange = vi.fn();
@@ -443,6 +474,30 @@ describe('overlay and selection controls', () => {
 
     expect(screen.getByRole('tab', { name: 'Activity' })).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Activity panel');
+  });
+
+  it('propagates compact density through tabs and panels', () => {
+    render(
+      <Tabs.Root defaultValue="overview" density="compact">
+        <Tabs.List>
+          <Tabs.Tab value="overview">Overview</Tabs.Tab>
+          <Tabs.Tab value="activity">Activity</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="overview">Overview panel</Tabs.Panel>
+        <Tabs.Panel value="activity">Activity panel</Tabs.Panel>
+      </Tabs.Root>,
+    );
+
+    const tablist = screen.getByRole('tablist');
+    const selectedTab = screen.getByRole('tab', { name: 'Overview' });
+    const panel = screen.getByRole('tabpanel');
+
+    expect(tablist).toHaveAttribute('data-city-density', 'compact');
+    expect(tablist).toHaveClass('h-(--city-control-sm)', 'gap-0.5', 'p-0.5');
+    expect(selectedTab).toHaveAttribute('data-city-density', 'compact');
+    expect(selectedTab).toHaveClass('h-6', 'text-xs');
+    expect(panel).toHaveAttribute('data-city-density', 'compact');
+    expect(panel).toHaveClass('mt-2', 'text-xs');
   });
 
   it('shows a tooltip on hover with the supplied zero delay', async () => {

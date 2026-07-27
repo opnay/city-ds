@@ -15,9 +15,15 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function MenuFrame({ children }: { children: ReactNode }) {
+function MenuFrame({
+  children,
+  density = 'comfortable',
+}: {
+  children: ReactNode;
+  density?: 'comfortable' | 'compact';
+}) {
   return (
-    <Menu.Root>
+    <Menu.Root density={density}>
       <Menu.Trigger aria-label="Row actions">Actions</Menu.Trigger>
       <Menu.Portal>
         <Menu.Positioner sideOffset={6}>
@@ -63,6 +69,20 @@ export const Grouped: Story = {
         <Menu.GroupLabel>Danger zone</Menu.GroupLabel>
         <Menu.Item variant="destructive">Archive</Menu.Item>
       </Menu.Group>
+    </MenuFrame>
+  ),
+};
+
+export const Compact: Story = {
+  render: () => (
+    <MenuFrame density="compact">
+      <Menu.Group>
+        <Menu.GroupLabel>Project</Menu.GroupLabel>
+        <Menu.Item>Open</Menu.Item>
+        <Menu.Item>Duplicate</Menu.Item>
+      </Menu.Group>
+      <Menu.Separator />
+      <Menu.Item variant="destructive">Archive</Menu.Item>
     </MenuFrame>
   ),
 };

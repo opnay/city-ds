@@ -75,6 +75,27 @@ export const Default: Story = {
   },
 };
 
+export const Compact: Story = {
+  args: {
+    disabled: false,
+    multiple: true,
+    withFiles: true,
+  },
+  render: () => (
+    <div style={{ minWidth: 320, maxWidth: 480 }}>
+      <FileUpload.Root
+        aria-label="Compact project files"
+        defaultFiles={createExampleFiles()}
+        density="compact"
+        multiple
+      >
+        <FileUpload.Trigger>Choose files</FileUpload.Trigger>
+        <FileUpload.List aria-label="Selected compact files" />
+      </FileUpload.Root>
+    </div>
+  ),
+};
+
 export const Multiple: Story = {
   args: {
     accept: '.md,.txt',

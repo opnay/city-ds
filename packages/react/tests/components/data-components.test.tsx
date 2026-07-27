@@ -218,6 +218,25 @@ describe('Table', () => {
 });
 
 describe('Pagination', () => {
+  it('propagates compact density to generated controls', () => {
+    render(
+      <Pagination.Root
+        density="compact"
+        onPageChange={vi.fn()}
+        page={2}
+        totalPages={4}
+      />,
+    );
+
+    const navigation = screen.getByRole('navigation', { name: 'Pagination' });
+    const currentPage = screen.getByRole('button', { name: 'Page 2' });
+
+    expect(navigation).toHaveAttribute('data-city-density', 'compact');
+    expect(navigation.querySelector('[data-city-pagination-list]')).toHaveClass('gap-0.5');
+    expect(currentPage).toHaveAttribute('data-city-density', 'compact');
+    expect(currentPage).toHaveClass('size-7', 'text-xs');
+  });
+
   it('clamps invalid controlled values and uses 1-based page changes', async () => {
     const user = userEvent.setup();
     const onPageChange = vi.fn();
@@ -364,6 +383,30 @@ describe('Progress', () => {
 });
 
 describe('FileUpload', () => {
+  it('propagates compact density through its trigger, list, item, and remove control', () => {
+    const file = new File(['content'], 'report.txt', {
+      lastModified: 1,
+      type: 'text/plain',
+    });
+
+    render(
+      <FileUpload.Root defaultFiles={[file]} density="compact">
+        <FileUpload.Trigger />
+        <FileUpload.List />
+      </FileUpload.Root>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Choose files' });
+    const root = trigger.closest('[data-city-file-upload-root]');
+    const remove = screen.getByRole('button', { name: 'Remove report.txt' });
+
+    expect(root).toHaveAttribute('data-city-density', 'compact');
+    expect(trigger).toHaveAttribute('data-city-density', 'compact');
+    expect(trigger).toHaveClass('h-(--city-control-sm)', 'text-xs');
+    expect(screen.getByText('report.txt').parentElement).toHaveClass('py-1', 'text-xs');
+    expect(remove).toHaveClass('h-5', 'text-[0.625rem]');
+  });
+
   it('keeps native input metadata, displays each selected file once, and removes files locally', async () => {
     const user = userEvent.setup();
     const onFilesChange = vi.fn();

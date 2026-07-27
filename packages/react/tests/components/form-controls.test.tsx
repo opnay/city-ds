@@ -155,9 +155,11 @@ describe('form and display controls', () => {
     expect(screen.getByText('7')).toHaveAttribute('data-city-badge', 'count');
     expect(screen.getByText('7')).toHaveAttribute('data-city-size', 'sm');
     expect(screen.getByText('7')).toHaveClass('h-4', 'min-w-4', 'rounded-city-full');
+    expect(screen.getByText('7')).not.toHaveClass('rounded-city-xs');
     expect(screen.getByTestId('status-dot')).toHaveAttribute('data-city-badge', 'dot');
     expect(screen.getByTestId('status-dot')).toHaveAttribute('aria-hidden', 'true');
     expect(screen.getByTestId('status-dot')).toHaveClass('size-2', 'rounded-city-full');
+    expect(screen.getByTestId('status-dot')).not.toHaveClass('rounded-city-xs');
     expect(screen.getByText('Attention')).toHaveAttribute('data-appearance', 'outline');
     expect(screen.getByText('Attention')).toHaveAttribute('data-tone', 'warning');
     expect(screen.getByText('Attention')).toHaveClass('border-city-warning/40');

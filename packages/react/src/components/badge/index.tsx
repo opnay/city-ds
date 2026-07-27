@@ -145,7 +145,8 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badg
       'data-tone': tone,
       'data-variant': variant,
       className: cn(
-        'inline-flex shrink-0 items-center rounded-city-xs font-medium leading-none',
+        'inline-flex shrink-0 items-center font-medium leading-none',
+        mode === 'label' && 'rounded-city-xs',
         mode !== 'dot' && badgeSizeClasses[size],
         mode === 'count' &&
           cn(

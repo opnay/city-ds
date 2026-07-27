@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { Button, Toast } from '@city-ds/react';
 
 const meta = {
@@ -23,6 +23,7 @@ function ToastExample({ withAction = false }: { withAction?: boolean }) {
       description: withAction
         ? 'Two environment variables require confirmation before release.'
         : 'Your project configuration is up to date.',
+      type: withAction ? 'warning' : 'success',
     });
   };
 
@@ -72,7 +73,9 @@ export const Default: Story = {
     await userEvent.click(
       within(document.body).getByRole('button', { name: 'Close notification' }),
     );
-    await expect(within(document.body).queryByText('Changes saved')).toBeNull();
+    await waitFor(async () => {
+      await expect(within(document.body).queryByText('Changes saved')).toBeNull();
+    });
   },
   render: () => <ToastStory />,
 };

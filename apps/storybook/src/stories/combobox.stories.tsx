@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Combobox, Field } from '@city-ds/react';
+import { Combobox, Field, type ControlSize } from '@city-ds/react';
 
 const projects = ['Civic Portal', 'Transit Map', 'Permit Tracker', 'Budget Explorer'];
 const owners = ['Ari Kim', 'Bo Park', 'Casey Lee', 'Dana Cho'];
@@ -16,10 +16,16 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function ProjectCombobox({ disabled = false }: { disabled?: boolean }) {
+function ProjectCombobox({
+  disabled = false,
+  size = 'md',
+}: {
+  disabled?: boolean;
+  size?: ControlSize;
+}) {
   return (
     <Field.Root>
-      <Combobox.Root items={projects} defaultValue="Transit Map" disabled={disabled}>
+      <Combobox.Root items={projects} defaultValue="Transit Map" disabled={disabled} size={size}>
         <Field.Label>Project</Field.Label>
         <Combobox.InputGroup className="w-72">
           <Combobox.Input placeholder="Search projects" />
@@ -52,6 +58,16 @@ export const Default: Story = {
 
 export const Disabled: Story = {
   render: () => <ProjectCombobox disabled />,
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="grid gap-3">
+      <ProjectCombobox size="sm" />
+      <ProjectCombobox size="md" />
+      <ProjectCombobox size="lg" />
+    </div>
+  ),
 };
 
 export const Error: Story = {

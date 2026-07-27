@@ -25,6 +25,7 @@ import type {
 import { ChevronDown, ChevronUp, Check } from 'lucide-react';
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
+import type { ControlSize } from '../../types';
 
 function classes<State>(className: StateClassName<State> | undefined, defaults: string) {
   return (state: State) => cn(defaults, resolveClassName(className, state));
@@ -33,9 +34,13 @@ function classes<State>(className: StateClassName<State> | undefined, defaults: 
 export type SelectRootProps<
   Value,
   Multiple extends boolean | undefined = false,
-> = BaseSelectRootProps<Value, Multiple>;
+> = BaseSelectRootProps<Value, Multiple> & {
+  size?: ControlSize;
+};
 export type SelectLabelProps = BaseSelectLabelProps;
-export type SelectTriggerProps = BaseSelectTriggerProps;
+export type SelectTriggerProps = Omit<BaseSelectTriggerProps, 'size'> & {
+  size?: ControlSize;
+};
 export type SelectValueProps = BaseSelectValueProps;
 export type SelectIconProps = BaseSelectIconProps;
 export type SelectPortalProps = BaseSelectPortalProps;
@@ -53,7 +58,27 @@ export type SelectScrollUpArrowProps = BaseSelectScrollUpArrowProps;
 export type SelectScrollDownArrowProps = BaseSelectScrollDownArrowProps;
 export type SelectSeparatorProps = React.ComponentPropsWithoutRef<typeof BaseSelect.Separator>;
 
-export const SelectRoot = BaseSelect.Root;
+const SelectSizeContext = React.createContext<ControlSize>('md');
+
+const selectTriggerSizeClasses: Record<ControlSize, string> = {
+  sm: 'h-(--city-control-sm) px-2.5 text-xs',
+  md: 'h-(--city-control-md) px-3 text-sm',
+  lg: 'h-(--city-control-lg) px-3.5 text-sm',
+};
+
+export function SelectRoot<Value, Multiple extends boolean | undefined = false>({
+  size = 'md',
+  ...props
+}: SelectRootProps<Value, Multiple>): React.JSX.Element {
+  return (
+    <SelectSizeContext.Provider value={size}>
+      <BaseSelect.Root {...props} />
+    </SelectSizeContext.Provider>
+  );
+}
+
+SelectRoot.displayName = 'Select.Root';
+
 export const SelectPortal = BaseSelect.Portal;
 
 export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
@@ -67,17 +92,28 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 );
 
 export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerProps>(
-  ({ className, ...props }, ref) => (
-    <BaseSelect.Trigger
-      {...props}
-      ref={ref}
-      className={classes(
-        className,
-        'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring data-[placeholder]:text-city-muted-foreground flex h-(--city-control-md) w-full items-center justify-between gap-2 border px-3 text-sm transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
-      )}
-    />
-  ),
+  ({ className, size: sizeProp, ...props }, ref) => {
+    const rootSize = React.useContext(SelectSizeContext);
+    const size = sizeProp ?? rootSize;
+
+    return (
+      <BaseSelect.Trigger
+        {...props}
+        ref={ref}
+        data-city-size={size}
+        className={classes(
+          className,
+          cn(
+            'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring data-[placeholder]:text-city-muted-foreground data-[invalid]:border-city-destructive data-[invalid]:focus-visible:ring-city-destructive/30 flex w-full items-center justify-between gap-2 border transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
+            selectTriggerSizeClasses[size],
+          ),
+        )}
+      />
+    );
+  },
 );
+
+SelectTrigger.displayName = 'Select.Trigger';
 
 export const SelectValue = React.forwardRef<HTMLSpanElement, SelectValueProps>(
   ({ className, ...props }, ref) => (

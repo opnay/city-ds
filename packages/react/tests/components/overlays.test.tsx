@@ -48,6 +48,50 @@ describe('overlay and selection controls', () => {
     expect(trigger).toHaveFocus();
   });
 
+  it('applies dialog size and body-scroll shell contracts', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Dialog.Root>
+        <Dialog.Trigger>Open activity</Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Backdrop />
+          <Dialog.Viewport>
+            <Dialog.Popup scroll="body" size="lg">
+              <Dialog.Header>
+                <div>
+                  <Dialog.Title>Project activity</Dialog.Title>
+                  <Dialog.Description>Recent project updates.</Dialog.Description>
+                </div>
+              </Dialog.Header>
+              <Dialog.Body>Scrollable activity</Dialog.Body>
+              <Dialog.Footer>
+                <Dialog.Close>Close</Dialog.Close>
+              </Dialog.Footer>
+            </Dialog.Popup>
+          </Dialog.Viewport>
+        </Dialog.Portal>
+      </Dialog.Root>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open activity' }));
+
+    const dialog = await screen.findByRole('dialog', { name: 'Project activity' });
+    const body = screen.getByText('Scrollable activity');
+
+    expect(dialog).toHaveAttribute('data-size', 'lg');
+    expect(dialog).toHaveAttribute('data-scroll', 'body');
+    expect(dialog).toHaveClass('max-w-2xl', 'flex', 'overflow-hidden', 'p-0');
+    expect(
+      screen.getByText('Recent project updates.').closest('[data-city-dialog-header]'),
+    ).toHaveClass('border-b', 'px-5');
+    expect(body).toHaveAttribute('data-city-dialog-body');
+    expect(body).toHaveClass('min-h-0', 'overflow-y-auto', 'p-5');
+    expect(screen.getByRole('button', { name: 'Close' }).parentElement).toHaveAttribute(
+      'data-city-dialog-footer',
+    );
+  });
+
   it('opens a drawer, closes on Escape, and restores trigger focus', async () => {
     const user = userEvent.setup();
 
@@ -82,6 +126,46 @@ describe('overlay and selection controls', () => {
 
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     expect(trigger).toHaveFocus();
+  });
+
+  it('applies drawer size and header, body, and footer shell contracts', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Drawer.Root>
+        <Drawer.Trigger>Open asset details</Drawer.Trigger>
+        <Drawer.Portal>
+          <Drawer.Backdrop />
+          <Drawer.Viewport side="right">
+            <Drawer.Popup side="right" size="lg">
+              <Drawer.Header>
+                <Drawer.Title>Asset details</Drawer.Title>
+              </Drawer.Header>
+              <Drawer.Body>Asset health</Drawer.Body>
+              <Drawer.Footer>
+                <Drawer.Close>Close asset details</Drawer.Close>
+              </Drawer.Footer>
+            </Drawer.Popup>
+          </Drawer.Viewport>
+        </Drawer.Portal>
+      </Drawer.Root>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open asset details' }));
+
+    const drawer = await screen.findByRole('dialog', { name: 'Asset details' });
+    const body = screen.getByText('Asset health');
+
+    expect(drawer).toHaveAttribute('data-size', 'lg');
+    expect(drawer).toHaveAttribute('data-side', 'right');
+    expect(drawer).toHaveClass('w-[min(32rem,calc(100vw-2rem))]');
+    expect(screen.getByText('Asset details').parentElement).toHaveAttribute(
+      'data-city-drawer-header',
+    );
+    expect(body).toHaveAttribute('data-city-drawer-body');
+    expect(
+      screen.getByRole('button', { name: 'Close asset details' }).parentElement,
+    ).toHaveAttribute('data-city-drawer-footer');
   });
 
   it('keeps outside controls available for non-modal drawers', async () => {
@@ -137,7 +221,7 @@ describe('overlay and selection controls', () => {
     );
 
     const trigger = screen.getByRole('button', { name: 'Delete project' });
-    expect(trigger).toHaveClass('h-9', 'bg-city-destructive');
+    expect(trigger).toHaveClass('h-(--city-control-md)', 'bg-city-destructive');
     expect(trigger).not.toHaveClass('bg-city-surface-raised');
     await user.click(trigger);
 
@@ -145,7 +229,7 @@ describe('overlay and selection controls', () => {
     expect(dialog).toBeVisible();
     expect(screen.getByText('This action cannot be undone.')).toBeVisible();
     const cancel = screen.getByRole('button', { name: 'Cancel' });
-    expect(cancel).toHaveClass('h-9', 'bg-city-accent');
+    expect(cancel).toHaveClass('h-(--city-control-md)', 'bg-city-accent');
     expect(cancel).not.toHaveClass('bg-city-background');
     expect(screen.getByRole('button', { name: 'Delete' })).toHaveClass('bg-city-destructive');
     await waitFor(() => expect(cancel).toHaveFocus());
@@ -183,7 +267,10 @@ describe('overlay and selection controls', () => {
     await user.click(screen.getByRole('button', { name: 'Publish changes' }));
     const dialog = await screen.findByRole('alertdialog', { name: 'Publish these changes?' });
     expect(dialog).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Publish' })).toHaveClass('h-9', 'bg-city-primary');
+    expect(screen.getByRole('button', { name: 'Publish' })).toHaveClass(
+      'h-(--city-control-md)',
+      'bg-city-primary',
+    );
     expect(onOpenChange).toHaveBeenCalledWith(
       true,
       expect.objectContaining({ reason: 'trigger-press' }),
@@ -369,6 +456,37 @@ describe('overlay and selection controls', () => {
     expect(trigger).toHaveFocus();
   });
 
+  it('propagates compact density through menu surfaces and items', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Menu.Root density="compact">
+        <Menu.Trigger>Compact actions</Menu.Trigger>
+        <Menu.Portal>
+          <Menu.Positioner>
+            <Menu.Popup>
+              <Menu.Group>
+                <Menu.GroupLabel>Project</Menu.GroupLabel>
+                <Menu.Item>Open</Menu.Item>
+              </Menu.Group>
+            </Menu.Popup>
+          </Menu.Positioner>
+        </Menu.Portal>
+      </Menu.Root>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Compact actions' }));
+
+    const menu = await screen.findByRole('menu');
+    const item = screen.getByRole('menuitem', { name: 'Open' });
+
+    expect(menu).toHaveAttribute('data-city-density', 'compact');
+    expect(menu).toHaveClass('p-0.5', 'text-xs');
+    expect(item).toHaveAttribute('data-city-density', 'compact');
+    expect(item).toHaveClass('min-h-7', 'text-xs');
+    expect(screen.getByText('Project')).toHaveClass('py-1', 'text-[0.625rem]');
+  });
+
   it('toggles menu checkbox items and selects radio items without closing the menu', async () => {
     const user = userEvent.setup();
     const onCheckedChange = vi.fn();
@@ -442,6 +560,30 @@ describe('overlay and selection controls', () => {
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Activity panel');
   });
 
+  it('propagates compact density through tabs and panels', () => {
+    render(
+      <Tabs.Root defaultValue="overview" density="compact">
+        <Tabs.List>
+          <Tabs.Tab value="overview">Overview</Tabs.Tab>
+          <Tabs.Tab value="activity">Activity</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="overview">Overview panel</Tabs.Panel>
+        <Tabs.Panel value="activity">Activity panel</Tabs.Panel>
+      </Tabs.Root>,
+    );
+
+    const tablist = screen.getByRole('tablist');
+    const selectedTab = screen.getByRole('tab', { name: 'Overview' });
+    const panel = screen.getByRole('tabpanel');
+
+    expect(tablist).toHaveAttribute('data-city-density', 'compact');
+    expect(tablist).toHaveClass('h-(--city-control-sm)', 'gap-0.5', 'p-0.5');
+    expect(selectedTab).toHaveAttribute('data-city-density', 'compact');
+    expect(selectedTab).toHaveClass('h-6', 'text-xs');
+    expect(panel).toHaveAttribute('data-city-density', 'compact');
+    expect(panel).toHaveClass('mt-2', 'text-xs');
+  });
+
   it('shows a tooltip on hover with the supplied zero delay', async () => {
     const user = userEvent.setup();
 
@@ -479,7 +621,12 @@ describe('overlay and selection controls', () => {
     await user.click(screen.getByRole('button', { name: 'Show notification' }));
 
     expect(await screen.findByText('Changes saved')).toBeVisible();
-    await user.hover(screen.getByRole('dialog', { name: 'Changes saved' }));
+    const notification = screen.getByRole('dialog', { name: 'Changes saved' });
+    expect(notification).toHaveAttribute('data-city-toast-root');
+    expect(notification).toHaveAttribute('data-tone', 'success');
+    expect(notification).toHaveAttribute('data-appearance', 'outline');
+    expect(notification).toHaveClass('border-city-success/40');
+    await user.hover(notification);
     await user.click(screen.getByRole('button', { name: 'Close notification' }));
 
     await waitFor(() => expect(screen.queryByText('Changes saved')).not.toBeInTheDocument());
@@ -494,7 +641,11 @@ function ToastExample() {
       <button
         type="button"
         onClick={() =>
-          manager.add({ title: 'Changes saved', description: 'Your project is up to date.' })
+          manager.add({
+            title: 'Changes saved',
+            description: 'Your project is up to date.',
+            type: 'success',
+          })
         }
       >
         Show notification

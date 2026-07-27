@@ -19,9 +19,9 @@ export interface InputProps extends Omit<BaseInputProps, 'className' | 'size'> {
 }
 
 const inputSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-8 px-2.5 text-xs',
-  md: 'h-9 px-3 text-sm',
-  lg: 'h-10 px-3.5 text-sm',
+  sm: 'h-(--city-control-sm) px-2.5 text-xs',
+  md: 'h-(--city-control-md) px-3 text-sm',
+  lg: 'h-(--city-control-lg) px-3.5 text-sm',
 };
 
 const inputClasses =
@@ -90,9 +90,9 @@ export interface InputGroupProps extends Omit<
 }
 
 const inputGroupSizeClasses: Record<ControlSize, string> = {
-  sm: 'min-h-8 text-xs',
-  md: 'min-h-9 text-sm',
-  lg: 'min-h-10 text-sm',
+  sm: 'min-h-(--city-control-sm) text-xs',
+  md: 'min-h-(--city-control-md) text-sm',
+  lg: 'min-h-(--city-control-lg) text-sm',
 };
 
 export const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(

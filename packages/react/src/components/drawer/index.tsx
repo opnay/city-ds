@@ -25,6 +25,8 @@ function classes<State>(className: StateClassName<State> | undefined, defaults: 
 
 export const DRAWER_SIDES = ['left', 'right', 'bottom'] as const;
 export type DrawerSide = (typeof DRAWER_SIDES)[number];
+export const DRAWER_SIZES = ['sm', 'md', 'lg', 'xl', 'full'] as const;
+export type DrawerSize = (typeof DRAWER_SIZES)[number];
 
 export type DrawerProviderProps = BaseDrawerProviderProps;
 export type DrawerRootProps<Payload = unknown> = BaseDrawerRootProps<Payload>;
@@ -35,12 +37,16 @@ export type DrawerTitleProps = BaseDrawerTitleProps;
 export type DrawerDescriptionProps = BaseDrawerDescriptionProps;
 export type DrawerCloseProps = BaseDrawerCloseProps;
 export type DrawerContentProps = BaseDrawerContentProps;
+export type DrawerBodyProps = DrawerContentProps;
 export type DrawerSwipeAreaProps = BaseDrawerSwipeAreaProps;
+export type DrawerHeaderProps = React.ComponentPropsWithoutRef<'div'>;
+export type DrawerFooterProps = React.ComponentPropsWithoutRef<'div'>;
 export interface DrawerViewportProps extends BaseDrawerViewportProps {
   side?: DrawerSide;
 }
 export interface DrawerPopupProps extends BaseDrawerPopupProps {
   side?: DrawerSide;
+  size?: DrawerSize;
 }
 
 const viewportSideClasses: Record<DrawerSide, string> = {
@@ -50,9 +56,33 @@ const viewportSideClasses: Record<DrawerSide, string> = {
 };
 
 const popupSideClasses: Record<DrawerSide, string> = {
-  left: 'h-full max-h-dvh w-[min(26rem,calc(100vw-2rem))] rounded-r-city-lg border-r',
-  right: 'h-full max-h-dvh w-[min(26rem,calc(100vw-2rem))] rounded-l-city-lg border-l',
-  bottom: 'max-h-[min(42rem,calc(100dvh-2rem))] w-full rounded-t-city-lg border-t',
+  left: 'h-full max-h-dvh rounded-r-city-lg border-r',
+  right: 'h-full max-h-dvh rounded-l-city-lg border-l',
+  bottom: 'w-full rounded-t-city-lg border-t',
+};
+
+const popupSizeClasses: Record<DrawerSide, Record<DrawerSize, string>> = {
+  left: {
+    sm: 'w-[min(20rem,calc(100vw-2rem))]',
+    md: 'w-[min(26rem,calc(100vw-2rem))]',
+    lg: 'w-[min(32rem,calc(100vw-2rem))]',
+    xl: 'w-[min(40rem,calc(100vw-2rem))]',
+    full: 'w-full',
+  },
+  right: {
+    sm: 'w-[min(20rem,calc(100vw-2rem))]',
+    md: 'w-[min(26rem,calc(100vw-2rem))]',
+    lg: 'w-[min(32rem,calc(100vw-2rem))]',
+    xl: 'w-[min(40rem,calc(100vw-2rem))]',
+    full: 'w-full',
+  },
+  bottom: {
+    sm: 'max-h-[50dvh]',
+    md: 'max-h-[min(42rem,calc(100dvh-2rem))]',
+    lg: 'max-h-[calc(100dvh-4rem)]',
+    xl: 'max-h-[calc(100dvh-2rem)]',
+    full: 'h-full max-h-dvh',
+  },
 };
 
 export const DrawerProvider: React.FC<DrawerProviderProps> = BaseDrawer.Provider;
@@ -100,21 +130,42 @@ export const DrawerViewport = React.forwardRef<HTMLDivElement, DrawerViewportPro
 );
 
 export const DrawerPopup = React.forwardRef<HTMLDivElement, DrawerPopupProps>(
-  ({ className, side = 'right', ...props }, ref) => (
+  ({ className, side = 'right', size = 'md', ...props }, ref) => (
     <BaseDrawer.Popup
       {...props}
       ref={ref}
+      data-city-drawer-popup=""
       data-side={side}
+      data-size={size}
       className={classes(
         className,
         cn(
           'border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup flex flex-col outline-none',
           popupSideClasses[side],
+          popupSizeClasses[side][size],
         ),
       )}
     />
   ),
 );
+
+DrawerPopup.displayName = 'Drawer.Popup';
+
+export const DrawerHeader = React.forwardRef<HTMLDivElement, DrawerHeaderProps>(
+  ({ className, ...props }, ref) => (
+    <div
+      {...props}
+      ref={ref}
+      className={cn(
+        'border-city-border flex shrink-0 items-start justify-between gap-4 border-b p-5',
+        className,
+      )}
+      data-city-drawer-header=""
+    />
+  ),
+);
+
+DrawerHeader.displayName = 'Drawer.Header';
 
 export const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps>(
   ({ className, ...props }, ref) => (
@@ -122,9 +173,30 @@ export const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps
       {...props}
       ref={ref}
       className={classes(className, 'flex-1 overflow-auto p-5')}
+      data-city-drawer-body=""
     />
   ),
 );
+
+DrawerContent.displayName = 'Drawer.Content';
+
+export const DrawerBody = DrawerContent;
+
+export const DrawerFooter = React.forwardRef<HTMLDivElement, DrawerFooterProps>(
+  ({ className, ...props }, ref) => (
+    <div
+      {...props}
+      ref={ref}
+      className={cn(
+        'border-city-border bg-city-surface-raised flex shrink-0 justify-end gap-2 border-t px-5 py-4',
+        className,
+      )}
+      data-city-drawer-footer=""
+    />
+  ),
+);
+
+DrawerFooter.displayName = 'Drawer.Footer';
 
 export const DrawerSwipeArea = React.forwardRef<HTMLDivElement, DrawerSwipeAreaProps>(
   ({ className, ...props }, ref) => (
@@ -180,6 +252,9 @@ export const Drawer = {
   Backdrop: DrawerBackdrop,
   Viewport: DrawerViewport,
   Popup: DrawerPopup,
+  Header: DrawerHeader,
+  Body: DrawerBody,
+  Footer: DrawerFooter,
   Content: DrawerContent,
   SwipeArea: DrawerSwipeArea,
   Title: DrawerTitle,

@@ -13,6 +13,7 @@ import { Fieldset } from '../../src/components/fieldset';
 import { Input, InputGroup, Textarea } from '../../src/components/input';
 import { RadioGroup } from '../../src/components/radio-group';
 import { SearchField } from '../../src/components/search-field';
+import { Select } from '../../src/components/select';
 import { Switch } from '../../src/components/switch';
 import { Toggle } from '../../src/components/toggle';
 import { ToggleGroup } from '../../src/components/toggle-group';
@@ -28,6 +29,9 @@ describe('form and display controls', () => {
         <Button variant="secondary">Secondary</Button>
         <Button variant="outline">Outline</Button>
         <Button variant="ghost">Ghost</Button>
+        <Button aria-label="Open settings" iconOnly size="sm" variant="ghost">
+          <span aria-hidden="true">S</span>
+        </Button>
         <Button disabled onClick={onClick}>
           Disabled
         </Button>
@@ -53,17 +57,115 @@ describe('form and display controls', () => {
       'hover:bg-city-accent',
       'active:bg-city-accent-active',
     );
+    expect(screen.getByRole('button', { name: 'Open settings' })).toHaveAttribute(
+      'data-city-icon-only',
+      '',
+    );
+    expect(screen.getByRole('button', { name: 'Open settings' })).toHaveClass(
+      'city-button',
+      'h-(--city-control-sm)',
+      'w-(--city-control-sm)',
+      'px-0',
+    );
+  });
+
+  it('uses shared control-height tokens for adjacent control sizes', () => {
+    render(
+      <>
+        <Button size="sm">Small button</Button>
+        <Toggle aria-label="Medium toggle" size="md" />
+        <Input aria-label="Large input" size="lg" />
+        <InputGroup.Root data-testid="small-input-group" size="sm">
+          <Input aria-label="Grouped input" size="sm" />
+        </InputGroup.Root>
+      </>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Small button' })).toHaveClass(
+      'h-(--city-control-sm)',
+    );
+    expect(screen.getByRole('button', { name: 'Medium toggle' })).toHaveClass(
+      'h-(--city-control-md)',
+    );
+    expect(screen.getByRole('textbox', { name: 'Large input' })).toHaveClass(
+      'h-(--city-control-lg)',
+    );
+    expect(screen.getByTestId('small-input-group')).toHaveClass('min-h-(--city-control-sm)');
+  });
+
+  it('sizes Select and Combobox from their roots and styles invalid fields', () => {
+    render(
+      <>
+        <Field.Root invalid>
+          <Select.Root defaultValue="central" items={{ central: 'Central' }} size="sm">
+            <Field.Label>District</Field.Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Icon />
+            </Select.Trigger>
+          </Select.Root>
+        </Field.Root>
+        <Field.Root invalid>
+          <Combobox.Root items={comboboxProjects} size="lg">
+            <Field.Label>Facility</Field.Label>
+            <Combobox.InputGroup>
+              <Combobox.Input />
+              <Combobox.Trigger />
+            </Combobox.InputGroup>
+          </Combobox.Root>
+        </Field.Root>
+      </>,
+    );
+
+    const select = screen.getByRole('combobox', { name: 'District' });
+    const combobox = screen.getByRole('combobox', { name: 'Facility' });
+    const comboboxGroup = combobox.parentElement;
+
+    expect(select).toHaveAttribute('data-city-size', 'sm');
+    expect(select).toHaveAttribute('data-invalid');
+    expect(select).toHaveClass('h-(--city-control-sm)', 'data-[invalid]:border-city-destructive');
+    expect(combobox).toHaveAttribute('data-city-size', 'lg');
+    expect(combobox).toHaveClass('h-(--city-control-lg)');
+    expect(comboboxGroup).toHaveAttribute('data-city-size', 'lg');
+    expect(comboboxGroup).toHaveAttribute('data-invalid');
+    expect(comboboxGroup).toHaveClass(
+      'min-h-(--city-control-lg)',
+      'data-[invalid]:border-city-destructive',
+    );
   });
 
   it('renders Badge through the Base UI render API', () => {
     render(
-      <Badge render={<a href="/release" />} variant="outline">
-        v1
-      </Badge>,
+      <>
+        <Badge render={<a href="/release" />} variant="outline">
+          v1
+        </Badge>
+        <Badge aria-hidden="true" count={7} size="sm" variant="destructive" />
+        <Badge data-testid="status-dot" dot />
+        <Badge appearance="outline" tone="warning">
+          Attention
+        </Badge>
+        <Badge aria-label="Healthy" data-testid="success-dot" dot tone="success" />
+      </>,
     );
 
     expect(screen.getByRole('link', { name: 'v1' })).toHaveAttribute('href', '/release');
     expect(screen.getByRole('link', { name: 'v1' })).toHaveClass('border-city-border');
+    expect(screen.getByRole('link', { name: 'v1' })).toHaveAttribute('data-city-badge', 'label');
+    expect(screen.getByText('7')).toHaveAttribute('data-city-badge', 'count');
+    expect(screen.getByText('7')).toHaveAttribute('data-city-size', 'sm');
+    expect(screen.getByText('7')).toHaveClass('h-4', 'min-w-4', 'rounded-city-full');
+    expect(screen.getByText('7')).not.toHaveClass('rounded-city-xs');
+    expect(screen.getByTestId('status-dot')).toHaveAttribute('data-city-badge', 'dot');
+    expect(screen.getByTestId('status-dot')).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.getByTestId('status-dot')).toHaveClass('size-2', 'rounded-city-full');
+    expect(screen.getByTestId('status-dot')).not.toHaveClass('rounded-city-xs');
+    expect(screen.getByText('Attention')).toHaveAttribute('data-appearance', 'outline');
+    expect(screen.getByText('Attention')).toHaveAttribute('data-tone', 'warning');
+    expect(screen.getByText('Attention')).toHaveClass('border-city-warning/40');
+    expect(screen.getByTestId('success-dot')).toHaveAttribute('data-tone', 'success');
+    expect(screen.getByTestId('success-dot')).toHaveClass('bg-city-success');
+    expect(screen.getByRole('img', { name: 'Healthy' })).toBe(screen.getByTestId('success-dot'));
   });
 
   it('connects Field label, description, error, and Input state', () => {
@@ -99,6 +201,32 @@ describe('form and display controls', () => {
     expect(screen.getByText('Choose every channel this project can use.')).toHaveClass(
       'text-city-muted-foreground',
     );
+  });
+
+  it('supports plain and band Fieldset appearances while preserving outline defaults', () => {
+    render(
+      <>
+        <Fieldset.Root appearance="plain">
+          <Fieldset.Legend>Plain group</Fieldset.Legend>
+        </Fieldset.Root>
+        <Fieldset.Root appearance="band">
+          <Fieldset.Legend>Band group</Fieldset.Legend>
+        </Fieldset.Root>
+        <Fieldset.Root>
+          <Fieldset.Legend>Outline group</Fieldset.Legend>
+        </Fieldset.Root>
+      </>,
+    );
+
+    const plain = screen.getByRole('group', { name: 'Plain group' });
+    const band = screen.getByRole('group', { name: 'Band group' });
+    const outline = screen.getByRole('group', { name: 'Outline group' });
+
+    expect(plain).toHaveAttribute('data-appearance', 'plain');
+    expect(plain).toHaveClass('border-0', 'p-0');
+    expect(band).toHaveClass('border-y', 'py-4');
+    expect(outline).toHaveAttribute('data-appearance', 'outline');
+    expect(outline).toHaveClass('rounded-city-md', 'border', 'p-4');
   });
 
   it('propagates disabled Fieldset state to native controls and composed radio groups', async () => {
@@ -347,6 +475,26 @@ describe('form and display controls', () => {
     );
   });
 
+  it('inherits RadioGroup root size while preserving item overrides', () => {
+    render(
+      <RadioGroup aria-label="Density" defaultValue="comfortable" size="lg">
+        <RadioGroup.Item value="comfortable">Comfortable</RadioGroup.Item>
+        <RadioGroup.Item size="sm" value="compact">
+          Compact
+        </RadioGroup.Item>
+      </RadioGroup>,
+    );
+
+    const comfortable = screen.getByRole('radio', { name: 'Comfortable' });
+    const compact = screen.getByRole('radio', { name: 'Compact' });
+
+    expect(comfortable).toHaveAttribute('data-city-size', 'lg');
+    expect(comfortable).toHaveClass('size-5');
+    expect(comfortable.querySelector('span')).toHaveClass('size-2.5');
+    expect(compact).toHaveAttribute('data-city-size', 'sm');
+    expect(compact).toHaveClass('size-3.5');
+  });
+
   it('groups CheckboxGroup items with shared label, value changes, keyboard, and form values', async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();
@@ -538,8 +686,8 @@ describe('form and display controls', () => {
     const overriddenItem = screen.getByRole('button', { name: 'Italic' });
 
     expect(ref.current).toBe(group);
-    expect(inheritedItem).toHaveClass('h-10', 'bg-city-primary');
-    expect(overriddenItem).toHaveClass('h-8', 'hover:bg-city-accent');
+    expect(inheritedItem).toHaveClass('h-(--city-control-lg)', 'bg-city-primary');
+    expect(overriddenItem).toHaveClass('h-(--city-control-sm)', 'hover:bg-city-accent');
   });
 
   it('moves ToggleGroup focus with arrow keys', async () => {

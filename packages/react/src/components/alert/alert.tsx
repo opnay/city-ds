@@ -6,17 +6,24 @@ import { useRender } from '@base-ui/react/use-render';
 
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
+import type { FeedbackTone } from '../../types';
 
 export const ALERT_VARIANTS = ['info', 'success', 'warning', 'error'] as const;
 export type AlertVariant = (typeof ALERT_VARIANTS)[number];
+export const ALERT_APPEARANCES = ['subtle', 'outline'] as const;
+export type AlertAppearance = (typeof ALERT_APPEARANCES)[number];
 
 export interface AlertState extends Record<string, unknown> {
+  appearance: AlertAppearance;
+  tone: FeedbackTone;
   variant: AlertVariant;
 }
 
 interface AlertContextValue {
+  appearance: AlertAppearance;
   descriptionId: string;
   titleId: string;
+  tone: FeedbackTone;
   variant: AlertVariant;
 }
 
@@ -32,48 +39,85 @@ function useAlertContext(componentName: string): AlertContextValue {
   return context;
 }
 
-const variantClasses: Record<AlertVariant, string> = {
-  info: 'border-city-border bg-city-muted text-city-foreground',
-  success: 'border-city-border bg-city-muted text-city-foreground',
-  warning: 'border-city-border bg-city-muted text-city-foreground',
-  error: 'border-city-destructive/30 bg-city-destructive/10 text-city-foreground',
+const toneAppearanceClasses: Record<FeedbackTone, Record<AlertAppearance, string>> = {
+  neutral: {
+    subtle: 'border-city-border bg-city-muted text-city-foreground',
+    outline: 'border-city-border bg-city-surface-raised text-city-foreground',
+  },
+  info: {
+    subtle: 'border-city-info/30 bg-city-info/10 text-city-foreground',
+    outline: 'border-city-info/40 bg-city-surface-raised text-city-foreground',
+  },
+  success: {
+    subtle: 'border-city-success/30 bg-city-success/10 text-city-foreground',
+    outline: 'border-city-success/40 bg-city-surface-raised text-city-foreground',
+  },
+  warning: {
+    subtle: 'border-city-warning/30 bg-city-warning/10 text-city-foreground',
+    outline: 'border-city-warning/40 bg-city-surface-raised text-city-foreground',
+  },
+  destructive: {
+    subtle: 'border-city-destructive/30 bg-city-destructive/10 text-city-foreground',
+    outline: 'border-city-destructive/40 bg-city-surface-raised text-city-foreground',
+  },
 };
 
-const iconClasses: Record<AlertVariant, string> = {
-  info: 'text-city-foreground',
-  success: 'text-city-foreground',
-  warning: 'text-city-foreground',
-  error: 'text-city-destructive',
+const iconClasses: Record<FeedbackTone, string> = {
+  neutral: 'text-city-muted-foreground',
+  info: 'text-city-info',
+  success: 'text-city-success',
+  warning: 'text-city-warning',
+  destructive: 'text-city-destructive',
 };
 
-const defaultLiveByVariant: Record<AlertVariant, React.AriaAttributes['aria-live']> = {
+const defaultLiveByTone: Record<FeedbackTone, React.AriaAttributes['aria-live']> = {
+  neutral: 'polite',
   info: 'polite',
   success: 'polite',
   warning: 'polite',
-  error: 'assertive',
+  destructive: 'assertive',
 };
 
-const defaultRoleByVariant: Record<AlertVariant, React.AriaRole> = {
+const defaultRoleByTone: Record<FeedbackTone, React.AriaRole> = {
+  neutral: 'status',
   info: 'status',
   success: 'status',
   warning: 'status',
-  error: 'alert',
+  destructive: 'alert',
 };
 
-const defaultIcons: Record<AlertVariant, React.ComponentType<{ className?: string }>> = {
+const defaultIcons: Record<FeedbackTone, React.ComponentType<{ className?: string }>> = {
+  neutral: Info,
   info: Info,
   success: CircleCheck,
   warning: TriangleAlert,
-  error: CircleAlert,
+  destructive: CircleAlert,
+};
+
+const variantTones: Record<AlertVariant, FeedbackTone> = {
+  info: 'info',
+  success: 'success',
+  warning: 'warning',
+  error: 'destructive',
+};
+
+const toneVariants: Record<FeedbackTone, AlertVariant> = {
+  neutral: 'info',
+  info: 'info',
+  success: 'success',
+  warning: 'warning',
+  destructive: 'error',
 };
 
 export interface AlertRootProps extends Omit<
   useRender.ComponentProps<'div', AlertState>,
   'className'
 > {
+  appearance?: AlertAppearance;
   className?: StateClassName<AlertState>;
   icon?: React.ReactNode;
   showIcon?: boolean;
+  tone?: FeedbackTone;
   variant?: AlertVariant;
 }
 
@@ -82,24 +126,28 @@ export const AlertRoot = React.forwardRef<HTMLDivElement, AlertRootProps>(functi
     'aria-describedby': ariaDescribedBy,
     'aria-labelledby': ariaLabelledBy,
     'aria-live': ariaLive,
+    appearance = 'subtle',
     children,
     className,
     icon,
     render,
     role,
     showIcon = true,
-    variant = 'info',
+    tone: toneProp,
+    variant: variantProp,
     ...props
   },
   ref,
 ) {
   const titleId = React.useId();
   const descriptionId = React.useId();
-  const state: AlertState = { variant };
-  const DefaultIcon = defaultIcons[variant];
+  const tone = toneProp ?? variantTones[variantProp ?? 'info'];
+  const variant = variantProp ?? toneVariants[tone];
+  const state: AlertState = { appearance, tone, variant };
+  const DefaultIcon = defaultIcons[tone];
 
   return (
-    <AlertContext.Provider value={{ descriptionId, titleId, variant }}>
+    <AlertContext.Provider value={{ appearance, descriptionId, titleId, tone, variant }}>
       {useRender({
         defaultTagName: 'div',
         ref,
@@ -109,20 +157,23 @@ export const AlertRoot = React.forwardRef<HTMLDivElement, AlertRootProps>(functi
           ...props,
           'aria-describedby': ariaDescribedBy ?? descriptionId,
           'aria-labelledby': ariaLabelledBy ?? titleId,
-          'aria-live': ariaLive ?? defaultLiveByVariant[variant],
+          'aria-live': ariaLive ?? defaultLiveByTone[tone],
+          'data-appearance': appearance,
+          'data-city-alert-root': '',
+          'data-tone': tone,
           'data-variant': variant,
-          role: role ?? defaultRoleByVariant[variant],
+          role: role ?? defaultRoleByTone[tone],
           className: cn(
             'grid w-full grid-cols-[auto_1fr] gap-x-3 gap-y-1 rounded-city-md border p-4 text-sm',
             !showIcon && 'grid-cols-1',
-            variantClasses[variant],
+            toneAppearanceClasses[tone][appearance],
             resolveClassName(className, state),
           ),
           children: (
             <>
               {showIcon && (
                 <span
-                  className={cn('mt-0.5 inline-flex size-5 shrink-0', iconClasses[variant])}
+                  className={cn('mt-0.5 inline-flex size-5 shrink-0', iconClasses[tone])}
                   aria-hidden
                 >
                   {icon ?? <DefaultIcon className="size-5" />}
@@ -152,7 +203,11 @@ export const AlertTitle = React.forwardRef<HTMLHeadingElement, AlertTitleProps>(
   ref,
 ) {
   const context = useAlertContext('Alert.Title');
-  const state: AlertState = { variant: context.variant };
+  const state: AlertState = {
+    appearance: context.appearance,
+    tone: context.tone,
+    variant: context.variant,
+  };
 
   return useRender({
     defaultTagName: `h${level}` as 'h2',
@@ -182,7 +237,11 @@ export interface AlertDescriptionProps extends Omit<
 export const AlertDescription = React.forwardRef<HTMLDivElement, AlertDescriptionProps>(
   function AlertDescription({ className, id, render, ...props }, ref) {
     const context = useAlertContext('Alert.Description');
-    const state: AlertState = { variant: context.variant };
+    const state: AlertState = {
+      appearance: context.appearance,
+      tone: context.tone,
+      variant: context.variant,
+    };
 
     return useRender({
       defaultTagName: 'div',
@@ -192,11 +251,7 @@ export const AlertDescription = React.forwardRef<HTMLDivElement, AlertDescriptio
       props: {
         ...props,
         id: id ?? context.descriptionId,
-        className: cn(
-          'leading-6',
-          context.variant === 'error' ? 'text-city-foreground' : 'text-city-muted-foreground',
-          resolveClassName(className, state),
-        ),
+        className: cn('text-city-foreground leading-6', resolveClassName(className, state)),
       },
     });
   },
@@ -216,7 +271,11 @@ export const AlertAction = React.forwardRef<HTMLDivElement, AlertActionProps>(fu
   ref,
 ) {
   const context = useAlertContext('Alert.Action');
-  const state: AlertState = { variant: context.variant };
+  const state: AlertState = {
+    appearance: context.appearance,
+    tone: context.tone,
+    variant: context.variant,
+  };
 
   return useRender({
     defaultTagName: 'div',

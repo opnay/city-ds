@@ -17,14 +17,15 @@ export type ButtonVariant = (typeof BUTTON_VARIANTS)[number];
 
 export interface ButtonProps extends Omit<BaseButtonProps, 'className'> {
   className?: StateClassName<ButtonState>;
+  iconOnly?: boolean;
   size?: ControlSize;
   variant?: ButtonVariant;
 }
 
 const buttonSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-8 gap-1.5 px-2.5 text-xs',
-  md: 'h-9 gap-2 px-3 text-sm',
-  lg: 'h-10 gap-2 px-4 text-sm',
+  sm: 'h-(--city-control-sm) gap-1.5 px-2.5 text-xs',
+  md: 'h-(--city-control-md) gap-2 px-3 text-sm',
+  lg: 'h-(--city-control-lg) gap-2 px-4 text-sm',
 };
 
 const buttonVariantClasses: Record<ButtonVariant, string> = {
@@ -39,18 +40,27 @@ const buttonVariantClasses: Record<ButtonVariant, string> = {
     'bg-city-destructive text-city-destructive-foreground hover:bg-city-destructive/90 active:bg-city-destructive/80',
 };
 
+const iconOnlySizeClasses: Record<ControlSize, string> = {
+  sm: 'w-(--city-control-sm) gap-0 px-0',
+  md: 'w-(--city-control-md) gap-0 px-0',
+  lg: 'w-(--city-control-lg) gap-0 px-0',
+};
+
 export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button(
-  { className, size = 'md', variant = 'primary', ...props },
+  { className, iconOnly = false, size = 'md', variant = 'primary', ...props },
   ref,
 ) {
   return (
     <BaseButton
       {...props}
       ref={ref}
+      data-city-icon-only={iconOnly ? '' : undefined}
+      data-city-size={size}
       className={(state) =>
         cn(
-          'rounded-city-sm focus-visible:ring-city-ring focus-visible:ring-offset-city-background inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+          'city-button rounded-city-sm focus-visible:ring-city-ring focus-visible:ring-offset-city-background relative inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
           buttonSizeClasses[size],
+          iconOnly && iconOnlySizeClasses[size],
           buttonVariantClasses[variant],
           resolveClassName(className, state),
         )

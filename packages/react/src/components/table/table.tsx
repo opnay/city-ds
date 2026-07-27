@@ -5,7 +5,7 @@ import { useRender } from '@base-ui/react/use-render';
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
 import { Checkbox } from '../checkbox';
 import { cn } from '../../lib/cn';
-import type { ControlSize } from '../../types';
+import type { ControlSize, SurfaceAppearance } from '../../types';
 
 export const TABLE_VARIANTS = ['line', 'surface'] as const;
 
@@ -15,18 +15,27 @@ export interface TableScrollAreaProps extends Omit<
   React.ComponentPropsWithoutRef<'div'>,
   'className'
 > {
+  appearance?: SurfaceAppearance;
   className?: string;
 }
 
+const scrollAreaAppearanceClasses: Record<SurfaceAppearance, string> = {
+  plain: '',
+  band: 'border-city-border border-y',
+  outline: 'rounded-city-md border-city-border border',
+};
+
 export const TableScrollArea = React.forwardRef<HTMLDivElement, TableScrollAreaProps>(
-  ({ className, tabIndex = 0, ...props }, ref) => (
+  ({ appearance = 'outline', className, tabIndex = 0, ...props }, ref) => (
     <div
       {...props}
       ref={ref}
       className={cn(
-        'rounded-city-md border-city-border focus-visible:ring-city-ring focus-visible:ring-offset-city-background w-full overflow-x-auto border outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+        'focus-visible:ring-city-ring focus-visible:ring-offset-city-background w-full overflow-x-auto outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+        scrollAreaAppearanceClasses[appearance],
         className,
       )}
+      data-appearance={appearance}
       data-city-table-scroll-area=""
       tabIndex={tabIndex}
     />

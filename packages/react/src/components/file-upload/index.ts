@@ -1,4 +1,5 @@
 export {
+  DEFAULT_FILE_UPLOAD_LABELS,
   FileUpload,
   FileUploadItem,
   FileUploadList,
@@ -7,6 +8,7 @@ export {
   FileUploadTrigger,
 } from './file-upload';
 export type {
+  FileUploadLabels,
   FileUploadItemProps,
   FileUploadListProps,
   FileUploadRemoveProps,

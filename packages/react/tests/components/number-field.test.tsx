@@ -98,4 +98,29 @@ describe('NumberField', () => {
     await user.click(screen.getByRole('button', { name: 'Increase uncontrolled quantity' }));
     expect(uncontrolledInput).toHaveValue('4');
   });
+
+  it('inherits the root size while allowing leaf overrides', () => {
+    render(
+      <Field.Root>
+        <Field.Label>Capacity</Field.Label>
+        <NumberField.Root defaultValue={8} size="lg">
+          <NumberField.Group data-testid="capacity-group">
+            <NumberField.Input />
+            <NumberField.Decrement aria-label="Decrease capacity" />
+            <NumberField.Increment aria-label="Increase capacity" size="sm" />
+          </NumberField.Group>
+        </NumberField.Root>
+      </Field.Root>,
+    );
+
+    const input = screen.getByRole('textbox', { name: 'Capacity' });
+    const decrement = screen.getByRole('button', { name: 'Decrease capacity' });
+    const increment = screen.getByRole('button', { name: 'Increase capacity' });
+
+    expect(screen.getByTestId('capacity-group')).toHaveClass('min-h-(--city-control-lg)');
+    expect(input).toHaveClass('h-(--city-control-lg)');
+    expect(decrement).toHaveClass('h-(--city-control-lg)', 'w-(--city-control-lg)');
+    expect(increment).toHaveAttribute('data-city-size', 'sm');
+    expect(increment).toHaveClass('h-(--city-control-sm)', 'w-(--city-control-sm)');
+  });
 });

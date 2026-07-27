@@ -75,6 +75,27 @@ export const Default: Story = {
   },
 };
 
+export const Compact: Story = {
+  args: {
+    disabled: false,
+    multiple: true,
+    withFiles: true,
+  },
+  render: () => (
+    <div style={{ minWidth: 320, maxWidth: 480 }}>
+      <FileUpload.Root
+        aria-label="Compact project files"
+        defaultFiles={createExampleFiles()}
+        density="compact"
+        multiple
+      >
+        <FileUpload.Trigger>Choose files</FileUpload.Trigger>
+        <FileUpload.List aria-label="Selected compact files" />
+      </FileUpload.Root>
+    </div>
+  ),
+};
+
 export const Multiple: Story = {
   args: {
     accept: '.md,.txt',
@@ -107,4 +128,28 @@ export const Disabled: Story = {
     multiple: true,
     withFiles: true,
   },
+};
+
+export const KoreanLabels: Story = {
+  args: {
+    disabled: false,
+    multiple: false,
+    withFiles: true,
+  },
+  render: () => (
+    <div style={{ minWidth: 320, maxWidth: 480 }}>
+      <FileUpload.Root
+        aria-label="프로젝트 첨부 파일"
+        defaultFiles={createExampleFiles()}
+        labels={{
+          input: '파일 업로드',
+          trigger: (multiple) => (multiple ? '파일들 선택' : '파일 선택'),
+          remove: (file) => (file ? `${file.name} 제거` : '파일 제거'),
+        }}
+      >
+        <FileUpload.Trigger />
+        <FileUpload.List aria-label="선택된 파일" />
+      </FileUpload.Root>
+    </div>
+  ),
 };

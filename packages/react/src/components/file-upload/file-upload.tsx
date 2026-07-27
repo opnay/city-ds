@@ -4,6 +4,8 @@ import * as React from 'react';
 import { Button as BaseButton } from '@base-ui/react/button';
 import { useRender } from '@base-ui/react/use-render';
 import { cn } from '../../lib/cn';
+import type { Density } from '../../types';
+import { useDensity } from '../density-provider';
 
 function filesMatch(first: File, second: File): boolean {
   return (
@@ -51,15 +53,29 @@ function formatFileSize(bytes: number): string {
 }
 
 export interface FileUploadState extends Record<string, unknown> {
+  density: Density;
   disabled: boolean;
   files: readonly File[];
   multiple: boolean;
 }
 
+export interface FileUploadLabels {
+  input: string;
+  trigger: (multiple: boolean) => string;
+  remove: (file?: File) => string;
+}
+
+export const DEFAULT_FILE_UPLOAD_LABELS: FileUploadLabels = {
+  input: 'File upload',
+  trigger: () => 'Choose files',
+  remove: (file) => (file ? `Remove ${file.name}` : 'Remove file'),
+};
+
 interface FileUploadContextValue extends FileUploadState {
   accept?: string | undefined;
   inputId: string;
   inputRef: React.RefObject<HTMLInputElement | null>;
+  labels: FileUploadLabels;
   name?: string | undefined;
   openFileDialog: () => void;
   removeFile: (index: number) => void;
@@ -85,8 +101,10 @@ export interface FileUploadRootProps extends Omit<
   children?: React.ReactNode;
   className?: string;
   defaultFiles?: readonly File[];
+  density?: Density;
   disabled?: boolean;
   files?: readonly File[];
+  labels?: Partial<FileUploadLabels>;
   multiple?: boolean;
   name?: string;
   onFilesChange?: (files: File[]) => void;
@@ -100,8 +118,10 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
       children,
       className,
       defaultFiles = [],
+      density: densityProp,
       disabled = false,
       files: controlledFiles,
+      labels,
       multiple = false,
       name,
       onFilesChange,
@@ -110,15 +130,20 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
     },
     ref,
   ) => {
+    const density = useDensity(densityProp);
     const [uncontrolledFiles, setUncontrolledFiles] = React.useState<File[]>(() =>
       uniqueFiles(defaultFiles),
     );
     const inputRef = React.useRef<HTMLInputElement>(null);
     const inputId = React.useId();
     const files = controlledFiles === undefined ? uncontrolledFiles : uniqueFiles(controlledFiles);
+    const resolvedLabels = React.useMemo(
+      () => ({ ...DEFAULT_FILE_UPLOAD_LABELS, ...labels }),
+      [labels],
+    );
     const state = React.useMemo<FileUploadState>(
-      () => ({ disabled, files, multiple }),
-      [disabled, files, multiple],
+      () => ({ density, disabled, files, multiple }),
+      [density, disabled, files, multiple],
     );
     const setFiles = React.useCallback(
       (nextFiles: File[]) => {
@@ -150,22 +175,37 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
     const context = React.useMemo<FileUploadContextValue>(
       () => ({
         accept,
+        density,
         disabled,
         files,
         inputId,
         inputRef,
+        labels: resolvedLabels,
         multiple,
         name,
         openFileDialog,
         removeFile,
       }),
-      [accept, disabled, files, inputId, multiple, name, openFileDialog, removeFile],
+      [
+        accept,
+        density,
+        disabled,
+        files,
+        inputId,
+        multiple,
+        name,
+        openFileDialog,
+        removeFile,
+        resolvedLabels,
+      ],
     );
     const content = (
       <>
         <input
           accept={accept}
-          aria-label={props['aria-label'] ?? 'File upload'}
+          aria-label={
+            props['aria-label'] ?? (props['aria-labelledby'] ? undefined : resolvedLabels.input)
+          }
           aria-labelledby={props['aria-labelledby']}
           className="sr-only"
           data-city-file-upload-input=""
@@ -191,6 +231,7 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
         children: content,
         className: cn('grid gap-2', className),
         'data-city-file-upload-root': '',
+        'data-city-density': density,
         'data-disabled': disabled ? '' : undefined,
         'data-file-count': String(files.length),
       },
@@ -223,9 +264,13 @@ export const FileUploadTrigger = React.forwardRef<HTMLElement, FileUploadTrigger
         {...props}
         aria-controls={context.inputId}
         className={cn(
-          'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:outline-city-ring inline-flex h-9 w-fit items-center justify-center border px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:outline-city-ring inline-flex w-fit items-center justify-center border font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          context.density === 'compact'
+            ? 'h-(--city-control-sm) px-2.5 text-xs'
+            : 'h-(--city-control-md) px-3 text-sm',
           className,
         )}
+        data-city-density={context.density}
         disabled={isDisabled}
         onClick={(event) => {
           onClick?.(event);
@@ -237,7 +282,7 @@ export const FileUploadTrigger = React.forwardRef<HTMLElement, FileUploadTrigger
         ref={ref}
         type="button"
       >
-        {children ?? 'Choose files'}
+        {children ?? context.labels.trigger(context.multiple)}
       </BaseButton>
     );
   },
@@ -280,8 +325,13 @@ export const FileUploadList = React.forwardRef<HTMLUListElement, FileUploadListP
       props: {
         ...props,
         children: content,
-        className: cn('grid list-none gap-1 p-0', className),
+        className: cn(
+          'grid list-none p-0',
+          context.density === 'compact' ? 'gap-0.5' : 'gap-1',
+          className,
+        ),
         'data-city-file-upload-list': '',
+        'data-city-density': context.density,
       },
     });
   },
@@ -326,10 +376,14 @@ export const FileUploadItem = React.forwardRef<HTMLLIElement, FileUploadItemProp
         ...props,
         children: content,
         className: cn(
-          'flex min-w-0 items-center gap-2 rounded-city-sm border border-city-border bg-city-surface px-2 py-1.5 text-sm text-city-foreground',
+          'flex min-w-0 items-center rounded-city-sm border border-city-border bg-city-surface text-city-foreground',
+          context.density === 'compact'
+            ? 'gap-1.5 px-1.5 py-1 text-xs'
+            : 'gap-2 px-2 py-1.5 text-sm',
           className,
         ),
         'data-city-file-upload-item': '',
+        'data-city-density': context.density,
       },
     });
   },
@@ -342,7 +396,10 @@ export interface FileUploadRemoveProps extends FileUploadButtonProps {
 }
 
 export const FileUploadRemove = React.forwardRef<HTMLElement, FileUploadRemoveProps>(
-  ({ children, className, disabled, index = -1, onClick, ...props }, ref) => {
+  (
+    { 'aria-label': ariaLabel, children, className, disabled, index = -1, onClick, ...props },
+    ref,
+  ) => {
     const context = useFileUploadContext('FileUpload.Remove');
     const file = context.files[index];
     const isDisabled = (disabled ?? context.disabled) || !file;
@@ -350,11 +407,13 @@ export const FileUploadRemove = React.forwardRef<HTMLElement, FileUploadRemovePr
     return (
       <BaseButton
         {...props}
-        aria-label={file ? `Remove ${file.name}` : 'Remove file'}
+        aria-label={ariaLabel ?? context.labels.remove(file)}
         className={cn(
-          'rounded-city-xs text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:outline-city-ring inline-flex h-6 shrink-0 items-center justify-center px-1.5 text-xs focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          'rounded-city-xs text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:outline-city-ring inline-flex shrink-0 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
+          context.density === 'compact' ? 'h-5 px-1 text-[0.625rem]' : 'h-6 px-1.5 text-xs',
           className,
         )}
+        data-city-density={context.density}
         disabled={isDisabled}
         onClick={(event) => {
           onClick?.(event);

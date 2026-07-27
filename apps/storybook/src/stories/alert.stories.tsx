@@ -58,6 +58,29 @@ export const Variants: Story = {
   ),
 };
 
+export const TonesAndAppearances: Story = {
+  render: () => (
+    <div className="grid w-96 gap-3">
+      <Alert.Root tone="neutral">
+        <Alert.Title>Scheduled update</Alert.Title>
+        <Alert.Description>Maintenance starts tonight at 23:00.</Alert.Description>
+      </Alert.Root>
+      <Alert.Root appearance="outline" tone="info">
+        <Alert.Title>New dataset available</Alert.Title>
+      </Alert.Root>
+      <Alert.Root tone="success">
+        <Alert.Title>Sync complete</Alert.Title>
+      </Alert.Root>
+      <Alert.Root tone="warning">
+        <Alert.Title>Review required</Alert.Title>
+      </Alert.Root>
+      <Alert.Root tone="destructive">
+        <Alert.Title>Import failed</Alert.Title>
+      </Alert.Root>
+    </div>
+  ),
+};
+
 export const WithAction: Story = {
   render: (args) => (
     <Alert.Root {...args} className="w-96">

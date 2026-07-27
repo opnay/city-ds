@@ -5,20 +5,31 @@ import { Fieldset as BaseFieldset } from '@base-ui/react/fieldset';
 
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
+import type { SurfaceAppearance } from '../../types';
 
 export type FieldsetRootProps = Omit<BaseFieldset.Root.Props, 'className'> & {
+  appearance?: SurfaceAppearance;
   className?: StateClassName<BaseFieldset.Root.State>;
 };
 
+const fieldsetAppearanceClasses: Record<SurfaceAppearance, string> = {
+  plain: 'border-0 p-0',
+  band: 'border-city-border bg-city-surface border-y py-4',
+  outline: 'border-city-border rounded-city-md border p-4',
+};
+
 export const FieldsetRoot = React.forwardRef<HTMLFieldSetElement, FieldsetRootProps>(
-  function FieldsetRoot({ className, ...props }, ref) {
+  function FieldsetRoot({ appearance = 'outline', className, ...props }, ref) {
     return (
       <BaseFieldset.Root
         {...props}
         ref={ref}
+        data-appearance={appearance}
+        data-city-fieldset-root=""
         className={(state) =>
           cn(
-            'border-city-border rounded-city-md grid gap-4 border p-4 disabled:cursor-not-allowed disabled:opacity-60',
+            'grid gap-4 disabled:cursor-not-allowed disabled:opacity-60',
+            fieldsetAppearanceClasses[appearance],
             resolveClassName(className, state),
           )
         }

@@ -69,6 +69,25 @@ export const Default: Story = {
   },
 };
 
+export const Compact: Story = {
+  args: {
+    boundaryCount: 1,
+    groupSize: 5,
+    initialPage: 4,
+    siblingCount: 1,
+    totalPages: 9,
+  },
+  render: ({ initialPage, totalPages }) => (
+    <Pagination.Root
+      aria-label="Compact project pages"
+      density="compact"
+      onPageChange={() => undefined}
+      page={initialPage}
+      totalPages={totalPages}
+    />
+  ),
+};
+
 export const ManyPages: Story = {
   args: {
     boundaryCount: 1,
@@ -97,4 +116,31 @@ export const FinalPage: Story = {
     siblingCount: 1,
     totalPages: 12,
   },
+};
+
+export const KoreanLabels: Story = {
+  args: {
+    boundaryCount: 1,
+    groupSize: 5,
+    initialPage: 7,
+    siblingCount: 1,
+    totalPages: 20,
+  },
+  render: ({ initialPage, totalPages }) => (
+    <Pagination.Root
+      labels={{
+        navigation: '작업 요청 페이지',
+        first: '첫 페이지로',
+        previous: '이전 페이지로',
+        previousGroup: (count) => `${count}페이지 뒤로`,
+        page: (page) => `${page}페이지`,
+        nextGroup: (count) => `${count}페이지 앞으로`,
+        next: '다음 페이지로',
+        last: '마지막 페이지로',
+      }}
+      onPageChange={() => undefined}
+      page={initialPage}
+      totalPages={totalPages}
+    />
+  ),
 };

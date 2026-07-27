@@ -43,6 +43,7 @@
   --city-control-sm: 2rem;
   --city-control-md: 2.25rem;
   --city-control-lg: 2.5rem;
+  --city-hit-target-min: 2.75rem;
 
   --city-duration-fast: 100ms;
   --city-duration-normal: 150ms;

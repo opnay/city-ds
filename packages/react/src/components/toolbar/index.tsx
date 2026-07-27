@@ -22,7 +22,7 @@ import {
 
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
-import type { ControlSize } from '../../types';
+import type { ControlSize, SurfaceAppearance } from '../../types';
 import type { ButtonVariant } from '../button';
 
 function classes<State>(className: StateClassName<State> | undefined, defaults: string) {
@@ -30,6 +30,7 @@ function classes<State>(className: StateClassName<State> | undefined, defaults: 
 }
 
 export type ToolbarRootProps = Omit<BaseToolbarRootProps, 'className'> & {
+  appearance?: SurfaceAppearance;
   className?: StateClassName<BaseToolbar.Root.State>;
   size?: ControlSize;
 };
@@ -80,10 +81,16 @@ const toolbarSizeClasses: Record<ControlSize, string> = {
   lg: 'gap-2 p-2',
 };
 
+const toolbarAppearanceClasses: Record<SurfaceAppearance, string> = {
+  plain: 'bg-transparent',
+  band: 'border-city-border bg-city-surface border-b',
+  outline: 'rounded-city-md border-city-border bg-city-surface border',
+};
+
 const itemSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-8 gap-1.5 px-2.5 text-xs',
-  md: 'h-9 gap-2 px-3 text-sm',
-  lg: 'h-10 gap-2 px-4 text-sm',
+  sm: 'h-(--city-control-sm) gap-1.5 px-2.5 text-xs',
+  md: 'h-(--city-control-md) gap-2 px-3 text-sm',
+  lg: 'h-(--city-control-lg) gap-2 px-4 text-sm',
 };
 
 const itemVariantClasses: Record<ButtonVariant, string> = {
@@ -100,7 +107,10 @@ const itemVariantClasses: Record<ButtonVariant, string> = {
 };
 
 export const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarRootProps>(
-  ({ className, orientation = 'horizontal', size = 'md', ...props }, ref) => {
+  (
+    { appearance = 'outline', className, orientation = 'horizontal', size = 'md', ...props },
+    ref,
+  ) => {
     const contextValue = React.useMemo(() => ({ orientation, size }), [orientation, size]);
 
     return (
@@ -109,9 +119,13 @@ export const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarRootProps>(
           {...props}
           ref={ref}
           orientation={orientation}
+          data-appearance={appearance}
+          data-city-toolbar-root=""
+          data-size={size}
           className={(state) =>
             cn(
-              'rounded-city-md border-city-border bg-city-surface text-city-foreground inline-flex max-w-full items-center border data-[disabled]:opacity-60 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-stretch',
+              'text-city-foreground inline-flex max-w-full items-center data-[disabled]:opacity-60 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-stretch',
+              toolbarAppearanceClasses[appearance],
               toolbarSizeClasses[size],
               resolveClassName(className, state),
             )

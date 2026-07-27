@@ -8,12 +8,15 @@ export * from './components/breadcrumbs';
 export * from './components/checkbox';
 export * from './components/checkbox-group';
 export * from './components/combobox';
+export * from './components/data-table-region';
 export * from './components/dialog';
+export * from './components/density-provider';
 export * from './components/drawer';
 export * from './components/empty-state';
 export * from './components/field';
 export * from './components/fieldset';
 export * from './components/file-upload';
+export * from './components/filter-bar';
 export * from './components/input';
 export * from './components/menu';
 export * from './components/number-field';
@@ -34,4 +37,13 @@ export * from './components/toolbar';
 export * from './components/tooltip';
 export { cn } from './lib/cn';
 export { CITY_THEMES, type CityTheme } from './theme';
-export { CONTROL_SIZES, type ControlSize } from './types';
+export {
+  CONTROL_SIZES,
+  DENSITIES,
+  FEEDBACK_TONES,
+  SURFACE_APPEARANCES,
+  type ControlSize,
+  type Density,
+  type FeedbackTone,
+  type SurfaceAppearance,
+} from './types';

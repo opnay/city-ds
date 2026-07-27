@@ -26,9 +26,34 @@ describe('Alert', () => {
     });
 
     expect(status).toHaveAttribute('aria-live', 'polite');
+    expect(status).toHaveAttribute('data-city-alert-root');
+    expect(status).toHaveAttribute('data-appearance', 'subtle');
+    expect(status).toHaveAttribute('data-tone', 'info');
     expect(status).toHaveAttribute('data-variant', 'info');
     expect(status).toHaveAccessibleDescription('Records are ready.');
-    expect(status.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-foreground');
+    expect(status).toHaveClass('border-city-info/30', 'bg-city-info/10');
+    expect(status.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-info');
+  });
+
+  it('gives success and warning messages distinct semantic treatments', () => {
+    render(
+      <>
+        <Alert.Root variant="success">
+          <Alert.Title>Sync complete</Alert.Title>
+        </Alert.Root>
+        <Alert.Root variant="warning">
+          <Alert.Title>SLA at risk</Alert.Title>
+        </Alert.Root>
+      </>,
+    );
+
+    const success = screen.getByRole('status', { name: 'Sync complete' });
+    const warning = screen.getByRole('status', { name: 'SLA at risk' });
+
+    expect(success).toHaveClass('border-city-success/30', 'bg-city-success/10');
+    expect(success.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-success');
+    expect(warning).toHaveClass('border-city-warning/30', 'bg-city-warning/10');
+    expect(warning.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-warning');
   });
 
   it('uses assertive alert defaults for errors and allows live region overrides', () => {
@@ -56,6 +81,29 @@ describe('Alert', () => {
       'aria-live',
       'polite',
     );
+  });
+
+  it('separates feedback tone from visual appearance while keeping legacy variants', () => {
+    render(
+      <>
+        <Alert.Root appearance="outline" tone="destructive">
+          <Alert.Title>Connection lost</Alert.Title>
+        </Alert.Root>
+        <Alert.Root tone="neutral">
+          <Alert.Title>Scheduled update</Alert.Title>
+        </Alert.Root>
+      </>,
+    );
+
+    const destructive = screen.getByRole('alert', { name: 'Connection lost' });
+    const neutral = screen.getByRole('status', { name: 'Scheduled update' });
+
+    expect(destructive).toHaveAttribute('data-tone', 'destructive');
+    expect(destructive).toHaveAttribute('data-appearance', 'outline');
+    expect(destructive).toHaveAttribute('data-variant', 'error');
+    expect(destructive).toHaveClass('border-city-destructive/40', 'bg-city-surface-raised');
+    expect(neutral).toHaveAttribute('data-tone', 'neutral');
+    expect(neutral).toHaveAttribute('data-variant', 'info');
   });
 });
 
@@ -178,6 +226,26 @@ describe('Table', () => {
     expect(scrollArea).toHaveFocus();
   });
 
+  it('supports plain and band scroll areas while preserving outline defaults', () => {
+    render(
+      <>
+        <Table.ScrollArea appearance="plain" data-testid="plain-scroll" />
+        <Table.ScrollArea appearance="band" data-testid="band-scroll" />
+        <Table.ScrollArea data-testid="outline-scroll" />
+      </>,
+    );
+
+    const plain = screen.getByTestId('plain-scroll');
+    const band = screen.getByTestId('band-scroll');
+    const outline = screen.getByTestId('outline-scroll');
+
+    expect(plain).toHaveAttribute('data-appearance', 'plain');
+    expect(plain).not.toHaveClass('border');
+    expect(band).toHaveClass('border-y');
+    expect(outline).toHaveAttribute('data-appearance', 'outline');
+    expect(outline).toHaveClass('rounded-city-md', 'border');
+  });
+
   it('renders empty and loading state rows across all columns', () => {
     render(
       <Table.Root aria-label="Projects">
@@ -196,6 +264,18 @@ describe('Table', () => {
 });
 
 describe('Pagination', () => {
+  it('propagates compact density to generated controls', () => {
+    render(<Pagination.Root density="compact" onPageChange={vi.fn()} page={2} totalPages={4} />);
+
+    const navigation = screen.getByRole('navigation', { name: 'Pagination' });
+    const currentPage = screen.getByRole('button', { name: 'Page 2' });
+
+    expect(navigation).toHaveAttribute('data-city-density', 'compact');
+    expect(navigation.querySelector('[data-city-pagination-list]')).toHaveClass('gap-0.5');
+    expect(currentPage).toHaveAttribute('data-city-density', 'compact');
+    expect(currentPage).toHaveClass('size-7', 'text-xs');
+  });
+
   it('clamps invalid controlled values and uses 1-based page changes', async () => {
     const user = userEvent.setup();
     const onPageChange = vi.fn();
@@ -240,6 +320,59 @@ describe('Pagination', () => {
       'sm:inline-flex',
     );
     expect(onPageChange).toHaveBeenCalledWith(12);
+  });
+
+  it('localizes generated labels while preserving direct control overrides', () => {
+    render(
+      <Pagination.Root
+        labels={{
+          navigation: '작업 페이지',
+          first: '첫 페이지로',
+          previous: '이전 페이지로',
+          previousGroup: (count) => `${count}페이지 뒤로`,
+          page: (page) => `${page}페이지`,
+          nextGroup: (count) => `${count}페이지 앞으로`,
+          next: '다음 페이지로',
+          last: '마지막 페이지로',
+        }}
+        onPageChange={vi.fn()}
+        page={7}
+        totalPages={20}
+      >
+        <Pagination.List>
+          <Pagination.Item>
+            <Pagination.First />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.Previous />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.PreviousGroup />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.Page aria-label="현재 7페이지" page={7} />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.NextGroup />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.Next aria-label="직접 지정한 다음" />
+          </Pagination.Item>
+          <Pagination.Item>
+            <Pagination.Last />
+          </Pagination.Item>
+        </Pagination.List>
+      </Pagination.Root>,
+    );
+
+    expect(screen.getByRole('navigation', { name: '작업 페이지' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '첫 페이지로' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '이전 페이지로' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '5페이지 뒤로' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '현재 7페이지' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '5페이지 앞으로' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '직접 지정한 다음' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '마지막 페이지로' })).toBeVisible();
   });
 });
 
@@ -289,6 +422,30 @@ describe('Progress', () => {
 });
 
 describe('FileUpload', () => {
+  it('propagates compact density through its trigger, list, item, and remove control', () => {
+    const file = new File(['content'], 'report.txt', {
+      lastModified: 1,
+      type: 'text/plain',
+    });
+
+    render(
+      <FileUpload.Root defaultFiles={[file]} density="compact">
+        <FileUpload.Trigger />
+        <FileUpload.List />
+      </FileUpload.Root>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Choose files' });
+    const root = trigger.closest('[data-city-file-upload-root]');
+    const remove = screen.getByRole('button', { name: 'Remove report.txt' });
+
+    expect(root).toHaveAttribute('data-city-density', 'compact');
+    expect(trigger).toHaveAttribute('data-city-density', 'compact');
+    expect(trigger).toHaveClass('h-(--city-control-sm)', 'text-xs');
+    expect(screen.getByText('report.txt').parentElement).toHaveClass('py-1', 'text-xs');
+    expect(remove).toHaveClass('h-5', 'text-[0.625rem]');
+  });
+
   it('keeps native input metadata, displays each selected file once, and removes files locally', async () => {
     const user = userEvent.setup();
     const onFilesChange = vi.fn();
@@ -316,6 +473,41 @@ describe('FileUpload', () => {
 
     expect(screen.queryByText('report.txt')).not.toBeInTheDocument();
     expect(onFilesChange).toHaveBeenLastCalledWith([]);
+  });
+
+  it('localizes default labels and preserves direct accessible-name overrides', () => {
+    const file = new File(['content'], '도면.pdf', {
+      lastModified: 1,
+      type: 'application/pdf',
+    });
+    const { container } = render(
+      <>
+        <span id="attachment-label">첨부 파일</span>
+        <FileUpload.Root
+          aria-labelledby="attachment-label"
+          defaultFiles={[file]}
+          labels={{
+            input: '파일 업로드',
+            trigger: (multiple) => (multiple ? '파일들 선택' : '파일 선택'),
+            remove: (selectedFile) => (selectedFile ? `${selectedFile.name} 제거` : '파일 제거'),
+          }}
+        >
+          <FileUpload.Trigger />
+          <FileUpload.List>
+            {(selectedFile, index) => (
+              <FileUpload.Item file={selectedFile} index={index}>
+                <span>{selectedFile.name}</span>
+                <FileUpload.Remove aria-label="직접 지정한 제거" index={index} />
+              </FileUpload.Item>
+            )}
+          </FileUpload.List>
+        </FileUpload.Root>
+      </>,
+    );
+
+    expect(container.querySelector('input[type="file"]')).toHaveAccessibleName('첨부 파일');
+    expect(screen.getByRole('button', { name: '파일 선택' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '직접 지정한 제거' })).toBeVisible();
   });
 });
 

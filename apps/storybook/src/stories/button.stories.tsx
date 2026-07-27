@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
+import { Settings } from 'lucide-react';
 
 import { Button } from '@city-ds/react';
 
@@ -65,6 +66,22 @@ export const Sizes: Story = {
       <Button size="sm">Compact</Button>
       <Button size="md">Default</Button>
       <Button size="lg">Prominent</Button>
+    </div>
+  ),
+};
+
+export const IconOnly: Story = {
+  render: () => (
+    <div className="flex items-center gap-3">
+      <Button aria-label="Open settings" iconOnly size="sm" variant="ghost">
+        <Settings aria-hidden="true" size={15} />
+      </Button>
+      <Button aria-label="Open settings" iconOnly size="md" variant="outline">
+        <Settings aria-hidden="true" size={16} />
+      </Button>
+      <Button aria-label="Open settings" iconOnly size="lg">
+        <Settings aria-hidden="true" size={18} />
+      </Button>
     </div>
   ),
 };

@@ -31,6 +31,7 @@ import type {
 import { Check, ChevronDown, X } from 'lucide-react';
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
+import type { ControlSize } from '../../types';
 
 function classes<State>(className: StateClassName<State> | undefined, defaults: string) {
   return (state: State) => cn(defaults, resolveClassName(className, state));
@@ -39,10 +40,16 @@ function classes<State>(className: StateClassName<State> | undefined, defaults: 
 export type ComboboxRootProps<
   Value,
   Multiple extends boolean | undefined = false,
-> = BaseComboboxRootProps<Value, Multiple>;
+> = BaseComboboxRootProps<Value, Multiple> & {
+  size?: ControlSize;
+};
 export type ComboboxLabelProps = BaseComboboxLabelProps;
-export type ComboboxInputGroupProps = BaseComboboxInputGroupProps;
-export type ComboboxInputProps = BaseComboboxInputProps;
+export type ComboboxInputGroupProps = Omit<BaseComboboxInputGroupProps, 'size'> & {
+  size?: ControlSize;
+};
+export type ComboboxInputProps = Omit<BaseComboboxInputProps, 'size'> & {
+  size?: ControlSize;
+};
 export type ComboboxTriggerProps = BaseComboboxTriggerProps;
 export type ComboboxValueProps = BaseComboboxValueProps;
 export type ComboboxIconProps = BaseComboboxIconProps;
@@ -64,7 +71,33 @@ export type ComboboxChipProps = BaseComboboxChipProps;
 export type ComboboxChipRemoveProps = BaseComboboxChipRemoveProps;
 export type ComboboxCollectionProps = BaseComboboxCollectionProps;
 
-export const ComboboxRoot = BaseCombobox.Root;
+const ComboboxSizeContext = React.createContext<ControlSize>('md');
+
+const comboboxGroupSizeClasses: Record<ControlSize, string> = {
+  sm: 'min-h-(--city-control-sm) px-2.5 text-xs',
+  md: 'min-h-(--city-control-md) px-3 text-sm',
+  lg: 'min-h-(--city-control-lg) px-3.5 text-sm',
+};
+
+const comboboxInputSizeClasses: Record<ControlSize, string> = {
+  sm: 'h-(--city-control-sm)',
+  md: 'h-(--city-control-md)',
+  lg: 'h-(--city-control-lg)',
+};
+
+export function ComboboxRoot<Value, Multiple extends boolean | undefined = false>({
+  size = 'md',
+  ...props
+}: ComboboxRootProps<Value, Multiple>): React.JSX.Element {
+  return (
+    <ComboboxSizeContext.Provider value={size}>
+      <BaseCombobox.Root {...props} />
+    </ComboboxSizeContext.Provider>
+  );
+}
+
+ComboboxRoot.displayName = 'Combobox.Root';
+
 export const ComboboxPortal = BaseCombobox.Portal;
 export const ComboboxCollection = BaseCombobox.Collection;
 export const ComboboxValue = BaseCombobox.Value;
@@ -80,29 +113,47 @@ export const ComboboxLabel = React.forwardRef<HTMLDivElement, ComboboxLabelProps
 );
 
 export const ComboboxInputGroup = React.forwardRef<HTMLDivElement, ComboboxInputGroupProps>(
-  ({ className, ...props }, ref) => (
-    <BaseCombobox.InputGroup
-      {...props}
-      ref={ref}
-      className={classes(
-        className,
-        'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground focus-within:ring-city-ring data-[invalid]:border-city-danger flex min-h-(--city-control-md) w-full items-center gap-2 border px-3 text-sm transition-colors focus-within:ring-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      )}
-    />
-  ),
+  ({ className, size: sizeProp, ...props }, ref) => {
+    const rootSize = React.useContext(ComboboxSizeContext);
+    const size = sizeProp ?? rootSize;
+
+    return (
+      <BaseCombobox.InputGroup
+        {...props}
+        ref={ref}
+        data-city-size={size}
+        className={classes(
+          className,
+          cn(
+            'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground focus-within:ring-city-ring data-[invalid]:border-city-destructive data-[invalid]:focus-within:ring-city-destructive/30 flex w-full items-center gap-2 border transition-colors focus-within:ring-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+            comboboxGroupSizeClasses[size],
+          ),
+        )}
+      />
+    );
+  },
 );
 
 export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputProps>(
-  ({ className, ...props }, ref) => (
-    <BaseCombobox.Input
-      {...props}
-      ref={ref}
-      className={classes(
-        className,
-        'placeholder:text-city-muted-foreground h-8 min-w-0 flex-1 bg-transparent outline-none disabled:cursor-not-allowed',
-      )}
-    />
-  ),
+  ({ className, size: sizeProp, ...props }, ref) => {
+    const rootSize = React.useContext(ComboboxSizeContext);
+    const size = sizeProp ?? rootSize;
+
+    return (
+      <BaseCombobox.Input
+        {...props}
+        ref={ref}
+        data-city-size={size}
+        className={classes(
+          className,
+          cn(
+            'placeholder:text-city-muted-foreground min-w-0 flex-1 bg-transparent outline-none disabled:cursor-not-allowed',
+            comboboxInputSizeClasses[size],
+          ),
+        )}
+      />
+    );
+  },
 );
 
 export const ComboboxTrigger = React.forwardRef<HTMLButtonElement, ComboboxTriggerProps>(

@@ -40,6 +40,23 @@ export const Default: Story = {
   render: () => <ProjectTabs />,
 };
 
+export const Compact: Story = {
+  render: () => (
+    <Tabs.Root defaultValue="overview" density="compact">
+      <Tabs.List aria-label="Compact project views">
+        <Tabs.Tab value="overview">Overview</Tabs.Tab>
+        <Tabs.Tab value="activity">Activity</Tabs.Tab>
+        <Tabs.Tab value="settings">Settings</Tabs.Tab>
+      </Tabs.List>
+      <div className="w-72">
+        <Tabs.Panel value="overview">A compact summary of project health.</Tabs.Panel>
+        <Tabs.Panel value="activity">No new activity.</Tabs.Panel>
+        <Tabs.Panel value="settings">Compact defaults are active.</Tabs.Panel>
+      </div>
+    </Tabs.Root>
+  ),
+};
+
 export const Vertical: Story = {
   render: () => <ProjectTabs orientation="vertical" />,
 };

@@ -25,12 +25,7 @@ function ProjectCombobox({
 }) {
   return (
     <Field.Root>
-      <Combobox.Root
-        items={projects}
-        defaultValue="Transit Map"
-        disabled={disabled}
-        size={size}
-      >
+      <Combobox.Root items={projects} defaultValue="Transit Map" disabled={disabled} size={size}>
         <Field.Label>Project</Field.Label>
         <Combobox.InputGroup className="w-72">
           <Combobox.Input placeholder="Search projects" />

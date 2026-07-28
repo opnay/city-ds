@@ -62,6 +62,25 @@ const PAGE_SIZE = 6;
 const THEMES: readonly CityTheme[] = ['system', 'light', 'dark'];
 const STATUS_FILTERS: readonly StatusFilter[] = ['전체', 'SLA 위험', '진행 중', '완료'];
 
+function isSlaRisk(order: WorkOrder) {
+  return !isTerminalStatus(order.status) && order.progress >= 75;
+}
+
+function compareWorkOrdersByOperationalPriority(left: WorkOrder, right: WorkOrder) {
+  const riskDifference = Number(isSlaRisk(right)) - Number(isSlaRisk(left));
+  if (riskDifference !== 0) {
+    return riskDifference;
+  }
+
+  const activeDifference =
+    Number(!isTerminalStatus(right.status)) - Number(!isTerminalStatus(left.status));
+  if (activeDifference !== 0) {
+    return activeDifference;
+  }
+
+  return right.progress - left.progress || left.id.localeCompare(right.id);
+}
+
 const NAVIGATION_ITEMS = [
   {
     description: '오늘의 SLA와 운영 지표를 한눈에 확인합니다.',
@@ -212,7 +231,7 @@ function RelayDashboard() {
   const [district, setDistrict] =
     useState<(typeof DISTRICT_ITEMS)[keyof typeof DISTRICT_ITEMS]>('전체 권역');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('전체');
-  const [sortDirection, setSortDirection] = useState<TableSortDirection>('desc');
+  const [sortDirection, setSortDirection] = useState<TableSortDirection | false>(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
@@ -292,9 +311,15 @@ function RelayDashboard() {
           .toLocaleLowerCase('ko-KR')
           .includes(normalizedQuery);
       })
-      .sort((left, right) =>
-        sortDirection === 'asc' ? left.progress - right.progress : right.progress - left.progress,
-      );
+      .sort((left, right) => {
+        if (sortDirection === false) {
+          return compareWorkOrdersByOperationalPriority(left, right);
+        }
+
+        return sortDirection === 'asc'
+          ? left.progress - right.progress
+          : right.progress - left.progress;
+      });
   }, [district, orders, query, sortDirection, statusFilter]);
 
   const totalPages = Math.max(1, Math.ceil(filteredOrders.length / PAGE_SIZE));
@@ -303,7 +328,9 @@ function RelayDashboard() {
   const selectedOrder = orders.find((order) => order.id === selectedOrderId) ?? null;
   const pendingCancelOrder = orders.find((order) => order.id === pendingCancelId) ?? null;
   const activeOrders = orders.filter((order) => order.status !== '완료' && order.status !== '취소');
-  const riskOrders = activeOrders.filter((order) => order.progress >= 75);
+  const riskOrders = activeOrders
+    .filter(isSlaRisk)
+    .sort((left, right) => right.progress - left.progress);
   const completedOrders = orders.filter((order) => order.status === '완료');
 
   const updateOrder = (id: string, updates: Partial<WorkOrder>) => {
@@ -352,7 +379,7 @@ function RelayDashboard() {
 
     setCancelledOrder({ id, status: order.status });
     if (selectedOrderId === id) {
-      cancelTriggerRef.current = detailsTriggerRef.current;
+      cancelTriggerRef.current = document.querySelector<HTMLElement>('.relay-page-heading h1');
       setSelectedOrderId(null);
     }
     updateOrder(id, { status: '취소', updatedAt: '방금 전' });
@@ -424,6 +451,15 @@ function RelayDashboard() {
     setStatusFilter('전체');
     setCurrentPage(1);
     setSelectedIds([]);
+  };
+
+  const handleViewRiskWorkOrder = (id: string) => {
+    setQuery(id);
+    setDistrict('전체 권역');
+    setStatusFilter('SLA 위험');
+    setCurrentPage(1);
+    setSelectedIds([]);
+    navigate('/work-orders');
   };
 
   return (
@@ -498,7 +534,10 @@ function RelayDashboard() {
           </div>
 
           <div className="relay-topbar-actions">
-            <NotificationPopover riskOrders={riskOrders} />
+            <NotificationPopover
+              onViewWorkOrder={handleViewRiskWorkOrder}
+              riskOrders={riskOrders}
+            />
             <AccountMenu onNotify={showToast} />
           </div>
         </header>
@@ -1099,7 +1138,13 @@ function MobileNavigation(props: SidebarContentProps) {
   );
 }
 
-function NotificationPopover({ riskOrders }: { riskOrders: readonly WorkOrder[] }) {
+function NotificationPopover({
+  onViewWorkOrder,
+  riskOrders,
+}: {
+  onViewWorkOrder: (id: string) => void;
+  riskOrders: readonly WorkOrder[];
+}) {
   const riskCount = riskOrders.length;
 
   return (
@@ -1147,9 +1192,9 @@ function NotificationPopover({ riskOrders }: { riskOrders: readonly WorkOrder[] 
               <div className="relay-notification-list">
                 {riskOrders.map((order) => (
                   <NotificationItem
-                    detail={`${order.location} · ${order.updatedAt}`}
                     key={order.id}
-                    title={`${order.title} 작업이 SLA ${order.progress}%에 도달했습니다.`}
+                    onViewWorkOrder={onViewWorkOrder}
+                    order={order}
                   />
                 ))}
               </div>
@@ -1162,12 +1207,25 @@ function NotificationPopover({ riskOrders }: { riskOrders: readonly WorkOrder[] 
   );
 }
 
-function NotificationItem({ detail, title }: { detail: string; title: string }) {
+function NotificationItem({
+  onViewWorkOrder,
+  order,
+}: {
+  onViewWorkOrder: (id: string) => void;
+  order: WorkOrder;
+}) {
   return (
-    <div>
-      <strong>{title}</strong>
-      <span>{detail}</span>
-    </div>
+    <Popover.Close
+      aria-label={`${order.id} 작업 보기`}
+      onClick={() => onViewWorkOrder(order.id)}
+      render={<Button className="relay-notification-item" size="sm" variant="ghost" />}
+    >
+      <strong>{order.title}</strong>
+      <span>
+        SLA {order.progress}% · {order.location} · {order.updatedAt}
+      </span>
+      <small>작업 보기</small>
+    </Popover.Close>
   );
 }
 

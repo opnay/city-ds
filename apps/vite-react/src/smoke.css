@@ -606,6 +606,11 @@ a {
   -webkit-line-clamp: 2;
 }
 
+.relay-mobile-work-order-meta,
+.relay-mobile-asset-meta {
+  display: none;
+}
+
 .relay-cell-detail {
   display: block;
   margin-top: var(--city-space-0-5);
@@ -757,11 +762,17 @@ a {
   margin: var(--city-space-4) calc(var(--city-space-4) * -1) calc(var(--city-space-4) * -1);
 }
 
-.relay-notification-list > div {
+.relay-notification-item {
   display: grid;
+  width: 100%;
+  height: auto;
   gap: var(--city-space-1);
+  justify-content: start;
   padding: var(--city-space-3) var(--city-space-4);
   border-top: 1px solid var(--city-color-border);
+  border-radius: 0;
+  text-align: left;
+  white-space: normal;
 }
 
 .relay-notification-list strong {
@@ -772,6 +783,12 @@ a {
 .relay-notification-list span {
   color: var(--city-color-muted-foreground);
   font-size: var(--city-font-size-xs);
+}
+
+.relay-notification-list small {
+  color: var(--city-color-primary);
+  font-size: var(--city-font-size-xs);
+  font-weight: var(--city-font-weight-medium);
 }
 
 [data-city-dialog-header] > div:first-child,
@@ -1147,6 +1164,29 @@ a {
 
   [data-city-filter-bar-content] [role='group'] {
     overflow-x: auto;
+  }
+
+  .relay-mobile-work-order-meta,
+  .relay-mobile-asset-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--city-space-1);
+    margin-top: var(--city-space-1);
+    color: var(--city-color-muted-foreground);
+    font-size: var(--city-font-size-xs);
+    font-weight: var(--city-font-weight-medium);
+  }
+
+  .relay-mobile-work-order-meta [data-sla-risk] {
+    color: var(--city-color-destructive);
+  }
+
+  .relay-mobile-asset-meta [data-asset-status='운영 중단'] {
+    color: var(--city-color-destructive);
+  }
+
+  .relay-mobile-asset-meta [data-asset-status='점검 필요'] {
+    color: var(--city-color-warning);
   }
 
   .relay-maintenance-item {

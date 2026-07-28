@@ -108,11 +108,16 @@ describe('Relay dashboard', () => {
     renderApp('/work-orders');
 
     const table = screen.getByRole('table', { name: '작업 요청 목록' });
+    const rows = within(table).getAllByRole('row');
+    expect(rows[1]).toHaveTextContent('WO-2808');
+    expect(rows[2]).toHaveTextContent('WO-2841');
+    expect(rows[3]).toHaveTextContent('WO-2834');
+    expect(within(table).getByText('SLA 위험 92%')).toBeVisible();
     await user.click(within(table).getByRole('checkbox', { name: 'WO-2841 선택' }));
     expect(screen.getByText('1개 선택됨')).toBeVisible();
 
     const sortButton = within(table).getByRole('button', {
-      name: 'SLA 진행 내림차순 정렬됨',
+      name: 'SLA 진행 정렬 없음',
     });
     await user.click(sortButton);
     expect(sortButton).toHaveAttribute('data-sort-direction', 'asc');
@@ -122,12 +127,37 @@ describe('Relay dashboard', () => {
     expect(within(table).getByText('WO-2808')).toBeVisible();
   });
 
+  it('prioritizes risk alerts and opens the selected work order queue', async () => {
+    const user = userEvent.setup();
+    renderApp('/activity');
+
+    await user.click(screen.getByRole('button', { name: '알림 3개' }));
+    const notifications = screen.getByRole('dialog', { name: '운영 알림' });
+    const alertButtons = within(notifications).getAllByRole('button');
+    const mostUrgentAlert = within(notifications).getByRole('button', {
+      name: 'WO-2808 작업 보기',
+    });
+    expect(alertButtons[0]).toBe(mostUrgentAlert);
+
+    await user.click(mostUrgentAlert);
+
+    expect(window.location.pathname).toBe('/work-orders');
+    expect(screen.getByRole('searchbox', { name: '작업 요청 검색' })).toHaveValue('WO-2808');
+    const table = screen.getByRole('table', { name: '작업 요청 목록' });
+    expect(within(table).getByText('WO-2808')).toBeVisible();
+    expect(within(table).queryByText('WO-2841')).toBeNull();
+  });
+
   it('creates a work order after validating required fields', async () => {
     const user = userEvent.setup();
     renderApp();
 
     await user.click(screen.getByRole('button', { name: '새 작업 만들기' }));
     const dialog = screen.getByRole('dialog', { name: '새 작업 요청' });
+
+    expect(
+      within(dialog).getByText('필수: 작업 제목과 시설 위치. 생성 후 목록과 상세에 표시됩니다.'),
+    ).toBeVisible();
 
     await user.click(within(dialog).getByRole('button', { name: '작업 생성' }));
     expect(within(dialog).getByText('작업 제목을 입력하십시오.')).toBeVisible();
@@ -169,6 +199,7 @@ describe('Relay dashboard', () => {
     const user = userEvent.setup();
     renderApp('/work-orders');
 
+    await user.click(screen.getByRole('button', { name: '다음 페이지로' }));
     await user.click(
       screen.getByRole('button', {
         name: 'WO-2812 광장 벤치 파손 부품 교체 상세 보기',
@@ -196,7 +227,9 @@ describe('Relay dashboard', () => {
 
     expect(screen.queryByRole('dialog', { name: '보행 신호 제어함 전원 점검' })).toBeNull();
     expect(screen.getByRole('button', { name: '알림 2개' })).toBeVisible();
-    await waitFor(() => expect(trigger).toHaveFocus());
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { level: 1, name: '작업 요청' })).toHaveFocus(),
+    );
 
     const toast = screen.getByRole('dialog', { name: '작업을 취소했습니다' });
     expect(toast).toBeVisible();
@@ -319,6 +352,21 @@ describe('Relay dashboard', () => {
 
     await user.keyboard('{Escape}');
     await waitFor(() => expect(trigger).toHaveFocus());
+  });
+
+  it('prioritizes stopped and inspection-needed assets in the default list', () => {
+    renderApp('/assets');
+
+    const table = screen.getByRole('table', { name: '시설 자산 목록' });
+    const rows = within(table).getAllByRole('row');
+    expect(rows[1]).toHaveTextContent('AS-0529');
+    expect(rows[2]).toHaveTextContent('AS-0874');
+    expect(rows[3]).toHaveTextContent('AS-0988');
+    const stoppedAsset = within(table).getByRole('button', {
+      name: 'AS-0529 배수 펌프 1호기 자산 상세 보기',
+    });
+    expect(within(stoppedAsset).getByText('운영 중단')).toBeVisible();
+    expect(within(stoppedAsset).getByText('건강도 34%')).toBeVisible();
   });
 
   it('validates and creates a maintenance plan in memory', async () => {

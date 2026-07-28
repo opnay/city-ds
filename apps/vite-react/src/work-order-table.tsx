@@ -25,8 +25,14 @@ interface WorkOrderTableProps {
   onSortDirectionChange: (direction: TableSortDirection) => void;
   orders: readonly WorkOrder[];
   selectedIds: readonly string[];
-  sortDirection: TableSortDirection;
+  sortDirection: TableSortDirection | false;
   totalPages: number;
+}
+
+function getMobileSlaLabel(order: WorkOrder) {
+  const isSlaRisk = !isTerminalStatus(order.status) && order.progress >= 75;
+
+  return `${isSlaRisk ? 'SLA 위험' : 'SLA'} ${order.progress}%`;
 }
 
 export function WorkOrderTable({
@@ -94,11 +100,21 @@ export function WorkOrderTable({
                 <Table.Head>우선순위</Table.Head>
                 <Table.Head>상태</Table.Head>
                 <Table.Head>담당팀</Table.Head>
-                <Table.Head aria-sort={sortDirection === 'asc' ? 'ascending' : 'descending'}>
+                <Table.Head
+                  aria-sort={
+                    sortDirection === false
+                      ? undefined
+                      : sortDirection === 'asc'
+                        ? 'ascending'
+                        : 'descending'
+                  }
+                >
                   <Table.SortButton
-                    aria-label={`SLA 진행 ${
-                      sortDirection === 'asc' ? '오름차순' : '내림차순'
-                    } 정렬됨`}
+                    aria-label={
+                      sortDirection === false
+                        ? 'SLA 진행 정렬 없음'
+                        : `SLA 진행 ${sortDirection === 'asc' ? '오름차순' : '내림차순'} 정렬됨`
+                    }
                     direction={sortDirection}
                     onDirectionChange={onSortDirectionChange}
                   >
@@ -159,6 +175,18 @@ export function WorkOrderTable({
                         <span>
                           <strong>{order.id}</strong>
                           <small>{order.title}</small>
+                          <span className="relay-mobile-work-order-meta">
+                            <span>상태: {order.status}</span>
+                            <span aria-hidden="true">·</span>
+                            <span
+                              data-sla-risk={
+                                (!isTerminalStatus(order.status) && order.progress >= 75) ||
+                                undefined
+                              }
+                            >
+                              {getMobileSlaLabel(order)}
+                            </span>
+                          </span>
                         </span>
                       </Button>
                     </Table.Cell>

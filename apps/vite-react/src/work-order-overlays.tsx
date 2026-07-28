@@ -133,7 +133,7 @@ export function CreateWorkOrderDialog({ onCreate }: CreateWorkOrderDialogProps) 
                 <Fieldset.Root appearance="plain">
                   <Fieldset.Legend>작업 정보</Fieldset.Legend>
                   <Fieldset.Description>
-                    필수 항목은 작업 목록과 상세 화면에 표시됩니다.
+                    필수: 작업 제목과 시설 위치. 생성 후 목록과 상세에 표시됩니다.
                   </Fieldset.Description>
                   <Fieldset.Content className="relay-form-grid">
                     <Field.Root className="relay-form-span-2" invalid={submitted && !title.trim()}>

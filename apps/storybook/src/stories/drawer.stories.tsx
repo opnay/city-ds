@@ -44,7 +44,7 @@ function DrawerExample({ side = 'right', modal = true }: { side?: DrawerSide; mo
                   aria-label="Close drawer"
                   render={
                     <Button
-                      className="text-city-muted-foreground hover:text-city-accent-foreground -mt-1 -mr-1 size-8 p-0"
+                      className="-mt-1 -mr-1 size-8 p-0 text-city-muted-foreground hover:text-city-accent-foreground"
                       variant="ghost"
                     />
                   }
@@ -56,7 +56,7 @@ function DrawerExample({ side = 'right', modal = true }: { side?: DrawerSide; mo
             <Drawer.Body>
               <nav aria-label="Workspace" className="mt-5 grid gap-2 text-sm">
                 {['Overview', 'Projects', 'Deployments', 'Settings'].map((item) => (
-                  <a key={item} className="rounded-city-sm hover:bg-city-accent px-3 py-2" href="#">
+                  <a key={item} className="rounded-city-sm px-3 py-2 hover:bg-city-accent" href="#">
                     {item}
                   </a>
                 ))}
@@ -116,7 +116,7 @@ export const BottomSheet: Story = {
               aria-hidden
               className="flex h-8 shrink-0 cursor-grab touch-none items-center justify-center active:cursor-grabbing"
             >
-              <div className="bg-city-border h-1 w-10 rounded-full" />
+              <div className="h-1 w-10 rounded-full bg-city-border" />
             </div>
             <Drawer.Content className="pt-1">
               <Drawer.Title>Export format</Drawer.Title>
@@ -165,7 +165,7 @@ export const LongBottomContent: Story = {
               </Drawer.Description>
               <ol className="mt-5 grid gap-3 text-sm">
                 {Array.from({ length: 18 }, (_, index) => (
-                  <li key={index} className="rounded-city-sm border-city-border border p-3">
+                  <li key={index} className="rounded-city-sm border border-city-border p-3">
                     Checklist item {index + 1}: confirm copy, accessibility, and QA notes.
                   </li>
                 ))}

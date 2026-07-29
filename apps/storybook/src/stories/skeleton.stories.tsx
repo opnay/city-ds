@@ -82,7 +82,7 @@ export const Avatar: Story = {
 export const Card: Story = {
   render: () => (
     <LoadingPreview
-      className="border-city-border rounded-city-lg flex w-[min(24rem,calc(100vw-2rem))] flex-col gap-4 border p-4"
+      className="flex w-[min(24rem,calc(100vw-2rem))] flex-col gap-4 rounded-city-lg border border-city-border p-4"
       label="Loading card"
     >
       <Skeleton variant="rectangular" size="lg" />

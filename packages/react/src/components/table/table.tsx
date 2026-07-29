@@ -160,7 +160,7 @@ export const TableStateRow = React.forwardRef<HTMLTableRowElement, TableStateRow
     <TableRow {...props} ref={ref} className={cn('hover:bg-transparent', className)}>
       <TableCell
         colSpan={colSpan}
-        className="text-city-muted-foreground h-28 text-center text-sm"
+        className="h-28 text-center text-sm text-city-muted-foreground"
         role={status === 'loading' ? 'status' : undefined}
         aria-live={status === 'loading' ? 'polite' : undefined}
         data-city-table-state={status}

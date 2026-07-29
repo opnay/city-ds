@@ -88,7 +88,7 @@ export const AccordionTrigger = React.forwardRef<HTMLElement, AccordionTriggerPr
       <span className="min-w-0 flex-1">{children}</span>
       <ChevronDown
         aria-hidden="true"
-        className="text-city-muted-foreground shrink-0 transition-transform duration-200 motion-reduce:transition-none [[data-panel-open]_&]:rotate-180"
+        className="shrink-0 text-city-muted-foreground transition-transform duration-200 motion-reduce:transition-none [[data-panel-open]_&]:rotate-180"
         size={16}
         strokeWidth={1.8}
       />

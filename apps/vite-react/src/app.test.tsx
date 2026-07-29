@@ -155,9 +155,9 @@ describe('Relay dashboard', () => {
     await user.click(screen.getByRole('button', { name: '새 작업 만들기' }));
     const dialog = screen.getByRole('dialog', { name: '새 작업 요청' });
 
-    expect(
-      within(dialog).getByText('필수: 작업 제목과 시설 위치. 생성 후 목록과 상세에 표시됩니다.'),
-    ).toBeVisible();
+    expect(within(dialog).getByText('별표(*)로 표시된 항목은 필수입니다.')).toBeVisible();
+    expect(within(dialog).getByRole('heading', { name: '대응 기준', level: 3 })).toBeVisible();
+    expect(within(dialog).getByRole('heading', { name: '알림 및 첨부', level: 3 })).toBeVisible();
 
     await user.click(within(dialog).getByRole('button', { name: '작업 생성' }));
     expect(within(dialog).getByText('작업 제목을 입력하십시오.')).toBeVisible();

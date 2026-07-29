@@ -1,0 +1,151 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Combobox, Input, InputGroup, NumberField, SearchField, Select } from '@city-ds/react';
+
+export const outlineFrameProjects = ['Civic Portal', 'Transit Map', 'Permit Tracker'];
+
+export const outlineFrameStatuses = {
+  backlog: 'Backlog',
+  'in-progress': 'In progress',
+  done: 'Done',
+};
+
+<Meta title="디자인 패턴/Outline Frame" />
+
+# Outline Frame
+
+Outline Frame은 폼에서 사용자가 **값을 입력·검색·선택·증감하는 프레임형 컨트롤**에
+적용하는 시각 패턴입니다. 하나의 둥근 외곽선 안에 값 영역과 보조 요소를 배치하고, 서로
+독립적으로 조작되는 영역은 내부 구분선으로 나눕니다.
+
+컴포넌트의 기능이 달라도 같은 크기에서는 동일한 외곽 높이·radius·stroke·상태 표현을
+사용하십시오. 그림자나 중첩된 면보다 외곽선과 구분선으로 구조를 드러내는 것을 기본으로
+합니다.
+
+## 대표 구성
+
+<div className="my-6 grid gap-4 md:grid-cols-2">
+  <div className="grid min-w-0 gap-2">
+    <span className="text-city-muted-foreground text-xs font-medium">Input</span>
+    <Input aria-label="프로젝트 이름" defaultValue="Transit Map" />
+  </div>
+
+<div className="grid min-w-0 gap-2">
+  <span className="text-city-muted-foreground text-xs font-medium">InputGroup</span>
+  <InputGroup.Root>
+    <InputGroup.Addon>https://</InputGroup.Addon>
+    <Input aria-label="배포 도메인" defaultValue="transit" />
+    <InputGroup.Addon position="trailing">.city</InputGroup.Addon>
+  </InputGroup.Root>
+</div>
+
+<div className="grid min-w-0 gap-2">
+  <span className="text-city-muted-foreground text-xs font-medium">SearchField</span>
+  <SearchField.Root defaultValue="city">
+    <SearchField.Group>
+      <SearchField.Input aria-label="프로젝트 검색" />
+      <SearchField.Clear />
+      <SearchField.Submit aria-label="검색" />
+    </SearchField.Group>
+  </SearchField.Root>
+</div>
+
+<div className="grid min-w-0 gap-2">
+  <span className="text-city-muted-foreground text-xs font-medium">Select</span>
+  <Select.Root defaultValue="in-progress" items={outlineFrameStatuses}>
+    <Select.Trigger aria-label="상태">
+      <Select.Value />
+      <Select.Icon />
+    </Select.Trigger>
+  </Select.Root>
+</div>
+
+<div className="grid min-w-0 gap-2">
+  <span className="text-city-muted-foreground text-xs font-medium">Combobox</span>
+  <Combobox.Root defaultValue="Transit Map" items={outlineFrameProjects}>
+    <Combobox.InputGroup>
+      <Combobox.Input aria-label="프로젝트 선택" />
+      <Combobox.Clear />
+      <Combobox.Trigger />
+    </Combobox.InputGroup>
+  </Combobox.Root>
+</div>
+
+  <div className="grid min-w-0 gap-2">
+    <span className="text-city-muted-foreground text-xs font-medium">NumberField</span>
+    <NumberField.Root defaultValue={10}>
+      <NumberField.Group>
+        <NumberField.Input aria-label="배포 수량" />
+        <NumberField.Increment aria-label="배포 수량 늘리기" />
+        <NumberField.Decrement aria-label="배포 수량 줄이기" />
+      </NumberField.Group>
+    </NumberField.Root>
+  </div>
+</div>
+
+> 대표 구성은 패턴 설명과 회귀 비교를 겸합니다. 같은 `size`의 외곽 높이나 프레임 표현이
+> 다르면 컴포넌트별 예외가 아니라 구현 결함으로 판단하십시오.
+
+## 크기 계약
+
+`size`는 단일 행 Outline Frame의 **외곽 border-box 높이**를 의미합니다. border와 padding은
+이 높이에 포함하며, 내부 input이나 segment가 프레임 높이를 다시 늘리지 않아야 합니다.
+
+<dl className="my-4 grid max-w-md grid-cols-3 gap-2">
+  <div className="border-city-border bg-city-surface-raised rounded-city-sm grid gap-1 border p-3">
+    <dt>
+      <code>sm</code>
+    </dt>
+    <dd className="text-city-muted-foreground text-xs">32px</dd>
+  </div>
+  <div className="border-city-border bg-city-surface-raised rounded-city-sm grid gap-1 border p-3">
+    <dt>
+      <code>md</code>
+    </dt>
+    <dd className="text-city-muted-foreground text-xs">36px</dd>
+  </div>
+  <div className="border-city-border bg-city-surface-raised rounded-city-sm grid gap-1 border p-3">
+    <dt>
+      <code>lg</code>
+    </dt>
+    <dd className="text-city-muted-foreground text-xs">40px</dd>
+  </div>
+</dl>
+
+같은 `size`의 Input, SearchField, Select, Combobox, NumberField는 한 줄에 배치했을 때 위아래
+경계가 일치해야 합니다.
+
+## 구성 규칙
+
+- **Plain**: Input처럼 하나의 값 영역만 외곽선으로 감쌉니다.
+- **Affixed**: InputGroup처럼 값의 일부인 접두·접미 요소를 같은 프레임에 둡니다.
+- **Segmented**: SearchField와 NumberField처럼 독립 조작 영역을 내부 구분선으로 나눕니다.
+- **Expandable**: 다중 Combobox처럼 내용이 늘어나는 경우 크기 토큰을 `min-height`로 사용하고
+  동일한 radius·stroke·상태 규칙을 유지합니다.
+
+외곽선은 컨트롤의 전체 경계를, 내부 구분선은 서로 다른 조작 역할의 경계를 나타내야 합니다.
+장식만을 위해 영역을 나누지 마십시오.
+
+## 상태 규칙
+
+- hover와 active는 조작되는 segment에 적용하십시오.
+- focus와 invalid는 전체 프레임의 상태로 표현하십시오.
+- disabled는 값 영역과 segment가 하나의 비활성 컨트롤로 읽혀야 합니다.
+- 포커스 링과 상태 stroke가 외곽 크기나 주변 배치를 바꾸지 않아야 합니다.
+
+## 적용 범위
+
+적용 대상은 Input, InputGroup, SearchField, Select, Combobox, NumberField처럼 사용자가 값을
+직접 편집하거나 선택하는 프레임형 컨트롤입니다.
+
+Button, Checkbox, RadioGroup, Switch, Toggle은 폼에서 사용할 수 있어도 Outline Frame 대상이
+아닙니다. 이들은 값을 담는 프레임이 아니라 액션이나 선택 상태 자체의 형태가 핵심이기
+때문입니다. Textarea와 다중 Combobox는 외곽 표현을 공유하지만 고정된 단일 행 높이는 적용하지
+않습니다. Select와 Combobox의 popup도 별도의 floating surface로 다룹니다.
+
+## 검토 기준
+
+1. 같은 `size`의 단일 행 컨트롤 외곽 높이가 일치합니까?
+2. radius, stroke, 배경과 좌우 여백이 같은 시각 계열로 보입니까?
+3. 내부 구분선이 실제로 다른 조작 역할을 설명합니까?
+4. focus, invalid, disabled 상태가 segment가 아니라 전체 프레임 기준으로 일관됩니까?
+5. 내용 확장형이 기본 높이보다 작아지지 않고 자연스럽게 늘어납니까?

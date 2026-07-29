@@ -348,7 +348,7 @@ export const MenuSubmenuTrigger = React.forwardRef<HTMLElement, MenuSubmenuTrigg
         <span className="min-w-0 flex-1 truncate">{children}</span>
         <ChevronRight
           aria-hidden="true"
-          className="text-city-muted-foreground ml-auto"
+          className="ml-auto text-city-muted-foreground"
           size={density === 'compact' ? 14 : 16}
         />
       </BaseMenu.SubmenuTrigger>

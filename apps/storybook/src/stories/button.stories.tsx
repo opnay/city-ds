@@ -52,7 +52,7 @@ export const OnRaisedSurface: Story = {
     },
   },
   render: () => (
-    <div className="border-city-border bg-city-surface-raised rounded-city-md flex flex-wrap items-center gap-2 border p-4">
+    <div className="flex flex-wrap items-center gap-2 rounded-city-md border border-city-border bg-city-surface-raised p-4">
       <Button variant="secondary">Secondary</Button>
       <Button variant="ghost">Ghost</Button>
       <Button variant="outline">Outline</Button>

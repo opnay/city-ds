@@ -1,8 +1,0 @@
-node_modules
-.turbo
-.next
-dist
-storybook-static
-coverage
-pnpm-lock.yaml
-apps/next-react/next-env.d.ts

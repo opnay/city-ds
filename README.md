@@ -8,6 +8,7 @@ Base UI, Tailwind CSS, Storybook으로 만드는 개인용 React 디자인 시�
 - Base UI 1
 - Tailwind CSS 4
 - Storybook 10
+- Oxlint + Oxfmt
 - pnpm 11 + Turborepo
 
 ## 요구 사항
@@ -149,6 +150,8 @@ packages/
 ## 품질 검사
 
 ```bash
+pnpm format
+pnpm lint
 pnpm check
 pnpm build
 pnpm --filter @city-ds/react pack:check

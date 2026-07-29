@@ -95,7 +95,7 @@ function ControlledExample() {
         step={5}
         value={value}
       />
-      <span className="text-city-muted-foreground text-xs">Current value: {value ?? 'empty'}</span>
+      <span className="text-xs text-city-muted-foreground">Current value: {value ?? 'empty'}</span>
     </div>
   );
 }

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "storybook build",
     "dev": "storybook dev -p 6006",
-    "lint": "eslint .",
+    "lint": "oxlint .",
     "test": "vitest run --config vitest.config.ts",
     "typecheck": "tsc --noEmit"
   },

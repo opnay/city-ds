@@ -55,11 +55,11 @@ export const WithDescription: Story = {
         Choose where operational alerts should be delivered.
       </Fieldset.Description>
       <Fieldset.Content>
-        <label className="text-city-foreground flex w-fit cursor-pointer items-center gap-2 text-sm">
+        <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-city-foreground">
           <Checkbox aria-label="Email alerts" defaultChecked />
           Email alerts
         </label>
-        <label className="text-city-foreground flex w-fit cursor-pointer items-center gap-2 text-sm">
+        <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-city-foreground">
           <Checkbox aria-label="SMS alerts" />
           SMS alerts
         </label>
@@ -74,11 +74,11 @@ export const WithError: Story = {
       <Fieldset.Legend>Deployment window</Fieldset.Legend>
       <Fieldset.Description>Select at least one allowed deployment day.</Fieldset.Description>
       <Fieldset.Content>
-        <label className="text-city-foreground flex w-fit cursor-pointer items-center gap-2 text-sm">
+        <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-city-foreground">
           <Checkbox aria-label="Weekdays" />
           Weekdays
         </label>
-        <label className="text-city-foreground flex w-fit cursor-pointer items-center gap-2 text-sm">
+        <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-city-foreground">
           <Checkbox aria-label="Weekends" />
           Weekends
         </label>
@@ -100,7 +100,7 @@ export const DisabledGroup: Story = {
           <Field.Label>Team</Field.Label>
           <Input defaultValue="Platform" />
         </Field.Root>
-        <label className="text-city-foreground flex w-fit items-center gap-2 text-sm">
+        <label className="flex w-fit items-center gap-2 text-sm text-city-foreground">
           <Checkbox aria-label="Require SSO" defaultChecked />
           Require SSO
         </label>
@@ -116,7 +116,7 @@ export const CheckboxGroupComposition: Story = {
       <Fieldset.Content>
         {['HTTPS', 'SSH', 'SFTP'].map((protocol) => (
           <label
-            className="text-city-foreground flex w-fit cursor-pointer items-center gap-2 text-sm"
+            className="flex w-fit cursor-pointer items-center gap-2 text-sm text-city-foreground"
             key={protocol}
           >
             <Checkbox aria-label={protocol} defaultChecked={protocol === 'HTTPS'} />

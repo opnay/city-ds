@@ -165,6 +165,7 @@
     }
   },
   "files": [
+    "DESIGN.md",
     "dist",
     "src/styles/theme.css"
   ],

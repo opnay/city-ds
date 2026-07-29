@@ -1,13 +1,13 @@
-# @city-ds/react 디자인 가이드
+# @opnay/city-ds-react 디자인 가이드
 
-이 문서는 `@city-ds/react`로 운영 도구, 대시보드, 폼을 설계할 때 적용하는 기준입니다. 사람과 코드 에이전트 모두 컴포넌트를 고르기 전에 사용자 목표, 작업 빈도, 실패 비용, 정보 위계를 먼저 판단하십시오. 시각적 취향보다 이해 가능성, 행동 예측성, 접근성을 우선하십시오.
+이 문서는 `@opnay/city-ds-react`로 운영 도구, 대시보드, 폼을 설계할 때 적용하는 기준입니다. 사람과 코드 에이전트 모두 컴포넌트를 고르기 전에 사용자 목표, 작업 빈도, 실패 비용, 정보 위계를 먼저 판단하십시오. 시각적 취향보다 이해 가능성, 행동 예측성, 접근성을 우선하십시오.
 
 ## 프로젝트에 연결하기
 
 패키지를 설치한 프로젝트 루트에서 다음 명령을 실행하십시오.
 
 ```bash
-ln -s node_modules/@city-ds/react/DESIGN.md ./DESIGN.md
+ln -s node_modules/@opnay/city-ds-react/DESIGN.md ./DESIGN.md
 ```
 
 프로젝트에 이미 `DESIGN.md`가 있다면 덮어쓰지 말고 기존 지침에서 이 파일을 참조하십시오. 심볼릭 링크를 사용하면 패키지를 업데이트할 때 가이드도 함께 갱신됩니다.
@@ -15,10 +15,10 @@ ln -s node_modules/@city-ds/react/DESIGN.md ./DESIGN.md
 애플리케이션 진입점에서는 앱 기반 스타일을 한 번만 불러오십시오.
 
 ```tsx
-import '@city-ds/react/styles.css';
+import '@opnay/city-ds-react/styles.css';
 ```
 
-전역 리셋이나 컴포넌트 스타일 없이 토큰만 필요하면 `@city-ds/react/theme.css`를 사용하십시오.
+전역 리셋이나 컴포넌트 스타일 없이 토큰만 필요하면 `@opnay/city-ds-react/theme.css`를 사용하십시오.
 
 ## 결정 순서
 

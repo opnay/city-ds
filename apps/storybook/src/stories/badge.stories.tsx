@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Badge } from '@city-ds/react';
+import { Badge } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Data display/Badge',

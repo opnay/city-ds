@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Accordion } from '@city-ds/react';
+import { Accordion } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Disclosure/Accordion',

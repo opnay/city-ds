@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Skeleton, type SkeletonSize, type SkeletonVariant } from '@city-ds/react';
+import { Skeleton, type SkeletonSize, type SkeletonVariant } from '@opnay/city-ds-react';
 import type { ReactNode } from 'react';
 
 interface SkeletonStoryArgs {

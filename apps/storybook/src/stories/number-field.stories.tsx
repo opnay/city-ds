@@ -1,7 +1,7 @@
 import { useState, type ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Field, NumberField } from '@city-ds/react';
+import { Field, NumberField } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/NumberField',

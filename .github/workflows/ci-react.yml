@@ -58,13 +58,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run lint and type checks
-        run: pnpm turbo run lint typecheck --filter=@city-ds/react --concurrency=2
+        run: pnpm turbo run lint typecheck --filter=@opnay/city-ds-react --concurrency=2
 
       - name: Run unit and component tests
-        run: pnpm turbo run test --filter=@city-ds/react
+        run: pnpm turbo run test --filter=@opnay/city-ds-react
 
       - name: Build package
-        run: pnpm turbo run build --filter=@city-ds/react
+        run: pnpm turbo run build --filter=@opnay/city-ds-react
 
       - name: Validate package exports
-        run: pnpm --filter @city-ds/react pack:check
+        run: pnpm --filter @opnay/city-ds-react pack:check

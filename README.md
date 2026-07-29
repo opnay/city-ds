@@ -25,12 +25,20 @@ pnpm storybook
 
 ## 패키지 사용
 
-외부 레지스트리에는 아직 배포하지 않습니다. 모노레포 안에서는 workspace 의존성으로 연결하십시오.
+GitHub Packages에서 설치하려면 GitHub personal access token(classic)의 `read:packages`
+권한으로 먼저 로그인하십시오.
+
+```bash
+npm login --scope=@opnay --auth-type=legacy --registry=https://npm.pkg.github.com
+pnpm add @opnay/city-ds-react
+```
+
+모노레포 안에서는 workspace 의존성으로 연결하십시오.
 
 ```json
 {
   "dependencies": {
-    "@city-ds/react": "workspace:*"
+    "@opnay/city-ds-react": "workspace:*"
   }
 }
 ```
@@ -38,8 +46,8 @@ pnpm storybook
 애플리케이션 진입점에서 CSS를 한 번 가져온 뒤, 루트 또는 컴포넌트 subpath를 사용하십시오.
 
 ```tsx
-import '@city-ds/react/styles.css';
-import { Button } from '@city-ds/react/button';
+import '@opnay/city-ds-react/styles.css';
+import { Button } from '@opnay/city-ds-react/button';
 
 export function SaveButton() {
   return <Button>Save changes</Button>;
@@ -48,14 +56,14 @@ export function SaveButton() {
 
 `styles.css`는 Tailwind Preflight, 디자인 토큰과 컴포넌트 유틸리티를 포함하는 앱 기반
 스타일입니다. 애플리케이션 루트에서 한 번만 가져오십시오. 전역 리셋이나 컴포넌트 스타일
-없이 CSS 변수만 필요한 경우에는 `@city-ds/react/theme.css`를 가져올 수 있습니다.
+없이 CSS 변수만 필요한 경우에는 `@opnay/city-ds-react/theme.css`를 가져올 수 있습니다.
 
 ## 디자인 가이드
 
 설치된 패키지의 디자인 가이드를 프로젝트 루트에 심볼릭 링크로 연결하십시오.
 
 ```bash
-ln -s node_modules/@city-ds/react/DESIGN.md ./DESIGN.md
+ln -s node_modules/@opnay/city-ds-react/DESIGN.md ./DESIGN.md
 ```
 
 이 가이드는 컴포넌트 선택, 액션 위계, 크기·밀도, 표면, 상태, 접근성, 반응형 기준을 제공합니다. 프로젝트에 이미 `DESIGN.md`가 있다면 덮어쓰지 말고 기존 지침에서 패키지 가이드를 참조하십시오.
@@ -102,7 +110,7 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 
 ## 컴포넌트
 
-`@city-ds/react`의 대표 컴포넌트는 다음과 같습니다.
+`@opnay/city-ds-react`의 대표 컴포넌트는 다음과 같습니다.
 
 - Actions: Button, Toggle, ToggleGroup
 - Status: Badge, Progress, Toast
@@ -111,7 +119,7 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 - Overlays: Dialog, Tooltip
 - Data display: Table
 
-각 컴포넌트는 `@city-ds/react/button`과 같은 명시적인 subpath export도 제공합니다.
+각 컴포넌트는 `@opnay/city-ds-react/button`과 같은 명시적인 subpath export도 제공합니다.
 
 ### ToggleGroup 접근성
 
@@ -144,7 +152,7 @@ apps/
   storybook/      컴포넌트 문서와 정적 빌드
   vite-react/     Vite 소비 검증
 packages/
-  react/          @city-ds/react
+  react/          @opnay/city-ds-react
 ```
 
 ## 품질 검사
@@ -154,8 +162,15 @@ pnpm format
 pnpm lint
 pnpm check
 pnpm build
-pnpm --filter @city-ds/react pack:check
+pnpm --filter @opnay/city-ds-react pack:check
 ```
 
 CI는 모든 타입·린트·테스트·프로덕션 빌드를 실행하고 Storybook 정적 결과를 artifact로
-보관합니다. 패키지 배포와 외부 Storybook 호스팅은 아직 구성하지 않았습니다.
+보관합니다.
+
+## 배포
+
+`packages/react/package.json`의 버전을 올리고 같은 버전의 `v<version>` 태그로 GitHub
+Release를 게시하십시오. 게시 워크플로는 전체 품질 게이트와 패키지 export 검사를 통과한
+뒤 `@opnay/city-ds-react`만 비공개 GitHub Package로 배포합니다. CI 인증에는 저장소의
+`GITHUB_TOKEN`을 사용하므로 별도 배포 secret은 필요하지 않습니다.

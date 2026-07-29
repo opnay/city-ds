@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Combobox, Field, type ControlSize } from '@city-ds/react';
+import { Combobox, Field, type ControlSize } from '@opnay/city-ds-react';
 
 const projects = ['Civic Portal', 'Transit Map', 'Permit Tracker', 'Budget Explorer'];
 const owners = ['Ari Kim', 'Bo Park', 'Casey Lee', 'Dana Cho'];

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { X } from 'lucide-react';
-import { Button, Drawer, type DrawerSide } from '@city-ds/react';
+import { Button, Drawer, type DrawerSide } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Overlays/Drawer',

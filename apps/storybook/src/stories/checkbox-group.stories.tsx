@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { CheckboxGroup, Field, type CheckboxGroupProps } from '@city-ds/react';
+import { CheckboxGroup, Field, type CheckboxGroupProps } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Checkbox group',

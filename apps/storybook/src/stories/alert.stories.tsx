@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Alert, Button, type AlertVariant } from '@city-ds/react';
+import { Alert, Button, type AlertVariant } from '@opnay/city-ds-react';
 
 interface AlertStoryArgs {
   showIcon: boolean;

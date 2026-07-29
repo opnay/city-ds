@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
-import { FileUpload } from '@city-ds/react';
+import { FileUpload } from '@opnay/city-ds-react';
 
 interface FileUploadStoryArgs {
   accept?: string;

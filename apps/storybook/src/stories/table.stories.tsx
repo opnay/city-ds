@@ -8,7 +8,7 @@ import {
   type ControlSize,
   type TableSortDirection,
   type TableVariant,
-} from '@city-ds/react';
+} from '@opnay/city-ds-react';
 
 const rows = [
   { id: 'BLD-104', name: 'Beacon', owner: 'Operations', status: 'Active', budget: '$42K' },

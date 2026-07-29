@@ -1,4 +1,4 @@
-import { Badge } from '@city-ds/react/badge';
+import { Badge } from '@opnay/city-ds-react/badge';
 
 import { Showcase } from './showcase';
 

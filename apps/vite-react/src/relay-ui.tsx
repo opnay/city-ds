@@ -1,8 +1,8 @@
-import { Progress, Skeleton, type BadgeProps } from '@city-ds/react';
+import { Progress, Skeleton, type BadgeProps } from '@opnay/city-ds-react';
 
 import type { AssetStatus, MaintenanceStatus, WorkOrderStatus } from './dashboard-data';
 
-export { DataTableRegion, FilterBar } from '@city-ds/react';
+export { DataTableRegion, FilterBar } from '@opnay/city-ds-react';
 
 export type BadgePresentation = Pick<BadgeProps, 'appearance' | 'tone'>;
 

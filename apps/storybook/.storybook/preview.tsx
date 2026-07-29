@@ -1,10 +1,10 @@
 import * as React from 'react';
-import '@city-ds/react/styles.css';
+import '@opnay/city-ds-react/styles.css';
 import '../src/storybook.css';
 import { DocsContainer, type DocsContainerProps } from '@storybook/addon-docs/blocks';
 import type { Decorator, Preview } from '@storybook/react-vite';
 import { GLOBALS_UPDATED } from 'storybook/internal/core-events';
-import type { CityTheme } from '@city-ds/react';
+import type { CityTheme } from '@opnay/city-ds-react';
 
 function resolveTheme(value: unknown): CityTheme {
   if (value === 'light' || value === 'dark') {

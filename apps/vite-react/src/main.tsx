@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import '@city-ds/react/styles.css';
+import '@opnay/city-ds-react/styles.css';
 
 import { App } from './app';
 import './smoke.css';

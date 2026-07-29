@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Breadcrumbs } from '@city-ds/react';
+import { Breadcrumbs } from '@opnay/city-ds-react';
 
 function BreadcrumbsExample() {
   return (

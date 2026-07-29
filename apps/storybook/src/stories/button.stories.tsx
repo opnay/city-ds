@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
 import { Settings } from 'lucide-react';
 
-import { Button } from '@city-ds/react';
+import { Button } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Actions/Button',

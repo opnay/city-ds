@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Pagination } from '@city-ds/react';
+import { Pagination } from '@opnay/city-ds-react';
 
 interface PaginationStoryArgs {
   boundaryCount: number;

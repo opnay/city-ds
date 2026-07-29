@@ -1,0 +1,60 @@
+name: Publish React package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-react-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Verify and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+          registry-url: https://npm.pkg.github.com
+          scope: '@opnay'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Storybook test browser
+        run: pnpm --filter @city-ds/storybook exec playwright install chromium
+
+      - name: Run repository quality gate
+        run: pnpm check
+
+      - name: Validate package exports
+        run: pnpm --filter @opnay/city-ds-react pack:check
+
+      - name: Verify release tag
+        run: >-
+          node -e "const { version } = require('./packages/react/package.json');
+          if (process.env.GITHUB_REF_NAME !== 'v' + version)
+          throw new Error('Release tag must be v' + version);"
+
+      - name: Publish React package
+        run: pnpm --filter @opnay/city-ds-react publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

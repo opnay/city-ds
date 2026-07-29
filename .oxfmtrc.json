@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": ["apps/next-react/next-env.d.ts"],
+  "singleQuote": true,
+  "sortTailwindcss": {
+    "stylesheet": "./packages/react/src/styles/index.css"
+  }
+}

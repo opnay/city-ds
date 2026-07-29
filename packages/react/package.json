@@ -2,8 +2,13 @@
   "name": "@city-ds/react",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "license": "UNLICENSED",
+  "files": [
+    "DESIGN.md",
+    "dist",
+    "src/styles/theme.css"
+  ],
+  "type": "module",
   "sideEffects": [
     "**/*.css"
   ],
@@ -164,22 +169,13 @@
       "import": "./dist/components/checkbox-group/index.js"
     }
   },
-  "files": [
-    "DESIGN.md",
-    "dist",
-    "src/styles/theme.css"
-  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json && tailwindcss -i ./src/styles/index.css -o ./dist/styles.css --minify",
     "dev": "tailwindcss -i ./src/styles/index.css -o ./dist/styles.css --watch",
-    "lint": "eslint src tests vitest.config.ts",
+    "lint": "oxlint src tests vitest.config.ts",
     "pack:check": "publint",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
-  },
-  "peerDependencies": {
-    "react": "^18.3.0 || ^19.0.0",
-    "react-dom": "^18.3.0 || ^19.0.0"
   },
   "dependencies": {
     "@base-ui/react": "catalog:",
@@ -204,5 +200,9 @@
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
   }
 }

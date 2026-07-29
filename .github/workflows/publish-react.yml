@@ -43,7 +43,7 @@ jobs:
         run: pnpm --filter @city-ds/storybook exec playwright install chromium
 
       - name: Run repository quality gate
-        run: pnpm check
+        run: pnpm format:check && pnpm turbo run lint typecheck test build --concurrency=2
 
       - name: Validate package exports
         run: pnpm --filter @opnay/city-ds-react pack:check

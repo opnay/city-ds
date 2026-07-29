@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { RadioGroup } from '@city-ds/react';
+import { RadioGroup } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Radio group',

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Progress, type ControlSize } from '@city-ds/react';
+import { Progress, type ControlSize } from '@opnay/city-ds-react';
 
 interface ProgressStoryArgs {
   size: ControlSize;

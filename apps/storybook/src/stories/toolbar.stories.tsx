@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Bold, Italic, Underline } from 'lucide-react';
 import { expect, userEvent, within } from 'storybook/test';
 
-import { Toolbar } from '@city-ds/react';
+import { Toolbar } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Navigation/Toolbar',

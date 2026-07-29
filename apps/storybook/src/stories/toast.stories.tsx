@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import { Button, Toast } from '@city-ds/react';
+import { Button, Toast } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Feedback/Toast',

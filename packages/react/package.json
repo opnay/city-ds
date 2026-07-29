@@ -1,8 +1,13 @@
 {
-  "name": "@city-ds/react",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@opnay/city-ds-react",
+  "version": "0.1.0",
+  "description": "Accessible React design system built with Base UI.",
   "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opnay/city-ds.git",
+    "directory": "packages/react"
+  },
   "files": [
     "DESIGN.md",
     "dist",
@@ -169,11 +174,15 @@
       "import": "./dist/components/checkbox-group/index.js"
     }
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json && tailwindcss -i ./src/styles/index.css -o ./dist/styles.css --minify",
     "dev": "tailwindcss -i ./src/styles/index.css -o ./dist/styles.css --watch",
     "lint": "oxlint src tests vitest.config.ts",
     "pack:check": "publint",
+    "prepublishOnly": "pnpm run build && pnpm run pack:check",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },

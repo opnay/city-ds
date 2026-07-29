@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Input, InputGroup, Textarea } from '@city-ds/react';
+import { Input, InputGroup, Textarea } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Input',

@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@city-ds/react/button';
-import { Field } from '@city-ds/react/field';
-import { Input } from '@city-ds/react/input';
-import { Menu } from '@city-ds/react/menu';
-import { Popover } from '@city-ds/react/popover';
-import { Progress } from '@city-ds/react/progress';
-import { Tabs } from '@city-ds/react/tabs';
+import { Button } from '@opnay/city-ds-react/button';
+import { Field } from '@opnay/city-ds-react/field';
+import { Input } from '@opnay/city-ds-react/input';
+import { Menu } from '@opnay/city-ds-react/menu';
+import { Popover } from '@opnay/city-ds-react/popover';
+import { Progress } from '@opnay/city-ds-react/progress';
+import { Tabs } from '@opnay/city-ds-react/tabs';
 
 export function Showcase() {
   const [saved, setSaved] = useState(false);

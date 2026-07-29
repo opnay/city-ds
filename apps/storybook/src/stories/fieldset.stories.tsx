@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Checkbox, Field, Fieldset, Input, RadioGroup } from '@city-ds/react';
+import { Checkbox, Field, Fieldset, Input, RadioGroup } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Fieldset',

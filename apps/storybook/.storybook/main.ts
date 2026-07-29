@@ -11,9 +11,9 @@ const config: StorybookConfig = {
       plugins: [tailwindcss()],
       optimizeDeps: {
         include: [
-          '@city-ds/react > @base-ui/react/accordion',
-          '@city-ds/react > @base-ui/react/drawer',
-          '@city-ds/react > @base-ui/react/number-field',
+          '@opnay/city-ds-react > @base-ui/react/accordion',
+          '@opnay/city-ds-react > @base-ui/react/drawer',
+          '@opnay/city-ds-react > @base-ui/react/number-field',
         ],
       },
     }),

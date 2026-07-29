@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Checkbox } from '@city-ds/react';
+import { Checkbox } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Checkbox',

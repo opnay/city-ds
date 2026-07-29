@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Switch } from '@city-ds/react';
+import { Switch } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Switch',

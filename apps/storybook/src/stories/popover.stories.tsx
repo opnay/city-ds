@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button, Popover } from '@city-ds/react';
+import { Button, Popover } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Overlays/Popover',

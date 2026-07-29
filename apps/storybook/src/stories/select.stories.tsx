@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
-import { Field, Select, type ControlSize } from '@city-ds/react';
+import { Field, Select, type ControlSize } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Select',

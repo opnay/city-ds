@@ -134,7 +134,7 @@ importers:
 
   apps/next-react:
     dependencies:
-      '@city-ds/react':
+      '@opnay/city-ds-react':
         specifier: workspace:*
         version: link:../../packages/react
       next:
@@ -165,7 +165,7 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@city-ds/react':
+      '@opnay/city-ds-react':
         specifier: workspace:*
         version: link:../../packages/react
       lucide-react:
@@ -220,7 +220,7 @@ importers:
 
   apps/vite-react:
     dependencies:
-      '@city-ds/react':
+      '@opnay/city-ds-react':
         specifier: workspace:*
         version: link:../../packages/react
       lucide-react:

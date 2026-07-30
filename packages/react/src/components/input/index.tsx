@@ -10,6 +10,12 @@ import {
 import { useRender } from '@base-ui/react/use-render';
 
 import { cn } from '../../lib/cn';
+import {
+  outlineFrameBaseClasses,
+  outlineFrameHeightClasses,
+  outlineFrameTextClasses,
+  outlineFrameTextareaMinHeightClasses,
+} from '../../lib/outline-frame';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
 
@@ -89,12 +95,6 @@ export interface InputGroupProps extends Omit<
   size?: ControlSize;
 }
 
-const inputGroupSizeClasses: Record<ControlSize, string> = {
-  sm: 'min-h-(--city-control-sm) text-xs',
-  md: 'min-h-(--city-control-md) text-sm',
-  lg: 'min-h-(--city-control-lg) text-sm',
-};
-
 export const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
   function InputGroupRoot({ className, render, size = 'md', ...props }, ref) {
     const state: InputGroupState = {};
@@ -107,8 +107,11 @@ export const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
       props: {
         ...props,
         className: cn(
-          'flex w-full items-center overflow-hidden rounded-city-sm border border-city-input bg-city-background text-city-foreground transition-colors focus-within:border-city-ring focus-within:ring-2 focus-within:ring-city-ring/30 [&>input]:rounded-none [&>input]:border-0 [&>input]:bg-transparent [&>input]:shadow-none [&>input]:focus-visible:ring-0 [&>textarea]:rounded-none [&>textarea]:border-0 [&>textarea]:bg-transparent [&>textarea]:shadow-none [&>textarea]:focus-visible:ring-0',
-          inputGroupSizeClasses[size],
+          outlineFrameBaseClasses,
+          outlineFrameHeightClasses[size],
+          outlineFrameTextClasses[size],
+          outlineFrameTextareaMinHeightClasses[size],
+          'has-[textarea]:h-auto [&>input]:h-full [&>input]:self-stretch [&>input]:rounded-none [&>input]:border-0 [&>input]:bg-transparent [&>input]:shadow-none [&>input]:focus-visible:ring-0 [&>textarea]:rounded-none [&>textarea]:border-0 [&>textarea]:bg-transparent [&>textarea]:shadow-none [&>textarea]:focus-visible:ring-0',
           resolveClassName(className, state),
         ),
       },

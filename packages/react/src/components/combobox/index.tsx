@@ -30,6 +30,12 @@ import type {
 } from '@base-ui/react/combobox';
 import { Check, ChevronDown, X } from 'lucide-react';
 import { cn } from '../../lib/cn';
+import {
+  outlineFrameBaseClasses,
+  outlineFrameHeightClasses,
+  outlineFrameMinHeightClasses,
+  outlineFrameTextClasses,
+} from '../../lib/outline-frame';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
 
@@ -71,28 +77,35 @@ export type ComboboxChipProps = BaseComboboxChipProps;
 export type ComboboxChipRemoveProps = BaseComboboxChipRemoveProps;
 export type ComboboxCollectionProps = BaseComboboxCollectionProps;
 
-const ComboboxSizeContext = React.createContext<ControlSize>('md');
-
-const comboboxGroupSizeClasses: Record<ControlSize, string> = {
-  sm: 'min-h-(--city-control-sm) px-2.5 text-xs',
-  md: 'min-h-(--city-control-md) px-3 text-sm',
-  lg: 'min-h-(--city-control-lg) px-3.5 text-sm',
+type ComboboxLayoutContextValue = {
+  expandable: boolean;
+  size: ControlSize;
 };
 
-const comboboxInputSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-(--city-control-sm)',
-  md: 'h-(--city-control-md)',
-  lg: 'h-(--city-control-lg)',
+const ComboboxLayoutContext = React.createContext<ComboboxLayoutContextValue>({
+  expandable: false,
+  size: 'md',
+});
+
+const comboboxGroupPaddingClasses: Record<ControlSize, string> = {
+  sm: 'px-2.5',
+  md: 'px-3',
+  lg: 'px-3.5',
 };
 
 export function ComboboxRoot<Value, Multiple extends boolean | undefined = false>({
   size = 'md',
   ...props
 }: ComboboxRootProps<Value, Multiple>): React.JSX.Element {
+  const context: ComboboxLayoutContextValue = {
+    expandable: props.multiple === true,
+    size,
+  };
+
   return (
-    <ComboboxSizeContext.Provider value={size}>
+    <ComboboxLayoutContext.Provider value={context}>
       <BaseCombobox.Root {...props} />
-    </ComboboxSizeContext.Provider>
+    </ComboboxLayoutContext.Provider>
   );
 }
 
@@ -114,8 +127,8 @@ export const ComboboxLabel = React.forwardRef<HTMLDivElement, ComboboxLabelProps
 
 export const ComboboxInputGroup = React.forwardRef<HTMLDivElement, ComboboxInputGroupProps>(
   ({ className, size: sizeProp, ...props }, ref) => {
-    const rootSize = React.useContext(ComboboxSizeContext);
-    const size = sizeProp ?? rootSize;
+    const layout = React.useContext(ComboboxLayoutContext);
+    const size = sizeProp ?? layout.size;
 
     return (
       <BaseCombobox.InputGroup
@@ -125,8 +138,13 @@ export const ComboboxInputGroup = React.forwardRef<HTMLDivElement, ComboboxInput
         className={classes(
           className,
           cn(
-            'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground focus-within:ring-city-ring data-[invalid]:border-city-destructive data-[invalid]:focus-within:ring-city-destructive/30 flex w-full items-center gap-2 border transition-colors focus-within:ring-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-            comboboxGroupSizeClasses[size],
+            outlineFrameBaseClasses,
+            layout.expandable
+              ? outlineFrameMinHeightClasses[size]
+              : outlineFrameHeightClasses[size],
+            outlineFrameTextClasses[size],
+            comboboxGroupPaddingClasses[size],
+            'gap-2 data-[disabled]:pointer-events-none',
           ),
         )}
       />
@@ -136,8 +154,8 @@ export const ComboboxInputGroup = React.forwardRef<HTMLDivElement, ComboboxInput
 
 export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputProps>(
   ({ className, size: sizeProp, ...props }, ref) => {
-    const rootSize = React.useContext(ComboboxSizeContext);
-    const size = sizeProp ?? rootSize;
+    const layout = React.useContext(ComboboxLayoutContext);
+    const size = sizeProp ?? layout.size;
 
     return (
       <BaseCombobox.Input
@@ -146,10 +164,7 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
         data-city-size={size}
         className={classes(
           className,
-          cn(
-            'placeholder:text-city-muted-foreground min-w-0 flex-1 bg-transparent outline-none disabled:cursor-not-allowed',
-            comboboxInputSizeClasses[size],
-          ),
+          'placeholder:text-city-muted-foreground min-w-0 flex-1 self-stretch bg-transparent outline-none disabled:cursor-not-allowed',
         )}
       />
     );

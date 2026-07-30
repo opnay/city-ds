@@ -90,7 +90,7 @@ describe('form and display controls', () => {
     expect(screen.getByRole('textbox', { name: 'Large input' })).toHaveClass(
       'h-(--city-control-lg)',
     );
-    expect(screen.getByTestId('small-input-group')).toHaveClass('min-h-(--city-control-sm)');
+    expect(screen.getByTestId('small-input-group')).toHaveClass('h-(--city-control-sm)');
   });
 
   it('sizes Select and Combobox from their roots and styles invalid fields', () => {
@@ -125,11 +125,11 @@ describe('form and display controls', () => {
     expect(select).toHaveAttribute('data-invalid');
     expect(select).toHaveClass('h-(--city-control-sm)', 'data-[invalid]:border-city-destructive');
     expect(combobox).toHaveAttribute('data-city-size', 'lg');
-    expect(combobox).toHaveClass('h-(--city-control-lg)');
+    expect(combobox).toHaveClass('self-stretch');
     expect(comboboxGroup).toHaveAttribute('data-city-size', 'lg');
     expect(comboboxGroup).toHaveAttribute('data-invalid');
     expect(comboboxGroup).toHaveClass(
-      'min-h-(--city-control-lg)',
+      'h-(--city-control-lg)',
       'data-[invalid]:border-city-destructive',
     );
   });
@@ -294,16 +294,25 @@ describe('form and display controls', () => {
 
   it('renders leading and trailing InputGroup slots around its input', () => {
     render(
-      <InputGroup.Root>
-        <InputGroup.Addon>https://</InputGroup.Addon>
-        <Input aria-label="Domain" />
-        <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
-      </InputGroup.Root>,
+      <>
+        <InputGroup.Root>
+          <InputGroup.Addon>https://</InputGroup.Addon>
+          <Input aria-label="Domain" />
+          <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
+        </InputGroup.Root>
+        <InputGroup.Root data-testid="textarea-group" size="lg">
+          <Textarea aria-label="Grouped notes" />
+        </InputGroup.Root>
+      </>,
     );
 
     expect(screen.getByText('https://')).toHaveAttribute('data-city-position', 'leading');
     expect(screen.getByText('.dev')).toHaveAttribute('data-city-position', 'trailing');
     expect(screen.getByRole('textbox', { name: 'Domain' })).toBeVisible();
+    expect(screen.getByTestId('textarea-group')).toHaveClass(
+      'has-[textarea]:h-auto',
+      'has-[textarea]:min-h-(--city-control-lg)',
+    );
   });
 
   it('supports SearchField typing, clear, Escape, and native form submission', async () => {
@@ -325,7 +334,9 @@ describe('form and display controls', () => {
     const searchButton = screen.getByRole('button', { name: 'Search' });
 
     expect(screen.getByTestId('search-group')).toContainElement(input);
+    expect(screen.getByTestId('search-group')).toHaveClass('h-(--city-control-md)');
     expect(searchButton).toHaveClass('hover:bg-city-accent', 'active:bg-city-accent-active');
+    expect(searchButton).toHaveClass('h-full', 'w-(--city-control-md)');
     expect(input).toHaveAttribute('type', 'search');
     expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
 
@@ -796,7 +807,10 @@ describe('Combobox', () => {
           defaultValue={['Civic Portal', 'Transit Map']}
         >
           <Field.Label>Projects</Field.Label>
-          <Combobox.InputGroup className="flex-col items-stretch">
+          <Combobox.InputGroup
+            className="flex-col items-stretch"
+            data-testid="multiple-combobox-group"
+          >
             <Combobox.Chips>
               <Combobox.Value>
                 {(selectedProjects: string[]) =>
@@ -818,6 +832,8 @@ describe('Combobox', () => {
     );
 
     expect(screen.getByText('Civic Portal')).toBeVisible();
+    expect(screen.getByTestId('multiple-combobox-group')).toHaveClass('min-h-(--city-control-md)');
+    expect(screen.getByTestId('multiple-combobox-group')).not.toHaveClass('h-(--city-control-md)');
     expect(screen.getByRole('toolbar')).not.toContainElement(
       screen.getByRole('combobox', { name: 'Projects' }),
     );

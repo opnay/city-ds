@@ -117,10 +117,10 @@ describe('NumberField', () => {
     const decrement = screen.getByRole('button', { name: 'Decrease capacity' });
     const increment = screen.getByRole('button', { name: 'Increase capacity' });
 
-    expect(screen.getByTestId('capacity-group')).toHaveClass('min-h-(--city-control-lg)');
-    expect(input).toHaveClass('h-(--city-control-lg)');
-    expect(decrement).toHaveClass('h-(--city-control-lg)', 'w-(--city-control-lg)');
+    expect(screen.getByTestId('capacity-group')).toHaveClass('h-(--city-control-lg)');
+    expect(input).toHaveClass('h-full');
+    expect(decrement).toHaveClass('h-full', 'w-(--city-control-lg)');
     expect(increment).toHaveAttribute('data-city-size', 'sm');
-    expect(increment).toHaveClass('h-(--city-control-sm)', 'w-(--city-control-sm)');
+    expect(increment).toHaveClass('h-full', 'w-(--city-control-sm)');
   });
 });

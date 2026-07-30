@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@city-ds/react": "workspace:*",
+    "@daypicker/react": "catalog:",
     "lucide-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"

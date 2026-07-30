@@ -120,17 +120,27 @@ describe('form and display controls', () => {
     const select = screen.getByRole('combobox', { name: 'District' });
     const combobox = screen.getByRole('combobox', { name: 'Facility' });
     const comboboxGroup = combobox.parentElement;
+    const comboboxTrigger = screen.getByRole('button', { name: 'Facility' });
 
     expect(select).toHaveAttribute('data-city-size', 'sm');
     expect(select).toHaveAttribute('data-invalid');
     expect(select).toHaveClass('h-(--city-control-sm)', 'data-[invalid]:border-city-destructive');
     expect(combobox).toHaveAttribute('data-city-size', 'lg');
-    expect(combobox).toHaveClass('self-stretch');
+    expect(combobox).toHaveClass('self-stretch', 'px-3.5');
     expect(comboboxGroup).toHaveAttribute('data-city-size', 'lg');
     expect(comboboxGroup).toHaveAttribute('data-invalid');
     expect(comboboxGroup).toHaveClass(
       'h-(--city-control-lg)',
       'data-[invalid]:border-city-destructive',
+    );
+    expect(comboboxGroup).not.toHaveClass('px-3.5', 'gap-2');
+    expect(comboboxTrigger).toHaveAttribute('data-city-size', 'lg');
+    expect(comboboxTrigger).toHaveClass(
+      'h-full',
+      'self-stretch',
+      'border-l',
+      'w-(--city-control-lg)',
+      'data-[popup-open]:[&>svg]:rotate-180',
     );
   });
 
@@ -807,11 +817,13 @@ describe('Combobox', () => {
           defaultValue={['Civic Portal', 'Transit Map']}
         >
           <Field.Label>Projects</Field.Label>
-          <Combobox.InputGroup
-            className="flex-col items-stretch"
-            data-testid="multiple-combobox-group"
-          >
-            <Combobox.Chips>
+          <Combobox.InputGroup data-testid="multiple-combobox-group">
+            <Combobox.Chips data-testid="multiple-combobox-chips">
+              <Combobox.InputRow data-testid="multiple-combobox-input-row">
+                <Combobox.Input />
+                <Combobox.Clear />
+                <Combobox.Trigger />
+              </Combobox.InputRow>
               <Combobox.Value>
                 {(selectedProjects: string[]) =>
                   selectedProjects.map((project) => (
@@ -823,23 +835,68 @@ describe('Combobox', () => {
                 }
               </Combobox.Value>
             </Combobox.Chips>
-            <div className="flex w-full items-center">
-              <Combobox.Input />
-            </div>
           </Combobox.InputGroup>
+          <Combobox.Portal>
+            <Combobox.Positioner>
+              <Combobox.Popup>
+                <Combobox.List>
+                  {(project: string) => (
+                    <Combobox.Item key={project} value={project}>
+                      {project}
+                    </Combobox.Item>
+                  )}
+                </Combobox.List>
+              </Combobox.Popup>
+            </Combobox.Positioner>
+          </Combobox.Portal>
         </Combobox.Root>
       </Field.Root>,
     );
 
     expect(screen.getByText('Civic Portal')).toBeVisible();
-    expect(screen.getByTestId('multiple-combobox-group')).toHaveClass('min-h-(--city-control-md)');
-    expect(screen.getByTestId('multiple-combobox-group')).not.toHaveClass('h-(--city-control-md)');
-    expect(screen.getByRole('toolbar')).not.toContainElement(
-      screen.getByRole('combobox', { name: 'Projects' }),
+    const multipleInput = screen.getByRole('combobox', { name: 'Projects' });
+    const group = screen.getByTestId('multiple-combobox-group');
+    const chips = screen.getByTestId('multiple-combobox-chips');
+    const inputRow = screen.getByTestId('multiple-combobox-input-row');
+    const trigger = screen.getByRole('button', { name: 'Projects' });
+    const chipBand = group.querySelector('[data-city-combobox-chip-band]');
+
+    expect(group).toHaveClass('min-h-(--city-control-md)', 'flex-col', 'items-stretch');
+    expect(group).not.toHaveClass('h-(--city-control-md)', 'px-3', 'py-1.5');
+    expect(chips).toHaveAttribute('role', 'toolbar');
+    expect(chips).toContainElement(inputRow);
+    expect(inputRow).toContainElement(multipleInput);
+    expect(inputRow).toHaveClass(
+      'h-[calc(var(--city-control-md)-2px)]',
+      'items-center',
+      'shrink-0',
     );
+    expect(multipleInput).toHaveClass('px-3');
+    expect(multipleInput).not.toHaveClass('min-w-20');
+    expect(screen.getByRole('button', { name: 'Clear all selections' })).toBeVisible();
+    expect(trigger).toHaveClass('h-full', 'border-l', 'w-(--city-control-md)');
+    expect(chipBand).toHaveClass('border-t', 'px-3', 'py-1.5', 'empty:hidden');
+    expect(chipBand).toContainElement(
+      screen.getByRole('button', { name: 'Remove Civic Portal' }).parentElement,
+    );
+
+    await user.type(multipleInput, 'Permit');
+    await user.keyboard('[ArrowDown][Enter]');
+
+    expect(chipBand).toContainElement(
+      screen.getByRole('button', { name: 'Remove Permit Tracker' }).parentElement,
+    );
+    await user.keyboard('[Backspace]');
+    expect(screen.queryByText('Permit Tracker')).not.toBeInTheDocument();
+
     await user.click(screen.getByRole('button', { name: 'Remove Civic Portal' }));
 
     expect(screen.queryByText('Civic Portal')).not.toBeInTheDocument();
     expect(screen.getByText('Transit Map')).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: 'Clear all selections' }));
+
+    expect(chipBand).toBeEmptyDOMElement();
+    expect(chipBand).toHaveClass('empty:hidden');
   });
 });

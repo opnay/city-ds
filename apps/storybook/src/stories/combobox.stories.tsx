@@ -113,13 +113,26 @@ export const EmptyResults: Story = {
   ),
 };
 
-export const Multiple: Story = {
-  render: () => (
+function OwnerMultiCombobox({
+  className = 'w-80',
+  defaultValue,
+  size = 'md',
+}: {
+  className?: string;
+  defaultValue: string[];
+  size?: ControlSize;
+}) {
+  return (
     <Field.Root>
-      <Combobox.Root items={owners} multiple defaultValue={['Ari Kim', 'Dana Cho']}>
+      <Combobox.Root items={owners} multiple defaultValue={defaultValue} size={size}>
         <Field.Label>Owners</Field.Label>
-        <Combobox.InputGroup className="w-80 flex-col items-stretch gap-1.5 py-2">
+        <Combobox.InputGroup className={className}>
           <Combobox.Chips>
+            <Combobox.InputRow>
+              <Combobox.Input placeholder="Add owner" />
+              <Combobox.Clear aria-label="Clear all owners" />
+              <Combobox.Trigger />
+            </Combobox.InputRow>
             <Combobox.Value>
               {(selectedOwners: string[]) =>
                 selectedOwners.map((owner) => (
@@ -131,11 +144,6 @@ export const Multiple: Story = {
               }
             </Combobox.Value>
           </Combobox.Chips>
-          <div className="flex w-full min-w-0 items-center gap-2">
-            <Combobox.Input placeholder="Add owner" />
-            <Combobox.Clear />
-            <Combobox.Trigger />
-          </div>
         </Combobox.InputGroup>
         <Combobox.Portal>
           <Combobox.Positioner>
@@ -153,5 +161,23 @@ export const Multiple: Story = {
         </Combobox.Portal>
       </Combobox.Root>
     </Field.Root>
+  );
+}
+
+export const Multiple: Story = {
+  render: () => <OwnerMultiCombobox defaultValue={['Ari Kim', 'Dana Cho']} />,
+};
+
+export const MultipleWrapping: Story = {
+  render: () => <OwnerMultiCombobox className="w-72" defaultValue={owners} />,
+};
+
+export const MultipleSizes: Story = {
+  render: () => (
+    <div className="grid gap-3">
+      <OwnerMultiCombobox defaultValue={['Ari Kim', 'Dana Cho']} size="sm" />
+      <OwnerMultiCombobox defaultValue={['Ari Kim', 'Dana Cho']} size="md" />
+      <OwnerMultiCombobox defaultValue={['Ari Kim', 'Dana Cho']} size="lg" />
+    </div>
   ),
 };

@@ -9,6 +9,7 @@ import {
   SearchField,
   Select,
 } from '@city-ds/react';
+import { ComponentSpecimen } from '../docs/component-specimen';
 
 export const outlineFrameProjects = ['Civic Portal', 'Transit Map', 'Permit Tracker'];
 
@@ -33,6 +34,7 @@ Outline Frame은 atom·molecule의 Surface 축에서 폼 사용자가 **값을
 
 ## 대표 구성
 
+<ComponentSpecimen>
 <div className="my-6 grid gap-4 md:grid-cols-2">
   <div className="grid min-w-0 gap-2">
     <span className="text-city-muted-foreground text-xs font-medium">Input</span>
@@ -115,6 +117,7 @@ Outline Frame은 atom·molecule의 Surface 축에서 폼 사용자가 **값을
     </NumberField.Root>
   </div>
 </div>
+</ComponentSpecimen>
 
 > 대표 구성은 패턴 설명과 회귀 비교를 겸합니다. 같은 `size`의 외곽 높이나 프레임 표현이
 > 다르면 컴포넌트별 예외가 아니라 구현 결함으로 판단하십시오.

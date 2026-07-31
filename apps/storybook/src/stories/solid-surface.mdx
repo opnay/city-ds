@@ -1,5 +1,6 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Badge, Button, Checkbox, RadioGroup, Switch, Toggle } from '@city-ds/react';
+import { ComponentSpecimen } from '../docs/component-specimen';
 
 <Meta title="디자인 패턴/Surface/Solid" />
 
@@ -15,6 +16,7 @@ border나 shadow를 겹쳐 형태를 보강하기보다 채움과 전경의 대�
 
 ## 대표 구성
 
+<ComponentSpecimen>
 <div className="my-6 grid gap-4 md:grid-cols-2">
   <div className="grid min-w-0 gap-2">
     <span className="text-city-muted-foreground text-xs font-medium">Button / primary</span>
@@ -78,6 +80,7 @@ border나 shadow를 겹쳐 형태를 보강하기보다 채움과 전경의 대�
     </label>
   </div>
 </div>
+</ComponentSpecimen>
 
 > 대표 구성은 패턴 설명과 회귀 비교를 겸합니다. 같은 역할과 tone의 Solid가 컴포넌트마다
 > fill·foreground·상태 강도를 다르게 사용하면 컴포넌트별 예외가 아니라 구현 결함으로

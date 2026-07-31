@@ -58,6 +58,28 @@ export const Group: Story = {
   ),
 };
 
+export const GroupSizes: Story = {
+  render: () => (
+    <div className="grid w-80 gap-3">
+      <InputGroup.Root size="sm">
+        <InputGroup.Addon>https://</InputGroup.Addon>
+        <Input aria-label="Small deployment domain" placeholder="city" />
+        <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
+      </InputGroup.Root>
+      <InputGroup.Root size="md">
+        <InputGroup.Addon>https://</InputGroup.Addon>
+        <Input aria-label="Medium deployment domain" placeholder="city" />
+        <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
+      </InputGroup.Root>
+      <InputGroup.Root size="lg">
+        <InputGroup.Addon>https://</InputGroup.Addon>
+        <Input aria-label="Large deployment domain" placeholder="city" />
+        <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
+      </InputGroup.Root>
+    </div>
+  ),
+};
+
 export const Multiline: Story = {
   render: () => (
     <label className="text-city-foreground grid w-80 gap-1.5 text-sm font-medium">

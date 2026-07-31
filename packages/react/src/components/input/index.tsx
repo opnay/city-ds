@@ -13,36 +13,44 @@ import { cn } from '../../lib/cn';
 import {
   outlineFrameBaseClasses,
   outlineFrameHeightClasses,
+  outlineFrameLeadingTextPaddingClasses,
   outlineFrameTextClasses,
   outlineFrameTextareaMinHeightClasses,
+  outlineFrameTrailingIconPaddingClasses,
+  outlineFrameValuePaddingClasses,
 } from '../../lib/outline-frame';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
+
+const InputGroupSizeContext = React.createContext<ControlSize | null>(null);
 
 export interface InputProps extends Omit<BaseInputProps, 'className' | 'size'> {
   className?: StateClassName<InputState>;
   size?: ControlSize;
 }
 
-const inputSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-(--city-control-sm) px-2.5 text-xs',
-  md: 'h-(--city-control-md) px-3 text-sm',
-  lg: 'h-(--city-control-lg) px-3.5 text-sm',
-};
-
 const inputClasses =
   'flex w-full min-w-0 rounded-city-sm border border-city-input bg-city-background text-city-foreground outline-none transition-colors placeholder:text-city-muted-foreground focus-visible:border-city-ring focus-visible:ring-2 focus-visible:ring-city-ring/30 disabled:cursor-not-allowed disabled:opacity-50 data-[invalid]:border-city-destructive data-[invalid]:focus-visible:ring-city-destructive/30';
 
 export const Input = React.forwardRef<HTMLElement, InputProps>(function Input(
-  { className, size = 'md', ...props },
+  { className, size: sizeProp, ...props },
   ref,
 ) {
+  const groupSize = React.useContext(InputGroupSizeContext);
+  const size = sizeProp ?? groupSize ?? 'md';
+
   return (
     <BaseInput
       {...props}
       ref={ref}
       className={(state) =>
-        cn(inputClasses, inputSizeClasses[size], resolveClassName(className, state))
+        cn(
+          inputClasses,
+          outlineFrameHeightClasses[size],
+          outlineFrameTextClasses[size],
+          outlineFrameValuePaddingClasses[size],
+          resolveClassName(className, state),
+        )
       }
     />
   );
@@ -68,9 +76,12 @@ const textareaSizeClasses: Record<ControlSize, string> = {
 };
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
-  { className, render, size = 'md', ...props },
+  { className, render, size: sizeProp, ...props },
   ref,
 ) {
+  const groupSize = React.useContext(InputGroupSizeContext);
+  const size = sizeProp ?? groupSize ?? 'md';
+
   return (
     <BaseField.Control
       {...(props as BaseField.Control.Props)}
@@ -99,7 +110,7 @@ export const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
   function InputGroupRoot({ className, render, size = 'md', ...props }, ref) {
     const state: InputGroupState = {};
 
-    return useRender({
+    const element = useRender({
       defaultTagName: 'div',
       ref,
       render,
@@ -116,6 +127,8 @@ export const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
         ),
       },
     });
+
+    return <InputGroupSizeContext.Provider value={size}>{element}</InputGroupSizeContext.Provider>;
   },
 );
 
@@ -133,6 +146,7 @@ export interface InputGroupAddonProps extends Omit<
 
 export const InputGroupAddon = React.forwardRef<HTMLSpanElement, InputGroupAddonProps>(
   function InputGroupAddon({ className, position = 'leading', render, ...props }, ref) {
+    const size = React.useContext(InputGroupSizeContext) ?? 'md';
     const state: InputGroupState = {};
 
     return useRender({
@@ -143,9 +157,12 @@ export const InputGroupAddon = React.forwardRef<HTMLSpanElement, InputGroupAddon
       props: {
         ...props,
         'data-city-position': position,
+        'data-city-size': size,
         className: cn(
-          'flex shrink-0 items-center px-2 text-city-muted-foreground',
-          position === 'trailing' && 'order-last',
+          'text-city-muted-foreground flex shrink-0 items-center',
+          position === 'leading'
+            ? outlineFrameLeadingTextPaddingClasses[size]
+            : cn('order-last', outlineFrameTrailingIconPaddingClasses[size]),
           resolveClassName(className, state),
         ),
       },

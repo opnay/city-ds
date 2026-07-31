@@ -42,9 +42,8 @@ function StatusSelect({
         <Select.Icon />
       </Select.Trigger>
       <Select.Portal>
-        <Select.Positioner sideOffset={6}>
+        <Select.Positioner>
           <Select.Popup>
-            <Select.Arrow />
             <Select.List>
               <Select.Item value="backlog">
                 <Select.ItemIndicator />
@@ -70,9 +69,13 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = canvas.getByRole('combobox', { name: 'Status' });
+    const value = within(trigger).getByText('In progress');
+    const icon = trigger.querySelector('[data-city-select-icon]');
 
     await expect(trigger).toHaveTextContent('In progress');
-    await userEvent.click(trigger);
+    await userEvent.click(value);
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    await expect(icon).toHaveAttribute('data-popup-open');
     await userEvent.click(await within(document.body).findByRole('option', { name: 'Done' }));
 
     await expect(trigger).toHaveTextContent('Done');
@@ -118,7 +121,7 @@ export const Grouped: Story = {
         <Select.Icon />
       </Select.Trigger>
       <Select.Portal>
-        <Select.Positioner sideOffset={6}>
+        <Select.Positioner>
           <Select.Popup>
             <Select.List>
               <Select.Group>

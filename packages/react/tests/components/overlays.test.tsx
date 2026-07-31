@@ -388,10 +388,18 @@ describe('overlay and selection controls', () => {
     );
 
     const trigger = screen.getByRole('combobox', { name: 'Status' });
+    const icon = trigger.querySelector('[data-city-select-icon]');
     expect(trigger).toHaveClass('is-closed');
-    await user.click(trigger);
+    expect(icon).toHaveClass('border-l', 'w-(--city-control-md)');
+    await user.click(trigger.firstElementChild as HTMLElement);
     const published = await screen.findByRole('option', { name: 'Published' });
     expect(trigger).toHaveClass('is-open');
+    expect(icon).toHaveAttribute('data-popup-open');
+    expect(screen.getByRole('listbox').parentElement).toHaveClass(
+      'min-w-(--anchor-width)',
+      'data-[side=bottom]:-mt-px',
+      'data-[side=bottom]:rounded-t-none',
+    );
     await user.click(published);
 
     expect(onValueChange).toHaveBeenCalledWith(

@@ -27,6 +27,24 @@ export const outlineFrameTextClasses: Record<ControlSize, string> = {
   lg: 'text-sm',
 };
 
+export const outlineFrameValuePaddingClasses: Record<ControlSize, string> = {
+  sm: 'px-2.5',
+  md: 'px-3',
+  lg: 'px-3.5',
+};
+
+export const outlineFrameLeadingTextPaddingClasses: Record<ControlSize, string> = {
+  sm: 'pl-2.5',
+  md: 'pl-3',
+  lg: 'pl-3.5',
+};
+
+export const outlineFrameTrailingIconPaddingClasses: Record<ControlSize, string> = {
+  sm: 'pr-2',
+  md: 'pr-2.5',
+  lg: 'pr-3',
+};
+
 export const outlineFrameSegmentWidthClasses: Record<ControlSize, string> = {
   sm: 'w-(--city-control-sm)',
   md: 'w-(--city-control-md)',

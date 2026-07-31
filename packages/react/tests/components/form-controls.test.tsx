@@ -76,7 +76,7 @@ describe('form and display controls', () => {
         <Toggle aria-label="Medium toggle" size="md" />
         <Input aria-label="Large input" size="lg" />
         <InputGroup.Root data-testid="small-input-group" size="sm">
-          <Input aria-label="Grouped input" size="sm" />
+          <Input aria-label="Grouped input" />
         </InputGroup.Root>
       </>,
     );
@@ -91,6 +91,11 @@ describe('form and display controls', () => {
       'h-(--city-control-lg)',
     );
     expect(screen.getByTestId('small-input-group')).toHaveClass('h-(--city-control-sm)');
+    expect(screen.getByRole('textbox', { name: 'Grouped input' })).toHaveClass(
+      'h-(--city-control-sm)',
+      'px-2.5',
+      'text-xs',
+    );
   });
 
   it('sizes Select and Combobox from their roots and styles invalid fields', () => {
@@ -124,7 +129,27 @@ describe('form and display controls', () => {
 
     expect(select).toHaveAttribute('data-city-size', 'sm');
     expect(select).toHaveAttribute('data-invalid');
-    expect(select).toHaveClass('h-(--city-control-sm)', 'data-[invalid]:border-city-destructive');
+    expect(select).toHaveClass(
+      'bg-city-background',
+      'h-(--city-control-sm)',
+      'overflow-hidden',
+      'data-[invalid]:border-city-destructive',
+    );
+    expect(select).not.toHaveClass('bg-city-surface-raised', 'gap-2', 'px-2.5');
+    expect(select).toHaveClass('group');
+    const selectIcon = select.querySelector('[data-city-select-icon]');
+    expect(selectIcon).toHaveAttribute('data-city-size', 'sm');
+    expect(selectIcon).toHaveClass(
+      'h-full',
+      'border-l',
+      'w-(--city-control-sm)',
+      'group-hover:bg-city-accent',
+      'group-active:bg-city-accent-active',
+      'data-[popup-open]:[&>svg]:rotate-180',
+    );
+    expect(selectIcon).not.toHaveAttribute('role', 'button');
+    expect(selectIcon).not.toHaveAttribute('tabindex');
+    expect(selectIcon?.previousElementSibling).toHaveClass('px-2.5');
     expect(combobox).toHaveAttribute('data-city-size', 'lg');
     expect(combobox).toHaveClass('self-stretch', 'px-3.5');
     expect(comboboxGroup).toHaveAttribute('data-city-size', 'lg');
@@ -305,7 +330,7 @@ describe('form and display controls', () => {
   it('renders leading and trailing InputGroup slots around its input', () => {
     render(
       <>
-        <InputGroup.Root>
+        <InputGroup.Root size="lg">
           <InputGroup.Addon>https://</InputGroup.Addon>
           <Input aria-label="Domain" />
           <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
@@ -317,8 +342,18 @@ describe('form and display controls', () => {
     );
 
     expect(screen.getByText('https://')).toHaveAttribute('data-city-position', 'leading');
+    expect(screen.getByText('https://')).toHaveAttribute('data-city-size', 'lg');
+    expect(screen.getByText('https://')).toHaveClass('pl-3.5');
+    expect(screen.getByText('https://')).not.toHaveClass('px-2');
     expect(screen.getByText('.dev')).toHaveAttribute('data-city-position', 'trailing');
-    expect(screen.getByRole('textbox', { name: 'Domain' })).toBeVisible();
+    expect(screen.getByText('.dev')).toHaveAttribute('data-city-size', 'lg');
+    expect(screen.getByText('.dev')).toHaveClass('order-last', 'pr-3');
+    expect(screen.getByText('.dev')).not.toHaveClass('px-2');
+    expect(screen.getByRole('textbox', { name: 'Domain' })).toHaveClass(
+      'h-(--city-control-lg)',
+      'px-3.5',
+      'text-sm',
+    );
     expect(screen.getByTestId('textarea-group')).toHaveClass(
       'has-[textarea]:h-auto',
       'has-[textarea]:min-h-(--city-control-lg)',

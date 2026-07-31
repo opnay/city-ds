@@ -87,6 +87,7 @@ describe('overlay and selection controls', () => {
     ).toHaveClass('border-b', 'px-5');
     expect(body).toHaveAttribute('data-city-dialog-body');
     expect(body).toHaveClass('min-h-0', 'overflow-y-auto', 'p-5');
+    expect(screen.getByRole('button', { name: 'Close' })).toHaveClass('text-xs');
     expect(screen.getByRole('button', { name: 'Close' }).parentElement).toHaveAttribute(
       'data-city-dialog-footer',
     );
@@ -163,6 +164,7 @@ describe('overlay and selection controls', () => {
       'data-city-drawer-header',
     );
     expect(body).toHaveAttribute('data-city-drawer-body');
+    expect(screen.getByRole('button', { name: 'Close asset details' })).toHaveClass('text-xs');
     expect(
       screen.getByRole('button', { name: 'Close asset details' }).parentElement,
     ).toHaveAttribute('data-city-drawer-footer');
@@ -231,7 +233,10 @@ describe('overlay and selection controls', () => {
     const cancel = screen.getByRole('button', { name: 'Cancel' });
     expect(cancel).toHaveClass('h-(--city-control-md)', 'bg-city-accent');
     expect(cancel).not.toHaveClass('bg-city-background');
-    expect(screen.getByRole('button', { name: 'Delete' })).toHaveClass('bg-city-destructive');
+    expect(screen.getByRole('button', { name: 'Delete' })).toHaveClass(
+      'bg-city-destructive',
+      'text-xs',
+    );
     await waitFor(() => expect(cancel).toHaveFocus());
 
     await user.keyboard('{Escape}');
@@ -271,6 +276,7 @@ describe('overlay and selection controls', () => {
       'h-(--city-control-md)',
       'bg-city-primary',
     );
+    expect(screen.getByRole('button', { name: 'Cancel' })).toHaveClass('text-xs');
     expect(onOpenChange).toHaveBeenCalledWith(
       true,
       expect.objectContaining({ reason: 'trigger-press' }),
@@ -311,6 +317,7 @@ describe('overlay and selection controls', () => {
 
     expect(await screen.findByRole('dialog', { name: 'Filters' })).toBeVisible();
     expect(screen.getByText('Refine the deployments list.')).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Done' })).toHaveClass('text-xs');
 
     await user.keyboard('{Escape}');
 
@@ -492,7 +499,7 @@ describe('overlay and selection controls', () => {
     expect(menu).toHaveClass('p-0.5', 'text-xs');
     expect(item).toHaveAttribute('data-city-density', 'compact');
     expect(item).toHaveClass('min-h-7', 'text-xs');
-    expect(screen.getByText('Project')).toHaveClass('py-1', 'text-[0.625rem]');
+    expect(screen.getByText('Project')).toHaveClass('py-1', 'text-2xs');
   });
 
   it('toggles menu checkbox items and selects radio items without closing the menu', async () => {

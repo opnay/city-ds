@@ -305,7 +305,7 @@ export const MenuGroupLabel = React.forwardRef<HTMLDivElement, MenuGroupLabelPro
           className,
           cn(
             'text-city-muted-foreground font-medium',
-            density === 'compact' ? 'px-1.5 py-1 text-[0.625rem]' : 'px-2 py-1.5 text-xs',
+            density === 'compact' ? 'text-2xs px-1.5 py-1' : 'px-2 py-1.5 text-xs',
           ),
         )}
       />

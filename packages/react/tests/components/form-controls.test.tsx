@@ -83,12 +83,15 @@ describe('form and display controls', () => {
 
     expect(screen.getByRole('button', { name: 'Small button' })).toHaveClass(
       'h-(--city-control-sm)',
+      'text-xs',
     );
     expect(screen.getByRole('button', { name: 'Medium toggle' })).toHaveClass(
       'h-(--city-control-md)',
+      'text-sm',
     );
     expect(screen.getByRole('textbox', { name: 'Large input' })).toHaveClass(
       'h-(--city-control-lg)',
+      'text-sm',
     );
     expect(screen.getByTestId('small-input-group')).toHaveClass('h-(--city-control-sm)');
     expect(screen.getByRole('textbox', { name: 'Grouped input' })).toHaveClass(
@@ -266,12 +269,12 @@ describe('form and display controls', () => {
       </>,
     );
 
-    expect(screen.getByTestId('label-sm')).toHaveClass('h-5');
-    expect(screen.getByTestId('label-md')).toHaveClass('h-6');
-    expect(screen.getByTestId('label-lg')).toHaveClass('h-7');
-    expect(screen.getByTestId('count-sm')).toHaveClass('h-5', 'min-w-5');
-    expect(screen.getByTestId('count-md')).toHaveClass('h-6', 'min-w-6');
-    expect(screen.getByTestId('count-lg')).toHaveClass('h-7', 'min-w-7');
+    expect(screen.getByTestId('label-sm')).toHaveClass('h-5', 'text-2xs');
+    expect(screen.getByTestId('label-md')).toHaveClass('h-6', 'text-2xs');
+    expect(screen.getByTestId('label-lg')).toHaveClass('h-7', 'text-xs');
+    expect(screen.getByTestId('count-sm')).toHaveClass('h-5', 'min-w-5', 'text-2xs');
+    expect(screen.getByTestId('count-md')).toHaveClass('h-6', 'min-w-6', 'text-2xs');
+    expect(screen.getByTestId('count-lg')).toHaveClass('h-7', 'min-w-7', 'text-xs');
     expect(screen.getByTestId('dot-lg')).toHaveClass('size-2.5');
     expect(screen.getByTestId('dot-lg')).not.toHaveClass('h-7');
   });

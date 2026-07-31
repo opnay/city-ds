@@ -59,10 +59,12 @@ const spacingTokens = [
 const typographyTokens = [
   '--city-font-family-sans',
   '--city-font-family-mono',
+  '--city-font-size-2xs',
   '--city-font-size-xs',
   '--city-font-size-sm',
   '--city-font-size-md',
   '--city-font-size-lg',
+  '--city-line-height-2xs',
   '--city-line-height-xs',
   '--city-line-height-sm',
   '--city-line-height-md',
@@ -159,6 +161,8 @@ describe('theme contract', () => {
 
   it('connects public tokens to Tailwind theme namespaces', () => {
     expect(themeCss).toContain('--spacing: var(--city-space-unit);');
+    expect(themeCss).toContain('--city-font-size-2xs: 0.625rem;');
+    expect(themeCss).toContain('--city-line-height-2xs: 0.75rem;');
 
     for (const token of colorTokens) {
       const name = token.replace('--city-color-', '');
@@ -183,6 +187,8 @@ describe('theme contract', () => {
 
     expect(themeCss).toContain('--font-sans: var(--city-font-family-sans);');
     expect(themeCss).toContain('--font-mono: var(--city-font-family-mono);');
+    expect(themeCss).toContain('--text-2xs: var(--city-font-size-2xs);');
+    expect(themeCss).toContain('--text-2xs--line-height: var(--city-line-height-2xs);');
     expect(themeCss).toContain('--text-xs: var(--city-font-size-xs);');
     expect(themeCss).toContain('--text-xs--line-height: var(--city-line-height-xs);');
     expect(themeCss).toContain('--text-sm: var(--city-font-size-sm);');

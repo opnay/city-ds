@@ -22,10 +22,12 @@
   --city-font-family-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
+  --city-font-size-2xs: 0.625rem;
   --city-font-size-xs: 0.75rem;
   --city-font-size-sm: 0.875rem;
   --city-font-size-md: 1rem;
   --city-font-size-lg: 1.125rem;
+  --city-line-height-2xs: 0.75rem;
   --city-line-height-xs: 1rem;
   --city-line-height-sm: 1.25rem;
   --city-line-height-md: 1.5rem;
@@ -178,6 +180,8 @@
 
   --font-sans: var(--city-font-family-sans);
   --font-mono: var(--city-font-family-mono);
+  --text-2xs: var(--city-font-size-2xs);
+  --text-2xs--line-height: var(--city-line-height-2xs);
   --text-xs: var(--city-font-size-xs);
   --text-xs--line-height: var(--city-line-height-xs);
   --text-sm: var(--city-font-size-sm);

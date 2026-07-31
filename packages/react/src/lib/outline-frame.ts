@@ -1,5 +1,6 @@
 import type { ControlSize } from '../types';
 import { atomicRectShapeClasses } from './atomic-shape';
+import { atomicControlTextClasses } from './atomic-typography';
 import { cn } from './cn';
 
 export const outlineFrameBaseClasses = cn(
@@ -25,11 +26,7 @@ export const outlineFrameTextareaMinHeightClasses: Record<ControlSize, string> =
   lg: 'has-[textarea]:min-h-(--city-control-lg)',
 };
 
-export const outlineFrameTextClasses: Record<ControlSize, string> = {
-  sm: 'text-xs',
-  md: 'text-sm',
-  lg: 'text-sm',
-};
+export const outlineFrameTextClasses = atomicControlTextClasses;
 
 export const outlineFrameValuePaddingClasses: Record<ControlSize, string> = {
   sm: 'px-2.5',

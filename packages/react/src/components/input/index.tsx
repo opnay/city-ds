@@ -9,6 +9,7 @@ import {
 } from '@base-ui/react/input';
 import { useRender } from '@base-ui/react/use-render';
 
+import { atomicRectShapeClasses } from '../../lib/atomic-shape';
 import { cn } from '../../lib/cn';
 import {
   outlineFrameBaseClasses,
@@ -29,8 +30,10 @@ export interface InputProps extends Omit<BaseInputProps, 'className' | 'size'> {
   size?: ControlSize;
 }
 
-const inputClasses =
-  'flex w-full min-w-0 rounded-city-sm border border-city-input bg-city-background text-city-foreground outline-none transition-colors placeholder:text-city-muted-foreground focus-visible:border-city-ring focus-visible:ring-2 focus-visible:ring-city-ring/30 disabled:cursor-not-allowed disabled:opacity-50 data-[invalid]:border-city-destructive data-[invalid]:focus-visible:ring-city-destructive/30';
+const inputClasses = cn(
+  atomicRectShapeClasses.control,
+  'flex w-full min-w-0 border border-city-input bg-city-background text-city-foreground outline-none transition-colors placeholder:text-city-muted-foreground focus-visible:border-city-ring focus-visible:ring-2 focus-visible:ring-city-ring/30 disabled:cursor-not-allowed disabled:opacity-50 data-[invalid]:border-city-destructive data-[invalid]:focus-visible:ring-city-destructive/30',
+);
 
 export const Input = React.forwardRef<HTMLElement, InputProps>(function Input(
   { className, size: sizeProp, ...props },

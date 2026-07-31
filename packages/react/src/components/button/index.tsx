@@ -8,6 +8,7 @@ import {
 } from '@base-ui/react/button';
 
 import { cn } from '../../lib/cn';
+import { atomicRectShapeClasses } from '../../lib/atomic-shape';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
 
@@ -58,7 +59,8 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
       data-city-size={size}
       className={(state) =>
         cn(
-          'city-button rounded-city-sm focus-visible:ring-city-ring focus-visible:ring-offset-city-background relative inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+          atomicRectShapeClasses.control,
+          'city-button focus-visible:ring-city-ring focus-visible:ring-offset-city-background relative inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
           buttonSizeClasses[size],
           iconOnly && iconOnlySizeClasses[size],
           buttonVariantClasses[variant],

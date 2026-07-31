@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Switch as BaseSwitch } from '@base-ui/react/switch';
 
+import { atomicRoundShapeClass } from '../../lib/atomic-shape';
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
@@ -39,7 +40,8 @@ export const SwitchThumb = React.forwardRef<HTMLSpanElement, SwitchThumbProps>(f
       ref={ref}
       className={(state) =>
         cn(
-          'bg-city-background pointer-events-none block rounded-full shadow-sm transition-transform',
+          atomicRoundShapeClass,
+          'bg-city-background pointer-events-none block shadow-sm transition-transform',
           switchThumbSizeClasses[size],
           resolveClassName(className, state),
         )
@@ -60,7 +62,8 @@ const SwitchRoot = React.forwardRef<HTMLElement, SwitchProps>(function Switch(
       ref={ref}
       className={(state) =>
         cn(
-          'bg-city-muted focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:bg-city-primary inline-flex shrink-0 items-center rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
+          atomicRoundShapeClass,
+          'bg-city-muted focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:bg-city-primary inline-flex shrink-0 items-center transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
           switchSizeClasses[size],
           resolveClassName(className, state),
         )

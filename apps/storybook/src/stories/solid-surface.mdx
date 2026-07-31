@@ -114,6 +114,10 @@ border나 shadow를 겹쳐 형태를 보강하기보다 채움과 전경의 대�
 일치해야 합니다. Badge·Checkbox·RadioGroup·Switch는 상태 표시 역할에 맞는 별도 크기 비율을
 사용하되, Surface 변경 때문에 자체 크기 규칙이 달라져서는 안 됩니다.
 
+Radius는 Solid가 아니라 Shape 축에서 결정합니다. 직사각형 원자 컴포넌트는 최종 외곽 높이가
+20px 이하면 `xs`, 24–40px이면 `sm`을 사용하고, 수량·선택·전환 상태를 나타내는 pill·circle만
+`full`을 사용합니다.
+
 ## 구성 규칙
 
 - **Action**: Button처럼 즉시 실행되는 주요·위험 액션은 전체 hit target을 하나의 Solid 면으로

@@ -98,6 +98,50 @@ describe('form and display controls', () => {
     );
   });
 
+  it('derives atomic radius from final height and preserves semantic round shapes', () => {
+    render(
+      <>
+        <Button size="sm">Rectangular button</Button>
+        <Toggle aria-label="Rectangular toggle" size="lg" />
+        <Input aria-label="Rectangular input" size="md" />
+        <Checkbox aria-label="Compact checkbox" size="lg" />
+        <Badge data-testid="badge-sm" size="sm">
+          Small
+        </Badge>
+        <Badge data-testid="badge-md" size="md">
+          Medium
+        </Badge>
+        <Badge data-testid="badge-lg" size="lg">
+          Large
+        </Badge>
+        <Badge aria-hidden="true" count={3} data-testid="count-badge" />
+        <RadioGroup defaultValue="round">
+          <RadioGroup.Item value="round">Round radio</RadioGroup.Item>
+        </RadioGroup>
+        <Switch aria-label="Round switch" />
+      </>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Rectangular button' })).toHaveClass(
+      'rounded-city-sm',
+    );
+    expect(screen.getByRole('button', { name: 'Rectangular toggle' })).toHaveClass(
+      'rounded-city-sm',
+    );
+    expect(screen.getByRole('textbox', { name: 'Rectangular input' })).toHaveClass(
+      'rounded-city-sm',
+    );
+    expect(screen.getByRole('checkbox', { name: 'Compact checkbox' })).toHaveClass(
+      'rounded-city-xs',
+    );
+    expect(screen.getByTestId('badge-sm')).toHaveClass('h-5', 'rounded-city-xs');
+    expect(screen.getByTestId('badge-md')).toHaveClass('h-6', 'rounded-city-sm');
+    expect(screen.getByTestId('badge-lg')).toHaveClass('h-7', 'rounded-city-sm');
+    expect(screen.getByTestId('count-badge')).toHaveClass('rounded-city-full');
+    expect(screen.getByRole('radio', { name: 'Round radio' })).toHaveClass('rounded-city-full');
+    expect(screen.getByRole('switch', { name: 'Round switch' })).toHaveClass('rounded-city-full');
+  });
+
   it('sizes Select and Combobox from their roots and styles invalid fields', () => {
     render(
       <>
@@ -189,7 +233,7 @@ describe('form and display controls', () => {
     expect(screen.getByRole('link', { name: 'v1' })).toHaveAttribute('data-city-badge', 'label');
     expect(screen.getByText('7')).toHaveAttribute('data-city-badge', 'count');
     expect(screen.getByText('7')).toHaveAttribute('data-city-size', 'sm');
-    expect(screen.getByText('7')).toHaveClass('h-4', 'min-w-4', 'rounded-city-full');
+    expect(screen.getByText('7')).toHaveClass('h-5', 'min-w-5', 'rounded-city-full');
     expect(screen.getByText('7')).not.toHaveClass('rounded-city-xs');
     expect(screen.getByTestId('status-dot')).toHaveAttribute('data-city-badge', 'dot');
     expect(screen.getByTestId('status-dot')).toHaveAttribute('aria-hidden', 'true');
@@ -201,6 +245,35 @@ describe('form and display controls', () => {
     expect(screen.getByTestId('success-dot')).toHaveAttribute('data-tone', 'success');
     expect(screen.getByTestId('success-dot')).toHaveClass('bg-city-success');
     expect(screen.getByRole('img', { name: 'Healthy' })).toBe(screen.getByTestId('success-dot'));
+  });
+
+  it('adds one vertical spacing step to label and count Badge sizes without resizing dots', () => {
+    render(
+      <>
+        <Badge appearance="solid" data-testid="label-sm" size="sm">
+          Small
+        </Badge>
+        <Badge appearance="subtle" data-testid="label-md" size="md">
+          Medium
+        </Badge>
+        <Badge appearance="outline" data-testid="label-lg" size="lg">
+          Large
+        </Badge>
+        <Badge aria-hidden="true" count={1} data-testid="count-sm" size="sm" />
+        <Badge aria-hidden="true" count={2} data-testid="count-md" size="md" />
+        <Badge aria-hidden="true" count={3} data-testid="count-lg" size="lg" />
+        <Badge data-testid="dot-lg" dot size="lg" />
+      </>,
+    );
+
+    expect(screen.getByTestId('label-sm')).toHaveClass('h-5');
+    expect(screen.getByTestId('label-md')).toHaveClass('h-6');
+    expect(screen.getByTestId('label-lg')).toHaveClass('h-7');
+    expect(screen.getByTestId('count-sm')).toHaveClass('h-5', 'min-w-5');
+    expect(screen.getByTestId('count-md')).toHaveClass('h-6', 'min-w-6');
+    expect(screen.getByTestId('count-lg')).toHaveClass('h-7', 'min-w-7');
+    expect(screen.getByTestId('dot-lg')).toHaveClass('size-2.5');
+    expect(screen.getByTestId('dot-lg')).not.toHaveClass('h-7');
   });
 
   it('connects Field label, description, error, and Input state', () => {

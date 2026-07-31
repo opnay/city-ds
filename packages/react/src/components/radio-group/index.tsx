@@ -8,6 +8,7 @@ import {
   type RadioGroupState,
 } from '@base-ui/react/radio-group';
 
+import { atomicRoundShapeClass } from '../../lib/atomic-shape';
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
@@ -83,14 +84,15 @@ const RadioGroupItemBase = React.forwardRef(function RadioGroupItem(
         ref={ref}
         className={(state) =>
           cn(
-            'border-city-input bg-city-background focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:border-city-primary grid shrink-0 place-items-center rounded-full border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed',
+            atomicRoundShapeClass,
+            'border-city-input bg-city-background focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:border-city-primary grid shrink-0 place-items-center border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed',
             radioSizeClasses[size],
             resolveClassName(className, state),
           )
         }
       >
         <BaseRadio.Indicator
-          className={cn('bg-city-primary rounded-full', radioIndicatorSizeClasses[size])}
+          className={cn('bg-city-primary', atomicRoundShapeClass, radioIndicatorSizeClasses[size])}
         />
       </BaseRadio.Root>
       <span id={labelId}>{children}</span>

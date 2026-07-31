@@ -122,7 +122,7 @@ export const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
           outlineFrameHeightClasses[size],
           outlineFrameTextClasses[size],
           outlineFrameTextareaMinHeightClasses[size],
-          'has-[textarea]:h-auto [&>input]:h-full [&>input]:self-stretch [&>input]:rounded-none [&>input]:border-0 [&>input]:bg-transparent [&>input]:shadow-none [&>input]:focus-visible:ring-0 [&>textarea]:rounded-none [&>textarea]:border-0 [&>textarea]:bg-transparent [&>textarea]:shadow-none [&>textarea]:focus-visible:ring-0',
+          'gap-1 has-[textarea]:h-auto [&>input]:h-full [&>input]:self-stretch [&>input]:rounded-none [&>input]:border-0 [&>input]:bg-transparent [&>input]:shadow-none [&>input]:focus-visible:ring-0 [&>textarea]:rounded-none [&>textarea]:border-0 [&>textarea]:bg-transparent [&>textarea]:shadow-none [&>textarea]:focus-visible:ring-0 [&:has(>[data-city-position=leading])>input]:pl-0 [&:has(>[data-city-position=leading])>textarea]:pl-0 [&:has(>[data-city-position=trailing])>input]:pr-0 [&:has(>[data-city-position=trailing])>textarea]:pr-0',
           resolveClassName(className, state),
         ),
       },

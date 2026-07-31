@@ -330,7 +330,7 @@ describe('form and display controls', () => {
   it('renders leading and trailing InputGroup slots around its input', () => {
     render(
       <>
-        <InputGroup.Root size="lg">
+        <InputGroup.Root data-testid="affixed-input-group" size="lg">
           <InputGroup.Addon>https://</InputGroup.Addon>
           <Input aria-label="Domain" />
           <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
@@ -349,6 +349,11 @@ describe('form and display controls', () => {
     expect(screen.getByText('.dev')).toHaveAttribute('data-city-size', 'lg');
     expect(screen.getByText('.dev')).toHaveClass('order-last', 'pr-3');
     expect(screen.getByText('.dev')).not.toHaveClass('px-2');
+    expect(screen.getByTestId('affixed-input-group')).toHaveClass(
+      'gap-1',
+      '[&:has(>[data-city-position=leading])>input]:pl-0',
+      '[&:has(>[data-city-position=trailing])>input]:pr-0',
+    );
     expect(screen.getByRole('textbox', { name: 'Domain' })).toHaveClass(
       'h-(--city-control-lg)',
       'px-3.5',

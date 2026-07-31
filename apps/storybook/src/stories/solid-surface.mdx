@@ -1,0 +1,180 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Badge, Button, Checkbox, RadioGroup, Switch, Toggle } from '@city-ds/react';
+
+<Meta title="디자인 패턴/Surface/Solid" />
+
+# Solid
+
+Solid는 atom·molecule의 Surface 축에서 **배경 채움으로 형태와 강조를 만드는 요소**에
+적용하는 solid 계열입니다. 액션은 기본 상태부터 채워진 면을 유지하고, 선택 컨트롤은
+pressed·checked 상태에서 채워진 면으로 상태를 드러냅니다.
+
+컴포넌트의 기능이 달라도 같은 역할에서는 동일한 fill·foreground·상태 표현을 사용하십시오.
+border나 shadow를 겹쳐 형태를 보강하기보다 채움과 전경의 대비만으로 경계를 드러내는 것을
+기본으로 합니다.
+
+## 대표 구성
+
+<div className="my-6 grid gap-4 md:grid-cols-2">
+  <div className="grid min-w-0 gap-2">
+    <span className="text-city-muted-foreground text-xs font-medium">Button / primary</span>
+    <div>
+      <Button variant="primary">프로젝트 배포</Button>
+    </div>
+  </div>
+
+<div className="grid min-w-0 gap-2">
+  <span className="text-city-muted-foreground text-xs font-medium">Button / destructive</span>
+  <div>
+    <Button variant="destructive">프로젝트 삭제</Button>
+  </div>
+</div>
+
+<div className="grid min-w-0 gap-2">
+  <span className="text-city-muted-foreground text-xs font-medium">Toggle</span>
+  <div>
+    <Toggle defaultPressed variant="primary">
+      {'프로젝트 고정'}
+    </Toggle>
+  </div>
+</div>
+
+<div className="grid min-w-0 gap-2">
+  <span className="text-city-muted-foreground text-xs font-medium">Badge / label</span>
+  <div>
+    <Badge appearance="solid" tone="success">
+      {'운영 중'}
+    </Badge>
+  </div>
+</div>
+
+<div className="grid min-w-0 gap-2">
+  <span className="text-city-muted-foreground text-xs font-medium">Badge / count</span>
+  <div>
+    <Badge aria-label="알림 12개" appearance="solid" count={12} tone="info" />
+  </div>
+</div>
+
+<div className="grid min-w-0 gap-2">
+  <span className="text-city-muted-foreground text-xs font-medium">Checkbox</span>
+  <label className="text-city-foreground flex w-fit items-center gap-2 text-sm">
+    <Checkbox defaultChecked />
+    <span>자동 배포</span>
+  </label>
+</div>
+
+<div className="grid min-w-0 gap-2">
+  <span className="text-city-muted-foreground text-xs font-medium">RadioGroup</span>
+  <RadioGroup aria-label="배포 환경" defaultValue="production">
+    <RadioGroup.Item value="production">운영 환경</RadioGroup.Item>
+  </RadioGroup>
+</div>
+
+  <div className="grid min-w-0 gap-2">
+    <span className="text-city-muted-foreground text-xs font-medium">Switch</span>
+    <label className="text-city-foreground flex w-fit items-center gap-2 text-sm">
+      <Switch defaultChecked />
+      <span>배포 알림</span>
+    </label>
+  </div>
+</div>
+
+> 대표 구성은 패턴 설명과 회귀 비교를 겸합니다. 같은 역할과 tone의 Solid가 컴포넌트마다
+> fill·foreground·상태 강도를 다르게 사용하면 컴포넌트별 예외가 아니라 구현 결함으로
+> 판단하십시오.
+
+## 크기 계약
+
+`size`는 Button과 Toggle처럼 텍스트를 담는 단일 행 Solid Control의 **외곽 border-box
+높이**를 의미합니다. Surface를 바꿔도 같은 `size`의 높이·padding·radius·아이콘 위치가
+달라지지 않아야 합니다.
+
+<dl className="my-4 grid max-w-md grid-cols-3 gap-2">
+  <div className="border-city-border bg-city-surface-raised rounded-city-sm grid gap-1 border p-3">
+    <dt>
+      <code>sm</code>
+    </dt>
+    <dd className="text-city-muted-foreground text-xs">32px</dd>
+  </div>
+  <div className="border-city-border bg-city-surface-raised rounded-city-sm grid gap-1 border p-3">
+    <dt>
+      <code>md</code>
+    </dt>
+    <dd className="text-city-muted-foreground text-xs">36px</dd>
+  </div>
+  <div className="border-city-border bg-city-surface-raised rounded-city-sm grid gap-1 border p-3">
+    <dt>
+      <code>lg</code>
+    </dt>
+    <dd className="text-city-muted-foreground text-xs">40px</dd>
+  </div>
+</dl>
+
+같은 `size`의 Button과 Toggle은 한 줄에 배치했을 때 위아래 경계와 텍스트 기준선이
+일치해야 합니다. Badge·Checkbox·RadioGroup·Switch는 상태 표시 역할에 맞는 별도 크기 비율을
+사용하되, Surface 변경 때문에 자체 크기 규칙이 달라져서는 안 됩니다.
+
+## 구성 규칙
+
+- **Action**: Button처럼 즉시 실행되는 주요·위험 액션은 전체 hit target을 하나의 Solid 면으로
+  만듭니다. `primary`와 `destructive`는 같은 Surface에서 tone만 달라집니다.
+- **Stateful Control**: Toggle처럼 눌림 상태를 가지는 컨트롤은 전체 면을 사용해 상태를
+  표현합니다. 기본·pressed 사이에서 geometry를 바꾸지 않습니다.
+- **Compact Status**: Badge처럼 짧은 상태·수량을 표시하는 요소는 작은 Solid 면을 사용합니다.
+  인터랙션이 없으면 hover·active 표현을 추가하지 않습니다.
+- **State Indicator**: Checkbox·RadioGroup·Switch는 선택 영역 전체가 아니라 indicator나 track의
+  checked 상태에만 Solid를 사용합니다. 상태가 해제되면 원래 Surface로 돌아갑니다.
+
+Solid는 Surface 방식이고 tone은 의미입니다. 현재 Button의 `primary`와 `destructive`는 두 축을
+합친 preset이며, Badge는 `appearance="solid"`와 `tone`을 분리합니다. API 형태가 달라도 같은
+tone의 fill과 foreground 관계는 일관되어야 합니다.
+
+## 상호작용 위임 규칙
+
+Solid는 상태 소유자에 따라 두 방식으로 구분합니다.
+
+- **Persistent Surface**: Button·Solid Toggle처럼 기본 상태부터 면이 채워진 컨트롤은 전체 면이
+  하나의 hit target입니다. 텍스트나 아이콘만 별도 hover·active를 갖거나 별도 탭 정지점이
+  되어서는 안 됩니다.
+- **State-driven Surface**: Checkbox·RadioGroup·Switch처럼 선택 상태에서만 Solid가 되는
+  컨트롤은 checked·pressed 상태를 소유한 root가 fill을 제어합니다. 레이블이 hit target을
+  확장할 수는 있지만, 레이블 자체가 별도의 Solid 면이나 중복 동작을 만들면 안 됩니다.
+
+Badge처럼 정적인 Solid는 상태를 전달할 뿐 동작을 암시하지 않아야 합니다. 링크나 버튼으로
+동작해야 한다면 해당 인터랙티브 컴포넌트의 hover·active·focus 규칙을 함께 적용하십시오.
+
+## 상태 규칙
+
+- Persistent Surface는 기본 상태에서도 fill을 유지하십시오. hover에서만 면이 생기는 표현은
+  Ghost입니다.
+- hover와 active는 같은 tone 안에서 fill의 명도만 조정하고 border나 shadow를 새로 만들지
+  마십시오.
+- pressed와 checked는 역할에 따라 전체 control 또는 indicator가 Solid를 소유하도록
+  일관되게 표현하십시오.
+- focus-visible은 외곽 ring으로 표시하고 컴포넌트 크기나 주변 배치를 바꾸지 않아야 합니다.
+- disabled는 fill과 foreground를 하나의 비활성 단위로 낮추고 텍스트만 따로 흐리게 하지
+  마십시오.
+- 정적 Badge에는 hover·active·focus 상태를 만들지 마십시오.
+
+## 적용 범위
+
+적용 대상은 Button의 주요·위험 액션, Solid Toggle, Badge의 짧은 상태·수량,
+Checkbox·RadioGroup·Switch의 checked·pressed indicator처럼 채움으로 강조나 선택 상태를
+표현하는 요소입니다.
+
+Input, Select, Combobox처럼 값을 담고 편집하는 컨트롤은 Outline Frame을 사용합니다. 낮은
+우선순위의 액션은 Subtle·Outline·Ghost를 사용하고, Alert·Toast처럼 넓은 면적과 긴 내용을 가진
+feedback surface는 기본적으로 Subtle 또는 Outline을 사용합니다. Popup·Dialog의 떠 있는 관계는
+Solid가 아니라 elevation 축으로 구분합니다.
+
+## 검토 기준
+
+1. 기본 상태부터 채워져야 하는 Persistent Surface와 선택 상태에서만 채워지는 State-driven
+   Surface가 구분됩니까?
+2. 같은 `size`의 Solid Control 외곽 높이·padding·radius가 다른 Surface와 일치합니까?
+3. 같은 tone의 fill과 foreground가 컴포넌트 사이에서 일관됩니까?
+4. 채움만으로 형태가 보이며 불필요한 border·shadow가 중복되지 않습니까?
+5. Persistent Surface의 전체 면이 하나의 hit target과 상태 소유자로 동작합니까?
+6. State-driven Surface의 root와 label이 중복 동작이나 중복 Surface를 만들지 않습니까?
+7. hover·active·pressed·checked·focus·disabled가 geometry를 바꾸지 않고 구분됩니까?
+8. Solid가 낮은 우선순위의 액션이나 넓은 feedback surface를 불필요하게 지배하지 않습니까?

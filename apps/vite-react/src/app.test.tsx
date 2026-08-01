@@ -1,483 +1,314 @@
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { render, screen, waitFor, within } from '@testing-library/react';
+import userEvent, { type UserEvent } from '@testing-library/user-event';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { App } from './app';
+import {
+  assignCrew,
+  INITIAL_WORK_ORDERS,
+  selectWorkOrders,
+  type WorkOrderFilters,
+} from './operations-data';
 
-function renderApp(path = '/') {
-  window.history.replaceState(null, '', path);
+async function chooseOption(user: UserEvent, name: string, option: string) {
+  await user.click(screen.getByRole('combobox', { name }));
+  await user.click(await screen.findByRole('option', { name: option }));
+}
+
+function renderAt(pathname = '/work-orders') {
+  window.history.replaceState(null, '', pathname);
   return render(<App />);
 }
 
-describe('Relay dashboard', () => {
-  it('renders the operational overview and route destinations', () => {
-    renderApp();
+beforeEach(() => {
+  window.history.replaceState(null, '', '/work-orders');
+  delete document.documentElement.dataset.theme;
+});
 
-    expect(screen.getByRole('heading', { level: 1, name: '운영 현황' })).toBeVisible();
-    expect(screen.getByRole('navigation', { name: 'Relay 주요 메뉴' })).toBeVisible();
-    expect(screen.getByText('Relay (Mock Service)')).toBeVisible();
-    expect(screen.getByRole('link', { name: '운영 현황' })).toHaveAttribute('aria-current', 'page');
-    expect(screen.getByRole('heading', { name: '운영 바로가기' })).toBeVisible();
-    expect(screen.getByRole('link', { name: /작업 요청.*건 열림/ })).toHaveAttribute(
-      'href',
-      '/work-orders',
+describe('operations selectors', () => {
+  const defaultFilters: WorkOrderFilters = {
+    district: '전체 자치구',
+    query: '',
+    sortDirection: false,
+    status: 'all',
+  };
+
+  it('orders attention work ahead of normal and completed work', () => {
+    const result = selectWorkOrders(INITIAL_WORK_ORDERS, defaultFilters);
+
+    expect(result[0]?.id).toBe('WO-3127');
+    expect(result.findIndex((order) => order.status === '완료')).toBeGreaterThan(
+      result.findIndex((order) => order.status === '진행 중'),
     );
-    expect(screen.getByText('SLA 위험 작업 3건을 확인하십시오')).toBeVisible();
+  });
+
+  it('filters across district, status and Korean search text', () => {
+    const result = selectWorkOrders(INITIAL_WORK_ORDERS, {
+      district: '성동구',
+      query: '가로등',
+      sortDirection: 'asc',
+      status: 'active',
+    });
+
+    expect(result.map((order) => order.id)).toEqual(['WO-3125']);
+  });
+
+  it('assigns a crew without mutating the fixture', () => {
+    const nextOrders = assignCrew(INITIAL_WORK_ORDERS, 'WO-3127', '도심 도로팀');
+    const previous = INITIAL_WORK_ORDERS.find((order) => order.id === 'WO-3127');
+    const assigned = nextOrders.find((order) => order.id === 'WO-3127');
+
+    expect(previous?.crew).toBeNull();
+    expect(assigned).toMatchObject({ crew: '도심 도로팀', status: '배정됨' });
+    expect(assigned?.activities[0]?.description).toContain('배정이 완료되었습니다');
+  });
+});
+
+describe('Vite design-system consumer page', () => {
+  it('renders the documented data-management hierarchy', () => {
+    renderAt();
+
+    expect(screen.getByRole('navigation', { name: '현재 위치' })).toBeVisible();
+    expect(screen.getByRole('heading', { level: 1, name: '현장 작업' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '최우선 작업 열기' })).toBeVisible();
     expect(
-      screen.getByRole('status', { name: 'SLA 위험 작업 3건을 확인하십시오' }),
-    ).toHaveAttribute('data-tone', 'warning');
+      screen.getByRole('heading', { level: 2, name: /조치 확인이 필요한 작업/ }),
+    ).toBeVisible();
+    expect(screen.getByRole('group', { name: '현장 작업 필터' })).toBeVisible();
+    expect(screen.getByRole('region', { name: '현장 작업 표 가로 스크롤 영역' })).toBeVisible();
+    expect(screen.getByRole('table', { name: '현장 작업 목록' })).toBeVisible();
+    expect(screen.getByRole('navigation', { name: '현장 작업 페이지' })).toBeVisible();
   });
 
-  it('filters the work queue and exposes the empty state', async () => {
+  it('searches, shows a recoverable empty state and resets filters', async () => {
     const user = userEvent.setup();
-    renderApp('/work-orders');
+    renderAt();
 
-    const search = screen.getByRole('searchbox', { name: '작업 요청 검색' });
-    await user.type(search, '없는 시설');
+    const search = screen.getByRole('searchbox', { name: '작업 검색' });
+    await user.type(search, '없는 작업');
+    await user.keyboard('{Enter}');
 
-    expect(screen.getByText('조건에 맞는 작업이 없습니다')).toBeVisible();
-    await user.click(screen.getByRole('button', { name: '필터 초기화' }));
+    expect(screen.getByText('조건에 맞는 작업이 없습니다.')).toBeVisible();
+    expect(screen.getByText('필터 결과 0건')).toBeVisible();
 
+    await user.click(screen.getAllByRole('button', { name: '필터 초기화' })[0]!);
+
+    expect(screen.getByRole('button', { name: /WO-3127 .* 상세 보기/ })).toBeVisible();
     expect(search).toHaveValue('');
-    expect(screen.getByText('WO-2841')).toBeVisible();
-    await user.click(screen.getByRole('button', { name: 'SLA 위험' }));
-
-    const table = screen.getByRole('table', { name: '작업 요청 목록' });
-    expect(within(table).getByText('WO-2841')).toBeVisible();
-    expect(within(table).getByText('WO-2834')).toBeVisible();
-    expect(within(table).getByText('WO-2808')).toBeVisible();
-    expect(within(table).queryByText('WO-2829')).toBeNull();
   });
 
-  it('submits the quick search before navigating and transfers its query', async () => {
+  it('filters by status and keeps the result relationship visible', async () => {
     const user = userEvent.setup();
-    renderApp();
+    renderAt();
 
-    const quickSearch = screen.getByRole('searchbox', { name: '작업 빠른 검색' });
-    await user.type(quickSearch, '광화문');
+    await chooseOption(user, '작업 상태', '완료');
 
-    expect(window.location.pathname).toBe('/');
-    await user.click(screen.getByRole('button', { name: '작업 검색 실행' }));
-
-    expect(window.location.pathname).toBe('/work-orders');
-    expect(screen.getByRole('searchbox', { name: '작업 요청 검색' })).toHaveValue('광화문');
-    const table = screen.getByRole('table', { name: '작업 요청 목록' });
-    expect(within(table).getByText('WO-2841')).toBeVisible();
-    expect(within(table).queryByText('WO-2829')).toBeNull();
+    expect(screen.getByText('필터 결과 3건')).toBeVisible();
+    expect(screen.getByRole('button', { name: /WO-3108 .* 상세 보기/ })).toBeVisible();
+    expect(screen.queryByRole('button', { name: /WO-3127 .* 상세 보기/ })).toBeNull();
   });
 
-  it('combines district and status filters', async () => {
+  it('paginates the result set without changing the filter context', async () => {
     const user = userEvent.setup();
-    renderApp('/work-orders');
+    renderAt();
 
-    await user.click(screen.getByRole('combobox', { name: '권역 필터' }));
-    await user.click(await screen.findByRole('option', { name: '중구' }));
-    await user.click(screen.getByRole('button', { name: '진행 중' }));
+    await user.click(screen.getByRole('button', { name: '2페이지' }));
 
-    const table = screen.getByRole('table', { name: '작업 요청 목록' });
-    expect(within(table).getByText('WO-2808')).toBeVisible();
-    expect(within(table).getByText('진행 중')).toHaveAttribute('data-appearance', 'solid');
-    expect(within(table).getByText('진행 중')).toHaveAttribute('data-tone', 'info');
-    expect(within(table).queryByText('WO-2841')).toBeNull();
-    expect(screen.getByText('1건 표시 · 최근 동기화 방금 전')).toBeVisible();
+    expect(screen.getByRole('button', { name: /WO-3093 .* 상세 보기/ })).toBeVisible();
+    expect(screen.getByText(/7–12 표시/)).toBeVisible();
+    expect(screen.getByRole('combobox', { name: '작업 상태' })).toHaveTextContent('전체 상태');
   });
 
-  it('navigates to real dashboard destinations and closes the mobile drawer', async () => {
+  it('preserves rows while refreshing and reports completion', async () => {
     const user = userEvent.setup();
-    renderApp();
+    renderAt();
 
-    await user.click(screen.getByRole('link', { name: '현장팀' }));
-    expect(window.location.pathname).toBe('/crews');
-    expect(screen.getByRole('link', { name: '현장팀' })).toHaveAttribute('aria-current', 'page');
-    expect(screen.getByRole('heading', { level: 1, name: '현장팀' })).toBeVisible();
-    expect(screen.getByRole('heading', { name: '현장팀 가용성' })).toBeVisible();
+    await user.click(screen.getByRole('button', { name: '새로고침' }));
 
-    await user.click(screen.getByRole('button', { name: '주요 메뉴 열기' }));
-    const drawer = screen.getByRole('dialog', { name: 'Relay 메뉴' });
-    await user.click(within(drawer).getByRole('link', { name: '작업 요청' }));
-
-    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Relay 메뉴' })).toBeNull());
-    expect(window.location.pathname).toBe('/work-orders');
-    expect(screen.getByRole('link', { name: '작업 요청' })).toHaveAttribute('aria-current', 'page');
-    expect(screen.getByRole('heading', { level: 1, name: '작업 요청' })).toBeVisible();
-    expect(screen.getByRole('table', { name: '작업 요청 목록' })).toBeVisible();
-  });
-
-  it('selects, sorts, and paginates the work queue', async () => {
-    const user = userEvent.setup();
-    renderApp('/work-orders');
-
-    const table = screen.getByRole('table', { name: '작업 요청 목록' });
-    const rows = within(table).getAllByRole('row');
-    expect(rows[1]).toHaveTextContent('WO-2808');
-    expect(rows[2]).toHaveTextContent('WO-2841');
-    expect(rows[3]).toHaveTextContent('WO-2834');
-    expect(within(table).getByText('SLA 위험 92%')).toBeVisible();
-    await user.click(within(table).getByRole('checkbox', { name: 'WO-2841 선택' }));
-    expect(screen.getByText('1개 선택됨')).toBeVisible();
-
-    const sortButton = within(table).getByRole('button', {
-      name: 'SLA 진행 정렬 없음',
-    });
-    await user.click(sortButton);
-    expect(sortButton).toHaveAttribute('data-sort-direction', 'asc');
-
-    await user.click(screen.getByRole('button', { name: '다음 페이지로' }));
-    expect(screen.getByRole('button', { name: '2페이지' })).toHaveAttribute('aria-current', 'page');
-    expect(within(table).getByText('WO-2808')).toBeVisible();
-  });
-
-  it('prioritizes risk alerts and opens the selected work order queue', async () => {
-    const user = userEvent.setup();
-    renderApp('/activity');
-
-    await user.click(screen.getByRole('button', { name: '알림 3개' }));
-    const notifications = screen.getByRole('dialog', { name: '운영 알림' });
-    const alertButtons = within(notifications).getAllByRole('button');
-    const mostUrgentAlert = within(notifications).getByRole('button', {
-      name: 'WO-2808 작업 보기',
-    });
-    expect(alertButtons[0]).toBe(mostUrgentAlert);
-
-    await user.click(mostUrgentAlert);
-
-    expect(window.location.pathname).toBe('/work-orders');
-    expect(screen.getByRole('searchbox', { name: '작업 요청 검색' })).toHaveValue('WO-2808');
-    const table = screen.getByRole('table', { name: '작업 요청 목록' });
-    expect(within(table).getByText('WO-2808')).toBeVisible();
-    expect(within(table).queryByText('WO-2841')).toBeNull();
-  });
-
-  it('creates a work order after validating required fields', async () => {
-    const user = userEvent.setup();
-    renderApp();
-
-    await user.click(screen.getByRole('button', { name: '새 작업 만들기' }));
-    const dialog = screen.getByRole('dialog', { name: '새 작업 요청' });
-
-    expect(within(dialog).getByText('별표(*)로 표시된 항목은 필수입니다.')).toBeVisible();
-    expect(within(dialog).getByRole('heading', { name: '대응 기준', level: 3 })).toBeVisible();
-    expect(within(dialog).getByRole('heading', { name: '알림 및 첨부', level: 3 })).toBeVisible();
-
-    await user.click(within(dialog).getByRole('button', { name: '작업 생성' }));
-    expect(within(dialog).getByText('작업 제목을 입력하십시오.')).toBeVisible();
-    expect(within(dialog).getByText('시설 위치를 선택하십시오.')).toBeVisible();
-
-    await user.type(within(dialog).getByRole('textbox', { name: '작업 제목' }), '소화전 표지 점검');
-    const location = within(dialog).getByRole('combobox', { name: '시설 위치' });
-    await user.click(location);
-    await user.type(location, '광화문');
-    await user.click(screen.getByRole('option', { name: '광화문광장' }));
-    await user.click(within(dialog).getByRole('button', { name: '예상 대응시간 15분 늘리기' }));
-    await user.click(within(dialog).getByRole('checkbox', { name: '이메일' }));
-    await user.click(within(dialog).getByRole('button', { name: '작업 생성' }));
-
-    expect(screen.queryByRole('dialog', { name: '새 작업 요청' })).toBeNull();
-    expect(window.location.pathname).toBe('/work-orders');
-    expect(screen.getByText('소화전 표지 점검')).toBeVisible();
-    expect(screen.getByRole('dialog', { name: '작업이 생성되었습니다' })).toBeVisible();
-
-    await user.click(screen.getByRole('button', { name: /소화전 표지 점검 상세 보기/ }));
-    const details = screen.getByRole('dialog', { name: '소화전 표지 점검' });
-    expect(within(details).getByText('75분')).toBeVisible();
-    expect(within(details).getByText('앱 푸시, 이메일')).toBeVisible();
-  });
-
-  it('gives each priority radio its own accessible name', async () => {
-    const user = userEvent.setup();
-    renderApp();
-
-    await user.click(screen.getByRole('button', { name: '새 작업 만들기' }));
-    const dialog = screen.getByRole('dialog', { name: '새 작업 요청' });
-
-    expect(within(dialog).getByRole('radio', { name: '긴급' })).toBeVisible();
-    expect(within(dialog).getByRole('radio', { name: '높음' })).toBeVisible();
-    expect(within(dialog).getByRole('radio', { name: '보통' })).toBeChecked();
-  });
-
-  it('prevents terminal work orders from being reassigned or cancelled', async () => {
-    const user = userEvent.setup();
-    renderApp('/work-orders');
-
-    await user.click(screen.getByRole('button', { name: '다음 페이지로' }));
-    await user.click(
-      screen.getByRole('button', {
-        name: 'WO-2812 광장 벤치 파손 부품 교체 상세 보기',
-      }),
+    expect(screen.getByRole('table', { name: '현장 작업 목록' })).toHaveAttribute(
+      'aria-busy',
+      'true',
     );
-    const details = screen.getByRole('dialog', { name: '광장 벤치 파손 부품 교체' });
+    expect(screen.getByRole('button', { name: /WO-3127 .* 상세 보기/ })).toBeVisible();
+    expect(screen.getByText('작업 목록 갱신 중 · 기존 데이터 유지')).toBeVisible();
 
-    expect(within(details).getByRole('combobox', { name: '담당 현장팀' })).toBeDisabled();
-    expect(within(details).getByRole('button', { name: '작업 취소' })).toBeDisabled();
+    await waitFor(() => expect(screen.getByText('마지막 갱신 10:07')).toBeVisible());
+    expect(await screen.findByText('작업 목록을 갱신했습니다.')).toBeVisible();
   });
 
-  it('opens details, cancels an order, and restores it from the toast action', async () => {
+  it('opens row details, exposes a disabled reason and restores trigger focus', async () => {
     const user = userEvent.setup();
-    renderApp('/work-orders');
+    renderAt();
 
-    const trigger = screen.getByRole('button', {
-      name: 'WO-2841 보행 신호 제어함 전원 점검 상세 보기',
-    });
-    await user.click(trigger);
-    const details = screen.getByRole('dialog', { name: '보행 신호 제어함 전원 점검' });
-    await user.click(within(details).getByRole('button', { name: '작업 취소' }));
+    const trigger = screen.getByRole('button', { name: /WO-3127 .* 상세 보기/ });
+    trigger.focus();
+    await user.keyboard('{Enter}');
 
-    const confirmation = screen.getByRole('alertdialog', { name: '작업을 취소하시겠습니까?' });
-    await user.click(within(confirmation).getByRole('button', { name: '작업 취소' }));
+    const drawer = await screen.findByRole('dialog', { name: '도로 침하 안전 조치' });
+    const completion = within(drawer).getByRole('button', { name: '작업 완료' });
+    const reasonId = completion.getAttribute('aria-describedby');
 
-    expect(screen.queryByRole('dialog', { name: '보행 신호 제어함 전원 점검' })).toBeNull();
-    expect(screen.getByRole('button', { name: '알림 2개' })).toBeVisible();
-    await waitFor(() =>
-      expect(screen.getByRole('heading', { level: 1, name: '작업 요청' })).toHaveFocus(),
-    );
-
-    const toast = screen.getByRole('dialog', { name: '작업을 취소했습니다' });
-    expect(toast).toBeVisible();
-    await user.click(within(toast).getByRole('button', { name: '실행 취소' }));
-
-    expect(screen.getByRole('dialog', { name: '취소를 되돌렸습니다' })).toBeVisible();
-  });
-
-  it('returns focus to the selected work order after closing details', async () => {
-    const user = userEvent.setup();
-    renderApp('/work-orders');
-
-    const trigger = screen.getByRole('button', {
-      name: 'WO-2841 보행 신호 제어함 전원 점검 상세 보기',
-    });
-    await user.click(trigger);
-    expect(screen.getByRole('dialog', { name: '보행 신호 제어함 전원 점검' })).toBeVisible();
+    expect(completion).toBeDisabled();
+    expect(reasonId).not.toBeNull();
+    expect(document.getElementById(reasonId!)).toHaveTextContent('담당팀을 배정해야');
 
     await user.keyboard('{Escape}');
-
-    await waitFor(() => expect(trigger).toHaveFocus());
-  });
-
-  it('clears hidden selections when a filter changes', async () => {
-    const user = userEvent.setup();
-    renderApp('/work-orders');
-
-    const table = screen.getByRole('table', { name: '작업 요청 목록' });
-    const checkbox = within(table).getByRole('checkbox', { name: 'WO-2841 선택' });
-    await user.click(checkbox);
-    expect(checkbox).toBeChecked();
-
-    await user.click(screen.getByRole('button', { name: 'SLA 위험' }));
-
-    expect(within(table).getByRole('checkbox', { name: 'WO-2841 선택' })).not.toBeChecked();
-  });
-
-  it('announces one table loading state', async () => {
-    renderApp('/work-orders');
-
-    fireEvent.click(screen.getByRole('button', { name: '작업 새로고침' }));
-
-    const table = screen.getByRole('table', { name: '작업 요청 목록' });
-    expect(within(table).getByRole('status')).toHaveTextContent(
-      '작업 요청을 새로 불러오는 중입니다.',
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog', { name: '도로 침하 안전 조치' })).toBeNull(),
     );
-
-    await waitFor(() => expect(within(table).queryByRole('status')).toBeNull(), {
-      timeout: 1000,
-    });
+    expect(trigger).toHaveFocus();
   });
 
-  it('changes theme and density without changing routes', async () => {
+  it('blocks a waiting work order until its stated dependency is resolved', async () => {
     const user = userEvent.setup();
-    renderApp();
+    renderAt();
 
-    await user.click(screen.getByRole('button', { name: '다크' }));
+    await user.click(screen.getByRole('button', { name: /WO-3121 .* 상세 보기/ }));
+
+    const drawer = await screen.findByRole('dialog', { name: '환승 안내판 파손 교체' });
+    const start = within(drawer).getByRole('button', { name: '작업 시작' });
+    const reasonId = start.getAttribute('aria-describedby');
+
+    expect(start).toBeDisabled();
+    expect(reasonId).not.toBeNull();
+    expect(document.getElementById(reasonId!)).toHaveTextContent('교체 부품 입고 예정');
+  });
+
+  it('shows a field error instead of disabling a recoverable assignment', async () => {
+    const user = userEvent.setup();
+    renderAt();
+
+    await user.click(screen.getByRole('button', { name: /WO-3127 .* 상세 보기/ }));
+    await user.click(await screen.findByRole('button', { name: '담당팀 배정' }));
+
+    const dialog = await screen.findByRole('dialog', { name: '담당팀 배정' });
+    const save = within(dialog).getByRole('button', { name: '배정 저장' });
+    expect(save).toBeEnabled();
+
+    await user.click(save);
+
+    expect(within(dialog).getByText('담당팀을 선택해야 배정을 저장할 수 있습니다.')).toBeVisible();
+  });
+
+  it('uses the close reason to discard an assignment draft closed by Escape', async () => {
+    const user = userEvent.setup();
+    renderAt();
+
+    await user.click(screen.getByRole('button', { name: /WO-3127 .* 상세 보기/ }));
+    await user.click(await screen.findByRole('button', { name: '담당팀 배정' }));
+    await chooseOption(user, '담당팀', '도심 도로팀');
+    await user.keyboard('{Escape}');
+
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: '담당팀 배정' })).toBeNull());
+    await user.click(screen.getByRole('button', { name: '담당팀 배정' }));
+
+    expect(await screen.findByRole('combobox', { name: '담당팀' })).toHaveTextContent(
+      '담당팀 선택',
+    );
+  });
+
+  it('advances an urgent work order through assignment, start and completion', async () => {
+    const user = userEvent.setup();
+    renderAt();
+
+    await user.click(screen.getByRole('button', { name: /WO-3127 .* 상세 보기/ }));
+    await user.click(await screen.findByRole('button', { name: '담당팀 배정' }));
+    await chooseOption(user, '담당팀', '도심 도로팀');
+    await user.click(screen.getByRole('button', { name: '배정 저장' }));
+
+    expect(await screen.findByText('담당팀 배정 완료')).toBeVisible();
+    expect(
+      within(screen.getByRole('dialog', { name: '도로 침하 안전 조치' })).getByText('도심 도로팀'),
+    ).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: '작업 시작' }));
+    expect(await screen.findByText('현장 작업 시작')).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: '작업 완료' }));
+    expect(await screen.findByText('작업이 완료되었습니다.')).toBeVisible();
+    expect(screen.queryByRole('button', { name: '담당팀 변경' })).toBeNull();
+  });
+
+  it('switches light, dark and system themes through the public theme contract', async () => {
+    const user = userEvent.setup();
+    renderAt();
+
+    await chooseOption(user, '화면 테마', '다크 테마');
     expect(document.documentElement).toHaveAttribute('data-theme', 'dark');
 
-    const sidebar = screen.getByRole('complementary');
-    await user.click(within(sidebar).getByRole('switch', { name: '컴팩트 밀도' }));
-    expect(document.querySelector('.relay-app')).toHaveAttribute('data-density', 'compact');
-    expect(window.location.pathname).toBe('/');
+    await chooseOption(user, '화면 테마', '라이트 테마');
+    expect(document.documentElement).toHaveAttribute('data-theme', 'light');
 
-    await user.click(screen.getByRole('button', { name: '사용자 메뉴' }));
-    expect(await screen.findByRole('menu')).toHaveAttribute('data-city-density', 'compact');
+    await chooseOption(user, '화면 테마', '시스템 테마');
+    expect(document.documentElement).not.toHaveAttribute('data-theme');
   });
+});
 
-  it('supports direct entry and browser history navigation', async () => {
-    renderApp('/service-status/');
+describe('dashboard routing', () => {
+  it.each([
+    ['/', '운영 현황'],
+    ['/work-orders', '현장 작업'],
+    ['/maintenance', '정비 계획'],
+    ['/assets', '시설 자산'],
+    ['/crews', '현장팀'],
+    ['/reports', '운영 리포트'],
+    ['/activity', '활동 기록'],
+    ['/service-status', '서비스 상태'],
+  ])('renders the %s route on direct entry', (pathname, heading) => {
+    renderAt(pathname);
 
-    expect(screen.getByRole('heading', { level: 1, name: '서비스 상태' })).toBeVisible();
-    expect(screen.getByRole('link', { name: '서비스 상태' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    );
-    expect(document.title).toBe('서비스 상태 · Relay');
-
-    window.history.pushState(null, '', '/crews');
-    fireEvent(window, new PopStateEvent('popstate'));
-
-    await waitFor(() =>
-      expect(screen.getByRole('heading', { level: 1, name: '현장팀' })).toBeVisible(),
-    );
-    expect(screen.getByRole('link', { name: '현장팀' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('heading', { level: 1, name: heading })).toBeVisible();
   });
 
   it.each([
-    ['/assets', '시설 자산', 'table', '시설 자산 목록'],
-    ['/maintenance', '정비 계획', 'heading', '예정된 정비'],
-    ['/reports', '운영 리포트', 'table', '권역별 운영 리포트'],
-    ['/activity', '활동 기록', 'table', 'Relay 활동 기록'],
-  ] as const)(
-    'renders the %s route and its primary content',
-    (path, heading, contentRole, contentName) => {
-      renderApp(path);
+    ['/', '기한과 차단 요인을 기준으로 정렬했습니다.'],
+    ['/maintenance', '시작 시간이 가까운 순서입니다.'],
+    ['/assets', 'AST-0842'],
+    ['/crews', '강남대로 제어반 점검'],
+    ['/reports', '강남구 SLA 준수율이 목표보다 3.2%p 낮습니다.'],
+    ['/activity', 'WO-3127 도로 침하 안전 조치의 현장 통제를 시작했습니다.'],
+    ['/service-status', '최근 24시간 동안 서비스 중단 또는 데이터 유실이 감지되지 않았습니다.'],
+  ])('restores meaningful content for %s', (pathname, content) => {
+    renderAt(pathname);
 
-      expect(screen.getByRole('heading', { level: 1, name: heading })).toBeVisible();
-      expect(screen.getByRole('link', { name: heading })).toHaveAttribute('aria-current', 'page');
-      expect(screen.getByRole(contentRole, { name: contentName })).toBeVisible();
-    },
-  );
-
-  it('filters assets and returns focus after closing asset details', async () => {
-    const user = userEvent.setup();
-    renderApp('/assets');
-
-    await user.type(screen.getByRole('searchbox', { name: '시설 자산 검색' }), '배수');
-    const table = screen.getByRole('table', { name: '시설 자산 목록' });
-    expect(within(table).getByText('AS-0529')).toBeVisible();
-    expect(within(table).queryByText('AS-1042')).toBeNull();
-
-    const trigger = within(table).getByRole('button', {
-      name: 'AS-0529 배수 펌프 1호기 자산 상세 보기',
-    });
-    await user.click(trigger);
-    const details = screen.getByRole('dialog', { name: '배수 펌프 1호기' });
-    expect(within(details).getByText('운영 중단')).toBeVisible();
-    expect(within(details).getByText('34%')).toBeVisible();
-
-    await user.keyboard('{Escape}');
-    await waitFor(() => expect(trigger).toHaveFocus());
+    expect(screen.getByText(content)).toBeVisible();
   });
 
-  it('prioritizes stopped and inspection-needed assets in the default list', () => {
-    renderApp('/assets');
-
-    const table = screen.getByRole('table', { name: '시설 자산 목록' });
-    const rows = within(table).getAllByRole('row');
-    expect(rows[1]).toHaveTextContent('AS-0529');
-    expect(rows[2]).toHaveTextContent('AS-0874');
-    expect(rows[3]).toHaveTextContent('AS-0988');
-    const stoppedAsset = within(table).getByRole('button', {
-      name: 'AS-0529 배수 펌프 1호기 자산 상세 보기',
-    });
-    expect(within(stoppedAsset).getByText('운영 중단')).toBeVisible();
-    expect(within(stoppedAsset).getByText('건강도 34%')).toBeVisible();
-  });
-
-  it('validates and creates a maintenance plan in memory', async () => {
-    const user = userEvent.setup();
-    renderApp('/maintenance');
-
-    await user.click(screen.getByRole('button', { name: '정비 계획 추가' }));
-    const dialog = screen.getByRole('dialog', { name: '새 정비 계획' });
-    await user.click(within(dialog).getByRole('button', { name: '계획 추가' }));
-    expect(within(dialog).getByText('제목을 입력하십시오.')).toBeVisible();
-
-    await user.type(within(dialog).getByRole('textbox', { name: '계획 제목' }), '배수 펌프 재점검');
-    await user.type(within(dialog).getByRole('textbox', { name: '대상 자산' }), '배수 펌프 1호기');
-    await user.click(within(dialog).getByRole('combobox', { name: '시설 위치' }));
-    await user.click(await screen.findByRole('option', { name: '을지로 지하보도' }));
-    await user.type(within(dialog).getByRole('textbox', { name: '정비 일정' }), '7월 31일 · 09:00');
-    await user.click(within(dialog).getByRole('button', { name: '계획 추가' }));
-
-    expect(screen.queryByRole('dialog', { name: '새 정비 계획' })).toBeNull();
-    expect(screen.getByText('배수 펌프 재점검')).toBeVisible();
-    expect(screen.getByRole('dialog', { name: '정비 계획을 추가했습니다' })).toBeVisible();
-  });
-
-  it('updates report metrics with period and district controls', async () => {
-    const user = userEvent.setup();
-    renderApp('/reports');
-
-    expect(screen.getByText('72건')).toBeVisible();
-    await user.click(screen.getByRole('button', { name: '오늘' }));
-    expect(screen.getByText('40건')).toBeVisible();
-
-    await user.click(screen.getByRole('combobox', { name: '리포트 권역' }));
-    await user.click(await screen.findByRole('option', { name: '성동구' }));
-    expect(screen.getByText('13건', { selector: '.relay-metric strong' })).toBeVisible();
-    expect(screen.getByRole('progressbar', { name: 'SLA 준수율 92.3%' })).toBeVisible();
-  });
-
-  it('filters activity logs and exposes recorded before and after values', async () => {
-    const user = userEvent.setup();
-    renderApp('/activity');
-
-    const table = screen.getByRole('table', { name: 'Relay 활동 기록' });
-    await user.type(screen.getByRole('searchbox', { name: '활동 기록 검색' }), 'WO-2841');
-    expect(within(table).getAllByText('WO-2841')).toHaveLength(2);
-
-    const detailTrigger = within(table).getByRole('button', { name: 'EV-8421 변경 상세' });
-    await user.click(detailTrigger);
-    expect(screen.getByText('미배정')).toBeVisible();
-    expect(screen.getByText('시설 전기팀')).toBeVisible();
-
-    await user.keyboard('{Escape}');
-    await waitFor(() => expect(detailTrigger).toHaveFocus());
-    await user.clear(screen.getByRole('searchbox', { name: '활동 기록 검색' }));
-    await user.click(screen.getByRole('switch', { name: '시스템 이벤트 포함' }));
-    expect(within(table).queryByText('EV-8418')).toBeNull();
-  });
-
-  it('uses one filter and table-detail contract across list pages', async () => {
-    const { rerender } = renderApp('/assets');
-
-    expect(screen.getByRole('group', { name: '시설 자산 필터' })).toBeVisible();
-    const assetTable = screen.getByRole('table', { name: '시설 자산 목록' });
-    expect(within(assetTable).queryByRole('button', { name: /메뉴/ })).toBeNull();
-    expect(screen.getByRole('region', { name: '시설 자산 가로 스크롤 영역' })).toHaveAttribute(
-      'aria-describedby',
-      'asset-table-scroll-hint',
-    );
-
-    window.history.replaceState(null, '', '/activity');
-    rerender(<App />);
-    fireEvent(window, new PopStateEvent('popstate'));
-
-    const activityTable = await screen.findByRole('table', { name: 'Relay 활동 기록' });
-    expect(screen.getByRole('group', { name: '활동 기록 필터' })).toBeVisible();
-    expect(within(activityTable).queryByRole('button', { name: /메뉴/ })).toBeNull();
-    expect(within(activityTable).getByRole('button', { name: 'EV-8421 변경 상세' })).toBeVisible();
-  });
-
-  it('uses the same dialog footer contract for creation flows', async () => {
-    const user = userEvent.setup();
-    renderApp();
-
-    await user.click(screen.getByRole('button', { name: '새 작업 만들기' }));
-    expect(
-      screen
-        .getByRole('dialog', { name: '새 작업 요청' })
-        .querySelector('[data-city-dialog-footer]'),
-    ).not.toBeNull();
-    await user.keyboard('{Escape}');
-
-    await user.click(screen.getByRole('link', { name: '정비 계획' }));
-    await user.click(screen.getByRole('button', { name: '정비 계획 추가' }));
-    expect(
-      screen
-        .getByRole('dialog', { name: '새 정비 계획' })
-        .querySelector('[data-city-dialog-footer]'),
-    ).not.toBeNull();
-  });
-
-  it('recovers from an unknown route', async () => {
-    const user = userEvent.setup();
-    renderApp('/missing');
+  it('provides a recoverable not-found page for unknown paths', () => {
+    renderAt('/unknown');
 
     expect(
-      screen.getByRole('heading', { level: 1, name: '페이지를 찾을 수 없습니다' }),
+      screen.getByRole('heading', { level: 1, name: '페이지를 찾을 수 없습니다.' }),
     ).toBeVisible();
-    expect(screen.queryByRole('link', { current: 'page' })).toBeNull();
+    expect(screen.getByRole('link', { name: '운영 현황으로' })).toHaveAttribute('href', '/');
+  });
 
-    await user.click(screen.getByRole('button', { name: '운영 현황 보기' }));
+  it('moves between routes and responds to browser history', async () => {
+    const user = userEvent.setup();
+    renderAt('/');
 
-    expect(window.location.pathname).toBe('/');
-    expect(screen.getByRole('heading', { level: 1, name: '운영 현황' })).toBeVisible();
+    await user.click(screen.getByRole('link', { name: '작업 요청' }));
+    expect(window.location.pathname).toBe('/work-orders');
+    expect(screen.getByRole('heading', { level: 1, name: '현장 작업' })).toBeVisible();
+
+    await user.click(screen.getByRole('link', { name: '시설 자산' }));
+    expect(window.location.pathname).toBe('/assets');
+
+    window.history.back();
+    await waitFor(() => expect(window.location.pathname).toBe('/work-orders'));
+    expect(screen.getByRole('heading', { level: 1, name: '현장 작업' })).toBeVisible();
+  });
+
+  it('uses the same route contract in the mobile navigation drawer', async () => {
+    const user = userEvent.setup();
+    renderAt('/');
+
+    await user.click(screen.getByRole('button', { name: '메뉴 열기' }));
+    const drawer = await screen.findByRole('dialog', { name: '전체 메뉴' });
+    await user.click(within(drawer).getByRole('link', { name: '서비스 상태' }));
+
+    expect(window.location.pathname).toBe('/service-status');
+    expect(screen.getByRole('heading', { level: 1, name: '서비스 상태' })).toBeVisible();
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: '전체 메뉴' })).toBeNull());
   });
 });

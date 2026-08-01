@@ -19,7 +19,7 @@ body,
   color: var(--city-color-foreground) !important;
 }
 
-.sbdocs-content :where(h1, h2, h3, h4, h5, h6, p, li, dt, dd) {
+.sbdocs-content :where(h1, h2, h3, h4, h5, h6, p, li, dt, dd, th, td) {
   color: var(--city-color-foreground) !important;
 }
 

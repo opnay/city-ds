@@ -837,7 +837,7 @@ a {
   color: var(--city-color-muted-foreground);
   font-size: var(--city-font-size-xs);
   font-weight: var(--city-font-weight-semibold);
-  line-height: var(--city-line-height-normal);
+  line-height: var(--city-line-height-xs);
 }
 
 .relay-required-marker {

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { Field, Select, type ControlSize } from '@opnay/city-ds-react';
 
 const meta = {
@@ -74,8 +74,10 @@ export const Default: Story = {
 
     await expect(trigger).toHaveTextContent('In progress');
     await userEvent.click(value);
-    await expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    await expect(icon).toHaveAttribute('data-popup-open');
+    await waitFor(async () => {
+      await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+      await expect(icon).toHaveAttribute('data-popup-open');
+    });
     await userEvent.click(await within(document.body).findByRole('option', { name: 'Done' }));
 
     await expect(trigger).toHaveTextContent('Done');

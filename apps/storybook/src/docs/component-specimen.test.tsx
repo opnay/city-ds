@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Badge, Button, Input } from '@city-ds/react';
+import { Badge, Button, Input, Table } from '@city-ds/react';
 import '@city-ds/react/styles.css';
 import { describe, expect, it } from 'vitest';
 
@@ -82,6 +82,54 @@ describe('ComponentSpecimen', () => {
     } finally {
       host.remove();
       style.remove();
+    }
+  });
+
+  it('keeps city-ds table rows outside the Storybook Docs light stripe', () => {
+    const style = document.createElement('style');
+    const host = document.createElement('div');
+
+    style.textContent = `
+      .city-docs-host :where(table:not(.sb-anchor, .sb-unstyled, .sb-unstyled table))
+        tr:nth-of-type(2n) {
+        background-color: rgb(246, 249, 252);
+      }
+    `;
+    host.className = 'city-docs-host';
+    host.innerHTML = renderToStaticMarkup(
+      <ComponentSpecimen>
+        <Table.Root aria-label="Size contract">
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>sm</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>md</Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table.Root>
+      </ComponentSpecimen>,
+    );
+    document.head.append(style);
+    document.body.append(host);
+
+    try {
+      const rows = host.querySelectorAll<HTMLElement>('[data-city-table-row]');
+
+      expect(rows).toHaveLength(2);
+      expect(getComputedStyle(rows[1]!).backgroundColor).not.toBe('rgb(246, 249, 252)');
+    } finally {
+      host.remove();
+      style.remove();
+    }
+  });
+
+  it('uses city-ds Table for the control contract documents', () => {
+    for (const path of ['../stories/control-size.mdx', '../stories/control-typography.mdx']) {
+      const source = storybookDocs[path];
+
+      expect(source).toContain('<Table.Root');
+      expect(source).not.toMatch(/<table(?:\s|>)/);
     }
   });
 

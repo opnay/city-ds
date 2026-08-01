@@ -19,7 +19,7 @@ body,
   color: var(--city-color-foreground) !important;
 }
 
-.sbdocs-content :where(h1, h2, h3, h4, h5, h6, p, li, dt, dd, th, td) {
+.sbdocs-content :where(h1, h2, h3, h4, h5, h6, p, li, dt, dd) {
   color: var(--city-color-foreground) !important;
 }
 
@@ -83,7 +83,7 @@ body,
   background: transparent !important;
 }
 
-.sbdocs-content :where(hr, table, th, td) {
+.sbdocs-content hr {
   border-color: var(--city-color-border) !important;
 }
 

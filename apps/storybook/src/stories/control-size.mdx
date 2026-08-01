@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Button, Input } from '@city-ds/react';
+import { Button, Input, Table } from '@city-ds/react';
 import { ComponentSpecimen } from '../docs/component-specimen';
 
 <Meta title="디자인 패턴/Size/Control Size" />
@@ -12,30 +12,38 @@ border-box 높이**를 정의하는 Size 축입니다. 컴포넌트 타입이나
 
 ## 크기 계약
 
-<table>
-  <thead>
-    <tr>
-      <th scope="col">측정 항목</th>
-      <th scope="col">
-        <code>sm</code>
-      </th>
-      <th scope="col">
-        <code>md</code>
-      </th>
-      <th scope="col">
-        <code>lg</code>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">외곽 높이</th>
-      <td>32px</td>
-      <td>36px</td>
-      <td>40px</td>
-    </tr>
-  </tbody>
-</table>
+<ComponentSpecimen>
+  <Table.ScrollArea
+    appearance="outline"
+    aria-label="Control 크기 계약 가로 스크롤 영역"
+    className="my-6 max-w-xl"
+  >
+    <Table.Root aria-label="Control 크기 계약" size="sm">
+      <Table.Header>
+        <Table.Row>
+          <Table.Head>측정 항목</Table.Head>
+          <Table.Head>
+            <code>sm</code>
+          </Table.Head>
+          <Table.Head>
+            <code>md</code>
+          </Table.Head>
+          <Table.Head>
+            <code>lg</code>
+          </Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Head scope="row">외곽 높이</Table.Head>
+          <Table.Cell>32px</Table.Cell>
+          <Table.Cell>36px</Table.Cell>
+          <Table.Cell>40px</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table.Root>
+  </Table.ScrollArea>
+</ComponentSpecimen>
 
 border와 padding은 이 높이에 포함합니다. 내부 텍스트·아이콘·segment가 외곽 높이를 다시
 늘리지 않아야 합니다.

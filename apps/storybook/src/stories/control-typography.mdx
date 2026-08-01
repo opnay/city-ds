@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Badge, Button, Input, Toggle } from '@city-ds/react';
+import { Badge, Button, Input, Table, Toggle } from '@city-ds/react';
 import { ComponentSpecimen } from '../docs/component-specimen';
 
 <Meta title="디자인 패턴/Typography/Control Text" />
@@ -53,53 +53,61 @@ Surface, tone, hover, pressed 같은 시각·상태 축은 텍스트 크기나 �
 
 ## 역할별 텍스트 계약
 
-<table>
-  <thead>
-    <tr>
-      <th scope="col">역할</th>
-      <th scope="col">측정 항목</th>
-      <th scope="col">
-        <code>sm</code>
-      </th>
-      <th scope="col">
-        <code>md</code>
-      </th>
-      <th scope="col">
-        <code>lg</code>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">Compact Status</th>
-      <td>외곽 높이</td>
-      <td>20px</td>
-      <td>24px</td>
-      <td>28px</td>
-    </tr>
-    <tr>
-      <th scope="row">Compact Status</th>
-      <td>텍스트</td>
-      <td>10 / 12px</td>
-      <td>10 / 12px</td>
-      <td>12 / 16px</td>
-    </tr>
-    <tr>
-      <th scope="row">Control</th>
-      <td>외곽 높이</td>
-      <td>32px</td>
-      <td>36px</td>
-      <td>40px</td>
-    </tr>
-    <tr>
-      <th scope="row">Control</th>
-      <td>텍스트</td>
-      <td>12 / 16px</td>
-      <td>14 / 20px</td>
-      <td>14 / 20px</td>
-    </tr>
-  </tbody>
-</table>
+<ComponentSpecimen>
+  <Table.ScrollArea
+    appearance="outline"
+    aria-label="역할별 텍스트 계약 가로 스크롤 영역"
+    className="my-6 max-w-3xl"
+  >
+    <Table.Root aria-label="역할별 텍스트 계약" size="sm">
+      <Table.Header>
+        <Table.Row>
+          <Table.Head>역할</Table.Head>
+          <Table.Head>측정 항목</Table.Head>
+          <Table.Head>
+            <code>sm</code>
+          </Table.Head>
+          <Table.Head>
+            <code>md</code>
+          </Table.Head>
+          <Table.Head>
+            <code>lg</code>
+          </Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Head scope="row">Compact Status</Table.Head>
+          <Table.Cell>외곽 높이</Table.Cell>
+          <Table.Cell>20px</Table.Cell>
+          <Table.Cell>24px</Table.Cell>
+          <Table.Cell>28px</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">Compact Status</Table.Head>
+          <Table.Cell>텍스트</Table.Cell>
+          <Table.Cell>10 / 12px</Table.Cell>
+          <Table.Cell>10 / 12px</Table.Cell>
+          <Table.Cell>12 / 16px</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">Control</Table.Head>
+          <Table.Cell>외곽 높이</Table.Cell>
+          <Table.Cell>32px</Table.Cell>
+          <Table.Cell>36px</Table.Cell>
+          <Table.Cell>40px</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">Control</Table.Head>
+          <Table.Cell>텍스트</Table.Cell>
+          <Table.Cell>12 / 16px</Table.Cell>
+          <Table.Cell>14 / 20px</Table.Cell>
+          <Table.Cell>14 / 20px</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table.Root>
+  </Table.ScrollArea>
+</ComponentSpecimen>
 
 텍스트 값은 `font-size / line-height` 순서입니다. Control의 외곽 높이는 공통
 [Control Size](?path=/docs/디자인-패턴-size-control-size--docs) 계약을 참조합니다.

@@ -8,6 +8,15 @@ import { defineConfig } from 'vitest/config';
 const dirname =
   typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
+function createBrowserConfig() {
+  return {
+    enabled: true,
+    headless: true,
+    provider: playwright({}),
+    instances: [{ browser: 'chromium' as const }],
+  };
+}
+
 export default defineConfig({
   optimizeDeps: {
     include: ['@opnay/city-ds-react > @base-ui/react/menu'],
@@ -19,12 +28,15 @@ export default defineConfig({
         plugins: [storybookTest({ configDir: path.join(dirname, '.storybook') })],
         test: {
           name: 'storybook',
-          browser: {
-            enabled: true,
-            headless: true,
-            provider: playwright({}),
-            instances: [{ browser: 'chromium' }],
-          },
+          browser: createBrowserConfig(),
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: 'docs',
+          include: ['src/**/*.test.{ts,tsx}'],
+          browser: createBrowserConfig(),
         },
       },
     ],

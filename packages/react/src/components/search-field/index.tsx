@@ -13,6 +13,7 @@ import {
 } from '../field';
 import { Input, InputGroup, type InputGroupProps, type InputProps } from '../input';
 import { cn } from '../../lib/cn';
+import { outlineFrameSegmentWidthClasses } from '../../lib/outline-frame';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
 
@@ -199,12 +200,6 @@ const auxiliaryButtonSizeClasses: Record<ControlSize, string> = {
   lg: 'size-9 p-0',
 };
 
-const actionButtonSizeClasses: Record<ControlSize, string> = {
-  sm: 'w-8 px-0',
-  md: 'w-9 px-0',
-  lg: 'w-10 px-0',
-};
-
 const iconSizes: Record<ControlSize, number> = {
   sm: 14,
   md: 16,
@@ -280,8 +275,8 @@ export const SearchFieldSubmit = React.forwardRef<HTMLElement, SearchFieldSubmit
         aria-label={props['aria-label'] ?? (typeof children === 'string' ? children : 'Search')}
         className={(state) =>
           cn(
-            'border-city-border text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring/30 z-0 shrink-0 rounded-none border-l focus-visible:z-10 focus-visible:ring-offset-0',
-            children == null && actionButtonSizeClasses[resolvedSize],
+            'border-city-border text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring/30 z-0 h-full shrink-0 self-stretch rounded-none border-l focus-visible:z-10 focus-visible:ring-offset-0',
+            children == null && cn(outlineFrameSegmentWidthClasses[resolvedSize], 'px-0'),
             resolveClassName(className, state),
           )
         }

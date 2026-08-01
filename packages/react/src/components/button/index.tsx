@@ -8,6 +8,8 @@ import {
 } from '@base-ui/react/button';
 
 import { cn } from '../../lib/cn';
+import { atomicRectShapeClasses } from '../../lib/atomic-shape';
+import { atomicControlTextClasses } from '../../lib/atomic-typography';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
 
@@ -23,9 +25,9 @@ export interface ButtonProps extends Omit<BaseButtonProps, 'className'> {
 }
 
 const buttonSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-(--city-control-sm) gap-1.5 px-2.5 text-xs',
-  md: 'h-(--city-control-md) gap-2 px-3 text-sm',
-  lg: 'h-(--city-control-lg) gap-2 px-4 text-sm',
+  sm: 'h-(--city-control-sm) gap-1.5 px-2.5',
+  md: 'h-(--city-control-md) gap-2 px-3',
+  lg: 'h-(--city-control-lg) gap-2 px-4',
 };
 
 const buttonVariantClasses: Record<ButtonVariant, string> = {
@@ -58,8 +60,10 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
       data-city-size={size}
       className={(state) =>
         cn(
-          'city-button rounded-city-sm focus-visible:ring-city-ring focus-visible:ring-offset-city-background relative inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+          atomicRectShapeClasses.control,
+          'city-button focus-visible:ring-city-ring focus-visible:ring-offset-city-background relative inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
           buttonSizeClasses[size],
+          atomicControlTextClasses[size],
           iconOnly && iconOnlySizeClasses[size],
           buttonVariantClasses[variant],
           resolveClassName(className, state),

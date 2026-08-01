@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import { Check, Minus } from 'lucide-react';
 
+import { atomicRectShapeClasses } from '../../lib/atomic-shape';
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
@@ -67,7 +68,8 @@ const CheckboxRoot = React.forwardRef<HTMLElement, CheckboxProps>(function Check
       ref={ref}
       className={(state) =>
         cn(
-          'group rounded-city-xs border-city-input bg-city-background text-city-primary-foreground focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:border-city-primary data-[checked]:bg-city-primary data-[indeterminate]:border-city-primary data-[indeterminate]:bg-city-primary grid shrink-0 place-items-center border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
+          atomicRectShapeClasses.compact,
+          'group border-city-input bg-city-background text-city-primary-foreground focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:border-city-primary data-[checked]:bg-city-primary data-[indeterminate]:border-city-primary data-[indeterminate]:bg-city-primary grid shrink-0 place-items-center border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
           checkboxSizeClasses[size],
           resolveClassName(className, state),
         )

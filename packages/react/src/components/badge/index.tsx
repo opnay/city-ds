@@ -3,6 +3,8 @@
 import * as React from 'react';
 import { useRender } from '@base-ui/react/use-render';
 
+import { atomicRectShapeClasses, atomicRoundShapeClass } from '../../lib/atomic-shape';
+import { compactStatusTextClasses } from '../../lib/atomic-typography';
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { FeedbackTone } from '../../types';
@@ -85,15 +87,21 @@ const badgeDotToneClasses: Record<FeedbackTone, string> = {
 };
 
 const badgeSizeClasses: Record<BadgeSize, string> = {
-  sm: 'h-4 px-1 text-[0.625rem]',
-  md: 'h-5 px-1.5 text-xs',
-  lg: 'h-6 px-2 text-sm',
+  sm: 'h-5 px-1',
+  md: 'h-6 px-1.5',
+  lg: 'h-7 px-2',
+};
+
+const badgeLabelShapeClasses: Record<BadgeSize, string> = {
+  sm: atomicRectShapeClasses.compact,
+  md: atomicRectShapeClasses.control,
+  lg: atomicRectShapeClasses.control,
 };
 
 const badgeCountSizeClasses: Record<BadgeSize, string> = {
-  sm: 'min-w-4',
-  md: 'min-w-5',
-  lg: 'min-w-6',
+  sm: 'min-w-5',
+  md: 'min-w-6',
+  lg: 'min-w-7',
 };
 
 const badgeDotSizeClasses: Record<BadgeSize, string> = {
@@ -145,15 +153,17 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badg
       'data-tone': tone,
       'data-variant': variant,
       className: cn(
-        'inline-flex shrink-0 items-center font-medium leading-none',
-        mode === 'label' && 'rounded-city-xs',
+        'inline-flex shrink-0 items-center font-medium',
+        mode === 'label' && badgeLabelShapeClasses[size],
         mode !== 'dot' && badgeSizeClasses[size],
+        mode !== 'dot' && compactStatusTextClasses[size],
         mode === 'count' &&
           cn(
-            'justify-center rounded-city-full font-semibold tabular-nums',
+            atomicRoundShapeClass,
+            'justify-center font-semibold tabular-nums',
             badgeCountSizeClasses[size],
           ),
-        mode === 'dot' && cn('rounded-city-full p-0', badgeDotSizeClasses[size]),
+        mode === 'dot' && cn(atomicRoundShapeClass, 'p-0', badgeDotSizeClasses[size]),
         mode === 'dot'
           ? usesLegacyVariant
             ? badgeVariantClasses[variant]

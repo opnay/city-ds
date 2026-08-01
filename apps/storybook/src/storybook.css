@@ -83,7 +83,7 @@ body,
   background: transparent !important;
 }
 
-.sbdocs-content :where(hr, table, th, td) {
+.sbdocs-content hr {
   border-color: var(--city-color-border) !important;
 }
 

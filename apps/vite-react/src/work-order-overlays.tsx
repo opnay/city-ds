@@ -111,15 +111,13 @@ export function CreateWorkOrderDialog({ onCreate }: CreateWorkOrderDialogProps) 
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Backdrop />
-        <Dialog.Viewport>
-          <Dialog.Popup scroll="body" size="lg">
+        <Dialog.Viewport className="relay-work-order-viewport">
+          <Dialog.Popup className="relay-work-order-dialog" scroll="body" size="lg">
             <form className="relay-dialog-form" noValidate onSubmit={handleSubmit}>
-              <Dialog.Header>
+              <Dialog.Header className="relay-work-order-header">
                 <div>
                   <Dialog.Title>새 작업 요청</Dialog.Title>
-                  <Dialog.Description>
-                    현장팀이 바로 판단할 수 있도록 위치와 대응 기준을 입력하십시오.
-                  </Dialog.Description>
+                  <Dialog.Description>작업 위치와 대응 기준을 입력합니다.</Dialog.Description>
                 </div>
                 <Dialog.Close
                   aria-label="작업 생성 닫기"
@@ -129,167 +127,209 @@ export function CreateWorkOrderDialog({ onCreate }: CreateWorkOrderDialogProps) 
                 </Dialog.Close>
               </Dialog.Header>
 
-              <Dialog.Body>
-                <Fieldset.Root appearance="plain">
+              <Dialog.Body className="relay-work-order-body">
+                <Fieldset.Root appearance="plain" className="relay-work-order-fieldset">
                   <Fieldset.Legend>작업 정보</Fieldset.Legend>
-                  <Fieldset.Description>
-                    필수 항목은 작업 목록과 상세 화면에 표시됩니다.
-                  </Fieldset.Description>
-                  <Fieldset.Content className="relay-form-grid">
-                    <Field.Root className="relay-form-span-2" invalid={submitted && !title.trim()}>
-                      <Field.Label>작업 제목</Field.Label>
-                      <Input
-                        aria-label="작업 제목"
-                        aria-required="true"
-                        onValueChange={setTitle}
-                        placeholder="예: 보행 신호 제어함 전원 점검"
-                        ref={titleInputRef}
-                        value={title}
-                      />
-                      <Field.Error match={submitted && !title.trim()}>
-                        작업 제목을 입력하십시오.
-                      </Field.Error>
-                    </Field.Root>
-
-                    <Field.Root invalid={submitted && !location}>
-                      <Combobox.Root
-                        items={[...LOCATIONS]}
-                        onValueChange={(value) => setLocation(value ?? '')}
-                        value={location || null}
+                  <Fieldset.Description>별표(*)로 표시된 항목은 필수입니다.</Fieldset.Description>
+                  <Fieldset.Content className="relay-work-order-sections">
+                    <div className="relay-form-grid">
+                      <Field.Root
+                        className="relay-form-span-2"
+                        invalid={submitted && !title.trim()}
                       >
-                        <Field.Label>시설 위치</Field.Label>
-                        <Combobox.InputGroup>
-                          <Combobox.Input
-                            aria-required="true"
-                            placeholder="시설을 검색하십시오"
-                            ref={locationInputRef}
-                          />
-                          <Combobox.Clear />
-                          <Combobox.Trigger />
-                        </Combobox.InputGroup>
-                        <Combobox.Portal>
-                          <Combobox.Positioner sideOffset={6}>
-                            <Combobox.Popup>
-                              <Combobox.Empty>일치하는 시설이 없습니다.</Combobox.Empty>
-                              <Combobox.List>
-                                {(item: string) => (
-                                  <Combobox.Item key={item} value={item}>
-                                    <Combobox.ItemIndicator />
-                                    {item}
-                                  </Combobox.Item>
-                                )}
-                              </Combobox.List>
-                            </Combobox.Popup>
-                          </Combobox.Positioner>
-                        </Combobox.Portal>
-                        <Field.Error match={submitted && !location}>
-                          시설 위치를 선택하십시오.
+                        <Field.Label>
+                          작업 제목{' '}
+                          <span aria-hidden="true" className="relay-required-marker">
+                            *
+                          </span>
+                        </Field.Label>
+                        <Input
+                          aria-label="작업 제목"
+                          aria-required="true"
+                          onValueChange={setTitle}
+                          placeholder="예: 보행 신호 제어함 전원 점검"
+                          ref={titleInputRef}
+                          value={title}
+                        />
+                        <Field.Error match={submitted && !title.trim()}>
+                          작업 제목을 입력하십시오.
                         </Field.Error>
-                      </Combobox.Root>
-                    </Field.Root>
+                      </Field.Root>
 
-                    <Field.Root>
-                      <Select.Root
-                        items={WORK_ORDER_DISTRICT_ITEMS}
-                        onValueChange={(value) => value && setDistrict(value)}
-                        value={district}
-                      >
-                        <Select.Label>담당 권역</Select.Label>
-                        <Select.Trigger>
-                          <Select.Value />
-                          <Select.Icon />
-                        </Select.Trigger>
-                        <Select.Portal>
-                          <Select.Positioner sideOffset={6}>
-                            <Select.Popup>
-                              <Select.List>
-                                {Object.keys(WORK_ORDER_DISTRICT_ITEMS).map((item) => (
-                                  <Select.Item key={item} value={item}>
-                                    <Select.ItemIndicator />
-                                    <Select.ItemText>{item}</Select.ItemText>
-                                  </Select.Item>
-                                ))}
-                              </Select.List>
-                            </Select.Popup>
-                          </Select.Positioner>
-                        </Select.Portal>
-                      </Select.Root>
-                    </Field.Root>
+                      <Field.Root invalid={submitted && !location}>
+                        <Combobox.Root
+                          items={[...LOCATIONS]}
+                          onValueChange={(value) => setLocation(value ?? '')}
+                          value={location || null}
+                        >
+                          <Field.Label>
+                            시설 위치{' '}
+                            <span aria-hidden="true" className="relay-required-marker">
+                              *
+                            </span>
+                          </Field.Label>
+                          <Combobox.InputGroup>
+                            <Combobox.Input
+                              aria-required="true"
+                              placeholder="시설을 검색하십시오"
+                              ref={locationInputRef}
+                            />
+                            <Combobox.Clear />
+                            <Combobox.Trigger />
+                          </Combobox.InputGroup>
+                          <Combobox.Portal>
+                            <Combobox.Positioner sideOffset={6}>
+                              <Combobox.Popup>
+                                <Combobox.Empty>일치하는 시설이 없습니다.</Combobox.Empty>
+                                <Combobox.List>
+                                  {(item: string) => (
+                                    <Combobox.Item key={item} value={item}>
+                                      <Combobox.ItemIndicator />
+                                      {item}
+                                    </Combobox.Item>
+                                  )}
+                                </Combobox.List>
+                              </Combobox.Popup>
+                            </Combobox.Positioner>
+                          </Combobox.Portal>
+                          <Field.Error match={submitted && !location}>
+                            시설 위치를 선택하십시오.
+                          </Field.Error>
+                        </Combobox.Root>
+                      </Field.Root>
 
-                    <Field.Root className="relay-form-span-2">
-                      <Field.Label>우선순위</Field.Label>
-                      <RadioGroup
-                        aria-label="우선순위"
-                        onValueChange={setPriority}
-                        value={priority}
-                      >
-                        <RadioGroup.Item value="긴급">긴급</RadioGroup.Item>
-                        <RadioGroup.Item value="높음">높음</RadioGroup.Item>
-                        <RadioGroup.Item value="보통">보통</RadioGroup.Item>
-                      </RadioGroup>
-                      <Field.Description>
-                        긴급 작업은 SLA 위험 목록에 우선 표시됩니다.
-                      </Field.Description>
-                    </Field.Root>
+                      <Field.Root>
+                        <Select.Root
+                          items={WORK_ORDER_DISTRICT_ITEMS}
+                          onValueChange={(value) => value && setDistrict(value)}
+                          value={district}
+                        >
+                          <Select.Label>담당 권역</Select.Label>
+                          <Select.Trigger>
+                            <Select.Value />
+                            <Select.Icon />
+                          </Select.Trigger>
+                          <Select.Portal>
+                            <Select.Positioner sideOffset={6}>
+                              <Select.Popup>
+                                <Select.List>
+                                  {Object.keys(WORK_ORDER_DISTRICT_ITEMS).map((item) => (
+                                    <Select.Item key={item} value={item}>
+                                      <Select.ItemIndicator />
+                                      <Select.ItemText>{item}</Select.ItemText>
+                                    </Select.Item>
+                                  ))}
+                                </Select.List>
+                              </Select.Popup>
+                            </Select.Positioner>
+                          </Select.Portal>
+                        </Select.Root>
+                      </Field.Root>
+                    </div>
 
-                    <Field.Root>
-                      <Field.Label>예상 대응시간</Field.Label>
-                      <NumberField.Root
-                        max={240}
-                        min={15}
-                        onValueChange={setResponseMinutes}
-                        step={15}
-                        value={responseMinutes}
+                    <section
+                      className="relay-work-order-section"
+                      aria-labelledby="response-criteria-heading"
+                    >
+                      <h3
+                        className="relay-work-order-section-heading"
+                        id="response-criteria-heading"
                       >
-                        <NumberField.Group>
-                          <NumberField.Input aria-label="예상 대응시간" />
-                          <NumberField.Decrement aria-label="예상 대응시간 15분 줄이기" />
-                          <NumberField.Increment aria-label="예상 대응시간 15분 늘리기" />
-                        </NumberField.Group>
-                      </NumberField.Root>
-                      <Field.Description>15분 단위, 최대 240분</Field.Description>
-                    </Field.Root>
+                        대응 기준
+                      </h3>
+                      <div className="relay-priority-response-grid">
+                        <Field.Root>
+                          <Field.Label>우선순위</Field.Label>
+                          <RadioGroup
+                            aria-label="우선순위"
+                            className="relay-priority-options"
+                            onValueChange={setPriority}
+                            value={priority}
+                          >
+                            <RadioGroup.Item value="긴급">긴급</RadioGroup.Item>
+                            <RadioGroup.Item value="높음">높음</RadioGroup.Item>
+                            <RadioGroup.Item value="보통">보통</RadioGroup.Item>
+                          </RadioGroup>
+                          <Field.Description>
+                            긴급 작업은 SLA 위험 목록에 우선 표시됩니다.
+                          </Field.Description>
+                        </Field.Root>
 
-                    <Field.Root>
-                      <Field.Label id="channels-label">알림 채널</Field.Label>
-                      <CheckboxGroup
-                        aria-labelledby="channels-label"
-                        onValueChange={(value) => setChannels(value as NotificationChannel[])}
-                        value={channels}
-                      >
-                        <CheckboxGroup.Item value="push">앱 푸시</CheckboxGroup.Item>
-                        <CheckboxGroup.Item value="email">이메일</CheckboxGroup.Item>
-                        <CheckboxGroup.Item value="sms">문자</CheckboxGroup.Item>
-                      </CheckboxGroup>
-                    </Field.Root>
+                        <Field.Root className="relay-response-field">
+                          <Field.Label>예상 대응시간</Field.Label>
+                          <NumberField.Root
+                            max={240}
+                            min={15}
+                            onValueChange={setResponseMinutes}
+                            step={15}
+                            value={responseMinutes}
+                          >
+                            <NumberField.Group className="relay-response-control">
+                              <NumberField.Input aria-label="예상 대응시간" />
+                              <NumberField.Decrement aria-label="예상 대응시간 15분 줄이기" />
+                              <NumberField.Increment aria-label="예상 대응시간 15분 늘리기" />
+                            </NumberField.Group>
+                          </NumberField.Root>
+                          <Field.Description>15분 단위, 최대 240분</Field.Description>
+                        </Field.Root>
+                      </div>
+                    </section>
 
-                    <Field.Root className="relay-form-span-2">
-                      <Field.Label id="files-label">현장 첨부</Field.Label>
-                      <FileUpload.Root
-                        accept=".jpg,.jpeg,.png,.pdf"
-                        aria-labelledby="files-label"
-                        files={files}
-                        labels={{
-                          remove: (file) => (file ? `${file.name} 제거` : '파일 제거'),
-                        }}
-                        multiple
-                        onFilesChange={setFiles}
+                    <section
+                      className="relay-work-order-section"
+                      aria-labelledby="notification-attachment-heading"
+                    >
+                      <h3
+                        className="relay-work-order-section-heading"
+                        id="notification-attachment-heading"
                       >
-                        <FileUpload.Trigger>
-                          <FileText aria-hidden="true" size={16} />
-                          파일 선택
-                        </FileUpload.Trigger>
-                        <FileUpload.List aria-label="선택된 현장 첨부" />
-                      </FileUpload.Root>
-                      <Field.Description>
-                        데모에서는 파일을 네트워크로 전송하지 않습니다.
-                      </Field.Description>
-                    </Field.Root>
+                        알림 및 첨부
+                      </h3>
+                      <div className="relay-notification-attachment-grid">
+                        <Field.Root>
+                          <Field.Label id="channels-label">알림 채널</Field.Label>
+                          <CheckboxGroup
+                            aria-labelledby="channels-label"
+                            className="relay-notification-options"
+                            onValueChange={(value) => setChannels(value as NotificationChannel[])}
+                            value={channels}
+                          >
+                            <CheckboxGroup.Item value="push">앱 푸시</CheckboxGroup.Item>
+                            <CheckboxGroup.Item value="email">이메일</CheckboxGroup.Item>
+                            <CheckboxGroup.Item value="sms">문자</CheckboxGroup.Item>
+                          </CheckboxGroup>
+                        </Field.Root>
+
+                        <Field.Root>
+                          <Field.Label id="files-label">현장 첨부</Field.Label>
+                          <FileUpload.Root
+                            accept=".jpg,.jpeg,.png,.pdf"
+                            aria-labelledby="files-label"
+                            className="relay-file-upload"
+                            files={files}
+                            labels={{
+                              remove: (file) => (file ? `${file.name} 제거` : '파일 제거'),
+                            }}
+                            multiple
+                            onFilesChange={setFiles}
+                          >
+                            <FileUpload.Trigger>
+                              <FileText aria-hidden="true" size={16} />
+                              파일 선택
+                            </FileUpload.Trigger>
+                            <span className="relay-file-upload-hint">
+                              사진 또는 PDF · 데모 외부로 전송하지 않음
+                            </span>
+                            <FileUpload.List aria-label="선택된 현장 첨부" />
+                          </FileUpload.Root>
+                        </Field.Root>
+                      </div>
+                    </section>
                   </Fieldset.Content>
                 </Fieldset.Root>
               </Dialog.Body>
 
-              <Dialog.Footer>
+              <Dialog.Footer className="relay-work-order-footer">
                 <Dialog.Close render={<Button size="md" variant="secondary" />}>취소</Dialog.Close>
                 <Button size="md" type="submit">
                   작업 생성

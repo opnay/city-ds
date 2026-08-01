@@ -410,7 +410,8 @@ export const FileUploadRemove = React.forwardRef<HTMLElement, FileUploadRemovePr
         aria-label={ariaLabel ?? context.labels.remove(file)}
         className={cn(
           'rounded-city-xs text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:outline-city-ring inline-flex shrink-0 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
-          context.density === 'compact' ? 'h-5 px-1 text-[0.625rem]' : 'h-6 px-1.5 text-xs',
+          'text-xs',
+          context.density === 'compact' ? 'h-5 px-1' : 'h-6 px-1.5',
           className,
         )}
         data-city-density={context.density}

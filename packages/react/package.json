@@ -62,6 +62,10 @@
       "types": "./dist/components/data-table-region/index.d.ts",
       "import": "./dist/components/data-table-region/index.js"
     },
+    "./calendar": {
+      "types": "./dist/components/calendar/index.d.ts",
+      "import": "./dist/components/calendar/index.js"
+    },
     "./density-provider": {
       "types": "./dist/components/density-provider/index.d.ts",
       "import": "./dist/components/density-provider/index.js"
@@ -69,6 +73,14 @@
     "./dialog": {
       "types": "./dist/components/dialog/index.d.ts",
       "import": "./dist/components/dialog/index.js"
+    },
+    "./date-field": {
+      "types": "./dist/components/date-field/index.d.ts",
+      "import": "./dist/components/date-field/index.js"
+    },
+    "./date-picker": {
+      "types": "./dist/components/date-picker/index.d.ts",
+      "import": "./dist/components/date-picker/index.js"
     },
     "./drawer": {
       "types": "./dist/components/drawer/index.d.ts",
@@ -188,6 +200,7 @@
   },
   "dependencies": {
     "@base-ui/react": "catalog:",
+    "@daypicker/react": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "lucide-react": "catalog:",

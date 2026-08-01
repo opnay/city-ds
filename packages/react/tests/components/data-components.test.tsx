@@ -443,7 +443,7 @@ describe('FileUpload', () => {
     expect(trigger).toHaveAttribute('data-city-density', 'compact');
     expect(trigger).toHaveClass('h-(--city-control-sm)', 'text-xs');
     expect(screen.getByText('report.txt').parentElement).toHaveClass('py-1', 'text-xs');
-    expect(remove).toHaveClass('h-5', 'text-[0.625rem]');
+    expect(remove).toHaveClass('h-5', 'text-xs');
   });
 
   it('keeps native input metadata, displays each selected file once, and removes files locally', async () => {

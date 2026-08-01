@@ -76,21 +76,73 @@ describe('form and display controls', () => {
         <Toggle aria-label="Medium toggle" size="md" />
         <Input aria-label="Large input" size="lg" />
         <InputGroup.Root data-testid="small-input-group" size="sm">
-          <Input aria-label="Grouped input" size="sm" />
+          <Input aria-label="Grouped input" />
         </InputGroup.Root>
       </>,
     );
 
     expect(screen.getByRole('button', { name: 'Small button' })).toHaveClass(
       'h-(--city-control-sm)',
+      'text-xs',
     );
     expect(screen.getByRole('button', { name: 'Medium toggle' })).toHaveClass(
       'h-(--city-control-md)',
+      'text-sm',
     );
     expect(screen.getByRole('textbox', { name: 'Large input' })).toHaveClass(
       'h-(--city-control-lg)',
+      'text-sm',
     );
-    expect(screen.getByTestId('small-input-group')).toHaveClass('min-h-(--city-control-sm)');
+    expect(screen.getByTestId('small-input-group')).toHaveClass('h-(--city-control-sm)');
+    expect(screen.getByRole('textbox', { name: 'Grouped input' })).toHaveClass(
+      'h-(--city-control-sm)',
+      'px-2.5',
+      'text-xs',
+    );
+  });
+
+  it('derives atomic radius from final height and preserves semantic round shapes', () => {
+    render(
+      <>
+        <Button size="sm">Rectangular button</Button>
+        <Toggle aria-label="Rectangular toggle" size="lg" />
+        <Input aria-label="Rectangular input" size="md" />
+        <Checkbox aria-label="Compact checkbox" size="lg" />
+        <Badge data-testid="badge-sm" size="sm">
+          Small
+        </Badge>
+        <Badge data-testid="badge-md" size="md">
+          Medium
+        </Badge>
+        <Badge data-testid="badge-lg" size="lg">
+          Large
+        </Badge>
+        <Badge aria-hidden="true" count={3} data-testid="count-badge" />
+        <RadioGroup defaultValue="round">
+          <RadioGroup.Item value="round">Round radio</RadioGroup.Item>
+        </RadioGroup>
+        <Switch aria-label="Round switch" />
+      </>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Rectangular button' })).toHaveClass(
+      'rounded-city-sm',
+    );
+    expect(screen.getByRole('button', { name: 'Rectangular toggle' })).toHaveClass(
+      'rounded-city-sm',
+    );
+    expect(screen.getByRole('textbox', { name: 'Rectangular input' })).toHaveClass(
+      'rounded-city-sm',
+    );
+    expect(screen.getByRole('checkbox', { name: 'Compact checkbox' })).toHaveClass(
+      'rounded-city-xs',
+    );
+    expect(screen.getByTestId('badge-sm')).toHaveClass('h-5', 'rounded-city-xs');
+    expect(screen.getByTestId('badge-md')).toHaveClass('h-6', 'rounded-city-sm');
+    expect(screen.getByTestId('badge-lg')).toHaveClass('h-7', 'rounded-city-sm');
+    expect(screen.getByTestId('count-badge')).toHaveClass('rounded-city-full');
+    expect(screen.getByRole('radio', { name: 'Round radio' })).toHaveClass('rounded-city-full');
+    expect(screen.getByRole('switch', { name: 'Round switch' })).toHaveClass('rounded-city-full');
   });
 
   it('sizes Select and Combobox from their roots and styles invalid fields', () => {
@@ -120,17 +172,47 @@ describe('form and display controls', () => {
     const select = screen.getByRole('combobox', { name: 'District' });
     const combobox = screen.getByRole('combobox', { name: 'Facility' });
     const comboboxGroup = combobox.parentElement;
+    const comboboxTrigger = screen.getByRole('button', { name: 'Facility' });
 
     expect(select).toHaveAttribute('data-city-size', 'sm');
     expect(select).toHaveAttribute('data-invalid');
-    expect(select).toHaveClass('h-(--city-control-sm)', 'data-[invalid]:border-city-destructive');
+    expect(select).toHaveClass(
+      'bg-city-background',
+      'h-(--city-control-sm)',
+      'overflow-hidden',
+      'data-[invalid]:border-city-destructive',
+    );
+    expect(select).not.toHaveClass('bg-city-surface-raised', 'gap-2', 'px-2.5');
+    expect(select).toHaveClass('group');
+    const selectIcon = select.querySelector('[data-city-select-icon]');
+    expect(selectIcon).toHaveAttribute('data-city-size', 'sm');
+    expect(selectIcon).toHaveClass(
+      'h-full',
+      'border-l',
+      'w-(--city-control-sm)',
+      'group-hover:bg-city-accent',
+      'group-active:bg-city-accent-active',
+      'data-[popup-open]:[&>svg]:rotate-180',
+    );
+    expect(selectIcon).not.toHaveAttribute('role', 'button');
+    expect(selectIcon).not.toHaveAttribute('tabindex');
+    expect(selectIcon?.previousElementSibling).toHaveClass('px-2.5');
     expect(combobox).toHaveAttribute('data-city-size', 'lg');
-    expect(combobox).toHaveClass('h-(--city-control-lg)');
+    expect(combobox).toHaveClass('self-stretch', 'px-3.5');
     expect(comboboxGroup).toHaveAttribute('data-city-size', 'lg');
     expect(comboboxGroup).toHaveAttribute('data-invalid');
     expect(comboboxGroup).toHaveClass(
-      'min-h-(--city-control-lg)',
+      'h-(--city-control-lg)',
       'data-[invalid]:border-city-destructive',
+    );
+    expect(comboboxGroup).not.toHaveClass('px-3.5', 'gap-2');
+    expect(comboboxTrigger).toHaveAttribute('data-city-size', 'lg');
+    expect(comboboxTrigger).toHaveClass(
+      'h-full',
+      'self-stretch',
+      'border-l',
+      'w-(--city-control-lg)',
+      'data-[popup-open]:[&>svg]:rotate-180',
     );
   });
 
@@ -154,7 +236,7 @@ describe('form and display controls', () => {
     expect(screen.getByRole('link', { name: 'v1' })).toHaveAttribute('data-city-badge', 'label');
     expect(screen.getByText('7')).toHaveAttribute('data-city-badge', 'count');
     expect(screen.getByText('7')).toHaveAttribute('data-city-size', 'sm');
-    expect(screen.getByText('7')).toHaveClass('h-4', 'min-w-4', 'rounded-city-full');
+    expect(screen.getByText('7')).toHaveClass('h-5', 'min-w-5', 'rounded-city-full');
     expect(screen.getByText('7')).not.toHaveClass('rounded-city-xs');
     expect(screen.getByTestId('status-dot')).toHaveAttribute('data-city-badge', 'dot');
     expect(screen.getByTestId('status-dot')).toHaveAttribute('aria-hidden', 'true');
@@ -166,6 +248,35 @@ describe('form and display controls', () => {
     expect(screen.getByTestId('success-dot')).toHaveAttribute('data-tone', 'success');
     expect(screen.getByTestId('success-dot')).toHaveClass('bg-city-success');
     expect(screen.getByRole('img', { name: 'Healthy' })).toBe(screen.getByTestId('success-dot'));
+  });
+
+  it('adds one vertical spacing step to label and count Badge sizes without resizing dots', () => {
+    render(
+      <>
+        <Badge appearance="solid" data-testid="label-sm" size="sm">
+          Small
+        </Badge>
+        <Badge appearance="subtle" data-testid="label-md" size="md">
+          Medium
+        </Badge>
+        <Badge appearance="outline" data-testid="label-lg" size="lg">
+          Large
+        </Badge>
+        <Badge aria-hidden="true" count={1} data-testid="count-sm" size="sm" />
+        <Badge aria-hidden="true" count={2} data-testid="count-md" size="md" />
+        <Badge aria-hidden="true" count={3} data-testid="count-lg" size="lg" />
+        <Badge data-testid="dot-lg" dot size="lg" />
+      </>,
+    );
+
+    expect(screen.getByTestId('label-sm')).toHaveClass('h-5', 'text-2xs');
+    expect(screen.getByTestId('label-md')).toHaveClass('h-6', 'text-2xs');
+    expect(screen.getByTestId('label-lg')).toHaveClass('h-7', 'text-xs');
+    expect(screen.getByTestId('count-sm')).toHaveClass('h-5', 'min-w-5', 'text-2xs');
+    expect(screen.getByTestId('count-md')).toHaveClass('h-6', 'min-w-6', 'text-2xs');
+    expect(screen.getByTestId('count-lg')).toHaveClass('h-7', 'min-w-7', 'text-xs');
+    expect(screen.getByTestId('dot-lg')).toHaveClass('size-2.5');
+    expect(screen.getByTestId('dot-lg')).not.toHaveClass('h-7');
   });
 
   it('connects Field label, description, error, and Input state', () => {
@@ -294,16 +405,40 @@ describe('form and display controls', () => {
 
   it('renders leading and trailing InputGroup slots around its input', () => {
     render(
-      <InputGroup.Root>
-        <InputGroup.Addon>https://</InputGroup.Addon>
-        <Input aria-label="Domain" />
-        <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
-      </InputGroup.Root>,
+      <>
+        <InputGroup.Root data-testid="affixed-input-group" size="lg">
+          <InputGroup.Addon>https://</InputGroup.Addon>
+          <Input aria-label="Domain" />
+          <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
+        </InputGroup.Root>
+        <InputGroup.Root data-testid="textarea-group" size="lg">
+          <Textarea aria-label="Grouped notes" />
+        </InputGroup.Root>
+      </>,
     );
 
     expect(screen.getByText('https://')).toHaveAttribute('data-city-position', 'leading');
+    expect(screen.getByText('https://')).toHaveAttribute('data-city-size', 'lg');
+    expect(screen.getByText('https://')).toHaveClass('pl-3.5');
+    expect(screen.getByText('https://')).not.toHaveClass('px-2');
     expect(screen.getByText('.dev')).toHaveAttribute('data-city-position', 'trailing');
-    expect(screen.getByRole('textbox', { name: 'Domain' })).toBeVisible();
+    expect(screen.getByText('.dev')).toHaveAttribute('data-city-size', 'lg');
+    expect(screen.getByText('.dev')).toHaveClass('order-last', 'pr-3');
+    expect(screen.getByText('.dev')).not.toHaveClass('px-2');
+    expect(screen.getByTestId('affixed-input-group')).toHaveClass(
+      'gap-1',
+      '[&:has(>[data-city-position=leading])>input]:pl-0',
+      '[&:has(>[data-city-position=trailing])>input]:pr-0',
+    );
+    expect(screen.getByRole('textbox', { name: 'Domain' })).toHaveClass(
+      'h-(--city-control-lg)',
+      'px-3.5',
+      'text-sm',
+    );
+    expect(screen.getByTestId('textarea-group')).toHaveClass(
+      'has-[textarea]:h-auto',
+      'has-[textarea]:min-h-(--city-control-lg)',
+    );
   });
 
   it('supports SearchField typing, clear, Escape, and native form submission', async () => {
@@ -325,7 +460,9 @@ describe('form and display controls', () => {
     const searchButton = screen.getByRole('button', { name: 'Search' });
 
     expect(screen.getByTestId('search-group')).toContainElement(input);
+    expect(screen.getByTestId('search-group')).toHaveClass('h-(--city-control-md)');
     expect(searchButton).toHaveClass('hover:bg-city-accent', 'active:bg-city-accent-active');
+    expect(searchButton).toHaveClass('h-full', 'w-(--city-control-md)');
     expect(input).toHaveAttribute('type', 'search');
     expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
 
@@ -796,8 +933,13 @@ describe('Combobox', () => {
           defaultValue={['Civic Portal', 'Transit Map']}
         >
           <Field.Label>Projects</Field.Label>
-          <Combobox.InputGroup className="flex-col items-stretch">
-            <Combobox.Chips>
+          <Combobox.InputGroup data-testid="multiple-combobox-group">
+            <Combobox.Chips data-testid="multiple-combobox-chips">
+              <Combobox.InputRow data-testid="multiple-combobox-input-row">
+                <Combobox.Input />
+                <Combobox.Clear />
+                <Combobox.Trigger />
+              </Combobox.InputRow>
               <Combobox.Value>
                 {(selectedProjects: string[]) =>
                   selectedProjects.map((project) => (
@@ -809,21 +951,68 @@ describe('Combobox', () => {
                 }
               </Combobox.Value>
             </Combobox.Chips>
-            <div className="flex w-full items-center">
-              <Combobox.Input />
-            </div>
           </Combobox.InputGroup>
+          <Combobox.Portal>
+            <Combobox.Positioner>
+              <Combobox.Popup>
+                <Combobox.List>
+                  {(project: string) => (
+                    <Combobox.Item key={project} value={project}>
+                      {project}
+                    </Combobox.Item>
+                  )}
+                </Combobox.List>
+              </Combobox.Popup>
+            </Combobox.Positioner>
+          </Combobox.Portal>
         </Combobox.Root>
       </Field.Root>,
     );
 
     expect(screen.getByText('Civic Portal')).toBeVisible();
-    expect(screen.getByRole('toolbar')).not.toContainElement(
-      screen.getByRole('combobox', { name: 'Projects' }),
+    const multipleInput = screen.getByRole('combobox', { name: 'Projects' });
+    const group = screen.getByTestId('multiple-combobox-group');
+    const chips = screen.getByTestId('multiple-combobox-chips');
+    const inputRow = screen.getByTestId('multiple-combobox-input-row');
+    const trigger = screen.getByRole('button', { name: 'Projects' });
+    const chipBand = group.querySelector('[data-city-combobox-chip-band]');
+
+    expect(group).toHaveClass('min-h-(--city-control-md)', 'flex-col', 'items-stretch');
+    expect(group).not.toHaveClass('h-(--city-control-md)', 'px-3', 'py-1.5');
+    expect(chips).toHaveAttribute('role', 'toolbar');
+    expect(chips).toContainElement(inputRow);
+    expect(inputRow).toContainElement(multipleInput);
+    expect(inputRow).toHaveClass(
+      'h-[calc(var(--city-control-md)-2px)]',
+      'items-center',
+      'shrink-0',
     );
+    expect(multipleInput).toHaveClass('px-3');
+    expect(multipleInput).not.toHaveClass('min-w-20');
+    expect(screen.getByRole('button', { name: 'Clear all selections' })).toBeVisible();
+    expect(trigger).toHaveClass('h-full', 'border-l', 'w-(--city-control-md)');
+    expect(chipBand).toHaveClass('border-t', 'px-3', 'py-1.5', 'empty:hidden');
+    expect(chipBand).toContainElement(
+      screen.getByRole('button', { name: 'Remove Civic Portal' }).parentElement,
+    );
+
+    await user.type(multipleInput, 'Permit');
+    await user.keyboard('[ArrowDown][Enter]');
+
+    expect(chipBand).toContainElement(
+      screen.getByRole('button', { name: 'Remove Permit Tracker' }).parentElement,
+    );
+    await user.keyboard('[Backspace]');
+    expect(screen.queryByText('Permit Tracker')).not.toBeInTheDocument();
+
     await user.click(screen.getByRole('button', { name: 'Remove Civic Portal' }));
 
     expect(screen.queryByText('Civic Portal')).not.toBeInTheDocument();
     expect(screen.getByText('Transit Map')).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: 'Clear all selections' }));
+
+    expect(chipBand).toBeEmptyDOMElement();
+    expect(chipBand).toHaveClass('empty:hidden');
   });
 });

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
+import { useRender } from '@base-ui/react/use-render';
 import type {
   ComboboxArrowProps as BaseComboboxArrowProps,
   ComboboxBackdropProps as BaseComboboxBackdropProps,
@@ -30,6 +31,13 @@ import type {
 } from '@base-ui/react/combobox';
 import { Check, ChevronDown, X } from 'lucide-react';
 import { cn } from '../../lib/cn';
+import {
+  outlineFrameBaseClasses,
+  outlineFrameHeightClasses,
+  outlineFrameMinHeightClasses,
+  outlineFrameSegmentWidthClasses,
+  outlineFrameTextClasses,
+} from '../../lib/outline-frame';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
 
@@ -47,13 +55,27 @@ export type ComboboxLabelProps = BaseComboboxLabelProps;
 export type ComboboxInputGroupProps = Omit<BaseComboboxInputGroupProps, 'size'> & {
   size?: ControlSize;
 };
+export type ComboboxInputRowState = {
+  size: ControlSize;
+};
+export interface ComboboxInputRowProps extends Omit<
+  useRender.ComponentProps<'div', ComboboxInputRowState>,
+  'className'
+> {
+  className?: StateClassName<ComboboxInputRowState>;
+  size?: ControlSize;
+}
 export type ComboboxInputProps = Omit<BaseComboboxInputProps, 'size'> & {
   size?: ControlSize;
 };
-export type ComboboxTriggerProps = BaseComboboxTriggerProps;
+export type ComboboxTriggerProps = Omit<BaseComboboxTriggerProps, 'size'> & {
+  size?: ControlSize;
+};
 export type ComboboxValueProps = BaseComboboxValueProps;
 export type ComboboxIconProps = BaseComboboxIconProps;
-export type ComboboxClearProps = BaseComboboxClearProps;
+export type ComboboxClearProps = Omit<BaseComboboxClearProps, 'size'> & {
+  size?: ControlSize;
+};
 export type ComboboxPortalProps = BaseComboboxPortalProps;
 export type ComboboxBackdropProps = BaseComboboxBackdropProps;
 export type ComboboxPositionerProps = BaseComboboxPositionerProps;
@@ -71,28 +93,53 @@ export type ComboboxChipProps = BaseComboboxChipProps;
 export type ComboboxChipRemoveProps = BaseComboboxChipRemoveProps;
 export type ComboboxCollectionProps = BaseComboboxCollectionProps;
 
-const ComboboxSizeContext = React.createContext<ControlSize>('md');
-
-const comboboxGroupSizeClasses: Record<ControlSize, string> = {
-  sm: 'min-h-(--city-control-sm) px-2.5 text-xs',
-  md: 'min-h-(--city-control-md) px-3 text-sm',
-  lg: 'min-h-(--city-control-lg) px-3.5 text-sm',
+type ComboboxLayoutContextValue = {
+  expandable: boolean;
+  size: ControlSize;
 };
 
-const comboboxInputSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-(--city-control-sm)',
-  md: 'h-(--city-control-md)',
-  lg: 'h-(--city-control-lg)',
+const ComboboxLayoutContext = React.createContext<ComboboxLayoutContextValue>({
+  expandable: false,
+  size: 'md',
+});
+
+const comboboxPaddingClasses: Record<ControlSize, string> = {
+  sm: 'px-2.5',
+  md: 'px-3',
+  lg: 'px-3.5',
+};
+
+const comboboxInputRowHeightClasses: Record<ControlSize, string> = {
+  sm: 'h-[calc(var(--city-control-sm)-2px)]',
+  md: 'h-[calc(var(--city-control-md)-2px)]',
+  lg: 'h-[calc(var(--city-control-lg)-2px)]',
+};
+
+const comboboxChipBandPaddingClasses: Record<ControlSize, string> = {
+  sm: 'px-2.5 py-1',
+  md: 'px-3 py-1.5',
+  lg: 'px-3.5 py-2',
+};
+
+const comboboxAuxiliaryActionSizeClasses: Record<ControlSize, string> = {
+  sm: 'size-7',
+  md: 'size-8',
+  lg: 'size-9',
 };
 
 export function ComboboxRoot<Value, Multiple extends boolean | undefined = false>({
   size = 'md',
   ...props
 }: ComboboxRootProps<Value, Multiple>): React.JSX.Element {
+  const context: ComboboxLayoutContextValue = {
+    expandable: props.multiple === true,
+    size,
+  };
+
   return (
-    <ComboboxSizeContext.Provider value={size}>
+    <ComboboxLayoutContext.Provider value={context}>
       <BaseCombobox.Root {...props} />
-    </ComboboxSizeContext.Provider>
+    </ComboboxLayoutContext.Provider>
   );
 }
 
@@ -114,8 +161,8 @@ export const ComboboxLabel = React.forwardRef<HTMLDivElement, ComboboxLabelProps
 
 export const ComboboxInputGroup = React.forwardRef<HTMLDivElement, ComboboxInputGroupProps>(
   ({ className, size: sizeProp, ...props }, ref) => {
-    const rootSize = React.useContext(ComboboxSizeContext);
-    const size = sizeProp ?? rootSize;
+    const layout = React.useContext(ComboboxLayoutContext);
+    const size = sizeProp ?? layout.size;
 
     return (
       <BaseCombobox.InputGroup
@@ -125,8 +172,13 @@ export const ComboboxInputGroup = React.forwardRef<HTMLDivElement, ComboboxInput
         className={classes(
           className,
           cn(
-            'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground focus-within:ring-city-ring data-[invalid]:border-city-destructive data-[invalid]:focus-within:ring-city-destructive/30 flex w-full items-center gap-2 border transition-colors focus-within:ring-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-            comboboxGroupSizeClasses[size],
+            outlineFrameBaseClasses,
+            layout.expandable
+              ? outlineFrameMinHeightClasses[size]
+              : outlineFrameHeightClasses[size],
+            outlineFrameTextClasses[size],
+            layout.expandable && 'flex-col items-stretch',
+            'data-[disabled]:pointer-events-none',
           ),
         )}
       />
@@ -134,10 +186,37 @@ export const ComboboxInputGroup = React.forwardRef<HTMLDivElement, ComboboxInput
   },
 );
 
+export const ComboboxInputRow = React.forwardRef<HTMLDivElement, ComboboxInputRowProps>(
+  ({ className, render, size: sizeProp, ...props }, ref) => {
+    const layout = React.useContext(ComboboxLayoutContext);
+    const size = sizeProp ?? layout.size;
+    const state: ComboboxInputRowState = { size };
+
+    return useRender({
+      defaultTagName: 'div',
+      ref,
+      render,
+      state,
+      props: {
+        ...props,
+        'data-city-combobox-input-row': '',
+        'data-city-size': size,
+        className: cn(
+          comboboxInputRowHeightClasses[size],
+          'flex w-full min-w-0 shrink-0 items-center',
+          resolveClassName(className, state),
+        ),
+      },
+    });
+  },
+);
+
+ComboboxInputRow.displayName = 'Combobox.InputRow';
+
 export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputProps>(
   ({ className, size: sizeProp, ...props }, ref) => {
-    const rootSize = React.useContext(ComboboxSizeContext);
-    const size = sizeProp ?? rootSize;
+    const layout = React.useContext(ComboboxLayoutContext);
+    const size = sizeProp ?? layout.size;
 
     return (
       <BaseCombobox.Input
@@ -147,8 +226,8 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
         className={classes(
           className,
           cn(
-            'placeholder:text-city-muted-foreground min-w-0 flex-1 bg-transparent outline-none disabled:cursor-not-allowed',
-            comboboxInputSizeClasses[size],
+            'placeholder:text-city-muted-foreground min-w-0 flex-1 self-stretch bg-transparent outline-none disabled:cursor-not-allowed',
+            comboboxPaddingClasses[size],
           ),
         )}
       />
@@ -157,18 +236,28 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
 );
 
 export const ComboboxTrigger = React.forwardRef<HTMLButtonElement, ComboboxTriggerProps>(
-  ({ className, children, ...props }, ref) => (
-    <BaseCombobox.Trigger
-      {...props}
-      ref={ref}
-      className={classes(
-        className,
-        'text-city-muted-foreground hover:text-city-foreground rounded-city-xs flex shrink-0 items-center justify-center transition-[color,transform] outline-none disabled:pointer-events-none data-[open]:rotate-180',
-      )}
-    >
-      {children ?? <ChevronDown aria-hidden="true" size={16} strokeWidth={1.8} />}
-    </BaseCombobox.Trigger>
-  ),
+  ({ className, children, size: sizeProp, ...props }, ref) => {
+    const layout = React.useContext(ComboboxLayoutContext);
+    const size = sizeProp ?? layout.size;
+
+    return (
+      <BaseCombobox.Trigger
+        {...props}
+        ref={ref}
+        data-city-size={size}
+        className={classes(
+          className,
+          cn(
+            'text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring/30 z-0 flex shrink-0 items-center justify-center transition-colors outline-none focus-visible:z-10 focus-visible:ring-2 disabled:pointer-events-none [&>svg]:transition-transform data-[popup-open]:[&>svg]:rotate-180',
+            'border-city-border h-full self-stretch rounded-none border-l',
+            outlineFrameSegmentWidthClasses[size],
+          ),
+        )}
+      >
+        {children ?? <ChevronDown aria-hidden="true" size={16} strokeWidth={1.8} />}
+      </BaseCombobox.Trigger>
+    );
+  },
 );
 
 export const ComboboxIcon = React.forwardRef<HTMLSpanElement, ComboboxIconProps>(
@@ -184,19 +273,28 @@ export const ComboboxIcon = React.forwardRef<HTMLSpanElement, ComboboxIconProps>
 );
 
 export const ComboboxClear = React.forwardRef<HTMLButtonElement, ComboboxClearProps>(
-  ({ className, children, 'aria-label': ariaLabel = 'Clear selection', ...props }, ref) => (
-    <BaseCombobox.Clear
-      {...props}
-      ref={ref}
-      aria-label={ariaLabel}
-      className={classes(
-        className,
-        'text-city-muted-foreground hover:text-city-foreground rounded-city-xs hidden shrink-0 items-center justify-center transition-colors outline-none disabled:pointer-events-none data-[visible]:flex',
-      )}
-    >
-      {children ?? <X aria-hidden="true" size={16} strokeWidth={1.8} />}
-    </BaseCombobox.Clear>
-  ),
+  ({ className, children, size: sizeProp, 'aria-label': ariaLabel, ...props }, ref) => {
+    const layout = React.useContext(ComboboxLayoutContext);
+    const size = sizeProp ?? layout.size;
+
+    return (
+      <BaseCombobox.Clear
+        {...props}
+        ref={ref}
+        aria-label={ariaLabel ?? (layout.expandable ? 'Clear all selections' : 'Clear selection')}
+        data-city-size={size}
+        className={classes(
+          className,
+          cn(
+            'text-city-muted-foreground hover:bg-city-accent hover:text-city-foreground active:bg-city-accent-active focus-visible:ring-city-ring/30 rounded-city-xs relative hidden shrink-0 items-center justify-center transition-colors outline-none focus-visible:z-10 focus-visible:ring-2 disabled:pointer-events-none data-[visible]:flex',
+            comboboxAuxiliaryActionSizeClasses[size],
+          ),
+        )}
+      >
+        {children ?? <X aria-hidden="true" size={16} strokeWidth={1.8} />}
+      </BaseCombobox.Clear>
+    );
+  },
 );
 
 export const ComboboxBackdrop = React.forwardRef<HTMLDivElement, ComboboxBackdropProps>(
@@ -288,13 +386,35 @@ export const ComboboxStatus = React.forwardRef<HTMLDivElement, ComboboxStatusPro
   ),
 );
 export const ComboboxChips = React.forwardRef<HTMLDivElement, ComboboxChipsProps>(
-  ({ className, ...props }, ref) => (
-    <BaseCombobox.Chips
-      {...props}
-      ref={ref}
-      className={classes(className, 'flex w-full flex-wrap items-center gap-1 empty:hidden')}
-    />
-  ),
+  ({ className, children, ...props }, ref) => {
+    const layout = React.useContext(ComboboxLayoutContext);
+    const childArray = React.Children.toArray(children);
+    const inputRows = childArray.filter(
+      (child) => React.isValidElement(child) && child.type === ComboboxInputRow,
+    );
+    const chipChildren = childArray.filter(
+      (child) => !React.isValidElement(child) || child.type !== ComboboxInputRow,
+    );
+
+    return (
+      <BaseCombobox.Chips
+        {...props}
+        ref={ref}
+        className={classes(className, 'flex w-full min-w-0 flex-col items-stretch')}
+      >
+        {inputRows}
+        <div
+          data-city-combobox-chip-band=""
+          className={cn(
+            'border-city-border flex min-w-0 flex-wrap items-center gap-1 border-t empty:hidden',
+            comboboxChipBandPaddingClasses[layout.size],
+          )}
+        >
+          {chipChildren}
+        </div>
+      </BaseCombobox.Chips>
+    );
+  },
 );
 export const ComboboxChip = React.forwardRef<HTMLDivElement, ComboboxChipProps>(
   ({ className, ...props }, ref) => (
@@ -340,6 +460,7 @@ export const Combobox = {
   Root: ComboboxRoot,
   Label: ComboboxLabel,
   InputGroup: ComboboxInputGroup,
+  InputRow: ComboboxInputRow,
   Input: ComboboxInput,
   Trigger: ComboboxTrigger,
   Value: ComboboxValue,

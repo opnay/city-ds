@@ -1,0 +1,133 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Badge, Button, Input, Table, Toggle } from '@opnay/city-ds-react';
+import { ComponentSpecimen } from '../docs/component-specimen';
+
+<Meta title="디자인 패턴/Typography/Control Text" />
+
+# Control Text
+
+Control Text는 atom·molecule 안의 텍스트 크기를 **역할 → 컴포넌트 크기** 순서로 결정하는
+Typography 축입니다. 같은 높이라도 상태를 짧게 표시하는 Badge와 사용자가 읽고 조작하는
+Button·Input은 정보 밀도와 가독성 요구가 다르므로 같은 글자 크기를 강제하지 않습니다.
+
+Surface, tone, hover, pressed 같은 시각·상태 축은 텍스트 크기나 굵기를 바꾸지 않습니다.
+
+## 대표 구성
+
+<ComponentSpecimen>
+<div className="my-6 grid gap-6">
+  <section className="grid gap-3">
+    <div>
+      <h2 className="m-0 text-sm font-semibold">Compact Status</h2>
+      <p className="text-city-muted-foreground m-0 text-xs">짧은 비상호작용 상태와 수량</p>
+    </div>
+    <div className="flex flex-wrap items-center gap-3">
+      <Badge appearance="solid" size="sm" tone="success">sm · 운영 중</Badge>
+      <Badge appearance="solid" size="md" tone="success">md · 운영 중</Badge>
+      <Badge appearance="solid" size="lg" tone="success">lg · 운영 중</Badge>
+      <Badge aria-label="알림 12개" appearance="solid" count={12} size="md" tone="info" />
+    </div>
+  </section>
+
+  <section className="grid gap-3">
+    <div>
+      <h2 className="m-0 text-sm font-semibold">Control</h2>
+      <p className="text-city-muted-foreground m-0 text-xs">읽기와 조작이 필요한 단일 행 컨트롤</p>
+    </div>
+    <div className="flex flex-wrap items-center gap-3">
+      <Button size="sm">sm · 저장</Button>
+      <Button size="md">md · 저장</Button>
+      <Button size="lg">lg · 저장</Button>
+      <Toggle size="sm">sm · 고정</Toggle>
+      <Toggle size="md">md · 고정</Toggle>
+      <Toggle size="lg">lg · 고정</Toggle>
+    </div>
+    <div className="grid max-w-xl gap-3 sm:grid-cols-3">
+      <Input aria-label="작은 입력" defaultValue="sm · 프로젝트" size="sm" />
+      <Input aria-label="중간 입력" defaultValue="md · 프로젝트" size="md" />
+      <Input aria-label="큰 입력" defaultValue="lg · 프로젝트" size="lg" />
+    </div>
+  </section>
+</div>
+</ComponentSpecimen>
+
+## 역할별 텍스트 계약
+
+<ComponentSpecimen>
+  <Table.ScrollArea
+    appearance="outline"
+    aria-label="역할별 텍스트 계약 가로 스크롤 영역"
+    className="my-6 max-w-3xl"
+  >
+    <Table.Root aria-label="역할별 텍스트 계약" size="sm">
+      <Table.Header>
+        <Table.Row>
+          <Table.Head>역할</Table.Head>
+          <Table.Head>측정 항목</Table.Head>
+          <Table.Head>
+            <code>sm</code>
+          </Table.Head>
+          <Table.Head>
+            <code>md</code>
+          </Table.Head>
+          <Table.Head>
+            <code>lg</code>
+          </Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Head scope="row">Compact Status</Table.Head>
+          <Table.Cell>외곽 높이</Table.Cell>
+          <Table.Cell>20px</Table.Cell>
+          <Table.Cell>24px</Table.Cell>
+          <Table.Cell>28px</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">Compact Status</Table.Head>
+          <Table.Cell>텍스트</Table.Cell>
+          <Table.Cell>10 / 12px</Table.Cell>
+          <Table.Cell>10 / 12px</Table.Cell>
+          <Table.Cell>12 / 16px</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">Control</Table.Head>
+          <Table.Cell>외곽 높이</Table.Cell>
+          <Table.Cell>32px</Table.Cell>
+          <Table.Cell>36px</Table.Cell>
+          <Table.Cell>40px</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">Control</Table.Head>
+          <Table.Cell>텍스트</Table.Cell>
+          <Table.Cell>12 / 16px</Table.Cell>
+          <Table.Cell>14 / 20px</Table.Cell>
+          <Table.Cell>14 / 20px</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table.Root>
+  </Table.ScrollArea>
+</ComponentSpecimen>
+
+텍스트 값은 `font-size / line-height` 순서입니다. Control의 외곽 높이는 공통
+[Control Size](?path=/docs/디자인-패턴-size-control-size--docs) 계약을 참조합니다.
+
+- Badge의 label은 `medium`, count는 자릿수 인지를 위해 `semibold`를 사용합니다.
+- Button, Toggle, Input과 같은 Control 본문은 `medium` 또는 해당 컴포넌트의 기본 굵기를
+  유지합니다.
+- 10px는 대비가 충분한 짧은 비상호작용 상태·수량·그룹 레이블에만 사용합니다. 사용자가
+  조작하거나 문장으로 읽어야 하는 텍스트는 최소 12px를 사용합니다.
+
+## 적용 순서
+
+1. 텍스트가 상태 표시인지 조작 가능한 Control인지 역할을 먼저 결정합니다.
+2. 역할 안에서 컴포넌트의 `size`에 해당하는 크기와 line-height를 선택합니다.
+3. Surface, tone, interaction state를 적용하되 Typography 값은 유지합니다.
+
+## 검토 기준
+
+1. 같은 역할과 `size`의 텍스트 크기·line-height·굵기가 일치합니까?
+2. Badge가 주변 조작 텍스트보다 시각적으로 먼저 읽히지 않습니까?
+3. 10px 텍스트가 짧은 비상호작용 정보에만 제한됩니까?
+4. Surface나 tone을 바꿨을 때 Typography가 달라지지 않습니까?
+5. 텍스트와 아이콘의 기준선이 컴포넌트 높이 안에서 안정적으로 정렬됩니까?

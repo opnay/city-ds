@@ -8,6 +8,8 @@ import {
 } from '@base-ui/react/toggle';
 
 import { cn } from '../../lib/cn';
+import { atomicRectShapeClasses } from '../../lib/atomic-shape';
+import { atomicControlTextClasses } from '../../lib/atomic-typography';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
 import { BUTTON_VARIANTS, type ButtonVariant } from '../button';
@@ -26,9 +28,9 @@ export interface ToggleProps<Value extends string = string> extends Omit<
 }
 
 const toggleSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-(--city-control-sm) gap-1.5 px-2.5 text-xs',
-  md: 'h-(--city-control-md) gap-2 px-3 text-sm',
-  lg: 'h-(--city-control-lg) gap-2 px-4 text-sm',
+  sm: 'h-(--city-control-sm) gap-1.5 px-2.5',
+  md: 'h-(--city-control-md) gap-2 px-3',
+  lg: 'h-(--city-control-lg) gap-2 px-4',
 };
 
 const toggleVariantClasses: Record<ToggleVariant, string> = {
@@ -54,8 +56,10 @@ export const Toggle = React.forwardRef<HTMLButtonElement, ToggleProps>(function 
       ref={ref}
       className={(state) =>
         cn(
-          'rounded-city-sm focus-visible:ring-city-ring focus-visible:ring-offset-city-background inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+          atomicRectShapeClasses.control,
+          'focus-visible:ring-city-ring focus-visible:ring-offset-city-background inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
           toggleSizeClasses[size],
+          atomicControlTextClasses[size],
           toggleVariantClasses[variant],
           resolveClassName(className, state),
         )

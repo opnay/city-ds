@@ -21,6 +21,7 @@ import {
 } from '@base-ui/react/toggle-group';
 
 import { cn } from '../../lib/cn';
+import { atomicControlTextClasses } from '../../lib/atomic-typography';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize, SurfaceAppearance } from '../../types';
 import type { ButtonVariant } from '../button';
@@ -88,9 +89,9 @@ const toolbarAppearanceClasses: Record<SurfaceAppearance, string> = {
 };
 
 const itemSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-(--city-control-sm) gap-1.5 px-2.5 text-xs',
-  md: 'h-(--city-control-md) gap-2 px-3 text-sm',
-  lg: 'h-(--city-control-lg) gap-2 px-4 text-sm',
+  sm: 'h-(--city-control-sm) gap-1.5 px-2.5',
+  md: 'h-(--city-control-md) gap-2 px-3',
+  lg: 'h-(--city-control-lg) gap-2 px-4',
 };
 
 const itemVariantClasses: Record<ButtonVariant, string> = {
@@ -151,6 +152,7 @@ export const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonPr
           cn(
             'rounded-city-sm focus-visible:ring-city-ring focus-visible:ring-offset-city-surface inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[orientation=vertical]:w-full',
             itemSizeClasses[size],
+            atomicControlTextClasses[size],
             itemVariantClasses[variant],
             resolveClassName(className, state),
           )
@@ -175,6 +177,7 @@ export const ToolbarLink = React.forwardRef<HTMLAnchorElement, ToolbarLinkProps>
           cn(
             'rounded-city-sm focus-visible:ring-city-ring focus-visible:ring-offset-city-surface inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[orientation=vertical]:w-full',
             itemSizeClasses[size],
+            atomicControlTextClasses[size],
             itemVariantClasses[variant],
             resolveClassName(className, state),
           )
@@ -253,6 +256,7 @@ export const ToolbarToggle = React.forwardRef<HTMLButtonElement, ToolbarTogglePr
             'rounded-city-sm focus-visible:ring-city-ring focus-visible:ring-offset-city-surface inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
             orientation === 'vertical' && 'w-full',
             itemSizeClasses[size],
+            atomicControlTextClasses[size],
             itemVariantClasses[variant],
             resolveClassName(className, state),
           )

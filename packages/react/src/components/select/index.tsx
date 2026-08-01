@@ -24,6 +24,13 @@ import type {
 } from '@base-ui/react/select';
 import { ChevronDown, ChevronUp, Check } from 'lucide-react';
 import { cn } from '../../lib/cn';
+import {
+  outlineFrameBaseClasses,
+  outlineFrameHeightClasses,
+  outlineFrameSegmentWidthClasses,
+  outlineFrameTextClasses,
+  outlineFrameValuePaddingClasses,
+} from '../../lib/outline-frame';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
 
@@ -59,12 +66,7 @@ export type SelectScrollDownArrowProps = BaseSelectScrollDownArrowProps;
 export type SelectSeparatorProps = React.ComponentPropsWithoutRef<typeof BaseSelect.Separator>;
 
 const SelectSizeContext = React.createContext<ControlSize>('md');
-
-const selectTriggerSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-(--city-control-sm) px-2.5 text-xs',
-  md: 'h-(--city-control-md) px-3 text-sm',
-  lg: 'h-(--city-control-lg) px-3.5 text-sm',
-};
+const SelectTriggerSizeContext = React.createContext<ControlSize | null>(null);
 
 export function SelectRoot<Value, Multiple extends boolean | undefined = false>({
   size = 'md',
@@ -97,18 +99,22 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerPr
     const size = sizeProp ?? rootSize;
 
     return (
-      <BaseSelect.Trigger
-        {...props}
-        ref={ref}
-        data-city-size={size}
-        className={classes(
-          className,
-          cn(
-            'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring data-[placeholder]:text-city-muted-foreground data-[invalid]:border-city-destructive data-[invalid]:focus-visible:ring-city-destructive/30 flex w-full items-center justify-between gap-2 border transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
-            selectTriggerSizeClasses[size],
-          ),
-        )}
-      />
+      <SelectTriggerSizeContext.Provider value={size}>
+        <BaseSelect.Trigger
+          {...props}
+          ref={ref}
+          data-city-size={size}
+          className={classes(
+            className,
+            cn(
+              outlineFrameBaseClasses,
+              outlineFrameHeightClasses[size],
+              outlineFrameTextClasses[size],
+              'group data-[placeholder]:text-city-muted-foreground p-0 text-left outline-none disabled:pointer-events-none',
+            ),
+          )}
+        />
+      </SelectTriggerSizeContext.Provider>
     );
   },
 );
@@ -116,28 +122,49 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerPr
 SelectTrigger.displayName = 'Select.Trigger';
 
 export const SelectValue = React.forwardRef<HTMLSpanElement, SelectValueProps>(
-  ({ className, ...props }, ref) => (
-    <BaseSelect.Value
-      {...props}
-      ref={ref}
-      className={classes(className, 'min-w-0 flex-1 truncate text-left')}
-    />
-  ),
+  ({ className, ...props }, ref) => {
+    const rootSize = React.useContext(SelectSizeContext);
+    const triggerSize = React.useContext(SelectTriggerSizeContext);
+    const size = triggerSize ?? rootSize;
+
+    return (
+      <BaseSelect.Value
+        {...props}
+        ref={ref}
+        data-city-size={size}
+        className={classes(
+          className,
+          cn('min-w-0 flex-1 truncate text-left', outlineFrameValuePaddingClasses[size]),
+        )}
+      />
+    );
+  },
 );
 
 export const SelectIcon = React.forwardRef<HTMLSpanElement, SelectIconProps>(
-  ({ className, children, ...props }, ref) => (
-    <BaseSelect.Icon
-      {...props}
-      ref={ref}
-      className={classes(
-        className,
-        'text-city-muted-foreground flex shrink-0 transition-transform data-[open]:rotate-180',
-      )}
-    >
-      {children ?? <ChevronDown aria-hidden="true" size={16} strokeWidth={1.8} />}
-    </BaseSelect.Icon>
-  ),
+  ({ className, children, ...props }, ref) => {
+    const rootSize = React.useContext(SelectSizeContext);
+    const triggerSize = React.useContext(SelectTriggerSizeContext);
+    const size = triggerSize ?? rootSize;
+
+    return (
+      <BaseSelect.Icon
+        {...props}
+        ref={ref}
+        data-city-select-icon=""
+        data-city-size={size}
+        className={classes(
+          className,
+          cn(
+            'border-city-border text-city-muted-foreground group-hover:bg-city-accent group-hover:text-city-accent-foreground group-active:bg-city-accent-active flex h-full shrink-0 items-center justify-center self-stretch border-l transition-colors [&>svg]:transition-transform data-[popup-open]:[&>svg]:rotate-180',
+            outlineFrameSegmentWidthClasses[size],
+          ),
+        )}
+      >
+        {children ?? <ChevronDown aria-hidden="true" size={16} strokeWidth={1.8} />}
+      </BaseSelect.Icon>
+    );
+  },
 );
 
 export const SelectBackdrop = React.forwardRef<HTMLDivElement, SelectBackdropProps>(
@@ -151,8 +178,13 @@ export const SelectBackdrop = React.forwardRef<HTMLDivElement, SelectBackdropPro
 );
 
 export const SelectPositioner = React.forwardRef<HTMLDivElement, SelectPositionerProps>(
-  ({ className, ...props }, ref) => (
-    <BaseSelect.Positioner {...props} ref={ref} className={classes(className, 'z-50')} />
+  ({ alignItemWithTrigger = false, className, ...props }, ref) => (
+    <BaseSelect.Positioner
+      {...props}
+      ref={ref}
+      alignItemWithTrigger={alignItemWithTrigger}
+      className={classes(className, 'z-50')}
+    />
   ),
 );
 
@@ -163,7 +195,7 @@ export const SelectPopup = React.forwardRef<HTMLDivElement, SelectPopupProps>(
       ref={ref}
       className={classes(
         className,
-        'rounded-city-md border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup min-w-40 overflow-hidden border p-1 text-sm outline-none',
+        'rounded-city-md border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup min-w-(--anchor-width) overflow-visible border p-1 text-sm outline-none data-[side=bottom]:-mt-px data-[side=bottom]:rounded-t-none data-[side=left]:-mr-px data-[side=left]:rounded-r-none data-[side=right]:-ml-px data-[side=right]:rounded-l-none data-[side=top]:-mb-px data-[side=top]:rounded-b-none',
       )}
     />
   ),
@@ -247,7 +279,7 @@ export const SelectArrow = React.forwardRef<HTMLDivElement, SelectArrowProps>(
       ref={ref}
       className={classes(
         className,
-        'border-city-border bg-city-surface-raised size-2 rotate-45 border-t border-l',
+        'border-city-border bg-city-surface-raised size-2 rotate-45 data-[side=bottom]:-top-1 data-[side=bottom]:border-t data-[side=bottom]:border-l data-[side=left]:-right-1 data-[side=left]:border-t data-[side=left]:border-r data-[side=right]:-left-1 data-[side=right]:border-b data-[side=right]:border-l data-[side=top]:-bottom-1 data-[side=top]:border-r data-[side=top]:border-b',
       )}
     />
   ),

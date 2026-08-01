@@ -1,0 +1,53 @@
+import type { ControlSize } from '../types';
+import { atomicRectShapeClasses } from './atomic-shape';
+import { atomicControlTextClasses } from './atomic-typography';
+import { cn } from './cn';
+
+export const outlineFrameBaseClasses = cn(
+  atomicRectShapeClasses.control,
+  'border-city-input bg-city-background text-city-foreground focus-within:border-city-ring focus-within:ring-city-ring/30 data-[invalid]:border-city-destructive data-[invalid]:focus-within:ring-city-destructive/30 flex w-full items-center overflow-hidden border transition-colors focus-within:ring-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
+);
+
+export const outlineFrameHeightClasses: Record<ControlSize, string> = {
+  sm: 'h-(--city-control-sm)',
+  md: 'h-(--city-control-md)',
+  lg: 'h-(--city-control-lg)',
+};
+
+export const outlineFrameMinHeightClasses: Record<ControlSize, string> = {
+  sm: 'min-h-(--city-control-sm)',
+  md: 'min-h-(--city-control-md)',
+  lg: 'min-h-(--city-control-lg)',
+};
+
+export const outlineFrameTextareaMinHeightClasses: Record<ControlSize, string> = {
+  sm: 'has-[textarea]:min-h-(--city-control-sm)',
+  md: 'has-[textarea]:min-h-(--city-control-md)',
+  lg: 'has-[textarea]:min-h-(--city-control-lg)',
+};
+
+export const outlineFrameTextClasses = atomicControlTextClasses;
+
+export const outlineFrameValuePaddingClasses: Record<ControlSize, string> = {
+  sm: 'px-2.5',
+  md: 'px-3',
+  lg: 'px-3.5',
+};
+
+export const outlineFrameLeadingTextPaddingClasses: Record<ControlSize, string> = {
+  sm: 'pl-2.5',
+  md: 'pl-3',
+  lg: 'pl-3.5',
+};
+
+export const outlineFrameTrailingIconPaddingClasses: Record<ControlSize, string> = {
+  sm: 'pr-2',
+  md: 'pr-2.5',
+  lg: 'pr-3',
+};
+
+export const outlineFrameSegmentWidthClasses: Record<ControlSize, string> = {
+  sm: 'w-(--city-control-sm)',
+  md: 'w-(--city-control-md)',
+  lg: 'w-(--city-control-lg)',
+};

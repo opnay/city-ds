@@ -57,6 +57,25 @@ const ACTIVITY_CATEGORY_ITEMS = Object.fromEntries(
   ACTIVITY_CATEGORIES.map((category) => [category, category]),
 ) as Record<ActivityCategory, string>;
 
+const ASSET_ATTENTION_RANK: Record<AssetStatus, number> = {
+  '운영 중단': 0,
+  '점검 필요': 1,
+  정상: 2,
+};
+
+function compareAssetsByOperationalPriority(left: Asset, right: Asset) {
+  const statusDifference = ASSET_ATTENTION_RANK[left.status] - ASSET_ATTENTION_RANK[right.status];
+  if (statusDifference !== 0) {
+    return statusDifference;
+  }
+
+  return (
+    left.health - right.health ||
+    right.openOrders - left.openOrders ||
+    left.id.localeCompare(right.id)
+  );
+}
+
 export function AssetsPage({ compact }: { compact: boolean }) {
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState<'전체' | AssetStatus>('전체');
@@ -78,7 +97,7 @@ export function AssetsPage({ compact }: { compact: boolean }) {
           .toLocaleLowerCase('ko-KR')
           .includes(normalizedQuery)
       );
-    });
+    }).sort(compareAssetsByOperationalPriority);
   }, [query, status]);
 
   const selectedAsset = INITIAL_ASSETS.find((asset) => asset.id === selectedAssetId) ?? null;
@@ -100,7 +119,7 @@ export function AssetsPage({ compact }: { compact: boolean }) {
         <div className="relay-panel-heading">
           <div>
             <h2 id="asset-list-heading">자산 목록</h2>
-            <p>점검이 필요한 자산을 우선 확인하십시오. {assets.length}개 표시</p>
+            <p>운영 중단·점검 필요 자산을 우선 확인하십시오. {assets.length}개 표시</p>
           </div>
         </div>
 
@@ -211,6 +230,11 @@ export function AssetsPage({ compact }: { compact: boolean }) {
                         <span>
                           <strong>{asset.id}</strong>
                           <small>{asset.name}</small>
+                          <span className="relay-mobile-asset-meta">
+                            <span data-asset-status={asset.status}>{asset.status}</span>
+                            <span aria-hidden="true">·</span>
+                            <span>건강도 {asset.health}%</span>
+                          </span>
                         </span>
                       </Button>
                     </Table.Cell>

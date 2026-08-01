@@ -112,6 +112,7 @@ const preview: Preview = {
         order: [
           '시작하기',
           '기초',
+          '디자인 패턴',
           'Actions',
           'Forms',
           'Navigation',

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Checkbox } from '@city-ds/react';
+import { Checkbox } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Checkbox',
@@ -25,7 +25,7 @@ function CheckboxControl() {
   const [checked, setChecked] = useState(false);
 
   return (
-    <label className="text-city-foreground flex w-fit cursor-pointer items-center gap-2 text-sm">
+    <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-city-foreground">
       <Checkbox
         aria-label="Enable automatic deployments"
         checked={checked}
@@ -42,7 +42,7 @@ export const Default: Story = {
 
 export const Indeterminate: Story = {
   render: () => (
-    <label className="text-city-foreground flex w-fit cursor-pointer items-center gap-2 text-sm">
+    <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-city-foreground">
       <Checkbox aria-label="Select some deployments" indeterminate />
       Select all deployments
     </label>
@@ -61,7 +61,7 @@ export const Sizes: Story = {
 
 export const Disabled: Story = {
   render: () => (
-    <label className="text-city-muted-foreground flex w-fit items-center gap-2 text-sm">
+    <label className="flex w-fit items-center gap-2 text-sm text-city-muted-foreground">
       <Checkbox aria-label="Locked deployment setting" checked disabled />
       Automatic deployments are managed by policy
     </label>

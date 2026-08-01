@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Switch } from '@city-ds/react';
+import { Switch } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Switch',
@@ -24,7 +24,7 @@ function NotificationSwitch() {
   const [checked, setChecked] = useState(true);
 
   return (
-    <label className="text-city-foreground flex w-fit cursor-pointer items-center gap-2 text-sm">
+    <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-city-foreground">
       <Switch
         aria-label="Enable deployment notifications"
         checked={checked}
@@ -51,7 +51,7 @@ export const Sizes: Story = {
 
 export const Disabled: Story = {
   render: () => (
-    <label className="text-city-muted-foreground flex w-fit items-center gap-2 text-sm">
+    <label className="flex w-fit items-center gap-2 text-sm text-city-muted-foreground">
       <Switch aria-label="Locked preview setting" checked disabled />
       Preview environment is locked
     </label>

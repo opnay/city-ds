@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button, EmptyState, type EmptyStateDensity } from '@city-ds/react';
+import { Button, EmptyState, type EmptyStateDensity } from '@opnay/city-ds-react';
 
 function TableIcon() {
   return (

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Field, Input } from '@city-ds/react';
+import { Field, Input } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Field',

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
 import { Settings } from 'lucide-react';
 
-import { Button } from '@city-ds/react';
+import { Button } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Actions/Button',
@@ -52,7 +52,7 @@ export const OnRaisedSurface: Story = {
     },
   },
   render: () => (
-    <div className="border-city-border bg-city-surface-raised rounded-city-md flex flex-wrap items-center gap-2 border p-4">
+    <div className="flex flex-wrap items-center gap-2 rounded-city-md border border-city-border bg-city-surface-raised p-4">
       <Button variant="secondary">Secondary</Button>
       <Button variant="ghost">Ghost</Button>
       <Button variant="outline">Outline</Button>

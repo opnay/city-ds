@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import '@city-ds/react/styles.css';
+import '@opnay/city-ds-react/styles.css';
 
 import './smoke.css';
 

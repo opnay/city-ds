@@ -19,7 +19,7 @@ function createBrowserConfig() {
 
 export default defineConfig({
   optimizeDeps: {
-    include: ['@city-ds/react > @base-ui/react/menu'],
+    include: ['@opnay/city-ds-react > @base-ui/react/menu'],
   },
   test: {
     projects: [

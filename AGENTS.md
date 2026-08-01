@@ -2,7 +2,7 @@
 
 ## 목표
 
-- `@city-ds/react`는 Base UI 기반의 접근성 높은 React 디자인 시스템입니다.
+- `@opnay/city-ds-react`는 Base UI 기반의 접근성 높은 React 디자인 시스템입니다.
 - 시각 언어는 모노크롬 도구형이며 라이트·다크·시스템 테마를 지원합니다.
 - 소비 환경은 React 18·19, Vite, Next.js입니다.
 

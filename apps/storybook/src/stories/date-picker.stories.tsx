@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
 
-import { DatePicker } from '@city-ds/react';
+import { DatePicker } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/DatePicker',
@@ -72,7 +72,7 @@ function ControlledDatePicker() {
   return (
     <div className="grid w-80 gap-3">
       <Picker label="Review date" onValueChange={setValue} value={value} />
-      <output className="text-city-muted-foreground text-xs">
+      <output className="text-xs text-city-muted-foreground">
         Selected: {value?.toLocaleDateString() ?? 'None'}
       </output>
     </div>

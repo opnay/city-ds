@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Input, InputGroup, Textarea } from '@city-ds/react';
+import { Input, InputGroup, Textarea } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Input',
@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: (args) => (
-    <label className="text-city-foreground grid w-80 gap-1.5 text-sm font-medium">
+    <label className="grid w-80 gap-1.5 text-sm font-medium text-city-foreground">
       Search projects
       <Input {...args} aria-label="Search projects" />
     </label>
@@ -47,7 +47,7 @@ export const Sizes: Story = {
 
 export const Group: Story = {
   render: () => (
-    <label className="text-city-foreground grid w-80 gap-1.5 text-sm font-medium">
+    <label className="grid w-80 gap-1.5 text-sm font-medium text-city-foreground">
       Deployment URL
       <InputGroup.Root>
         <InputGroup.Addon>https://</InputGroup.Addon>
@@ -82,7 +82,7 @@ export const GroupSizes: Story = {
 
 export const Multiline: Story = {
   render: () => (
-    <label className="text-city-foreground grid w-80 gap-1.5 text-sm font-medium">
+    <label className="grid w-80 gap-1.5 text-sm font-medium text-city-foreground">
       Release notes
       <Textarea aria-label="Release notes" placeholder="Summarize this release" />
     </label>
@@ -93,10 +93,10 @@ function ControlledInput() {
   const [value, setValue] = useState('city-ds');
 
   return (
-    <label className="text-city-foreground grid w-80 gap-1.5 text-sm font-medium">
+    <label className="grid w-80 gap-1.5 text-sm font-medium text-city-foreground">
       Package name
       <Input aria-label="Package name" onValueChange={setValue} value={value} />
-      <span className="text-city-muted-foreground text-xs font-normal">Current value: {value}</span>
+      <span className="text-xs font-normal text-city-muted-foreground">Current value: {value}</span>
     </label>
   );
 }

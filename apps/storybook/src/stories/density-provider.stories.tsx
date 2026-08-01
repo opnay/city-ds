@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { DensityProvider, FileUpload, Pagination, Tabs } from '@city-ds/react';
+import { DensityProvider, FileUpload, Pagination, Tabs } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Foundations/Density provider',

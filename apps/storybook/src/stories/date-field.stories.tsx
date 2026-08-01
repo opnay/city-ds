@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
 
-import { DateField } from '@city-ds/react';
+import { DateField } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/DateField',
@@ -47,7 +47,7 @@ function ControlledDateField() {
         <DateField.Label>Review date</DateField.Label>
         <DateField.Input />
       </DateField.Root>
-      <output className="text-city-muted-foreground text-xs">
+      <output className="text-xs text-city-muted-foreground">
         Value:{' '}
         {value
           ? `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, '0')}-${String(value.getDate()).padStart(2, '0')}`

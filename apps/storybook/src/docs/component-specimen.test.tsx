@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Badge, Button, Input, Table } from '@city-ds/react';
-import '@city-ds/react/styles.css';
+import { Badge, Button, Input, Table } from '@opnay/city-ds-react';
+import '@opnay/city-ds-react/styles.css';
 import { describe, expect, it } from 'vitest';
 
 import { ComponentSpecimen } from './component-specimen';
@@ -11,7 +11,7 @@ const storybookDocs = import.meta.glob('../stories/*.mdx', {
   query: '?raw',
 });
 
-const cityImportPattern = /import\s*{([\s\S]*?)}\s*from '@city-ds\/react';/;
+const cityImportPattern = /import\s*{([\s\S]*?)}\s*from '@opnay\/city-ds-react';/;
 
 function getImportedComponentNames(source: string) {
   const cityImport = source.match(cityImportPattern)?.[1];

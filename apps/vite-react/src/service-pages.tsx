@@ -15,7 +15,7 @@ import {
   Switch,
   Table,
   ToggleGroup,
-} from '@city-ds/react';
+} from '@opnay/city-ds-react';
 
 import {
   ACTIVITY_CATEGORIES,

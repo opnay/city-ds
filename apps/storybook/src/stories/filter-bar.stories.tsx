@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button, FilterBar, Input, Select, ToggleGroup } from '@city-ds/react';
+import { Button, FilterBar, Input, Select, ToggleGroup } from '@opnay/city-ds-react';
 
 const statusItems = {
   all: 'All statuses',

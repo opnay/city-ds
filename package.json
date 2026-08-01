@@ -3,16 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.8.0",
-  "engines": {
-    "node": ">=24"
-  },
   "scripts": {
     "build": "turbo run build",
     "check": "pnpm format:check && turbo run lint typecheck test build",
     "dev": "turbo run dev",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
     "lint": "turbo run lint",
     "storybook": "pnpm --filter @city-ds/storybook dev",
     "storybook:build": "pnpm --filter @city-ds/storybook build",
@@ -20,15 +16,14 @@
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
-    "@eslint/js": "catalog:",
-    "eslint": "catalog:",
-    "eslint-plugin-react-hooks": "catalog:",
-    "eslint-plugin-storybook": "catalog:",
-    "globals": "catalog:",
-    "prettier": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
     "turbo": "catalog:",
-    "typescript": "catalog:",
-    "typescript-eslint": "catalog:"
-  }
+    "typescript": "catalog:"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@11.8.0"
 }

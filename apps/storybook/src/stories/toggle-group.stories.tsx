@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
 
-import { ToggleGroup } from '@city-ds/react';
+import { ToggleGroup } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Actions/ToggleGroup',

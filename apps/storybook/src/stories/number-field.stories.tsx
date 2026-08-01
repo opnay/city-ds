@@ -1,7 +1,7 @@
 import { useState, type ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Field, NumberField } from '@city-ds/react';
+import { Field, NumberField } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/NumberField',
@@ -95,7 +95,7 @@ function ControlledExample() {
         step={5}
         value={value}
       />
-      <span className="text-city-muted-foreground text-xs">Current value: {value ?? 'empty'}</span>
+      <span className="text-xs text-city-muted-foreground">Current value: {value ?? 'empty'}</span>
     </div>
   );
 }

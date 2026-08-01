@@ -5,13 +5,13 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "eslint app next.config.ts",
+    "lint": "oxlint app next.config.ts",
     "start": "next start",
     "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@city-ds/react": "workspace:*",
+    "@opnay/city-ds-react": "workspace:*",
     "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"

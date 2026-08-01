@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Tooltip } from '@city-ds/react';
+import { Tooltip } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Overlays/Tooltip',

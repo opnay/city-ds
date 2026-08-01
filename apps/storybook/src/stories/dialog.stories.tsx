@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
-import { Button, Dialog, Field, Input } from '@city-ds/react';
+import { Button, Dialog, Field, Input } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Overlays/Dialog',
@@ -95,7 +95,7 @@ function ControlledDialog() {
     <div className="flex flex-col items-center gap-3">
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Trigger render={<Button />}>Invite member</Dialog.Trigger>
-        <span className="text-city-muted-foreground text-sm">
+        <span className="text-sm text-city-muted-foreground">
           Dialog is {open ? 'open' : 'closed'}
         </span>
         <Dialog.Portal>
@@ -141,11 +141,11 @@ function ActivityLogDialog() {
               </div>
             </Dialog.Header>
             <Dialog.Body>
-              <ul className="divide-city-border divide-y">
+              <ul className="divide-y divide-city-border">
                 {Array.from({ length: 12 }, (_, index) => (
                   <li key={index} className="py-3">
                     <p className="text-sm font-medium">Configuration update {12 - index}</p>
-                    <p className="text-city-muted-foreground mt-1 text-xs leading-5">
+                    <p className="mt-1 text-xs leading-5 text-city-muted-foreground">
                       Ari updated project settings on July {26 - index}, 2026.
                     </p>
                   </li>

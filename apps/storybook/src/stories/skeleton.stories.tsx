@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Skeleton, type SkeletonSize, type SkeletonVariant } from '@city-ds/react';
+import { Skeleton, type SkeletonSize, type SkeletonVariant } from '@opnay/city-ds-react';
 import type { ReactNode } from 'react';
 
 interface SkeletonStoryArgs {
@@ -82,7 +82,7 @@ export const Avatar: Story = {
 export const Card: Story = {
   render: () => (
     <LoadingPreview
-      className="border-city-border rounded-city-lg flex w-[min(24rem,calc(100vw-2rem))] flex-col gap-4 border p-4"
+      className="flex w-[min(24rem,calc(100vw-2rem))] flex-col gap-4 rounded-city-lg border border-city-border p-4"
       label="Loading card"
     >
       <Skeleton variant="rectangular" size="lg" />

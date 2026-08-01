@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button, Menu } from '@city-ds/react';
+import { Button, Menu } from '@opnay/city-ds-react';
 import type { ReactNode } from 'react';
 import { expect, fireEvent, userEvent, waitFor, within } from 'storybook/test';
 

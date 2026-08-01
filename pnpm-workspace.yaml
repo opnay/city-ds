@@ -10,7 +10,6 @@ allowBuilds:
 catalog:
   '@base-ui/react': 1.6.0
   '@daypicker/react': 10.0.1
-  '@eslint/js': 10.0.1
   '@storybook/addon-a11y': 10.5.3
   '@storybook/addon-docs': 10.5.3
   '@storybook/addon-vitest': 10.5.3
@@ -28,16 +27,13 @@ catalog:
   '@vitejs/plugin-react': 6.0.4
   class-variance-authority: 0.7.1
   clsx: 2.1.1
-  eslint: 10.7.0
-  eslint-plugin-react-hooks: 7.1.1
-  eslint-plugin-storybook: 10.5.3
-  globals: 17.4.0
   jsdom: 29.1.1
   lucide-react: 1.26.0
   next: 16.2.11
+  oxfmt: 0.61.0
+  oxlint: 1.76.0
+  oxlint-tsgolint: 7.0.2001
   playwright: 1.61.1
-  prettier: 3.9.6
-  prettier-plugin-tailwindcss: 0.8.1
   publint: 0.3.22
   react: 19.2.8
   react-dom: 19.2.8
@@ -46,7 +42,6 @@ catalog:
   tailwindcss: 4.3.3
   turbo: 2.10.6
   typescript: 6.0.3
-  typescript-eslint: 8.65.0
   vite: 8.1.5
   vitest: 4.1.10
 

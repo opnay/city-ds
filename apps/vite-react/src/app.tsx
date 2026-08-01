@@ -35,7 +35,7 @@ import {
   Tooltip,
   type CityTheme,
   type TableSortDirection,
-} from '@city-ds/react';
+} from '@opnay/city-ds-react';
 
 import {
   CREW_CAPACITY,

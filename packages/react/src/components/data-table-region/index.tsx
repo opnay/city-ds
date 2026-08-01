@@ -49,7 +49,7 @@ export const DataTableRegion = React.forwardRef<HTMLDivElement, DataTableRegionP
       >
         {hasVisibleHint ? (
           <p
-            className="border-city-border bg-city-muted text-city-muted-foreground hidden items-center gap-2 border-b px-4 py-2 text-xs max-lg:flex"
+            className="hidden items-center gap-2 border-b border-city-border bg-city-muted px-4 py-2 text-xs text-city-muted-foreground max-lg:flex"
             data-city-data-table-region-hint=""
             id={resolvedHintId}
           >

@@ -7,7 +7,7 @@ import {
   Pagination,
   Table,
   type TableSortDirection,
-} from '@city-ds/react';
+} from '@opnay/city-ds-react';
 
 import { isTerminalStatus, type WorkOrder } from './dashboard-data';
 import { DataTableRegion, WORK_ORDER_STATUS_BADGES } from './relay-ui';

@@ -360,7 +360,7 @@ export const FileUploadItem = React.forwardRef<HTMLLIElement, FileUploadItemProp
       ? (children ?? (
           <>
             <span className="min-w-0 flex-1 truncate">{file.name}</span>
-            <span className="text-city-muted-foreground shrink-0">{formatFileSize(file.size)}</span>
+            <span className="shrink-0 text-city-muted-foreground">{formatFileSize(file.size)}</span>
             <FileUploadRemove index={resolvedIndex} />
           </>
         ))

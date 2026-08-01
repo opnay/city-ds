@@ -17,7 +17,7 @@ import {
   Progress,
   RadioGroup,
   Select,
-} from '@city-ds/react';
+} from '@opnay/city-ds-react';
 
 import {
   CREW_ITEMS,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
-import { AlertDialog, Button } from '@city-ds/react';
+import { AlertDialog, Button } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Overlays/AlertDialog',
@@ -133,7 +133,7 @@ export const Controlled: Story = {
           <AlertDialog.Trigger render={<Button variant="destructive" />}>
             Discard changes
           </AlertDialog.Trigger>
-          <span className="text-city-muted-foreground text-sm">
+          <span className="text-sm text-city-muted-foreground">
             Alert dialog is {open ? 'open' : 'closed'}
           </span>
           <AlertDialog.Portal>

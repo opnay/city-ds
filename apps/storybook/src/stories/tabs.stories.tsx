@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Tabs } from '@city-ds/react';
+import { Tabs } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Navigation/Tabs',

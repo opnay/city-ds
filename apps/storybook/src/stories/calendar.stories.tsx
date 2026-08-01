@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ko } from '@daypicker/react/locale';
 import { expect, userEvent, within } from 'storybook/test';
 
-import { Calendar } from '@city-ds/react';
+import { Calendar } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/Calendar',
@@ -50,7 +50,7 @@ function ControlledCalendar() {
         today={referenceDate}
         value={value}
       />
-      <output className="text-city-muted-foreground text-center text-xs">
+      <output className="text-center text-xs text-city-muted-foreground">
         Selected: {value?.toLocaleDateString() ?? 'None'}
       </output>
     </div>
@@ -66,7 +66,7 @@ export const Sizes: Story = {
     <div className="flex flex-wrap items-start gap-8">
       {(['sm', 'md', 'lg'] as const).map((size) => (
         <div key={size} className="grid gap-2">
-          <span className="text-city-muted-foreground text-xs font-medium">
+          <span className="text-xs font-medium text-city-muted-foreground">
             {size.toUpperCase()}
           </span>
           <Calendar
@@ -108,7 +108,7 @@ export const States: Story = {
   render: () => (
     <div className="flex flex-wrap items-start gap-8">
       <div className="grid gap-2">
-        <span className="text-city-muted-foreground text-xs font-medium">Disabled</span>
+        <span className="text-xs font-medium text-city-muted-foreground">Disabled</span>
         <Calendar
           aria-label="Disabled calendar"
           defaultValue={referenceDate}
@@ -118,7 +118,7 @@ export const States: Story = {
         />
       </div>
       <div className="grid gap-2">
-        <span className="text-city-muted-foreground text-xs font-medium">Read only</span>
+        <span className="text-xs font-medium text-city-muted-foreground">Read only</span>
         <Calendar
           aria-label="Read-only calendar"
           defaultValue={referenceDate}
@@ -128,7 +128,7 @@ export const States: Story = {
         />
       </div>
       <div className="grid gap-2">
-        <span className="text-city-muted-foreground text-xs font-medium">Invalid</span>
+        <span className="text-xs font-medium text-city-muted-foreground">Invalid</span>
         <Calendar
           aria-label="Invalid calendar"
           defaultValue={referenceDate}
@@ -153,7 +153,7 @@ function KeyboardCalendar() {
         today={referenceDate}
         value={value}
       />
-      <output className="text-city-muted-foreground text-center text-xs">
+      <output className="text-center text-xs text-city-muted-foreground">
         Selected day: {value?.getDate() ?? 'None'}
       </output>
     </div>

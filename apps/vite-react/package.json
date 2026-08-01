@@ -6,12 +6,12 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "lint": "eslint src vite.config.ts",
+    "lint": "oxlint src vite.config.ts",
     "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@city-ds/react": "workspace:*",
+    "@opnay/city-ds-react": "workspace:*",
     "lucide-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"

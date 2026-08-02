@@ -148,8 +148,8 @@ pnpm storybook
 
 ```text
 apps/
-  next-react/     Next.js App Router 소비 검증
   storybook/      컴포넌트 문서와 정적 빌드
+examples/
   vite-react/     Vite 소비 검증
 packages/
   react/          @opnay/city-ds-react

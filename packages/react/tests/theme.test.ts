@@ -5,10 +5,10 @@ import { CITY_THEMES } from '../src/theme';
 
 const stylesCss = readFileSync(resolve(process.cwd(), 'src/styles/index.css'), 'utf8');
 const themeCss = readFileSync(resolve(process.cwd(), 'src/styles/theme.css'), 'utf8');
-const consumerCss = [
-  readFileSync(resolve(process.cwd(), '../../apps/vite-react/src/smoke.css'), 'utf8'),
-  readFileSync(resolve(process.cwd(), '../../apps/next-react/app/smoke.css'), 'utf8'),
-].join('\n');
+const consumerCss = readFileSync(
+  resolve(process.cwd(), '../../examples/vite-react/src/smoke.css'),
+  'utf8',
+);
 const packageJson = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), 'utf8')) as {
   exports: Record<string, string>;
 };

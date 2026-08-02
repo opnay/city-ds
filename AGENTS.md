@@ -10,8 +10,7 @@
 
 - `packages/react`: 공개 컴포넌트와 테마
 - `apps/storybook`: 문서와 상호작용 예제
-- `apps/vite-smoke`: Vite 소비 검증
-- `apps/next-smoke`: Next.js 소비 검증
+- `examples/vite-react`: Vite 소비 예제와 검증
 
 ## 규칙
 

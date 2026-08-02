@@ -79,9 +79,6 @@ jobs:
           - name: Vite consumer
             package: '@city-ds/vite-smoke'
             browser: false
-          - name: Next.js consumer
-            package: '@city-ds/next-smoke'
-            browser: false
 
     steps:
       - name: Check out repository

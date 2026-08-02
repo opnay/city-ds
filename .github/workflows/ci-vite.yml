@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/ci-vite.yml'
       - '.nvmrc'
-      - 'apps/vite-react/**'
+      - 'examples/vite-react/**'
       - 'eslint.config.mjs'
       - 'package.json'
       - 'packages/react/**'
@@ -19,7 +19,7 @@ on:
     paths:
       - '.github/workflows/ci-vite.yml'
       - '.nvmrc'
-      - 'apps/vite-react/**'
+      - 'examples/vite-react/**'
       - 'eslint.config.mjs'
       - 'package.json'
       - 'packages/react/**'

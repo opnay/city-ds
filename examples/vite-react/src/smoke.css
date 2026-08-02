@@ -28,13 +28,13 @@
   }
 
   .city-shell {
-    --city-shell-content-max: 90rem;
-    --city-shell-sidebar-width: 15rem;
-    --city-ops-table-min: 64rem;
-    --city-ops-spin-duration: 1s;
+    --example-shell-content-max: 90rem;
+    --example-shell-sidebar-width: 15rem;
+    --example-ops-table-min: 64rem;
+    --example-ops-spin-duration: 1s;
 
     display: grid;
-    grid-template-columns: var(--city-shell-sidebar-width) minmax(0, 1fr);
+    grid-template-columns: var(--example-shell-sidebar-width) minmax(0, 1fr);
     min-height: 100vh;
     min-height: 100dvh;
     background: var(--city-color-background);
@@ -250,7 +250,7 @@
 
   .city-shell-main {
     display: grid;
-    width: min(100%, var(--city-shell-content-max));
+    width: min(100%, var(--example-shell-content-max));
     min-width: 0;
     margin-inline: auto;
     padding: var(--city-space-6) var(--city-space-8) var(--city-space-16);
@@ -799,7 +799,7 @@
   }
 
   .city-ops-table {
-    min-width: var(--city-ops-table-min);
+    min-width: var(--example-ops-table-min);
     table-layout: fixed;
   }
 
@@ -1017,7 +1017,7 @@
   }
 
   .city-ops-spin {
-    animation: city-ops-spin var(--city-ops-spin-duration) linear infinite;
+    animation: city-ops-spin var(--example-ops-spin-duration) linear infinite;
     transform-origin: center;
   }
 

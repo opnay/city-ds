@@ -1,0 +1,62 @@
+import statesSource from './examples/states.tsx?raw';
+import ProgressStatesExample from './examples/states';
+import type { ComponentPageData } from '../../types';
+export const pageData = {
+  api: [
+    { name: 'value', type: 'number | null', description: 'null은 불확정 진행을 표시합니다.' },
+    { name: 'max', type: 'number', defaultValue: '100', description: '진행률의 최대값입니다.' },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      defaultValue: "'md'",
+      description: '선형·원형 제어 크기입니다.',
+    },
+    {
+      name: 'Progress.Circular',
+      type: 'component',
+      description: '작은 공간의 원형 진행 표시입니다.',
+    },
+  ],
+  examples: [
+    {
+      Component: ProgressStatesExample,
+      coverage: [
+        {
+          axis: 'shape',
+          values: ['linear', 'circular'],
+          combinations: [
+            'shape=linear|status=progressing|size=sm',
+            'shape=linear|status=progressing|size=md',
+            'shape=linear|status=progressing|size=lg',
+            'shape=linear|status=complete|size=sm',
+            'shape=linear|status=complete|size=md',
+            'shape=linear|status=complete|size=lg',
+            'shape=linear|status=indeterminate|size=sm',
+            'shape=linear|status=indeterminate|size=md',
+            'shape=linear|status=indeterminate|size=lg',
+            'shape=circular|status=progressing|size=sm',
+            'shape=circular|status=progressing|size=md',
+            'shape=circular|status=progressing|size=lg',
+            'shape=circular|status=complete|size=sm',
+            'shape=circular|status=complete|size=md',
+            'shape=circular|status=complete|size=lg',
+            'shape=circular|status=indeterminate|size=sm',
+            'shape=circular|status=indeterminate|size=md',
+            'shape=circular|status=indeterminate|size=lg',
+          ],
+        },
+        { axis: 'status', values: ['progressing', 'complete', 'indeterminate'] },
+        { axis: 'size', values: ['sm', 'md', 'lg'] },
+      ],
+      description: '형태, 상태, 크기를 함께 비교합니다.',
+      id: 'progress-states',
+      source: statesSource,
+      title: '진행 상태',
+    },
+  ],
+  optionAxes: [
+    { name: 'shape', values: ['linear', 'circular'] },
+    { name: 'status', values: ['progressing', 'complete', 'indeterminate'] },
+    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+  ],
+} satisfies ComponentPageData;

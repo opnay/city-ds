@@ -21,7 +21,12 @@ Base UI, Tailwind CSS, Storybook으로 만드는 개인용 React 디자인 시�
 ```bash
 pnpm install
 pnpm storybook
+pnpm public-docs
 ```
+
+Storybook은 디자인 시스템을 개발하면서 컴포넌트의 상태, 상호작용, 시각 회귀를 확인하는
+작업 공간입니다. `public-docs`는 디자인 시스템을 사용하는 제품 개발자를 위한 별도 문서로,
+설치 방법, 컴포넌트 선택 기준, 공개 옵션과 조합 예제를 제공합니다.
 
 ## 패키지 사용
 
@@ -148,6 +153,7 @@ pnpm storybook
 
 ```text
 apps/
+  public-docs/    소비자를 위한 설치·선택·조합 문서
   storybook/      컴포넌트 문서와 정적 빌드
 examples/
   vite-react/     Vite 소비 검증
@@ -162,6 +168,7 @@ pnpm format
 pnpm lint
 pnpm check
 pnpm build
+pnpm public-docs:build
 pnpm --filter @opnay/city-ds-react pack:check
 ```
 

@@ -1,0 +1,25 @@
+import { pageData } from './page-data';
+
+## 언제 사용합니까
+
+완료 비율이나 진행 중 상태를 알려야 할 때 사용하십시오.
+
+## 언제 피해야 합니까
+
+작업 결과 알림에는 Toast를 사용하십시오.
+
+## 합성 구조
+
+선형 표시는 Root 안에 Track과 Indicator를 넣고, 좁은 공간에는 Circular을 사용하십시오.
+
+## 옵션과 상태
+
+<ExampleSet examples={pageData.examples} />
+
+## 주요 API
+
+<ApiTable items={pageData.api} />
+
+## 접근성
+
+의미 있는 진행률에는 aria-label 또는 연결된 Label을 제공하십시오.

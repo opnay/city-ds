@@ -1,0 +1,25 @@
+import { pageData } from './page-data';
+
+## 언제 사용합니까
+
+관련 있지만 길이가 긴 정보를 필요할 때만 펼쳐 보여 줄 때 사용하십시오.
+
+## 언제 피해야 합니까
+
+현재 작업에 필수인 안내나 비교해야 하는 내용을 접지 마십시오.
+
+## 합성 구조
+
+`Root > Item > Header > Trigger + Panel` 순서를 유지하고 각 Item에 안정적인 `value`를 지정하십시오.
+
+## 옵션과 상태
+
+<ExampleSet examples={pageData.examples} />
+
+## 주요 API
+
+<ApiTable items={pageData.api} />
+
+## 접근성
+
+Trigger는 키보드로 작동합니다. 제목은 질문 또는 섹션 이름처럼 펼친 결과를 예측할 수 있게 작성하십시오.

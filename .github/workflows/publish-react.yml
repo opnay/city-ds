@@ -79,6 +79,9 @@ jobs:
           - name: Vite consumer
             package: '@city-ds/vite-smoke'
             browser: false
+          - name: Public docs
+            package: '@city-ds/public-docs'
+            browser: false
 
     steps:
       - name: Check out repository

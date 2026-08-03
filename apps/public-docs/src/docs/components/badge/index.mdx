@@ -1,0 +1,27 @@
+import { pageData } from './page-data';
+
+## 언제 사용합니까
+
+짧은 상태, 분류, 개수 또는 시각적 상태 점을 인라인으로 표시할 때 사용하십시오.
+
+## 언제 피해야 합니까
+
+긴 문장이나 사용자가 눌러야 하는 필터에는 Badge 대신 본문 또는 Button을 사용하십시오.
+
+## 합성 구조
+
+별도 `mode` prop은 없습니다. 텍스트는 children으로, 개수는 `count`, 점은 `dot`으로 정합니다. dot은 `appearance`와 관계없이 tone으로만 구분되며, 접근 가능한 이름을 제공하십시오.
+
+`variant`는 기존 사용처를 위한 호환 단축 표현입니다. 새 코드에서는 의미를 `tone`으로, 표면을 `appearance`로 분리하십시오. 둘 중 하나라도 명시하면 해당 값이 `variant` 매핑보다 우선합니다.
+
+## 옵션과 상태
+
+<ExampleSet examples={pageData.examples} />
+
+## 주요 API
+
+<ApiTable items={pageData.api} />
+
+## 접근성
+
+색만으로 상태를 설명하지 마십시오. dot은 `aria-label`로 상태를 이름 붙이거나 장식이면 숨기십시오.

@@ -1,0 +1,28 @@
+import { pageData } from './page-data';
+
+## 언제 사용합니까
+
+행과 열의 관계를 비교하거나 정렬해야 할 때 사용하십시오.
+
+## 언제 피해야 합니까
+
+한 항목의 세부 정보는 설명 목록이나 카드로 표현하십시오.
+
+## 합성 구조
+
+Root 안에 Header, Body, Row, Head, Cell을 두고, 넓으면 ScrollArea로 감싸십시오. 정렬은
+SortButton의 방향을 앱 상태로 관리하고, 행 선택은 SelectionHead와 SelectionCell을 같은
+선택 상태에 연결하십시오.
+
+## 옵션과 상태
+
+<ExampleSet examples={pageData.examples} />
+
+## 주요 API
+
+<ApiTable items={pageData.api} />
+
+## 접근성
+
+테이블 이름과 열 범위 scope를 제공하십시오. 정렬한 열의 `aria-sort`를 현재 방향과 함께
+갱신하고, 전체 선택에는 일부 선택인 indeterminate 상태도 전달하십시오.

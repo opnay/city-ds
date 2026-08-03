@@ -1,0 +1,25 @@
+import { pageData } from './page-data';
+
+## 언제 사용합니까
+
+도구 모음이나 데이터 작업 영역처럼 한 구역의 복합 제어 밀도를 함께 정할 때 사용하십시오.
+
+## 언제 피해야 합니까
+
+페이지 전체를 시각적으로 더 작게 만드는 용도로 사용하지 마십시오.
+
+## 합성 구조
+
+필요한 영역만 `DensityProvider`로 감싸십시오. 개별 컴포넌트의 density prop이 provider보다 우선합니다.
+
+## 옵션과 상태
+
+<ExampleSet examples={pageData.examples} />
+
+## 주요 API
+
+<ApiTable items={pageData.api} />
+
+## 접근성
+
+compact는 정보 밀도만 바꾸며, 작은 화면에서 필요한 터치 대상 크기는 별도로 검토하십시오.

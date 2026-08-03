@@ -1,0 +1,25 @@
+import { pageData } from './page-data';
+
+## 언제 사용합니까
+
+현재 페이지 안에서 유지되는 성공, 경고, 오류, 정보를 제목과 설명으로 전달할 때 사용하십시오.
+
+## 언제 피해야 합니까
+
+일시적으로 나타나고 사라지는 결과에는 Toast를, 복구하기 어려운 결정에는 AlertDialog를 사용하십시오.
+
+## 합성 구조
+
+`Alert.Root` 안에 `Alert.Title`, `Alert.Description`, 필요한 경우 `Alert.Action`을 배치하십시오.
+
+## 옵션과 상태
+
+<ExampleSet examples={pageData.examples} />
+
+## 주요 API
+
+<ApiTable items={pageData.api} />
+
+## 접근성
+
+tone에 맞는 `role`과 `aria-live`가 기본 제공됩니다. 파괴적 메시지는 원인과 다음 행동을 함께 설명하십시오.

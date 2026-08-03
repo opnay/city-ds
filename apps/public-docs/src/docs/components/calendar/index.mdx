@@ -1,0 +1,25 @@
+import { pageData } from './page-data';
+
+## 언제 사용합니까
+
+폼 안에 직접 노출되는 단일 로컬 날짜를 선택할 때 사용하십시오.
+
+## 언제 피해야 합니까
+
+텍스트 입력과 달력 팝오버가 함께 필요하면 DatePicker를 사용하십시오.
+
+## 합성 구조
+
+Calendar는 독립 제어입니다. 값을 저장할 때는 `YYYY-MM-DD`로 변환하고 `toISOString()`으로 날짜를 바꾸지 마십시오.
+
+## 옵션과 상태
+
+<ExampleSet examples={pageData.examples} />
+
+## 주요 API
+
+<ApiTable items={pageData.api} />
+
+## 접근성
+
+`aria-label` 또는 `aria-labelledby`로 달력의 목적을 이름 붙이십시오. 키보드 화살표 이동을 유지하십시오.

@@ -1,0 +1,93 @@
+## 설치
+
+React 18.3 이상 또는 React 19 프로젝트에 패키지를 설치하십시오. 모노레포 안에서는
+`workspace:*` 의존성을 사용하고, 외부 프로젝트에서는 패키지 레지스트리 인증을 먼저
+완료하십시오.
+
+```bash
+pnpm add @opnay/city-ds-react
+```
+
+애플리케이션 진입점에서 `styles.css`를 정확히 한 번 가져오십시오. 이 파일에는 토큰,
+컴포넌트 스타일과 전역 기반 스타일이 포함됩니다. 컴포넌트마다 가져오면 순서와 중복을
+관리하기 어려워집니다.
+
+```tsx
+// src/main.tsx 또는 app/layout.tsx
+import '@opnay/city-ds-react/styles.css';
+```
+
+전역 기반 스타일 없이 토큰만 필요한 환경은 `@opnay/city-ds-react/theme.css`를 대신
+가져올 수 있습니다. 이 경우 컴포넌트의 시각 스타일은 포함되지 않으므로 city-ds
+컴포넌트를 렌더링하는 앱에는 `styles.css`를 사용하십시오.
+
+## 첫 화면 만들기
+
+필요한 컴포넌트만 명시적인 subpath에서 가져오십시오. 루트 export에 의존하지 않으면
+사용 중인 API와 번들 경계가 분명해집니다.
+
+```tsx
+import { useState } from 'react';
+import { Button } from '@opnay/city-ds-react/button';
+import { Field } from '@opnay/city-ds-react/field';
+import { Input } from '@opnay/city-ds-react/input';
+
+export function ProjectNameForm() {
+  const [name, setName] = useState('');
+
+  return (
+    <form onSubmit={(event) => event.preventDefault()}>
+      <Field.Root>
+        <Field.Label>프로젝트 이름</Field.Label>
+        <Input value={name} onChange={(event) => setName(event.currentTarget.value)} />
+        <Field.Description>다른 구성원이 식별할 수 있는 이름을 입력하십시오.</Field.Description>
+      </Field.Root>
+      <Button disabled={!name.trim()} type="submit" variant="primary">
+        프로젝트 만들기
+      </Button>
+    </form>
+  );
+}
+```
+
+패키지는 Base UI의 상호작용과 접근성 동작을 사용합니다. 포커스, 키보드 이동, 열림
+상태를 다시 구현하지 말고 각 컴포넌트의 합성 API를 사용하십시오.
+
+## 테마 적용
+
+기본값은 운영체제 설정을 따르는 `system`입니다. 사용자가 테마를 명시적으로 고르면
+문서 루트인 `html` 요소에 유효한 `data-theme` 값을 설정하십시오. system으로 돌아갈
+때는 속성을 제거하십시오.
+
+```ts
+type Theme = 'system' | 'light' | 'dark';
+
+export function applyTheme(theme: Theme) {
+  if (theme === 'system') {
+    delete document.documentElement.dataset.theme;
+    return;
+  }
+
+  document.documentElement.dataset.theme = theme;
+}
+```
+
+테마 선택값을 저장한다면 `system`, `light`, `dark`만 읽고 쓰십시오. 이전 버전이나
+외부 스크립트가 남긴 다른 값은 system으로 처리하는 편이 안전합니다.
+
+## Vite와 Next.js
+
+Vite에서는 위 CSS import를 `src/main.tsx`처럼 한 번만 실행되는 모듈에 두십시오.
+Next.js App Router에서는 `app/layout.tsx`에 두어 모든 경로가 같은 토큰과 기반 스타일을
+공유하게 하십시오. Next.js에서 상호작용 컴포넌트를 직접 감싼 파일에는 필요한 경우
+`'use client'`를 선언하십시오.
+
+컴포넌트는 브라우저 상호작용을 위한 React UI입니다. 서버에서 데이터를 가져오거나 파일을
+업로드하는 정책은 앱에서 소유하고, 그 결과만 props와 로컬 상태로 컴포넌트에 전달하십시오.
+
+## 다음 단계
+
+- 화면의 색, 크기, 밀도 기준은 기초 문서에서 정하십시오.
+- 반복되는 작업 흐름은 패턴 문서의 폼, 피드백, 오버레이 선택 기준으로 조합하십시오.
+- 출시 전에는 접근성 문서의 소비자 검증 체크리스트를 실제 키보드와 작은 화면에서
+  확인하십시오.

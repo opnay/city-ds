@@ -1,0 +1,25 @@
+import { pageData } from './page-data';
+
+## 언제 사용합니까
+
+사용자가 `YYYY-MM-DD` 로컬 날짜를 직접 입력해야 할 때 사용하십시오.
+
+## 언제 피해야 합니까
+
+달력에서 찾는 일이 더 자연스러우면 DatePicker를 사용하십시오.
+
+## 합성 구조
+
+`Root > Label + Input + Description + Error` 순서를 사용하십시오. Root가 값, 제약, 상태를 Input에 전달합니다.
+
+## 옵션과 상태
+
+<ExampleSet examples={pageData.examples} />
+
+## 주요 API
+
+<ApiTable items={pageData.api} />
+
+## 접근성
+
+날짜 형식을 Description으로 알려 주고, 오류는 Error로 제어와 연결하십시오.

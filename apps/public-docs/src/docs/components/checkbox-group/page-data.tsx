@@ -27,6 +27,7 @@ export const pageData = {
       ],
       description: '제어·비제어 복수 선택, 크기와 비활성 항목을 함께 보여줍니다.',
       id: 'checkbox-group-basic',
+      filename: 'checkbox-group.tsx',
       source: checkboxGroupSource,
       title: '복수 선택',
     },

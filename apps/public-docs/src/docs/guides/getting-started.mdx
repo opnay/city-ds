@@ -12,10 +12,21 @@ pnpm add @opnay/city-ds-react
 컴포넌트 스타일과 전역 기반 스타일이 포함됩니다. 컴포넌트마다 가져오면 순서와 중복을
 관리하기 어려워집니다.
 
-```tsx
-// src/main.tsx 또는 app/layout.tsx
-import '@opnay/city-ds-react/styles.css';
-```
+<CodeFiles
+  aria-label="Vite와 Next.js 스타일 진입점"
+  files={[
+    {
+      filename: 'src/main.tsx',
+      language: 'tsx',
+      source: "import '@opnay/city-ds-react/styles.css';",
+    },
+    {
+      filename: 'app/layout.tsx',
+      language: 'tsx',
+      source: "import '@opnay/city-ds-react/styles.css';",
+    },
+  ]}
+/>
 
 전역 기반 스타일 없이 토큰만 필요한 환경은 `@opnay/city-ds-react/theme.css`를 대신
 가져올 수 있습니다. 이 경우 컴포넌트의 시각 스타일은 포함되지 않으므로 city-ds

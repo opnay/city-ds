@@ -56,6 +56,7 @@ export const pageData = {
       ],
       description: '모든 크기에서 단일·복수 선택 구조를 비교합니다.',
       id: 'combobox-matrix',
+      filename: 'matrix.tsx',
       source: matrixSource,
       title: 'size × multiple',
     },

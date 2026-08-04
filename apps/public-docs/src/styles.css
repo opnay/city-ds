@@ -447,8 +447,7 @@
     text-underline-offset: 0.2em;
   }
 
-  .city-docs-prose :not(pre) > code,
-  .city-docs-import-block code {
+  .city-docs-prose :not(pre) > code {
     padding: 0.1em 0.35em;
     border: 1px solid var(--city-color-border);
     border-radius: var(--city-radius-xs);
@@ -469,6 +468,66 @@
     color: var(--city-color-foreground);
     font-size: var(--city-font-size-xs);
     line-height: 1.65;
+  }
+
+  .city-docs-code-frame {
+    max-width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--city-color-border);
+    border-radius: var(--city-radius-md);
+    background: var(--city-color-muted);
+  }
+
+  .city-docs-code-header {
+    display: flex;
+    min-height: var(--city-control-lg);
+    padding: var(--city-space-2) var(--city-space-3);
+    border-bottom: 1px solid var(--city-color-border);
+    background: var(--city-color-surface-raised);
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--city-space-2);
+  }
+
+  .city-docs-code-context {
+    display: flex;
+    min-width: 0;
+    overflow-x: auto;
+    align-items: center;
+    flex: 1 1 12rem;
+    scrollbar-width: thin;
+  }
+
+  .city-docs-code-filename {
+    overflow: hidden;
+    color: var(--city-color-muted-foreground);
+    font-family: var(--city-font-family-mono);
+    font-size: var(--city-font-size-xs);
+    font-weight: var(--city-font-weight-medium);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .city-docs-code-actions {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: var(--city-space-2);
+  }
+
+  .city-docs-code-tabs {
+    max-width: max-content;
+    flex: 0 0 auto;
+  }
+
+  .city-docs-code-panel {
+    margin: 0;
+  }
+
+  .city-docs-code-frame pre {
+    border: 0;
+    border-radius: 0;
   }
 
   .city-docs-code-token {
@@ -1121,14 +1180,13 @@
 
   .city-docs-example-code pre {
     border: 0;
-    border-top: 1px solid var(--city-color-border);
     border-radius: 0;
   }
 
-  .city-docs-code-toolbar {
-    display: flex;
-    padding: 0 var(--city-space-3) var(--city-space-3);
-    justify-content: flex-end;
+  .city-docs-example-code .city-docs-code-frame {
+    border: 0;
+    border-top: 1px solid var(--city-color-border);
+    border-radius: 0;
   }
 
   .city-docs-related {

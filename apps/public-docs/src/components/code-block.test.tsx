@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
 
 import { CodeBlock } from './code-block';
 
@@ -75,5 +76,76 @@ describe('CodeBlock', () => {
     expect(
       lineNumbers.every((lineNumber) => lineNumber.getAttribute('aria-hidden') === 'true'),
     ).toBe(true);
+  });
+
+  it('shows a single filename and copies its exact source', async () => {
+    const user = userEvent.setup();
+    const clipboard = vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue();
+    const source = 'export function TabsExample() {}\n';
+
+    render(
+      <CodeBlock
+        aria-label="Tabs source"
+        code={source}
+        filename="tabs.tsx"
+        language="tsx"
+        tabIndex={0}
+      />,
+    );
+
+    expect(screen.getByText('tabs.tsx')).toBeVisible();
+    expect(screen.getByText('TypeScript JSX')).toBeVisible();
+    expect(screen.queryByRole('tab')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: '코드 복사' }));
+
+    expect(clipboard).toHaveBeenCalledWith(source);
+    expect(screen.getByRole('button', { name: '복사됨' })).toBeVisible();
+    expect(screen.getByText('tabs.tsx 코드를 복사했습니다.')).toBeInTheDocument();
+    clipboard.mockRestore();
+  });
+
+  it('switches file tabs with the keyboard and copies only the active file', async () => {
+    const user = userEvent.setup();
+    const clipboard = vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue();
+
+    render(
+      <CodeBlock
+        aria-label="Entry files"
+        files={[
+          {
+            filename: 'src/main.tsx',
+            language: 'tsx',
+            source: "import './styles.css';\ncreateRoot();",
+          },
+          {
+            filename: 'app/layout.tsx',
+            language: 'ts',
+            source: "import './styles.css';",
+          },
+        ]}
+        tabIndex={0}
+      />,
+    );
+
+    const mainTab = screen.getByRole('tab', { name: 'src/main.tsx' });
+    mainTab.focus();
+    await user.keyboard('{ArrowRight}{Enter}');
+
+    expect(screen.getByRole('tab', { name: 'app/layout.tsx' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(screen.getByText('TypeScript')).toBeVisible();
+    expect(screen.getAllByText('1')).toHaveLength(1);
+
+    await user.click(screen.getByRole('button', { name: '코드 복사' }));
+    expect(clipboard).toHaveBeenCalledWith("import './styles.css';");
+    expect(screen.getByRole('button', { name: '복사됨' })).toBeVisible();
+
+    await user.click(mainTab);
+    expect(screen.getByRole('button', { name: '코드 복사' })).toBeVisible();
+    expect(screen.getAllByText('2')).toHaveLength(1);
+    clipboard.mockRestore();
   });
 });

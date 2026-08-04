@@ -52,6 +52,7 @@ export const pageData = {
       ],
       description: '모든 표면·크기·방향에 명령, 구분선, 토글 그룹을 배치합니다.',
       id: 'toolbar-basic',
+      filename: 'toolbar.tsx',
       source: toolbarSource,
       title: '편집 도구',
     },

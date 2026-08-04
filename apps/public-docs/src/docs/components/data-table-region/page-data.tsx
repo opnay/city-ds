@@ -33,6 +33,7 @@ export const pageData = {
       ],
       description: '좁은 컨테이너에서 스크롤 가능한 표와 안내를 연결합니다.',
       id: 'data-table-region-overflow',
+      filename: 'overflow.tsx',
       source: overflowSource,
       title: '가로 스크롤 영역',
     },

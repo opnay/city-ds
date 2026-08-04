@@ -69,6 +69,7 @@ export const pageData = {
       ],
       description: '모든 의미와 표현 조합을 비교합니다.',
       id: 'alert-matrix',
+      filename: 'matrix.tsx',
       source: matrixSource,
       title: 'tone × appearance',
     },

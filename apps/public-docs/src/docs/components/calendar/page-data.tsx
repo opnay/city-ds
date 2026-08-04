@@ -45,6 +45,7 @@ export const pageData = {
       ],
       description: '제어된 선택과 읽기 전용·유효하지 않은 상태를 확인합니다.',
       id: 'calendar-states',
+      filename: 'states.tsx',
       source: statesSource,
       title: '로컬 날짜 선택',
     },

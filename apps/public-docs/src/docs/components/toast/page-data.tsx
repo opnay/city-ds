@@ -45,6 +45,7 @@ export const pageData = {
       ],
       description: '모든 tone·appearance 조합과 저장 완료 토스트 상호작용을 확인합니다.',
       id: 'toast-basic',
+      filename: 'toast.tsx',
       source: toastSource,
       title: '알림 표시',
     },

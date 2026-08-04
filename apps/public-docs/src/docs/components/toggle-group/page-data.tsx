@@ -68,6 +68,7 @@ export const pageData = {
       ],
       description: '각 표면의 선택·해제 항목, 단일·복수 선택과 방향을 비교합니다.',
       id: 'toggle-group-matrix',
+      filename: 'matrix.tsx',
       source: matrixSource,
       title: '그룹 선택',
     },

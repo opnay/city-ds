@@ -34,6 +34,7 @@ export const pageData = {
       ],
       description: '현재 항목과 긴 경로의 생략을 직접 구성합니다.',
       id: 'breadcrumbs-usage',
+      filename: 'usage.tsx',
       source: usageSource,
       title: '계층 경로',
     },

@@ -33,6 +33,7 @@ export const pageData = {
       ],
       description: '관련 선택을 하나의 질문과 그룹 오류로 묶습니다.',
       id: 'fieldset-group',
+      filename: 'group.tsx',
       source: groupSource,
       title: '관련 필드 묶기',
     },

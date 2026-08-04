@@ -36,6 +36,7 @@ export const pageData = {
       ],
       description: '제어 검색, 로딩, 비활성·오류 상태와 모든 크기입니다.',
       id: 'search-field-states',
+      filename: 'search.tsx',
       source: searchSource,
       title: '검색 상태',
     },

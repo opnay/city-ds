@@ -27,6 +27,7 @@ export const pageData = {
       ],
       description: '제어·비제어 크기와 비활성 단일 선택입니다.',
       id: 'radio-group-choices',
+      filename: 'choices.tsx',
       source: choicesSource,
       title: '단일 선택',
     },

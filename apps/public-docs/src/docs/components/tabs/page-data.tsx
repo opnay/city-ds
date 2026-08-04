@@ -27,6 +27,7 @@ export const pageData = {
       ],
       description: '제어·비제어 탭, 두 밀도와 비활성 탭을 보여줍니다.',
       id: 'tabs-basic',
+      filename: 'tabs.tsx',
       source: tabsSource,
       title: '탭과 패널',
     },

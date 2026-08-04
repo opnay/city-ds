@@ -24,6 +24,7 @@ export const pageData = {
       ],
       description: '네 방향의 포인터·키보드 보조 설명을 표시합니다.',
       id: 'tooltip-basic',
+      filename: 'tooltip.tsx',
       source: tooltipSource,
       title: '보조 설명',
     },

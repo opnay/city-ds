@@ -38,6 +38,7 @@ export const pageData = {
       ],
       description: '제어된 로컬 날짜와 검증 오류를 확인합니다.',
       id: 'date-field-controlled',
+      filename: 'controlled.tsx',
       source: controlledSource,
       title: '날짜 텍스트 입력',
     },

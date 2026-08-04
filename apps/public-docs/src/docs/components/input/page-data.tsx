@@ -40,6 +40,7 @@ export const pageData = {
       ],
       description: '단일 입력, 오류, 접두어 그룹, 여러 줄 입력을 보여줍니다.',
       id: 'input-controls',
+      filename: 'controls.tsx',
       source: controlsSource,
       title: '입력과 그룹',
     },

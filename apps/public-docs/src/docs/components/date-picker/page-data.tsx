@@ -39,6 +39,7 @@ export const pageData = {
       ],
       description: '텍스트 입력과 달력 선택이 하나의 로컬 날짜 상태를 공유합니다.',
       id: 'date-picker-usage',
+      filename: 'usage.tsx',
       source: usageSource,
       title: '입력과 달력 조합',
     },

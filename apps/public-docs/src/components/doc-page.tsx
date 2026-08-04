@@ -5,6 +5,7 @@ import { Badge } from '@opnay/city-ds-react/badge';
 
 import { CATEGORY_LABELS, getComponentDoc } from '../docs/doc-catalog';
 import type { ComponentDocEntry } from '../docs/types';
+import { CodeBlock } from './code-block';
 
 interface ComponentDocPageProps {
   Content: ComponentType;
@@ -48,9 +49,12 @@ export function ComponentDocPage({ Content, entry }: ComponentDocPageProps) {
       </header>
       <section aria-labelledby="component-import" className="city-docs-import-block">
         <h2 id="component-import">가져오기</h2>
-        <pre aria-label={`${entry.title} 가져오기 코드`} tabIndex={0}>
-          <code>{`import { ${entry.title} } from '${entry.importPath}';`}</code>
-        </pre>
+        <CodeBlock
+          aria-label={`${entry.title} 가져오기 코드`}
+          code={`import { ${entry.title} } from '${entry.importPath}';`}
+          language="tsx"
+          tabIndex={0}
+        />
       </section>
       <div className="city-docs-prose">
         <Content />

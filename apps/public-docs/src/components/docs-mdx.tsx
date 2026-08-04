@@ -1,13 +1,11 @@
 import { MDXProvider } from '@mdx-js/react';
-import { isValidElement, useState, type ComponentPropsWithoutRef, type ReactNode } from 'react';
-import { Check, Clipboard, X } from 'lucide-react';
-import { Button } from '@opnay/city-ds-react/button';
+import { isValidElement, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Table } from '@opnay/city-ds-react/table';
 import type { MDXComponents } from 'mdx/types.js';
 
 import type { ApiItem, DocExample } from '../docs/types';
-import { CodeBlock } from './code-block';
+import { CodeBlock, type CodeFile } from './code-block';
 
 interface DocsMdxProviderProps {
   children: ReactNode;
@@ -21,24 +19,14 @@ interface ApiTableProps {
   items: readonly ApiItem[];
 }
 
-async function writeClipboard(value: string): Promise<void> {
-  if (!navigator.clipboard) throw new Error('Clipboard API is unavailable');
-  await navigator.clipboard.writeText(value);
+interface CodeFilesProps {
+  'aria-label'?: string | undefined;
+  files: readonly [CodeFile, CodeFile, ...CodeFile[]];
 }
 
 function ExampleFrame({ example }: { example: DocExample }) {
-  const [copyState, setCopyState] = useState<'idle' | 'success' | 'error'>('idle');
   const titleId = `example-${example.id}`;
   const Example = example.Component;
-
-  const copySource = async () => {
-    try {
-      await writeClipboard(example.source);
-      setCopyState('success');
-    } catch {
-      setCopyState('error');
-    }
-  };
 
   return (
     <section aria-labelledby={titleId} className="city-docs-example">
@@ -62,31 +50,21 @@ function ExampleFrame({ example }: { example: DocExample }) {
       </div>
       <details className="city-docs-example-code">
         <summary>코드 보기</summary>
-        <div className="city-docs-code-toolbar">
-          <Button onClick={() => void copySource()} size="sm" type="button" variant="ghost">
-            {copyState === 'success' ? (
-              <Check aria-hidden="true" size={15} />
-            ) : copyState === 'error' ? (
-              <X aria-hidden="true" size={15} />
-            ) : (
-              <Clipboard aria-hidden="true" size={15} />
-            )}
-            {copyState === 'success' ? '복사됨' : copyState === 'error' ? '복사 실패' : '코드 복사'}
-          </Button>
-          <span aria-live="polite" className="city-docs-sr-only">
-            {copyState === 'success'
-              ? '예제 코드를 복사했습니다.'
-              : copyState === 'error'
-                ? '예제 코드를 복사할 수 없습니다. 코드를 직접 선택하십시오.'
-                : ''}
-          </span>
-        </div>
-        <CodeBlock
-          aria-label={`${example.title} 예제 소스 코드`}
-          code={example.source}
-          language="tsx"
-          tabIndex={0}
-        />
+        {example.files ? (
+          <CodeBlock
+            aria-label={`${example.title} 예제 소스 코드`}
+            files={example.files}
+            tabIndex={0}
+          />
+        ) : (
+          <CodeBlock
+            aria-label={`${example.title} 예제 소스 코드`}
+            code={example.source}
+            filename={example.filename}
+            language="tsx"
+            tabIndex={0}
+          />
+        )}
       </details>
     </section>
   );
@@ -133,6 +111,12 @@ export function ApiTable({ items }: ApiTableProps) {
         </Table.Body>
       </Table.Root>
     </DataTableRegion>
+  );
+}
+
+export function CodeFiles({ 'aria-label': ariaLabel = '문서 코드 파일', files }: CodeFilesProps) {
+  return (
+    <CodeBlock aria-label={ariaLabel} className="city-docs-prose-code" files={files} tabIndex={0} />
   );
 }
 
@@ -195,6 +179,7 @@ function MdxTable(props: ComponentPropsWithoutRef<'table'>) {
 
 const MDX_COMPONENTS = {
   ApiTable,
+  CodeFiles,
   ExampleSet,
   pre: MdxPre,
   table: MdxTable,

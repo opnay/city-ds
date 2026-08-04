@@ -39,6 +39,7 @@ export const pageData = {
       ],
       description: '모든 형태와 크기를 함께 비교합니다.',
       id: 'skeleton-matrix',
+      filename: 'matrix.tsx',
       source: matrixSource,
       title: '골격 조합',
     },

@@ -41,6 +41,7 @@ export const pageData = {
       ],
       description: '모든 표면과 밀도 조합을 비교합니다.',
       id: 'filter-bar-matrix',
+      filename: 'matrix.tsx',
       source: matrixSource,
       title: '표면과 밀도',
     },

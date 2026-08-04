@@ -38,6 +38,7 @@ export const pageData = {
       ],
       description: '제어됨, 부분 선택, 비활성 상태를 비교합니다.',
       id: 'checkbox-states',
+      filename: 'states.tsx',
       source: statesSource,
       title: '선택 상태',
     },

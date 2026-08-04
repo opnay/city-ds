@@ -48,6 +48,39 @@ function setTheme(theme: CityTheme) {
 토큰 재정의는 앱 전체의 의도된 변형에만 사용하십시오. 한 컴포넌트의 예외를 해결하려고
 전역 토큰을 바꾸면 다른 화면의 대비와 밀도도 함께 바뀔 수 있습니다.
 
+## 콘텐츠 타이포그래피
+
+컴포넌트 밖의 페이지 제목, 문장과 문단에는 의미 요소를 먼저 선택한 뒤 역할 클래스를
+적용하십시오. heading 수준은 문서 구조를 나타내고 `city-text-*` 클래스는 시각 역할만
+나타냅니다.
+
+| 역할 클래스                  | 규격                | 대표 용도          |
+| ---------------------------- | ------------------- | ------------------ |
+| `city-text-display`          | 36–48px / 1         | 랜딩과 대표 메시지 |
+| `city-text-page-title`       | 30–36px / 1.1       | 페이지 제목        |
+| `city-text-section-title`    | 24 / 32px, semibold | 섹션 제목          |
+| `city-text-subsection-title` | 20 / 28px, semibold | 하위 섹션 제목     |
+| `city-text-lead`             | 18 / 28px, regular  | 도입 문단          |
+| `city-text-body`             | 16 / 24px, regular  | 기본 문장과 문단   |
+| `city-text-supporting`       | 14 / 20px, regular  | 보조 설명          |
+| `city-text-caption`          | 12 / 16px, regular  | 캡션과 메타데이터  |
+
+여러 문단에는 `city-prose`를 사용하십시오. 이 클래스는 68ch 읽기 폭, 문단 간격, 목록
+들여쓰기와 긴 문자열 줄바꿈만 정하며 하위 요소의 글자 역할은 자동으로 바꾸지 않습니다.
+
+```tsx
+<article className="city-prose">
+  <h1 className="city-text-page-title">교통 관제 요약</h1>
+  <p className="city-text-lead">오늘의 주요 운영 상태입니다.</p>
+  <h2 className="city-text-section-title">운행 상태</h2>
+  <p className="city-text-body">일반적인 설명을 여기에 작성합니다.</p>
+</article>
+```
+
+역할 클래스는 색상과 외부 여백을 포함하지 않습니다. 정보 위계를 색상만으로 표현하지 말고,
+오류나 필수 안내를 `city-text-caption` 또는 낮은 대비로 약화하지 마십시오. 일반 문장과 문단은
+컴포넌트 내부 텍스트 크기를 결정하는 Control Text 계약과 분리하십시오.
+
 ## 크기와 밀도
 
 일반 control의 크기는 `sm`, `md`, `lg`이며 기본값은 `md`입니다. 같은 폼 행, 툴바,

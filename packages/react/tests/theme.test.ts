@@ -56,22 +56,26 @@ const spacingTokens = [
   '--city-space-16',
 ];
 
+const typographySizes = ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'];
+
 const typographyTokens = [
   '--city-font-family-sans',
   '--city-font-family-mono',
-  '--city-font-size-2xs',
-  '--city-font-size-xs',
-  '--city-font-size-sm',
-  '--city-font-size-md',
-  '--city-font-size-lg',
-  '--city-line-height-2xs',
-  '--city-line-height-xs',
-  '--city-line-height-sm',
-  '--city-line-height-md',
-  '--city-line-height-lg',
+  ...typographySizes.flatMap((size) => [`--city-font-size-${size}`, `--city-line-height-${size}`]),
   '--city-font-weight-regular',
   '--city-font-weight-medium',
   '--city-font-weight-semibold',
+];
+
+const contentTextClasses = [
+  'city-text-display',
+  'city-text-page-title',
+  'city-text-section-title',
+  'city-text-subsection-title',
+  'city-text-lead',
+  'city-text-body',
+  'city-text-supporting',
+  'city-text-caption',
 ];
 
 const radiusTokens = [
@@ -187,22 +191,50 @@ describe('theme contract', () => {
 
     expect(themeCss).toContain('--font-sans: var(--city-font-family-sans);');
     expect(themeCss).toContain('--font-mono: var(--city-font-family-mono);');
-    expect(themeCss).toContain('--text-2xs: var(--city-font-size-2xs);');
-    expect(themeCss).toContain('--text-2xs--line-height: var(--city-line-height-2xs);');
-    expect(themeCss).toContain('--text-xs: var(--city-font-size-xs);');
-    expect(themeCss).toContain('--text-xs--line-height: var(--city-line-height-xs);');
-    expect(themeCss).toContain('--text-sm: var(--city-font-size-sm);');
-    expect(themeCss).toContain('--text-sm--line-height: var(--city-line-height-sm);');
-    expect(themeCss).toContain('--text-base: var(--city-font-size-md);');
-    expect(themeCss).toContain('--text-base--line-height: var(--city-line-height-md);');
-    expect(themeCss).toContain('--text-lg: var(--city-font-size-lg);');
-    expect(themeCss).toContain('--text-lg--line-height: var(--city-line-height-lg);');
+    for (const size of typographySizes) {
+      const tailwindSize = size === 'md' ? 'base' : size;
+      expect(themeCss).toContain(`--text-${tailwindSize}: var(--city-font-size-${size});`);
+      expect(themeCss).toContain(
+        `--text-${tailwindSize}--line-height: var(--city-line-height-${size});`,
+      );
+    }
+
     expect(themeCss).toContain('--font-weight-normal: var(--city-font-weight-regular);');
     expect(themeCss).toContain('--font-weight-medium: var(--city-font-weight-medium);');
     expect(themeCss).toContain('--font-weight-semibold: var(--city-font-weight-semibold);');
     expect(themeCss).toContain('--ease-city-standard: var(--city-easing-standard);');
     expect(themeCss).toContain('--ease-city-enter: var(--city-easing-enter);');
     expect(themeCss).toContain('--ease-city-exit: var(--city-easing-exit);');
+  });
+
+  it('publishes content text roles without coupling color or layout margins', () => {
+    for (const className of contentTextClasses) {
+      const rule = stylesCss.match(new RegExp(`\\.${className} \\{([\\s\\S]*?)\\n  \\}`))?.[1];
+
+      expect(rule, `${className} must have a CSS rule`).toBeDefined();
+      expect(rule).not.toMatch(/^\s*(?:color|margin(?:-block|-inline)?):/m);
+    }
+
+    expect(stylesCss).toContain(
+      'font-size: clamp(var(--city-font-size-4xl), 4vw, var(--city-font-size-5xl));',
+    );
+    expect(stylesCss).toContain(
+      'font-size: clamp(var(--city-font-size-3xl), 3vw, var(--city-font-size-4xl));',
+    );
+  });
+
+  it('keeps prose flow separate from descendant typography roles', () => {
+    const proseRule = stylesCss.match(/\.city-prose \{([\s\S]*?)\n  \}/)?.[1];
+
+    expect(proseRule).toContain('max-inline-size: 68ch;');
+    expect(proseRule).toContain('gap: var(--city-space-4);');
+    expect(proseRule).toContain('overflow-wrap: anywhere;');
+    expect(proseRule).toContain('word-break: keep-all;');
+    expect(proseRule).not.toContain('font-size');
+    expect(stylesCss).toContain('.city-prose > :where(ol, ul)');
+    expect(stylesCss).toContain(
+      '> :where(.city-text-section-title, .city-text-subsection-title):not(:first-child)',
+    );
   });
 
   it('keeps the dark interaction surface distinct from the raised surface', () => {

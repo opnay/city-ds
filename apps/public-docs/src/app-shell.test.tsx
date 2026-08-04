@@ -80,6 +80,17 @@ describe('public docs routes and shell', () => {
     expect(within(main).getByRole('link', { name: '전체 컴포넌트 보기' })).toBeVisible();
   });
 
+  it('documents content typography roles and semantic structure', async () => {
+    await renderDocs(['/foundations']);
+    const main = screen.getByRole('main');
+
+    expect(
+      within(main).getByRole('heading', { level: 2, name: '콘텐츠 타이포그래피' }),
+    ).toBeVisible();
+    expect(within(main).getAllByText('city-text-page-title').length).toBeGreaterThan(0);
+    expect(within(main).getByText(/heading 수준은 문서 구조를 나타내고/)).toBeVisible();
+  });
+
   it('closes the mobile drawer after navigation', async () => {
     const user = userEvent.setup();
     await renderDocs(['/getting-started']);

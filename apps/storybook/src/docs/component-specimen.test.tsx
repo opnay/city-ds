@@ -85,6 +85,41 @@ describe('ComponentSpecimen', () => {
     }
   });
 
+  it('applies content text roles and prose flow from the public stylesheet', () => {
+    const host = document.createElement('div');
+
+    host.innerHTML = renderToStaticMarkup(
+      <ComponentSpecimen>
+        <article className="city-prose">
+          <h2 className="city-text-section-title">운행 상태</h2>
+          <p className="city-text-body">일반적인 본문입니다.</p>
+          <footer className="city-text-caption">14:30 갱신</footer>
+        </article>
+      </ComponentSpecimen>,
+    );
+    document.body.append(host);
+
+    try {
+      const prose = host.querySelector<HTMLElement>('.city-prose');
+      const sectionTitle = host.querySelector<HTMLElement>('.city-text-section-title');
+      const body = host.querySelector<HTMLElement>('.city-text-body');
+      const caption = host.querySelector<HTMLElement>('.city-text-caption');
+
+      expect(getComputedStyle(prose!).maxInlineSize).not.toBe('none');
+      expect(getComputedStyle(prose!).wordBreak).toBe('keep-all');
+      expect(getComputedStyle(sectionTitle!).fontSize).toBe('24px');
+      expect(getComputedStyle(sectionTitle!).lineHeight).toBe('32px');
+      expect(getComputedStyle(sectionTitle!).fontWeight).toBe('600');
+      expect(getComputedStyle(body!).fontSize).toBe('16px');
+      expect(getComputedStyle(body!).lineHeight).toBe('24px');
+      expect(getComputedStyle(body!).fontWeight).toBe('400');
+      expect(getComputedStyle(caption!).fontSize).toBe('12px');
+      expect(getComputedStyle(caption!).lineHeight).toBe('16px');
+    } finally {
+      host.remove();
+    }
+  });
+
   it('keeps city-ds table rows outside the Storybook Docs light stripe', () => {
     const style = document.createElement('style');
     const host = document.createElement('div');
@@ -124,8 +159,12 @@ describe('ComponentSpecimen', () => {
     }
   });
 
-  it('uses city-ds Table for the control contract documents', () => {
-    for (const path of ['../stories/control-size.mdx', '../stories/control-typography.mdx']) {
+  it('uses city-ds Table for the size and typography contract documents', () => {
+    for (const path of [
+      '../stories/content-typography.mdx',
+      '../stories/control-size.mdx',
+      '../stories/control-typography.mdx',
+    ]) {
       const source = storybookDocs[path];
 
       expect(source).toContain('<Table.Root');

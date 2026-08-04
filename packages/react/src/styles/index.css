@@ -18,6 +18,100 @@
   }
 }
 
+@layer components {
+  :where(
+    .city-text-display,
+    .city-text-page-title,
+    .city-text-section-title,
+    .city-text-subsection-title,
+    .city-text-lead,
+    .city-text-body,
+    .city-text-supporting,
+    .city-text-caption
+  ) {
+    font-family: var(--city-font-family-sans);
+  }
+
+  .city-text-display {
+    font-size: clamp(var(--city-font-size-4xl), 4vw, var(--city-font-size-5xl));
+    line-height: 1;
+    font-weight: var(--city-font-weight-semibold);
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  .city-text-page-title {
+    font-size: clamp(var(--city-font-size-3xl), 3vw, var(--city-font-size-4xl));
+    line-height: 1.1;
+    font-weight: var(--city-font-weight-semibold);
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .city-text-section-title {
+    font-size: var(--city-font-size-2xl);
+    line-height: var(--city-line-height-2xl);
+    font-weight: var(--city-font-weight-semibold);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .city-text-subsection-title {
+    font-size: var(--city-font-size-xl);
+    line-height: var(--city-line-height-xl);
+    font-weight: var(--city-font-weight-semibold);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .city-text-lead {
+    font-size: var(--city-font-size-lg);
+    line-height: var(--city-line-height-lg);
+    font-weight: var(--city-font-weight-regular);
+    text-wrap: pretty;
+  }
+
+  .city-text-body {
+    font-size: var(--city-font-size-md);
+    line-height: var(--city-line-height-md);
+    font-weight: var(--city-font-weight-regular);
+    text-wrap: pretty;
+  }
+
+  .city-text-supporting {
+    font-size: var(--city-font-size-sm);
+    line-height: var(--city-line-height-sm);
+    font-weight: var(--city-font-weight-regular);
+    text-wrap: pretty;
+  }
+
+  .city-text-caption {
+    font-size: var(--city-font-size-xs);
+    line-height: var(--city-line-height-xs);
+    font-weight: var(--city-font-weight-regular);
+  }
+
+  .city-prose {
+    display: grid;
+    max-inline-size: 68ch;
+    gap: var(--city-space-4);
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+  }
+
+  .city-prose > * {
+    margin-block: 0;
+  }
+
+  .city-prose > :where(ol, ul) {
+    padding-inline-start: var(--city-space-6);
+  }
+
+  .city-prose > :where(.city-text-section-title, .city-text-subsection-title):not(:first-child) {
+    margin-block-start: var(--city-space-4);
+  }
+}
+
 .city-skeleton {
   position: relative;
 }

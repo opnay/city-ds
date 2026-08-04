@@ -41,6 +41,10 @@ interface CodeTokenStyle extends CSSProperties {
   '--city-docs-code-token-light'?: string | undefined;
 }
 
+interface CodeLinesStyle extends CSSProperties {
+  '--city-docs-code-line-number-width': string;
+}
+
 function resolveLanguage(language: string | undefined): CodeLanguage {
   if (!language) return 'text';
   return LANGUAGE_ALIASES[language as keyof typeof LANGUAGE_ALIASES] ?? 'text';
@@ -68,23 +72,31 @@ export function CodeBlock({ className, code, language, ...props }: CodeBlockProp
       }),
     [displayedCode, resolvedLanguage],
   );
+  const codeStyle: CodeLinesStyle = {
+    '--city-docs-code-line-number-width': `${Math.max(String(tokens.length).length, 2)}ch`,
+  };
   const preClassName = className ? `city-docs-code-block ${className}` : 'city-docs-code-block';
 
   return (
     <pre {...props} className={preClassName}>
-      <code data-language={resolvedLanguage}>
+      <code data-language={resolvedLanguage} style={codeStyle}>
         {tokens.map((line, lineIndex) => (
           <span data-code-line="" key={lineIndex}>
-            {line.map((token) => (
-              <span
-                className="city-docs-code-token"
-                key={token.offset}
-                style={getTokenStyle(token)}
-              >
-                {token.content}
-              </span>
-            ))}
-            {lineIndex < tokens.length - 1 ? '\n' : null}
+            <span aria-hidden="true" className="city-docs-code-line-number">
+              {lineIndex + 1}
+            </span>
+            <span className="city-docs-code-line-content">
+              {line.map((token) => (
+                <span
+                  className="city-docs-code-token"
+                  key={token.offset}
+                  style={getTokenStyle(token)}
+                >
+                  {token.content}
+                </span>
+              ))}
+              {lineIndex < tokens.length - 1 ? '\n' : null}
+            </span>
           </span>
         ))}
       </code>

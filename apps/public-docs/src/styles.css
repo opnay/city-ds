@@ -475,6 +475,16 @@
     color: var(--city-docs-code-token-light, var(--city-color-foreground));
   }
 
+  .city-docs-code-line-number {
+    display: inline-block;
+    width: var(--city-docs-code-line-number-width);
+    margin-right: var(--city-space-4);
+    color: var(--city-color-muted-foreground);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    user-select: none;
+  }
+
   [data-theme='dark'] .city-docs-code-token {
     color: var(--city-docs-code-token-dark, var(--city-color-foreground));
   }

@@ -6,6 +6,7 @@ import { renderDocs } from '../test/render-docs';
 function expectHighlighted(codeBlock: HTMLElement, language: string) {
   expect(codeBlock.querySelector('code')).toHaveAttribute('data-language', language);
   expect(codeBlock.querySelectorAll('.city-docs-code-token').length).toBeGreaterThan(1);
+  expect(codeBlock.querySelector('.city-docs-code-line-number')).toHaveTextContent('1');
 }
 
 describe('document syntax highlighting', () => {

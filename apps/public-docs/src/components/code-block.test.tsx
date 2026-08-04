@@ -59,6 +59,21 @@ describe('CodeBlock', () => {
     const codeBlock = screen.getByLabelText('Plain example');
 
     expect(codeBlock.querySelector('code')).toHaveAttribute('data-language', 'text');
-    expect(codeBlock.textContent).toBe('first\nsecond');
+    expect(
+      [...codeBlock.querySelectorAll('.city-docs-code-line-content')]
+        .map((line) => line.textContent)
+        .join(''),
+    ).toBe('first\nsecond');
+  });
+
+  it('shows one-based line numbers without exposing them to assistive technology', () => {
+    render(<CodeBlock aria-label="Numbered example" code={'first\nsecond'} language="text" />);
+    const codeBlock = screen.getByLabelText('Numbered example');
+    const lineNumbers = [...codeBlock.querySelectorAll('.city-docs-code-line-number')];
+
+    expect(lineNumbers.map((lineNumber) => lineNumber.textContent)).toEqual(['1', '2']);
+    expect(
+      lineNumbers.every((lineNumber) => lineNumber.getAttribute('aria-hidden') === 'true'),
+    ).toBe(true);
   });
 });

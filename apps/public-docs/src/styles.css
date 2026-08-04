@@ -471,6 +471,20 @@
     line-height: 1.65;
   }
 
+  .city-docs-code-token {
+    color: var(--city-docs-code-token-light, var(--city-color-foreground));
+  }
+
+  [data-theme='dark'] .city-docs-code-token {
+    color: var(--city-docs-code-token-dark, var(--city-color-foreground));
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) .city-docs-code-token {
+      color: var(--city-docs-code-token-dark, var(--city-color-foreground));
+    }
+  }
+
   .city-docs-import-block {
     display: grid;
     max-width: 48rem;

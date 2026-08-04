@@ -13,10 +13,13 @@
   "dependencies": {
     "@mdx-js/react": "catalog:",
     "@opnay/city-ds-react": "workspace:*",
+    "@shikijs/langs": "catalog:",
+    "@shikijs/themes": "catalog:",
     "@tanstack/react-router": "catalog:",
     "lucide-react": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "shiki": "catalog:"
   },
   "devDependencies": {
     "@mdx-js/rollup": "catalog:",

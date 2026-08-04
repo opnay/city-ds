@@ -1,12 +1,11 @@
 import { MDXProvider } from '@mdx-js/react';
-import { useState, type ComponentPropsWithoutRef, type ReactNode } from 'react';
-import { Check, Clipboard, X } from 'lucide-react';
-import { Button } from '@opnay/city-ds-react/button';
+import { isValidElement, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Table } from '@opnay/city-ds-react/table';
 import type { MDXComponents } from 'mdx/types.js';
 
 import type { ApiItem, DocExample } from '../docs/types';
+import { CodeBlock, type CodeFile } from './code-block';
 
 interface DocsMdxProviderProps {
   children: ReactNode;
@@ -20,24 +19,14 @@ interface ApiTableProps {
   items: readonly ApiItem[];
 }
 
-async function writeClipboard(value: string): Promise<void> {
-  if (!navigator.clipboard) throw new Error('Clipboard API is unavailable');
-  await navigator.clipboard.writeText(value);
+interface CodeFilesProps {
+  'aria-label'?: string | undefined;
+  files: readonly [CodeFile, CodeFile, ...CodeFile[]];
 }
 
 function ExampleFrame({ example }: { example: DocExample }) {
-  const [copyState, setCopyState] = useState<'idle' | 'success' | 'error'>('idle');
   const titleId = `example-${example.id}`;
   const Example = example.Component;
-
-  const copySource = async () => {
-    try {
-      await writeClipboard(example.source);
-      setCopyState('success');
-    } catch {
-      setCopyState('error');
-    }
-  };
 
   return (
     <section aria-labelledby={titleId} className="city-docs-example">
@@ -61,28 +50,21 @@ function ExampleFrame({ example }: { example: DocExample }) {
       </div>
       <details className="city-docs-example-code">
         <summary>코드 보기</summary>
-        <div className="city-docs-code-toolbar">
-          <Button onClick={() => void copySource()} size="sm" type="button" variant="ghost">
-            {copyState === 'success' ? (
-              <Check aria-hidden="true" size={15} />
-            ) : copyState === 'error' ? (
-              <X aria-hidden="true" size={15} />
-            ) : (
-              <Clipboard aria-hidden="true" size={15} />
-            )}
-            {copyState === 'success' ? '복사됨' : copyState === 'error' ? '복사 실패' : '코드 복사'}
-          </Button>
-          <span aria-live="polite" className="city-docs-sr-only">
-            {copyState === 'success'
-              ? '예제 코드를 복사했습니다.'
-              : copyState === 'error'
-                ? '예제 코드를 복사할 수 없습니다. 코드를 직접 선택하십시오.'
-                : ''}
-          </span>
-        </div>
-        <pre aria-label={`${example.title} 예제 소스 코드`} tabIndex={0}>
-          <code>{example.source}</code>
-        </pre>
+        {example.files ? (
+          <CodeBlock
+            aria-label={`${example.title} 예제 소스 코드`}
+            files={example.files}
+            tabIndex={0}
+          />
+        ) : (
+          <CodeBlock
+            aria-label={`${example.title} 예제 소스 코드`}
+            code={example.source}
+            filename={example.filename}
+            language="tsx"
+            tabIndex={0}
+          />
+        )}
       </details>
     </section>
   );
@@ -132,14 +114,53 @@ export function ApiTable({ items }: ApiTableProps) {
   );
 }
 
-function MdxPre(props: ComponentPropsWithoutRef<'pre'>) {
+export function CodeFiles({ 'aria-label': ariaLabel = '문서 코드 파일', files }: CodeFilesProps) {
+  return (
+    <CodeBlock aria-label={ariaLabel} className="city-docs-prose-code" files={files} tabIndex={0} />
+  );
+}
+
+function getMdxCodeBlock(
+  children: ReactNode,
+): { code: string; language?: string | undefined } | undefined {
+  if (!isValidElement<ComponentPropsWithoutRef<'code'>>(children)) return undefined;
+
+  const code = children.props.children;
+  if (typeof code !== 'string') return undefined;
+
+  const className = children.props.className;
+  const language =
+    typeof className === 'string' ? /(?:^|\s)language-([^\s]+)/.exec(className)?.[1] : undefined;
+
+  return { code, language };
+}
+
+function MdxPre({ children, className, ...props }: ComponentPropsWithoutRef<'pre'>) {
+  const codeBlock = getMdxCodeBlock(children);
+  const preClassName = className ? `city-docs-prose-code ${className}` : 'city-docs-prose-code';
+
+  if (codeBlock) {
+    return (
+      <CodeBlock
+        {...props}
+        aria-label={props['aria-label'] ?? '문서 코드 예제'}
+        className={preClassName}
+        code={codeBlock.code}
+        language={codeBlock.language}
+        tabIndex={0}
+      />
+    );
+  }
+
   return (
     <pre
       {...props}
       aria-label={props['aria-label'] ?? '문서 코드 예제'}
-      className="city-docs-prose-code"
+      className={preClassName}
       tabIndex={0}
-    />
+    >
+      {children}
+    </pre>
   );
 }
 
@@ -158,6 +179,7 @@ function MdxTable(props: ComponentPropsWithoutRef<'table'>) {
 
 const MDX_COMPONENTS = {
   ApiTable,
+  CodeFiles,
   ExampleSet,
   pre: MdxPre,
   table: MdxTable,

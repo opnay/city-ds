@@ -170,7 +170,9 @@ describe('catalog and local UI state', () => {
     await user.click(within(details).getByRole('button', { name: '코드 복사' }));
 
     expect(within(details).getByRole('button', { name: '복사 실패' })).toBeVisible();
-    expect(within(details).getByText(/예제 코드를 복사할 수 없습니다/)).toBeInTheDocument();
+    expect(
+      within(details).getByText(/variants\.tsx 코드를 복사할 수 없습니다/),
+    ).toBeInTheDocument();
     expect(within(details).getByRole('code')).not.toBeEmptyDOMElement();
 
     clipboard.mockRestore();

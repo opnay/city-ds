@@ -35,6 +35,7 @@ export const pageData = {
       ],
       description: '제어된 파괴적 확인과 취소 복귀를 보여 줍니다.',
       id: 'alert-dialog-confirm',
+      filename: 'confirm.tsx',
       source: confirmSource,
       title: '복구할 수 없는 작업 확인',
     },

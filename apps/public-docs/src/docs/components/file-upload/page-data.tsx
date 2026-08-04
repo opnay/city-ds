@@ -34,6 +34,7 @@ export const pageData = {
       ],
       description: '선택과 제거를 로컬 상태로만 처리합니다.',
       id: 'file-upload-local-files',
+      filename: 'local-files.tsx',
       source: localFilesSource,
       title: '로컬 파일 선택',
     },

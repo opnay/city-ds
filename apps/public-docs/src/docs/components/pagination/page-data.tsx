@@ -23,6 +23,7 @@ export const pageData = {
       coverage: [{ axis: 'density', values: ['comfortable', 'compact'] }],
       description: '편안한·압축 밀도에서 긴 페이지 범위의 이전·다음과 생략을 제공합니다.',
       id: 'pagination-controlled',
+      filename: 'pager.tsx',
       source: pagerSource,
       title: '제어된 페이지 이동',
     },

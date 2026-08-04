@@ -27,6 +27,7 @@ export const pageData = {
       ],
       description: '비제어·제어·비활성 상태와 모든 크기입니다.',
       id: 'switch-states',
+      filename: 'states.tsx',
       source: statesSource,
       title: '켜짐 상태',
     },

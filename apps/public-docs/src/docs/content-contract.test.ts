@@ -66,8 +66,23 @@ describe('component document content', () => {
 
       for (const example of pageData.examples) {
         expect(example.Component).toBeTypeOf('function');
-        expect(example.source.trim().length).toBeGreaterThan(0);
         expect(example.coverage.length).toBeGreaterThan(0);
+
+        if (example.files) {
+          expect(example.files.length).toBeGreaterThanOrEqual(2);
+          expect(new Set(example.files.map((file) => file.filename)).size).toBe(
+            example.files.length,
+          );
+
+          for (const file of example.files) {
+            expect(file.filename.trim().length).toBeGreaterThan(0);
+            expect(file.language.trim().length).toBeGreaterThan(0);
+            expect(file.source.trim().length).toBeGreaterThan(0);
+          }
+        } else {
+          expect(example.filename).toMatch(/\.tsx$/);
+          expect(example.source.trim().length).toBeGreaterThan(0);
+        }
       }
 
       for (const axis of pageData.optionAxes) {

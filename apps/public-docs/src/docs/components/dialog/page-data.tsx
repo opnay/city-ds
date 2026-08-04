@@ -37,6 +37,7 @@ export const pageData = {
       ],
       description: '제어된 열림과 본문 스크롤 구조를 보여 줍니다.',
       id: 'dialog-controlled',
+      filename: 'controlled.tsx',
       source: controlledSource,
       title: '편집·정보 Dialog',
     },

@@ -32,6 +32,7 @@ export const pageData = {
       ],
       description: '제어·비제어 단일·복수 선택과 모든 크기의 팝업 목록입니다.',
       id: 'select-basic',
+      filename: 'select.tsx',
       source: selectSource,
       title: '선택 목록',
     },

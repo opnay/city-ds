@@ -22,6 +22,7 @@ export const pageData = {
       ],
       description: '초기 데이터 없음과 검색 결과 없음을 구분해 안내합니다.',
       id: 'empty-state',
+      filename: 'empty.tsx',
       source: emptySource,
       title: '빈 결과 복구',
     },

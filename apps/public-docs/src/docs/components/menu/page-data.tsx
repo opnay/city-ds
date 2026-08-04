@@ -26,6 +26,7 @@ export const pageData = {
       ],
       description: '편안한·압축 밀도의 명령, 체크 항목, 파괴적 명령을 구성합니다.',
       id: 'menu-basic',
+      filename: 'menu.tsx',
       source: menuSource,
       title: '컨텍스트 명령',
     },

@@ -50,6 +50,7 @@ export const pageData = {
       ],
       description: '형태, 상태, 크기를 함께 비교합니다.',
       id: 'progress-states',
+      filename: 'states.tsx',
       source: statesSource,
       title: '진행 상태',
     },

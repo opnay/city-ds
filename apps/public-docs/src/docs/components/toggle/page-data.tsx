@@ -55,6 +55,7 @@ export const pageData = {
       ],
       description: '모든 표면·선택 상태와 크기를 비교합니다.',
       id: 'toggle-matrix',
+      filename: 'matrix.tsx',
       source: matrixSource,
       title: '토글 상태',
     },

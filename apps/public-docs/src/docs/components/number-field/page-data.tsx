@@ -27,6 +27,7 @@ export const pageData = {
       ],
       description: '범위가 있는 제어 값, 비제어 크기, 비활성 상태입니다.',
       id: 'number-field-basic',
+      filename: 'number-field.tsx',
       source: numberFieldSource,
       title: '수량 입력',
     },

@@ -27,6 +27,7 @@ export const pageData = {
       coverage: [{ axis: 'density', values: ['comfortable', 'compact'] }],
       description: '한 영역 안의 제어가 같은 밀도를 상속합니다.',
       id: 'density-provider',
+      filename: 'density.tsx',
       source: densitySource,
       title: '영역 밀도',
     },

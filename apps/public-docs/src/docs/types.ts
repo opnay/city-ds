@@ -45,14 +45,33 @@ export interface ExampleCoverage {
   values: readonly string[];
 }
 
-export interface DocExample {
+export interface DocCodeFile {
+  filename: string;
+  language: string;
+  source: string;
+}
+
+interface DocExampleBase {
   Component: ComponentType;
   coverage: readonly ExampleCoverage[];
   description: string;
   id: string;
-  source: string;
   title: string;
 }
+
+interface SingleFileDocExample extends DocExampleBase {
+  filename: string;
+  files?: never;
+  source: string;
+}
+
+interface MultiFileDocExample extends DocExampleBase {
+  filename?: never;
+  files: readonly [DocCodeFile, DocCodeFile, ...DocCodeFile[]];
+  source?: never;
+}
+
+export type DocExample = MultiFileDocExample | SingleFileDocExample;
 
 export interface ComponentPageData {
   api: readonly ApiItem[];

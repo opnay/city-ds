@@ -32,6 +32,7 @@ export const pageData = {
       ],
       description: '기본 단일 열림과 비활성 항목을 함께 확인합니다.',
       id: 'accordion-usage',
+      filename: 'usage.tsx',
       source: usageSource,
       title: '기본 구조',
     },

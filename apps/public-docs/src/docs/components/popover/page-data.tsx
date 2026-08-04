@@ -41,6 +41,7 @@ export const pageData = {
       ],
       description: '트리거 가까이의 비제어·제어 상호작용 패널입니다.',
       id: 'popover-basic',
+      filename: 'popover.tsx',
       source: popoverSource,
       title: '상호작용 패널',
     },

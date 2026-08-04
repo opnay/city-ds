@@ -58,6 +58,7 @@ export const pageData = {
       ],
       description: '방향과 크기를 맞춘 구조를 확인합니다.',
       id: 'drawer-sides',
+      filename: 'sides.tsx',
       source: sidesSource,
       title: 'side × size',
     },

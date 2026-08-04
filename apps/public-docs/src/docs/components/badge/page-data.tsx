@@ -96,6 +96,7 @@ export const pageData = {
       ],
       description: '모든 mode·tone·appearance 조합을 비교합니다.',
       id: 'badge-matrix',
+      filename: 'matrix.tsx',
       source: matrixSource,
       title: '상태와 표현',
     },

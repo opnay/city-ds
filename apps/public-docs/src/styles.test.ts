@@ -1,0 +1,11 @@
+import { readFileSync } from 'node:fs';
+
+import { describe, expect, it } from 'vitest';
+
+const styles = readFileSync('src/styles.css', 'utf8');
+
+describe('public docs layout styles', () => {
+  it('lets expanded example code shrink so the code block owns horizontal scrolling', () => {
+    expect(styles).toMatch(/\.city-docs-example-code\s*{\s*min-width:\s*0;/);
+  });
+});

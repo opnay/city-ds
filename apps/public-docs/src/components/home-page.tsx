@@ -172,11 +172,15 @@ export function HomePage() {
         <ProductPreview />
       </header>
 
-      <section aria-labelledby="product-foundation" className="city-docs-home-section">
+      <section
+        aria-labelledby="product-foundation-title"
+        className="city-docs-home-section"
+        id="product-foundation"
+      >
         <div className="city-docs-home-section-heading">
           <p className="city-text-caption">제품을 위한 기반</p>
           <div>
-            <h2 className="city-text-section-title" id="product-foundation">
+            <h2 className="city-text-section-title" id="product-foundation-title">
               컴포넌트뿐 아니라 선택 기준까지 제공합니다.
             </h2>
             <p className="city-text-body">
@@ -213,11 +217,15 @@ export function HomePage() {
         </div>
       </section>
 
-      <section aria-labelledby="product-contexts" className="city-docs-home-section">
+      <section
+        aria-labelledby="product-contexts-title"
+        className="city-docs-home-section"
+        id="product-contexts"
+      >
         <div className="city-docs-home-section-heading">
           <p className="city-text-caption">사용 맥락</p>
           <div>
-            <h2 className="city-text-section-title" id="product-contexts">
+            <h2 className="city-text-section-title" id="product-contexts-title">
               운영 제품의 반복되는 문제를 다룹니다.
             </h2>
             <p className="city-text-body">
@@ -243,11 +251,15 @@ export function HomePage() {
         </Button>
       </section>
 
-      <section aria-labelledby="product-start" className="city-docs-home-start">
+      <section
+        aria-labelledby="product-start-title"
+        className="city-docs-home-start"
+        id="product-start"
+      >
         <div className="city-docs-home-section-heading">
           <p className="city-text-caption">제품에 연결하기</p>
           <div>
-            <h2 className="city-text-section-title" id="product-start">
+            <h2 className="city-text-section-title" id="product-start-title">
               첫 화면을 city-ds로 시작하십시오.
             </h2>
             <p className="city-text-body">

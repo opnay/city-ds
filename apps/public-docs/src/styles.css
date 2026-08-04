@@ -44,6 +44,8 @@
   }
 
   .city-docs-product-shell {
+    --city-docs-product-header-height: calc(var(--city-control-sm) + var(--city-space-6));
+
     display: grid;
     min-height: 100vh;
     min-height: 100dvh;
@@ -62,7 +64,7 @@
   .city-docs-product-header-inner {
     display: flex;
     width: min(100%, 88rem);
-    min-height: calc(var(--city-control-sm) + var(--city-space-6));
+    min-height: var(--city-docs-product-header-height);
     margin-inline: auto;
     padding: var(--city-space-2) var(--city-space-8);
     align-items: center;
@@ -628,6 +630,8 @@
 
   .city-docs-home-hero {
     display: grid;
+    min-height: calc(100vh - var(--city-docs-product-header-height));
+    min-height: calc(100dvh - var(--city-docs-product-header-height));
     min-width: 0;
     padding: var(--city-space-8) 0 var(--city-space-12);
     border-bottom: 1px solid var(--city-color-border);
@@ -881,8 +885,12 @@
   .city-docs-home-section,
   .city-docs-home-start {
     display: grid;
+    min-height: calc(100vh - var(--city-docs-product-header-height));
+    min-height: calc(100dvh - var(--city-docs-product-header-height));
     min-width: 0;
+    align-content: center;
     gap: var(--city-space-8);
+    scroll-margin-top: var(--city-docs-product-header-height);
   }
 
   .city-docs-home-section-heading {
@@ -1306,6 +1314,12 @@
   }
 
   @media (max-width: 30rem) {
+    .city-docs-product-shell {
+      --city-docs-product-header-height: calc(
+        var(--city-control-md) + var(--city-control-sm) + var(--city-space-6)
+      );
+    }
+
     .city-docs-current-page {
       display: none;
     }

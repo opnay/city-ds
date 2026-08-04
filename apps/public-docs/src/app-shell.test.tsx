@@ -56,6 +56,7 @@ describe('public docs routes and shell', () => {
   it('introduces the product and offers task-oriented starting paths', async () => {
     await renderDocs(['/']);
     const main = screen.getByRole('main');
+    const productNavigation = screen.getByRole('navigation', { name: '제품 소개 탐색' });
 
     const pageTitle = within(main).getByRole('heading', {
       level: 1,
@@ -68,12 +69,28 @@ describe('public docs routes and shell', () => {
         name: '컴포넌트뿐 아니라 선택 기준까지 제공합니다.',
       }),
     ).toHaveClass('city-text-section-title');
-    expect(screen.getByRole('navigation', { name: '제품 소개 탐색' })).toBeVisible();
+    expect(productNavigation).toBeVisible();
+    expect(within(productNavigation).getByRole('link', { name: '제품 기반' })).toHaveAttribute(
+      'href',
+      '#product-foundation',
+    );
+    expect(within(productNavigation).getByRole('link', { name: '사용 맥락' })).toHaveAttribute(
+      'href',
+      '#product-contexts',
+    );
     expect(screen.queryByRole('navigation', { name: '현재 위치' })).not.toBeInTheDocument();
     expect(
       within(main).getByText(/복잡한 운영 도구, 데이터 화면, 폼을 빠르고 일관되게/),
     ).toBeVisible();
     expect(within(main).getByRole('progressbar', { name: '릴리스 준비도' })).toBeVisible();
+    expect(
+      within(main).getByRole('region', {
+        name: '컴포넌트뿐 아니라 선택 기준까지 제공합니다.',
+      }),
+    ).toHaveAttribute('id', 'product-foundation');
+    expect(
+      within(main).getByRole('region', { name: '운영 제품의 반복되는 문제를 다룹니다.' }),
+    ).toHaveAttribute('id', 'product-contexts');
     expect(within(main).getByRole('heading', { level: 3, name: '운영 도구' })).toHaveClass(
       'city-text-subsection-title',
     );

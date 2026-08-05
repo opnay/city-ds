@@ -211,7 +211,7 @@ function ProductHeader({
         <nav aria-label="제품 소개 탐색" className="city-docs-product-navigation">
           <a href="#product-foundation">제품 기반</a>
           <a href="#product-contexts">사용 맥락</a>
-          <Link to="/components">컴포넌트</Link>
+          <a href="#product-components">컴포넌트</a>
         </nav>
         <div className="city-docs-product-actions">
           <ThemeSelect onChange={onThemeChange} value={theme} />
@@ -311,7 +311,12 @@ export function DocsShell() {
           본문으로 건너뛰기
         </a>
         <ProductHeader onThemeChange={setTheme} theme={theme} />
-        <main className="city-docs-product-main" id="main-content" ref={mainRef} tabIndex={-1}>
+        <main
+          className="city-docs-product-main city-docs-product-main-home"
+          id="main-content"
+          ref={mainRef}
+          tabIndex={-1}
+        >
           <Outlet />
         </main>
         <footer className="city-docs-product-footer">

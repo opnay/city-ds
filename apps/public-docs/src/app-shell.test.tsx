@@ -66,7 +66,7 @@ describe('public docs routes and shell', () => {
     expect(
       within(main).getByRole('heading', {
         level: 2,
-        name: '컴포넌트뿐 아니라 선택 기준까지 제공합니다.',
+        name: '일관된 선택을 위한 기준을 제공합니다.',
       }),
     ).toHaveClass('city-text-section-title');
     expect(productNavigation).toBeVisible();
@@ -78,26 +78,51 @@ describe('public docs routes and shell', () => {
       'href',
       '#product-contexts',
     );
+    expect(within(productNavigation).getByRole('link', { name: '컴포넌트' })).toHaveAttribute(
+      'href',
+      '#product-components',
+    );
     expect(screen.queryByRole('navigation', { name: '현재 위치' })).not.toBeInTheDocument();
     expect(
-      within(main).getByText(/복잡한 운영 도구, 데이터 화면, 폼을 빠르고 일관되게/),
+      within(main).getByText(/복잡한 운영 도구와 데이터 화면을 빠르고 일관되게/),
     ).toBeVisible();
-    expect(within(main).getByRole('progressbar', { name: '릴리스 준비도' })).toBeVisible();
+    expect(within(main).getByRole('region', { name: '거래 검토' })).toBeVisible();
+    expect(within(main).getByRole('searchbox', { name: '거래 ID 또는 사용자 검색' })).toBeVisible();
     expect(
       within(main).getByRole('region', {
-        name: '컴포넌트뿐 아니라 선택 기준까지 제공합니다.',
+        name: '일관된 선택을 위한 기준을 제공합니다.',
       }),
     ).toHaveAttribute('id', 'product-foundation');
     expect(
-      within(main).getByRole('region', { name: '운영 제품의 반복되는 문제를 다룹니다.' }),
+      within(main).getByRole('region', {
+        name: '실제 운영 흐름에 맞춘 상호작용을 지원합니다.',
+      }),
     ).toHaveAttribute('id', 'product-contexts');
-    expect(within(main).getByRole('heading', { level: 3, name: '운영 도구' })).toHaveClass(
-      'city-text-subsection-title',
-    );
-    expect(within(main).getByRole('heading', { level: 3, name: '데이터 화면' })).toBeVisible();
-    expect(within(main).getByRole('heading', { level: 3, name: '입력 흐름' })).toBeVisible();
-    expect(within(main).getByRole('link', { name: '설치하고 시작하기' })).toBeVisible();
-    expect(within(main).getByRole('link', { name: '전체 컴포넌트 보기' })).toBeVisible();
+    expect(
+      within(main).getByRole('region', {
+        name: '즉시 사용할 수 있는 컴포넌트를 제공합니다.',
+      }),
+    ).toHaveAttribute('id', 'product-components');
+    expect(within(main).getByRole('link', { name: '설치 가이드 보기' })).toBeVisible();
+    expect(within(main).getByRole('link', { name: '40 components' })).toBeVisible();
+  });
+
+  it('filters the landing preview and copies the install command', async () => {
+    const user = userEvent.setup();
+    const clipboard = vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue();
+    await renderDocs(['/']);
+    const main = screen.getByRole('main');
+    const search = within(main).getByRole('searchbox', { name: '거래 ID 또는 사용자 검색' });
+
+    await user.type(search, 'lee.ys');
+    expect(within(main).getByText('TX-98719')).toBeVisible();
+    expect(within(main).queryByText('TX-98721')).not.toBeInTheDocument();
+
+    await user.click(within(main).getByRole('button', { name: '복사' }));
+    expect(clipboard).toHaveBeenCalledWith('pnpm add @opnay/city-ds-react');
+    expect(within(main).getByRole('button', { name: '복사됨' })).toBeVisible();
+
+    clipboard.mockRestore();
   });
 
   it('documents content typography roles and semantic structure', async () => {

@@ -1,122 +1,341 @@
-import {
-  Accessibility,
-  ArrowRight,
-  Blocks,
-  BookOpenCheck,
-  LayoutDashboard,
-  ListChecks,
-  Settings2,
-} from 'lucide-react';
+import { useMemo, useState, type CSSProperties } from 'react';
+import { ArrowRight, Check, Clipboard, ListChecks, RefreshCw, ShieldCheck, X } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
-import { Progress } from '@opnay/city-ds-react/progress';
+import { Checkbox } from '@opnay/city-ds-react/checkbox';
+import { Input } from '@opnay/city-ds-react/input';
+import { SearchField } from '@opnay/city-ds-react/search-field';
+import { Select } from '@opnay/city-ds-react/select';
+import { Switch } from '@opnay/city-ds-react/switch';
+import { Table } from '@opnay/city-ds-react/table';
 
 import { COMPONENT_DOCS } from '../docs/doc-catalog';
 
-const PRODUCT_CONTEXTS = [
+const TRANSACTIONS = [
   {
-    components: 'Toolbar · Menu · Dialog · Toast',
-    description: '반복 작업과 상태 전환, 실패 비용이 큰 액션의 위계를 명확하게 구성합니다.',
-    icon: ListChecks,
-    title: '운영 도구',
+    amount: '₩125,000',
+    id: 'TX-98721',
+    requestedAt: '2026-08-05 14:28',
+    status: 'normal',
+    user: 'park.jh',
   },
   {
-    components: 'FilterBar · Table · Pagination',
-    description: '필터, 비교, 선택, 탐색이 이어지는 밀도 높은 데이터 화면을 설계합니다.',
-    icon: LayoutDashboard,
-    title: '데이터 화면',
+    amount: '₩560,000',
+    id: 'TX-98720',
+    requestedAt: '2026-08-05 14:22',
+    status: 'review',
+    user: 'kim.sy',
   },
   {
-    components: 'Field · Combobox · DatePicker · FileUpload',
-    description: '입력부터 검증, 오류 복구, 완료까지 예측 가능한 폼 흐름을 만듭니다.',
-    icon: Settings2,
-    title: '입력 흐름',
+    amount: '₩1,250,000',
+    id: 'TX-98719',
+    requestedAt: '2026-08-05 14:19',
+    status: 'hold',
+    user: 'lee.ys',
+  },
+  {
+    amount: '₩85,000',
+    id: 'TX-98718',
+    requestedAt: '2026-08-05 14:18',
+    status: 'normal',
+    user: 'cho.mj',
+  },
+  {
+    amount: '₩320,000',
+    id: 'TX-98717',
+    requestedAt: '2026-08-05 14:16',
+    status: 'review',
+    user: 'jung.wp',
   },
 ] as const;
 
+const STATUS_ITEMS = {
+  all: '상태 전체',
+  hold: '보류',
+  normal: '정상',
+  review: '검토 중',
+} as const;
+
+const STATUS_BADGES = {
+  hold: { label: '보류', tone: 'destructive' },
+  normal: { label: '정상', tone: 'success' },
+  review: { label: '검토 중', tone: 'warning' },
+} as const;
+
+const WORKFLOW_STAGES = [
+  {
+    description: '정책 확인 4건',
+    icon: ListChecks,
+    title: '거래 검토',
+  },
+  {
+    description: '프로덕션 동기화',
+    icon: RefreshCw,
+    title: '배포 상태',
+  },
+  {
+    description: '신규 요청 3건',
+    icon: ShieldCheck,
+    title: '접근 권한',
+  },
+] as const;
+
+type CopyState = 'error' | 'idle' | 'success';
+type StatusFilter = keyof typeof STATUS_ITEMS;
+
+function StatusOptions() {
+  return (
+    <Select.Portal>
+      <Select.Positioner>
+        <Select.Popup>
+          <Select.List>
+            {Object.entries(STATUS_ITEMS).map(([value, label]) => (
+              <Select.Item key={value} value={value}>
+                <Select.ItemIndicator />
+                <Select.ItemText>{label}</Select.ItemText>
+              </Select.Item>
+            ))}
+          </Select.List>
+        </Select.Popup>
+      </Select.Positioner>
+    </Select.Portal>
+  );
+}
+
 function ProductPreview() {
+  const [query, setQuery] = useState('');
+  const [status, setStatus] = useState<StatusFilter>('all');
+  const [updatedAt, setUpdatedAt] = useState('2026-08-05 14:32');
+  const visibleTransactions = useMemo(() => {
+    const normalizedQuery = query.trim().toLocaleLowerCase('ko-KR');
+
+    return TRANSACTIONS.filter((transaction) => {
+      const matchesQuery =
+        normalizedQuery.length === 0 ||
+        transaction.id.toLocaleLowerCase('ko-KR').includes(normalizedQuery) ||
+        transaction.user.toLocaleLowerCase('ko-KR').includes(normalizedQuery);
+      const matchesStatus = status === 'all' || transaction.status === status;
+
+      return matchesQuery && matchesStatus;
+    });
+  }, [query, status]);
+
   return (
     <section aria-labelledby="product-preview-title" className="city-docs-home-preview">
       <header className="city-docs-home-preview-bar">
-        <span>CITY / OPERATIONS</span>
-        <Badge appearance="subtle" tone="success">
-          운영 중
-        </Badge>
+        <span>CITY / OPERATIONS / 거래 검토</span>
+        <span aria-live="polite">{updatedAt}</span>
       </header>
       <div className="city-docs-home-preview-body">
         <div className="city-docs-home-preview-heading">
-          <div>
-            <p>오늘의 작업 공간</p>
-            <h2 id="product-preview-title">운영 현황</h2>
-          </div>
-          <Badge appearance="outline" tone="neutral">
-            8월 3일
-          </Badge>
+          <h2 id="product-preview-title">거래 검토</h2>
+          <Button
+            onClick={() => setUpdatedAt('방금 업데이트됨')}
+            size="sm"
+            type="button"
+            variant="ghost"
+          >
+            <RefreshCw aria-hidden="true" size={15} />
+            새로고침
+          </Button>
         </div>
 
-        <dl aria-label="운영 현황 요약" className="city-docs-home-metrics">
-          <div>
-            <dt>처리 완료</dt>
-            <dd>128</dd>
-          </div>
-          <div>
-            <dt>자동화</dt>
-            <dd>94%</dd>
-          </div>
-          <div>
-            <dt>검토 대기</dt>
-            <dd>7</dd>
-          </div>
-        </dl>
-
-        <div className="city-docs-home-progress">
-          <div>
-            <span>릴리스 준비도</span>
-            <strong>78%</strong>
-          </div>
-          <Progress.Root aria-label="릴리스 준비도" size="sm" value={78}>
-            <Progress.Track>
-              <Progress.Indicator />
-            </Progress.Track>
-          </Progress.Root>
+        <div className="city-docs-home-preview-toolbar">
+          <SearchField.Root onValueChange={setQuery} value={query}>
+            <SearchField.Group>
+              <SearchField.Input
+                aria-label="거래 ID 또는 사용자 검색"
+                placeholder="거래 ID 또는 사용자 검색"
+              />
+              <SearchField.Clear aria-label="거래 검색어 지우기" />
+            </SearchField.Group>
+          </SearchField.Root>
+          <Select.Root
+            items={STATUS_ITEMS}
+            onValueChange={(value) => {
+              if (value && value in STATUS_ITEMS) setStatus(value as StatusFilter);
+            }}
+            size="md"
+            value={status}
+          >
+            <Select.Trigger aria-label="거래 상태">
+              <Select.Value />
+              <Select.Icon />
+            </Select.Trigger>
+            <StatusOptions />
+          </Select.Root>
         </div>
 
-        <div className="city-docs-home-queue">
-          <div>
-            <span>
-              <strong>거래 검토</strong>
-              <small>정책 확인 4건</small>
-            </span>
-            <Badge appearance="subtle" tone="warning">
-              확인 필요
-            </Badge>
-          </div>
-          <div>
-            <span>
-              <strong>배포 상태</strong>
-              <small>프로덕션 동기화</small>
-            </span>
-            <Badge appearance="subtle" tone="success">
-              완료
-            </Badge>
-          </div>
-          <div>
-            <span>
-              <strong>접근 권한</strong>
-              <small>신규 요청 3건</small>
-            </span>
-            <Badge appearance="outline" tone="neutral">
-              검토 중
-            </Badge>
-          </div>
-        </div>
+        <Table.ScrollArea appearance="plain">
+          <Table.Root aria-label="거래 검토 목록" size="sm">
+            <Table.Header>
+              <Table.Row>
+                <Table.Head>거래 ID</Table.Head>
+                <Table.Head>사용자</Table.Head>
+                <Table.Head>금액</Table.Head>
+                <Table.Head>상태</Table.Head>
+                <Table.Head>요청 시간</Table.Head>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {visibleTransactions.length > 0 ? (
+                visibleTransactions.map((transaction) => {
+                  const badge = STATUS_BADGES[transaction.status];
+
+                  return (
+                    <Table.Row key={transaction.id}>
+                      <Table.Cell>{transaction.id}</Table.Cell>
+                      <Table.Cell>{transaction.user}</Table.Cell>
+                      <Table.Cell>{transaction.amount}</Table.Cell>
+                      <Table.Cell>
+                        <Badge appearance="subtle" size="sm" tone={badge.tone}>
+                          {badge.label}
+                        </Badge>
+                      </Table.Cell>
+                      <Table.Cell>{transaction.requestedAt}</Table.Cell>
+                    </Table.Row>
+                  );
+                })
+              ) : (
+                <Table.StateRow colSpan={5}>조건에 맞는 거래가 없습니다.</Table.StateRow>
+              )}
+            </Table.Body>
+          </Table.Root>
+        </Table.ScrollArea>
+
+        <footer className="city-docs-home-preview-footer">
+          <span>
+            {visibleTransactions.length} / {TRANSACTIONS.length}건
+          </span>
+          <span>페이지 1 / 1</span>
+        </footer>
       </div>
     </section>
   );
 }
 
+function FoundationStrip() {
+  return (
+    <div aria-label="city-ds 기초 토큰" className="city-docs-home-token-strip" role="group">
+      <div>
+        <span>Color</span>
+        <div aria-label="색상 토큰" className="city-docs-home-token-colors" role="img">
+          <i data-tone="foreground" />
+          <i data-tone="muted" />
+          <i data-tone="border" />
+          <i data-tone="surface" />
+          <i data-tone="success" />
+        </div>
+      </div>
+      <div>
+        <span>Typography</span>
+        <strong>Aa</strong>
+      </div>
+      <div>
+        <span>Spacing</span>
+        <div
+          aria-label="간격 토큰 4, 8, 12, 16, 24, 32"
+          className="city-docs-home-token-spacing"
+          role="img"
+        >
+          {[4, 8, 12, 16, 24, 32].map((space) => (
+            <i key={space} style={{ '--city-docs-space-sample': `${space}px` } as CSSProperties} />
+          ))}
+        </div>
+      </div>
+      <div>
+        <span>Radius</span>
+        <div aria-label="모서리 토큰 0, 2, 4" className="city-docs-home-token-radius" role="img">
+          <i />
+          <i />
+          <i />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WorkflowPreview() {
+  return (
+    <div className="city-docs-home-workflow">
+      <ol>
+        {WORKFLOW_STAGES.map(({ description, icon: Icon, title }) => (
+          <li key={title}>
+            <Icon aria-hidden="true" />
+            <span>
+              <strong>{title}</strong>
+              <small>{description}</small>
+            </span>
+          </li>
+        ))}
+      </ol>
+      <Button nativeButton={false} render={<Link to="/patterns" />} role="link" variant="primary">
+        검토 시작
+        <ArrowRight aria-hidden="true" size={16} />
+      </Button>
+    </div>
+  );
+}
+
+function ComponentStrip() {
+  return (
+    <div aria-label="대표 컴포넌트" className="city-docs-home-component-strip" role="group">
+      <Button type="button" variant="primary">
+        버튼
+      </Button>
+      <Button type="button" variant="outline">
+        버튼
+      </Button>
+      <Input aria-label="예시 입력" placeholder="입력하세요" />
+      <Select.Root defaultValue="one" items={{ one: '선택하세요', two: '두 번째 옵션' }}>
+        <Select.Trigger aria-label="예시 선택">
+          <Select.Value />
+          <Select.Icon />
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Positioner>
+            <Select.Popup>
+              <Select.List>
+                <Select.Item value="one">
+                  <Select.ItemIndicator />
+                  <Select.ItemText>선택하세요</Select.ItemText>
+                </Select.Item>
+                <Select.Item value="two">
+                  <Select.ItemIndicator />
+                  <Select.ItemText>두 번째 옵션</Select.ItemText>
+                </Select.Item>
+              </Select.List>
+            </Select.Popup>
+          </Select.Positioner>
+        </Select.Portal>
+      </Select.Root>
+      <label>
+        <Checkbox defaultChecked />
+        체크박스
+      </label>
+      <label>
+        <Switch defaultChecked />
+        Toggle
+      </label>
+    </div>
+  );
+}
+
 export function HomePage() {
+  const [copyState, setCopyState] = useState<CopyState>('idle');
+  const installCommand = 'pnpm add @opnay/city-ds-react';
+
+  const copyInstallCommand = async () => {
+    try {
+      if (!navigator.clipboard) throw new Error('Clipboard API is unavailable');
+      await navigator.clipboard.writeText(installCommand);
+      setCopyState('success');
+    } catch {
+      setCopyState('error');
+    }
+  };
+
   return (
     <article className="city-docs-home">
       <header className="city-docs-home-hero">
@@ -129,9 +348,8 @@ export function HomePage() {
             운영 제품을 위한 <span>React 디자인 시스템</span>
           </h1>
           <p className="city-docs-home-lead city-text-lead">
-            city-ds는 복잡한 운영 도구, 데이터 화면, 폼을 빠르고 일관되게 만드는 컴포넌트와 디자인
-            기준을 제공합니다. Base UI의 접근 가능한 동작과 절제된 모노크롬 시각 언어를 하나의 공개
-            API로 사용하십시오.
+            복잡한 운영 도구와 데이터 화면을 빠르고 일관되게 만드는 컴포넌트와 디자인 기준을
+            제공합니다.
           </p>
           <div className="city-docs-home-actions">
             <Button
@@ -144,149 +362,107 @@ export function HomePage() {
               시작하기
               <ArrowRight aria-hidden="true" size={17} />
             </Button>
-            <Button
-              nativeButton={false}
-              render={<Link to="/components" />}
-              role="link"
-              size="lg"
-              variant="outline"
-            >
-              컴포넌트 {COMPONENT_DOCS.length}개 보기
-            </Button>
+            <Link className="city-docs-home-components-link" to="/components">
+              {COMPONENT_DOCS.length} components
+            </Link>
           </div>
-          <dl aria-label="city-ds 지원 범위" className="city-docs-home-facts">
-            <div>
-              <dt>{COMPONENT_DOCS.length}</dt>
-              <dd className="city-text-caption">공개 컴포넌트</dd>
-            </div>
-            <div>
-              <dt>18 · 19</dt>
-              <dd className="city-text-caption">React 지원</dd>
-            </div>
-            <div>
-              <dt>3</dt>
-              <dd className="city-text-caption">light · dark · system</dd>
-            </div>
-          </dl>
         </div>
         <ProductPreview />
       </header>
 
       <section
         aria-labelledby="product-foundation-title"
-        className="city-docs-home-section"
+        className="city-docs-home-section city-docs-home-foundation"
         id="product-foundation"
       >
-        <div className="city-docs-home-section-heading">
-          <p className="city-text-caption">제품을 위한 기반</p>
-          <div>
-            <h2 className="city-text-section-title" id="product-foundation-title">
-              컴포넌트뿐 아니라 선택 기준까지 제공합니다.
-            </h2>
-            <p className="city-text-body">
-              화면을 더 빨리 그리는 데서 멈추지 않습니다. 사용자의 목표와 상태에 맞는 선택을 반복할
-              수 있도록 코드와 디자인 판단을 함께 제공합니다.
-            </p>
-          </div>
+        <div className="city-docs-home-section-copy">
+          <p className="city-text-caption">Foundation</p>
+          <h2 className="city-text-section-title" id="product-foundation-title">
+            일관된 선택을 위한 기준을 제공합니다.
+          </h2>
+          <p className="city-text-body">
+            색상, 타입, 간격, 반경까지 디자인 판단의 근거를 토큰으로 정의합니다.
+          </p>
         </div>
-        <div className="city-docs-home-principles">
-          <article>
-            <Accessibility aria-hidden="true" />
-            <span className="city-text-caption">01</span>
-            <h3 className="city-text-subsection-title">접근성을 기본값으로</h3>
-            <p className="city-text-supporting">
-              Base UI가 제공하는 키보드 탐색, 포커스 관리, 의미 구조를 제품의 출발점으로 삼습니다.
-            </p>
-          </article>
-          <article>
-            <BookOpenCheck aria-hidden="true" />
-            <span className="city-text-caption">02</span>
-            <h3 className="city-text-subsection-title">선택 기준을 함께</h3>
-            <p className="city-text-supporting">
-              사용·비사용 기준, 옵션 축, 의미 있는 상태와 조합 패턴을 소비자 관점에서 설명합니다.
-            </p>
-          </article>
-          <article>
-            <Blocks aria-hidden="true" />
-            <span className="city-text-caption">03</span>
-            <h3 className="city-text-subsection-title">제품 안에서 조합되도록</h3>
-            <p className="city-text-supporting">
-              공개 subpath와 render 합성 API로 Vite와 Next.js 제품 흐름에 자연스럽게 연결합니다.
-            </p>
-          </article>
-        </div>
+        <FoundationStrip />
       </section>
 
       <section
         aria-labelledby="product-contexts-title"
-        className="city-docs-home-section"
+        className="city-docs-home-section city-docs-home-context-section"
         id="product-contexts"
       >
-        <div className="city-docs-home-section-heading">
-          <p className="city-text-caption">사용 맥락</p>
-          <div>
-            <h2 className="city-text-section-title" id="product-contexts-title">
-              운영 제품의 반복되는 문제를 다룹니다.
-            </h2>
-            <p className="city-text-body">
-              화면 유형마다 필요한 밀도와 상태, 액션 위계는 달라도 하나의 시각 언어를 유지합니다.
-            </p>
-          </div>
+        <div className="city-docs-home-section-copy">
+          <p className="city-text-caption">Interaction contexts</p>
+          <h2 className="city-text-section-title" id="product-contexts-title">
+            실제 운영 흐름에 맞춘 상호작용을 지원합니다.
+          </h2>
+          <p className="city-text-body">
+            검토가 필요한 거래를 확인하고 조치하는 전체 흐름을 제공합니다.
+          </p>
         </div>
-        <div className="city-docs-home-contexts">
-          {PRODUCT_CONTEXTS.map(({ components, description, icon: Icon, title }) => (
-            <article key={title}>
-              <div>
-                <Icon aria-hidden="true" />
-                <h3 className="city-text-subsection-title">{title}</h3>
-              </div>
-              <p className="city-text-supporting">{description}</p>
-              <small className="city-text-caption">{components}</small>
-            </article>
-          ))}
+        <WorkflowPreview />
+      </section>
+
+      <section
+        aria-labelledby="product-components-title"
+        className="city-docs-home-section city-docs-home-components-section"
+        id="product-components"
+      >
+        <div className="city-docs-home-section-copy">
+          <p className="city-text-caption">Components</p>
+          <h2 className="city-text-section-title" id="product-components-title">
+            즉시 사용할 수 있는 컴포넌트를 제공합니다.
+          </h2>
+          <p className="city-text-body">
+            기본 요소가 같은 규칙과 상태로 연결되어 제품 화면을 빠르게 구성합니다.
+          </p>
         </div>
-        <Button nativeButton={false} render={<Link to="/patterns" />} role="link" variant="outline">
-          조합 패턴 살펴보기
-          <ArrowRight aria-hidden="true" size={16} />
-        </Button>
+        <ComponentStrip />
       </section>
 
       <section
         aria-labelledby="product-start-title"
-        className="city-docs-home-start"
+        className="city-docs-home-section city-docs-home-start"
         id="product-start"
       >
-        <div className="city-docs-home-section-heading">
-          <p className="city-text-caption">제품에 연결하기</p>
-          <div>
-            <h2 className="city-text-section-title" id="product-start-title">
-              첫 화면을 city-ds로 시작하십시오.
-            </h2>
-            <p className="city-text-body">
-              패키지를 설치하고 CSS를 한 번 불러오면 공개 컴포넌트와 토큰을 바로 사용할 수 있습니다.
-            </p>
-          </div>
+        <div className="city-docs-home-section-copy">
+          <p className="city-text-caption">Getting started</p>
+          <h2 className="city-text-section-title" id="product-start-title">
+            지금 바로 시작하십시오.
+          </h2>
+          <p className="city-text-body">
+            패키지를 설치하고 CSS를 불러오면 공개 컴포넌트와 토큰을 사용할 수 있습니다.
+          </p>
         </div>
-        <div className="city-docs-home-actions">
+        <div className="city-docs-home-install-row">
+          <code>{installCommand}</code>
+          <Button onClick={() => void copyInstallCommand()} type="button" variant="ghost">
+            {copyState === 'success' ? (
+              <Check aria-hidden="true" size={16} />
+            ) : copyState === 'error' ? (
+              <X aria-hidden="true" size={16} />
+            ) : (
+              <Clipboard aria-hidden="true" size={16} />
+            )}
+            {copyState === 'success' ? '복사됨' : copyState === 'error' ? '복사 실패' : '복사'}
+          </Button>
           <Button
             nativeButton={false}
             render={<Link to="/getting-started" />}
             role="link"
-            size="lg"
             variant="primary"
           >
-            설치하고 시작하기
-            <ArrowRight aria-hidden="true" size={17} />
+            설치 가이드 보기
+            <ArrowRight aria-hidden="true" size={16} />
           </Button>
-          <Button
-            nativeButton={false}
-            render={<Link to="/components" />}
-            role="link"
-            size="lg"
-            variant="outline"
-          >
-            전체 컴포넌트 보기
-          </Button>
+          <span aria-live="polite" className="city-docs-sr-only">
+            {copyState === 'success'
+              ? '설치 명령어를 복사했습니다.'
+              : copyState === 'error'
+                ? '설치 명령어를 복사할 수 없습니다.'
+                : ''}
+          </span>
         </div>
       </section>
     </article>

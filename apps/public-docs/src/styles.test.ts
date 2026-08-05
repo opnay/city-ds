@@ -15,6 +15,15 @@ describe('public docs layout styles', () => {
     );
   });
 
+  it('uses the foundation specimen grid to occupy the scene without clipping its palette', () => {
+    expect(styles).toMatch(
+      /\.city-docs-home-token-strip\s*{[^}]*grid-template-columns:\s*minmax\(14rem, 1\.35fr\) repeat\(4, minmax\(0, 1fr\)\);/,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-home-foundation \.city-docs-home-token-strip\s*{\s*align-self:\s*stretch;/,
+    );
+  });
+
   it('keeps the mobile product preview inside its viewport scene', () => {
     expect(styles).toMatch(
       /\.city-docs-home-preview-table\s*{[^}]*max-height:\s*9rem;[^}]*overflow-y:\s*auto;/,

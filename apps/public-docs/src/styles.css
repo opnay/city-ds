@@ -805,7 +805,11 @@
     border-top: 1px solid var(--city-color-border);
     border-bottom: 1px solid var(--city-color-border);
     align-self: end;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: minmax(14rem, 1.35fr) repeat(4, minmax(0, 1fr));
+  }
+
+  .city-docs-home-foundation .city-docs-home-token-strip {
+    align-self: stretch;
   }
 
   .city-docs-home-token-strip > div {
@@ -814,13 +818,21 @@
     min-height: 7rem;
     padding-inline: clamp(var(--city-space-4), 3vw, var(--city-space-8));
     border-left: 1px solid var(--city-color-border);
-    align-content: space-between;
     gap: var(--city-space-5);
+    grid-template-rows: auto 1fr;
   }
 
   .city-docs-home-token-strip > div:first-child {
     padding-left: 0;
     border-left: 0;
+  }
+
+  .city-docs-home-token-strip > div > * {
+    min-width: 0;
+  }
+
+  .city-docs-home-token-strip > div > :last-child {
+    align-self: center;
   }
 
   .city-docs-home-token-strip > div > span {
@@ -1342,6 +1354,10 @@
 
     .city-docs-home-token-strip {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .city-docs-home-foundation .city-docs-home-token-strip {
+      align-self: end;
     }
 
     .city-docs-home-token-strip > div {

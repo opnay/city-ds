@@ -1,6 +1,8 @@
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
+
 const variants = ['text', 'circular', 'rectangular'] as const;
 const sizes = ['sm', 'md', 'lg'] as const;
+
 export default function SkeletonMatrixExample() {
   return (
     <div className="city-docs-example-stack">

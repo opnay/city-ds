@@ -1,6 +1,9 @@
-import toastSource from './examples/toast.tsx?raw';
-import ToastExample from './examples/toast';
+import presentationSource from './examples/presentation.tsx?raw';
+import ToastPresentationExample from './examples/presentation';
+import usageSource from './examples/usage.tsx?raw';
+import ToastUsageExample from './examples/usage';
 import type { ComponentPageData } from '../../types';
+
 export const pageData = {
   api: [
     {
@@ -23,7 +26,7 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: ToastExample,
+      Component: ToastPresentationExample,
       coverage: [
         {
           axis: 'tone',
@@ -43,11 +46,20 @@ export const pageData = {
         },
         { axis: 'appearance', values: ['outline', 'subtle'] },
       ],
-      description: '모든 tone·appearance 조합과 저장 완료 토스트 상호작용을 확인합니다.',
-      id: 'toast-basic',
-      filename: 'toast.tsx',
-      source: toastSource,
-      title: '알림 표시',
+      description: '각 의미와 표면 조합을 상호작용 없이 비교합니다.',
+      id: 'toast-presentation',
+      filename: 'presentation.tsx',
+      source: presentationSource,
+      title: '의미와 표면',
+    },
+    {
+      Component: ToastUsageExample,
+      coverage: [{ axis: 'interaction', values: ['manager.add'] }],
+      description: '로컬 작업 결과를 manager에 추가하고 사용자가 닫을 수 있게 합니다.',
+      id: 'toast-usage',
+      filename: 'usage.tsx',
+      source: usageSource,
+      title: '토스트 표시',
     },
   ],
   optionAxes: [

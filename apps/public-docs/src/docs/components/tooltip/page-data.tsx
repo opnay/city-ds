@@ -1,6 +1,9 @@
-import tooltipSource from './examples/tooltip.tsx?raw';
-import TooltipExample from './examples/tooltip';
+import controlledSource from './examples/controlled.tsx?raw';
+import TooltipControlledExample from './examples/controlled';
+import placementsSource from './examples/placements.tsx?raw';
+import TooltipPlacementsExample from './examples/placements';
 import type { ComponentPageData } from '../../types';
+
 export const pageData = {
   api: [
     { name: 'delay', type: 'number', description: '표시 전 대기 시간입니다.' },
@@ -17,16 +20,22 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: TooltipExample,
-      coverage: [
-        { axis: 'side', values: ['top', 'right', 'bottom', 'left'] },
-        { axis: 'mode', values: ['uncontrolled', 'controlled'] },
-      ],
+      Component: TooltipPlacementsExample,
+      coverage: [{ axis: 'side', values: ['top', 'right', 'bottom', 'left'] }],
       description: '네 방향의 포인터·키보드 보조 설명을 표시합니다.',
-      id: 'tooltip-basic',
-      filename: 'tooltip.tsx',
-      source: tooltipSource,
-      title: '보조 설명',
+      id: 'tooltip-placements',
+      filename: 'placements.tsx',
+      source: placementsSource,
+      title: '위치',
+    },
+    {
+      Component: TooltipControlledExample,
+      coverage: [{ axis: 'mode', values: ['uncontrolled', 'controlled'] }],
+      description: '기본 열림 동작과 외부에서 제어하는 열림 상태를 구분합니다.',
+      id: 'tooltip-controlled',
+      filename: 'controlled.tsx',
+      source: controlledSource,
+      title: '상태 제어',
     },
   ],
   optionAxes: [

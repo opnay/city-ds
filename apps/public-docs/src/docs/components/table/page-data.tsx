@@ -1,7 +1,11 @@
 import interactionsSource from './examples/interactions.tsx?raw';
 import TableInteractionsExample from './examples/interactions';
-import matrixSource from './examples/matrix.tsx?raw';
-import TableMatrixExample from './examples/matrix';
+import overflowSource from './examples/overflow.tsx?raw';
+import TableOverflowExample from './examples/overflow';
+import presentationSource from './examples/presentation.tsx?raw';
+import TablePresentationExample from './examples/presentation';
+import statesSource from './examples/states.tsx?raw';
+import TableStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
@@ -41,7 +45,7 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: TableMatrixExample,
+      Component: TablePresentationExample,
       coverage: [
         {
           axis: 'size',
@@ -56,15 +60,33 @@ export const pageData = {
           values: ['sm', 'md', 'lg'],
         },
         { axis: 'variant', values: ['line', 'surface'] },
-        { axis: 'state', values: ['empty', 'loading'] },
+      ],
+      description: '모든 크기와 표면 조합에서 셀 밀도와 경계를 비교합니다.',
+      id: 'table-presentation',
+      filename: 'presentation.tsx',
+      source: presentationSource,
+      title: '크기와 표면',
+    },
+    {
+      Component: TableStatesExample,
+      coverage: [{ axis: 'state', values: ['empty', 'loading'] }],
+      description: '데이터가 없거나 아직 준비되지 않은 상태를 표 구조 안에서 전달합니다.',
+      id: 'table-states',
+      filename: 'states.tsx',
+      source: statesSource,
+      title: '빈 상태와 로딩',
+    },
+    {
+      Component: TableOverflowExample,
+      coverage: [
         { axis: 'overflow', values: ['horizontal-scroll'] },
         { axis: 'scrollAppearance', values: ['plain', 'band', 'outline'] },
       ],
-      description: '모든 크기·표면 조합과 빈·로딩 상태입니다.',
-      id: 'table-matrix',
-      filename: 'matrix.tsx',
-      source: matrixSource,
-      title: '테이블 형태와 상태',
+      description: '좁은 영역에서 표를 자르지 않고 키보드로 스크롤할 수 있게 합니다.',
+      id: 'table-overflow',
+      filename: 'overflow.tsx',
+      source: overflowSource,
+      title: '가로 넘침',
     },
     {
       Component: TableInteractionsExample,

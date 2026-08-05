@@ -1,6 +1,11 @@
-import matrixSource from './examples/matrix.tsx?raw';
-import ToggleMatrixExample from './examples/matrix';
+import sizesSource from './examples/sizes.tsx?raw';
+import ToggleSizesExample from './examples/sizes';
+import statesSource from './examples/states.tsx?raw';
+import ToggleStatesExample from './examples/states';
+import variantsSource from './examples/variants.tsx?raw';
+import ToggleVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
+
 export const pageData = {
   api: [
     {
@@ -30,7 +35,7 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: ToggleMatrixExample,
+      Component: ToggleVariantsExample,
       coverage: [
         {
           axis: 'variant',
@@ -49,15 +54,33 @@ export const pageData = {
           ],
         },
         { axis: 'pressed', values: ['false', 'true'] },
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
+      ],
+      description: '각 표면에서 선택·해제 상태를 나란히 비교합니다.',
+      id: 'toggle-variants',
+      filename: 'variants.tsx',
+      source: variantsSource,
+      title: '표면과 선택 상태',
+    },
+    {
+      Component: ToggleSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '같은 도구 모음에서는 토글 높이를 일관되게 맞춥니다.',
+      id: 'toggle-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
+    },
+    {
+      Component: ToggleStatesExample,
+      coverage: [
         { axis: 'mode', values: ['uncontrolled', 'controlled'] },
         { axis: 'disabled', values: ['true'] },
       ],
-      description: '모든 표면·선택 상태와 크기를 비교합니다.',
-      id: 'toggle-matrix',
-      filename: 'matrix.tsx',
-      source: matrixSource,
-      title: '토글 상태',
+      description: '비제어·제어 상태와 변경할 수 없는 상태를 구분합니다.',
+      id: 'toggle-states',
+      filename: 'states.tsx',
+      source: statesSource,
+      title: '상태 제어',
     },
   ],
   optionAxes: [

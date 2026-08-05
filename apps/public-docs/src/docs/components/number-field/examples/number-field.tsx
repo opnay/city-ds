@@ -1,16 +1,9 @@
 import { useState } from 'react';
 import { NumberField } from '@opnay/city-ds-react/number-field';
-function Control({
-  disabled = false,
-  size = 'md' as const,
-  value,
-}: {
-  disabled?: boolean;
-  size?: 'sm' | 'md' | 'lg';
-  value?: number;
-}) {
+
+function Control({ disabled = false, value }: { disabled?: boolean; value?: number }) {
   return (
-    <NumberField.Root defaultValue={value} disabled={disabled} size={size}>
+    <NumberField.Root defaultValue={value} disabled={disabled}>
       <NumberField.Group>
         <NumberField.Input aria-label="인원" />
         <NumberField.Decrement aria-label="인원 줄이기" />
@@ -19,8 +12,10 @@ function Control({
     </NumberField.Root>
   );
 }
+
 export default function NumberFieldExample() {
   const [value, setValue] = useState(4);
+
   return (
     <div className="city-docs-example-stack">
       <NumberField.Root
@@ -35,8 +30,8 @@ export default function NumberFieldExample() {
           <NumberField.Increment aria-label="인원 늘리기" />
         </NumberField.Group>
       </NumberField.Root>
-      <Control size="sm" value={2} />
-      <Control disabled size="lg" value={8} />
+      <Control value={2} />
+      <Control disabled value={8} />
     </div>
   );
 }

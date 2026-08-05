@@ -1,5 +1,9 @@
-import matrixSource from './examples/matrix.tsx?raw';
-import MatrixExample from './examples/matrix';
+import iconsSource from './examples/icons.tsx?raw';
+import AlertIconsExample from './examples/icons';
+import presentationSource from './examples/presentation.tsx?raw';
+import AlertPresentationExample from './examples/presentation';
+import variantsSource from './examples/variants.tsx?raw';
+import AlertVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
@@ -30,7 +34,7 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: MatrixExample,
+      Component: AlertPresentationExample,
       coverage: [
         {
           axis: 'tone',
@@ -64,14 +68,30 @@ export const pageData = {
             'tone=destructive|appearance=outline',
           ],
         },
-        { axis: 'showIcon', values: ['true', 'false'] },
-        { axis: 'variant', values: ['info', 'success', 'warning', 'error'] },
       ],
       description: '모든 의미와 표현 조합을 비교합니다.',
-      id: 'alert-matrix',
-      filename: 'matrix.tsx',
-      source: matrixSource,
+      id: 'alert-presentation',
+      filename: 'presentation.tsx',
+      source: presentationSource,
       title: 'tone × appearance',
+    },
+    {
+      Component: AlertIconsExample,
+      coverage: [{ axis: 'showIcon', values: ['true', 'false'] }],
+      description: '의미 아이콘이 필요한 문맥과 텍스트만 필요한 문맥을 비교합니다.',
+      id: 'alert-icons',
+      filename: 'icons.tsx',
+      source: iconsSource,
+      title: '아이콘',
+    },
+    {
+      Component: AlertVariantsExample,
+      coverage: [{ axis: 'variant', values: ['info', 'success', 'warning', 'error'] }],
+      description: '기존 variant API를 사용하는 호환 표현입니다.',
+      id: 'alert-variants',
+      filename: 'variants.tsx',
+      source: variantsSource,
+      title: '호환 variant',
     },
   ],
   optionAxes: [

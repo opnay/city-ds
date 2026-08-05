@@ -1,6 +1,11 @@
-import menuSource from './examples/menu.tsx?raw';
-import MenuExample from './examples/menu';
+import controlledSource from './examples/controlled.tsx?raw';
+import MenuControlledExample from './examples/controlled';
+import densitySource from './examples/density.tsx?raw';
+import MenuDensityExample from './examples/density';
+import variantsSource from './examples/variants.tsx?raw';
+import MenuVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
+
 export const pageData = {
   api: [
     { name: 'density', type: "'comfortable' | 'compact'", description: '항목의 밀도입니다.' },
@@ -18,17 +23,31 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: MenuExample,
-      coverage: [
-        { axis: 'density', values: ['comfortable', 'compact'] },
-        { axis: 'variant', values: ['default', 'destructive'] },
-        { axis: 'mode', values: ['uncontrolled', 'controlled'] },
-      ],
-      description: '편안한·압축 밀도의 명령, 체크 항목, 파괴적 명령을 구성합니다.',
-      id: 'menu-basic',
-      filename: 'menu.tsx',
-      source: menuSource,
-      title: '컨텍스트 명령',
+      Component: MenuDensityExample,
+      coverage: [{ axis: 'density', values: ['comfortable', 'compact'] }],
+      description: '명령 수와 주변 제어 밀도에 맞춰 항목 간격을 선택합니다.',
+      id: 'menu-density',
+      filename: 'density.tsx',
+      source: densitySource,
+      title: '밀도',
+    },
+    {
+      Component: MenuVariantsExample,
+      coverage: [{ axis: 'variant', values: ['default', 'destructive'] }],
+      description: '되돌리기 어려운 명령을 파괴적 항목으로 구분합니다.',
+      id: 'menu-variants',
+      filename: 'variants.tsx',
+      source: variantsSource,
+      title: '항목 역할',
+    },
+    {
+      Component: MenuControlledExample,
+      coverage: [{ axis: 'mode', values: ['uncontrolled', 'controlled'] }],
+      description: '기본 열림 동작과 외부에서 제어하는 열림 상태를 비교합니다.',
+      id: 'menu-controlled',
+      filename: 'controlled.tsx',
+      source: controlledSource,
+      title: '상태 제어',
     },
   ],
   optionAxes: [

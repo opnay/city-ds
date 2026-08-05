@@ -1,5 +1,9 @@
-import matrixSource from './examples/matrix.tsx?raw';
-import MatrixExample from './examples/matrix';
+import presentationSource from './examples/presentation.tsx?raw';
+import BadgePresentationExample from './examples/presentation';
+import sizesSource from './examples/sizes.tsx?raw';
+import BadgeSizesExample from './examples/sizes';
+import variantsSource from './examples/variants.tsx?raw';
+import BadgeVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
@@ -36,7 +40,7 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: MatrixExample,
+      Component: BadgePresentationExample,
       coverage: [
         {
           axis: 'mode',
@@ -91,14 +95,30 @@ export const pageData = {
         },
         { axis: 'tone', values: ['neutral', 'info', 'success', 'warning', 'destructive'] },
         { axis: 'appearance', values: ['solid', 'subtle', 'outline'] },
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
-        { axis: 'variant', values: ['solid', 'subtle', 'outline', 'destructive'] },
       ],
       description: '모든 mode·tone·appearance 조합을 비교합니다.',
-      id: 'badge-matrix',
-      filename: 'matrix.tsx',
-      source: matrixSource,
+      id: 'badge-presentation',
+      filename: 'presentation.tsx',
+      source: presentationSource,
       title: '상태와 표현',
+    },
+    {
+      Component: BadgeSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '주변 텍스트와 제어 크기에 맞춰 배지 높이를 선택합니다.',
+      id: 'badge-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
+    },
+    {
+      Component: BadgeVariantsExample,
+      coverage: [{ axis: 'variant', values: ['solid', 'subtle', 'outline', 'destructive'] }],
+      description: '기존 variant API를 사용하는 호환 표현입니다.',
+      id: 'badge-variants',
+      filename: 'variants.tsx',
+      source: variantsSource,
+      title: '호환 variant',
     },
   ],
   optionAxes: [

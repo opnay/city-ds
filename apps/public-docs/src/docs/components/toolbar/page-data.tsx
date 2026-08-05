@@ -1,6 +1,17 @@
-import toolbarSource from './examples/toolbar.tsx?raw';
-import ToolbarExample from './examples/toolbar';
+import appearancesSource from './examples/appearances.tsx?raw';
+import ToolbarAppearancesExample from './examples/appearances';
+import buttonVariantsSource from './examples/button-variants.tsx?raw';
+import ToolbarButtonVariantsExample from './examples/button-variants';
+import linkVariantsSource from './examples/link-variants.tsx?raw';
+import ToolbarLinkVariantsExample from './examples/link-variants';
+import orientationSource from './examples/orientation.tsx?raw';
+import ToolbarOrientationExample from './examples/orientation';
+import sizesSource from './examples/sizes.tsx?raw';
+import ToolbarSizesExample from './examples/sizes';
+import toggleVariantsSource from './examples/toggle-variants.tsx?raw';
+import ToolbarToggleVariantsExample from './examples/toggle-variants';
 import type { ComponentPageData } from '../../types';
+
 export const pageData = {
   api: [
     {
@@ -35,26 +46,68 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: ToolbarExample,
+      Component: ToolbarAppearancesExample,
+      coverage: [{ axis: 'appearance', values: ['plain', 'band', 'outline'] }],
+      description: '주변 표면과 도구 모음의 경계 강도를 맞춥니다.',
+      id: 'toolbar-appearances',
+      filename: 'appearances.tsx',
+      source: appearancesSource,
+      title: '표면',
+    },
+    {
+      Component: ToolbarSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '도구 모음 안의 모든 항목에 동일한 크기를 적용합니다.',
+      id: 'toolbar-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
+    },
+    {
+      Component: ToolbarOrientationExample,
+      coverage: [{ axis: 'orientation', values: ['horizontal', 'vertical'] }],
+      description: '배치 방향과 키보드 탐색 방향을 함께 맞춥니다.',
+      id: 'toolbar-orientation',
+      filename: 'orientation.tsx',
+      source: orientationSource,
+      title: '방향',
+    },
+    {
+      Component: ToolbarButtonVariantsExample,
       coverage: [
-        { axis: 'appearance', values: ['plain', 'band', 'outline'] },
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
-        { axis: 'orientation', values: ['horizontal', 'vertical'] },
         {
           axis: 'buttonVariant',
           values: ['primary', 'secondary', 'outline', 'ghost', 'destructive'],
         },
-        { axis: 'linkVariant', values: ['secondary', 'outline', 'ghost'] },
+      ],
+      description: '명령의 우선순위와 위험도를 버튼 표면으로 구분합니다.',
+      id: 'toolbar-button-variants',
+      filename: 'button-variants.tsx',
+      source: buttonVariantsSource,
+      title: '버튼 표면',
+    },
+    {
+      Component: ToolbarLinkVariantsExample,
+      coverage: [{ axis: 'linkVariant', values: ['secondary', 'outline', 'ghost'] }],
+      description: '실제 링크 의미를 유지하면서 도구 모음 표면에 맞춥니다.',
+      id: 'toolbar-link-variants',
+      filename: 'link-variants.tsx',
+      source: linkVariantsSource,
+      title: '링크 표면',
+    },
+    {
+      Component: ToolbarToggleVariantsExample,
+      coverage: [
         {
           axis: 'toggleVariant',
           values: ['primary', 'secondary', 'outline', 'ghost', 'destructive'],
         },
       ],
-      description: '모든 표면·크기·방향에 명령, 구분선, 토글 그룹을 배치합니다.',
-      id: 'toolbar-basic',
-      filename: 'toolbar.tsx',
-      source: toolbarSource,
-      title: '편집 도구',
+      description: '유지되는 선택 상태에 맞는 토글 표면을 비교합니다.',
+      id: 'toolbar-toggle-variants',
+      filename: 'toggle-variants.tsx',
+      source: toggleVariantsSource,
+      title: '토글 표면',
     },
   ],
   optionAxes: [

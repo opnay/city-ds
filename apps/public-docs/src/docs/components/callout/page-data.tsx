@@ -1,5 +1,9 @@
-import matrixSource from './examples/matrix.tsx?raw';
-import MatrixExample from './examples/matrix';
+import iconsSource from './examples/icons.tsx?raw';
+import CalloutIconsExample from './examples/icons';
+import presentationSource from './examples/presentation.tsx?raw';
+import CalloutPresentationExample from './examples/presentation';
+import variantsSource from './examples/variants.tsx?raw';
+import CalloutVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
@@ -30,7 +34,7 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: MatrixExample,
+      Component: CalloutPresentationExample,
       coverage: [
         {
           axis: 'tone',
@@ -64,14 +68,30 @@ export const pageData = {
             'tone=destructive|appearance=outline',
           ],
         },
-        { axis: 'showIcon', values: ['true', 'false'] },
-        { axis: 'variant', values: ['info', 'success', 'warning', 'error'] },
       ],
       description: 'Alert와 같은 의미·표현 계약을 모든 조합으로 보여 줍니다.',
-      id: 'callout-matrix',
-      filename: 'matrix.tsx',
-      source: matrixSource,
+      id: 'callout-presentation',
+      filename: 'presentation.tsx',
+      source: presentationSource,
       title: 'tone × appearance',
+    },
+    {
+      Component: CalloutIconsExample,
+      coverage: [{ axis: 'showIcon', values: ['true', 'false'] }],
+      description: '문서 문맥에 맞춰 의미 아이콘 표시 여부를 선택합니다.',
+      id: 'callout-icons',
+      filename: 'icons.tsx',
+      source: iconsSource,
+      title: '아이콘',
+    },
+    {
+      Component: CalloutVariantsExample,
+      coverage: [{ axis: 'variant', values: ['info', 'success', 'warning', 'error'] }],
+      description: 'Alert와 공유하는 기존 variant API의 호환 표현입니다.',
+      id: 'callout-variants',
+      filename: 'variants.tsx',
+      source: variantsSource,
+      title: '호환 variant',
     },
   ],
   optionAxes: [

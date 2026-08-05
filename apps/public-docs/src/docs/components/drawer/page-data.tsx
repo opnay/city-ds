@@ -1,3 +1,5 @@
+import modalitySource from './examples/modality.tsx?raw';
+import DrawerModalityExample from './examples/modality';
 import sidesSource from './examples/sides.tsx?raw';
 import SidesExample from './examples/sides';
 import type { ComponentPageData } from '../../types';
@@ -54,13 +56,21 @@ export const pageData = {
           ],
         },
         { axis: 'size', values: ['sm', 'md', 'lg', 'xl', 'full'] },
-        { axis: 'modal', values: ['true', 'false'] },
       ],
       description: '방향과 크기를 맞춘 구조를 확인합니다.',
       id: 'drawer-sides',
       filename: 'sides.tsx',
       source: sidesSource,
       title: 'side × size',
+    },
+    {
+      Component: DrawerModalityExample,
+      coverage: [{ axis: 'modal', values: ['true', 'false'] }],
+      description: '배경 상호작용을 막는 작업과 계속 허용하는 보조 패널을 구분합니다.',
+      id: 'drawer-modality',
+      filename: 'modality.tsx',
+      source: modalitySource,
+      title: '모달 동작',
     },
   ],
   optionAxes: [

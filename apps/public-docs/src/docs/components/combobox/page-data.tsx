@@ -1,5 +1,7 @@
-import matrixSource from './examples/matrix.tsx?raw';
-import MatrixExample from './examples/matrix';
+import selectionSource from './examples/selection.tsx?raw';
+import ComboboxSelectionExample from './examples/selection';
+import statesSource from './examples/states.tsx?raw';
+import ComboboxStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
@@ -25,7 +27,7 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: MatrixExample,
+      Component: ComboboxSelectionExample,
       coverage: [
         {
           axis: 'size',
@@ -51,14 +53,24 @@ export const pageData = {
             'size=lg|multiple=true',
           ],
         },
+      ],
+      description: '모든 크기에서 단일·복수 선택 구조를 비교합니다.',
+      id: 'combobox-selection',
+      filename: 'selection.tsx',
+      source: selectionSource,
+      title: 'size × multiple',
+    },
+    {
+      Component: ComboboxStatesExample,
+      coverage: [
         { axis: 'disabled', values: ['true'] },
         { axis: 'mode', values: ['uncontrolled', 'controlled'] },
       ],
-      description: '모든 크기에서 단일·복수 선택 구조를 비교합니다.',
-      id: 'combobox-matrix',
-      filename: 'matrix.tsx',
-      source: matrixSource,
-      title: 'size × multiple',
+      description: '외부에서 값을 제어하는 입력과 선택할 수 없는 입력을 구분합니다.',
+      id: 'combobox-states',
+      filename: 'states.tsx',
+      source: statesSource,
+      title: '상태 제어',
     },
   ],
   optionAxes: [

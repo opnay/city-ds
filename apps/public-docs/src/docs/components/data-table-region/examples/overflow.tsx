@@ -35,7 +35,6 @@ export default function DataTableRegionOverflowExample() {
             appearance={appearance}
             hint="표를 가로로 스크롤해 나머지 열을 확인하십시오."
             label={`${appearance} 발행 기록`}
-            showHint={appearance !== 'plain'}
           >
             <ReleaseTable />
           </DataTableRegion>

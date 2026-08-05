@@ -1,3 +1,5 @@
+import sizesSource from './examples/sizes.tsx?raw';
+import CheckboxSizesExample from './examples/sizes';
 import statesSource from './examples/states.tsx?raw';
 import StatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
@@ -34,13 +36,21 @@ export const pageData = {
         { axis: 'checked', values: ['false', 'true'] },
         { axis: 'indeterminate', values: ['true'] },
         { axis: 'disabled', values: ['true'] },
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
       ],
       description: '제어됨, 부분 선택, 비활성 상태를 비교합니다.',
       id: 'checkbox-states',
       filename: 'states.tsx',
       source: statesSource,
       title: '선택 상태',
+    },
+    {
+      Component: CheckboxSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '주변 입력 제어와 체크박스 크기를 맞춥니다.',
+      id: 'checkbox-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
     },
   ],
   optionAxes: [

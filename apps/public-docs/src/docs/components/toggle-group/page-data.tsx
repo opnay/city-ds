@@ -1,6 +1,13 @@
-import matrixSource from './examples/matrix.tsx?raw';
-import ToggleGroupMatrixExample from './examples/matrix';
+import orientationSource from './examples/orientation.tsx?raw';
+import ToggleGroupOrientationExample from './examples/orientation';
+import selectionSource from './examples/selection.tsx?raw';
+import ToggleGroupSelectionExample from './examples/selection';
+import sizesSource from './examples/sizes.tsx?raw';
+import ToggleGroupSizesExample from './examples/sizes';
+import variantsSource from './examples/variants.tsx?raw';
+import ToggleGroupVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
+
 export const pageData = {
   api: [
     {
@@ -41,7 +48,7 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: ToggleGroupMatrixExample,
+      Component: ToggleGroupVariantsExample,
       coverage: [
         {
           axis: 'variant',
@@ -60,17 +67,43 @@ export const pageData = {
           ],
         },
         { axis: 'pressed', values: ['false', 'true'] },
+      ],
+      description: '각 표면에서 선택된 항목과 선택되지 않은 항목을 비교합니다.',
+      id: 'toggle-group-variants',
+      filename: 'variants.tsx',
+      source: variantsSource,
+      title: '항목 표면',
+    },
+    {
+      Component: ToggleGroupSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '그룹 안의 모든 항목에 동일한 제어 높이를 적용합니다.',
+      id: 'toggle-group-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
+    },
+    {
+      Component: ToggleGroupOrientationExample,
+      coverage: [{ axis: 'orientation', values: ['horizontal', 'vertical'] }],
+      description: '도구 배치 방향과 키보드 탐색 방향을 함께 맞춥니다.',
+      id: 'toggle-group-orientation',
+      filename: 'orientation.tsx',
+      source: orientationSource,
+      title: '방향',
+    },
+    {
+      Component: ToggleGroupSelectionExample,
+      coverage: [
         { axis: 'multiple', values: ['false', 'true'] },
-        { axis: 'orientation', values: ['horizontal', 'vertical'] },
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
         { axis: 'mode', values: ['uncontrolled', 'controlled'] },
         { axis: 'disabled', values: ['true'] },
       ],
-      description: '각 표면의 선택·해제 항목, 단일·복수 선택과 방향을 비교합니다.',
-      id: 'toggle-group-matrix',
-      filename: 'matrix.tsx',
-      source: matrixSource,
-      title: '그룹 선택',
+      description: '단일·복수 선택과 외부 상태 제어, 비활성 항목을 구분합니다.',
+      id: 'toggle-group-selection',
+      filename: 'selection.tsx',
+      source: selectionSource,
+      title: '선택 방식',
     },
   ],
   optionAxes: [

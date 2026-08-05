@@ -10,8 +10,6 @@ import { Select } from '@opnay/city-ds-react/select';
 import { Switch } from '@opnay/city-ds-react/switch';
 import { Table } from '@opnay/city-ds-react/table';
 
-import { COMPONENT_DOCS } from '../docs/doc-catalog';
-
 const TRANSACTIONS = [
   {
     amount: '₩125,000',
@@ -167,7 +165,7 @@ function ProductPreview() {
           </Select.Root>
         </div>
 
-        <Table.ScrollArea appearance="plain">
+        <Table.ScrollArea appearance="plain" className="city-docs-home-preview-table">
           <Table.Root aria-label="거래 검토 목록" size="sm">
             <Table.Header>
               <Table.Row>
@@ -251,6 +249,10 @@ function FoundationStrip() {
           <i />
           <i />
         </div>
+      </div>
+      <div>
+        <span>Shadow</span>
+        <i aria-label="그림자 토큰" className="city-docs-home-token-shadow" role="img" />
       </div>
     </div>
   );
@@ -362,9 +364,6 @@ export function HomePage() {
               시작하기
               <ArrowRight aria-hidden="true" size={17} />
             </Button>
-            <Link className="city-docs-home-components-link" to="/components">
-              {COMPONENT_DOCS.length} components
-            </Link>
           </div>
         </div>
         <ProductPreview />
@@ -436,17 +435,19 @@ export function HomePage() {
           </p>
         </div>
         <div className="city-docs-home-install-row">
-          <code>{installCommand}</code>
-          <Button onClick={() => void copyInstallCommand()} type="button" variant="ghost">
-            {copyState === 'success' ? (
-              <Check aria-hidden="true" size={16} />
-            ) : copyState === 'error' ? (
-              <X aria-hidden="true" size={16} />
-            ) : (
-              <Clipboard aria-hidden="true" size={16} />
-            )}
-            {copyState === 'success' ? '복사됨' : copyState === 'error' ? '복사 실패' : '복사'}
-          </Button>
+          <div className="city-docs-home-install-command">
+            <code>{installCommand}</code>
+            <Button onClick={() => void copyInstallCommand()} type="button" variant="ghost">
+              {copyState === 'success' ? (
+                <Check aria-hidden="true" size={16} />
+              ) : copyState === 'error' ? (
+                <X aria-hidden="true" size={16} />
+              ) : (
+                <Clipboard aria-hidden="true" size={16} />
+              )}
+              {copyState === 'success' ? '복사됨' : copyState === 'error' ? '복사 실패' : '복사'}
+            </Button>
+          </div>
           <Button
             nativeButton={false}
             render={<Link to="/getting-started" />}

@@ -14,4 +14,17 @@ describe('public docs layout styles', () => {
       /\.city-docs-home-hero,\s*\.city-docs-home-section\s*{[^}]*min-height:\s*calc\(100dvh - var\(--city-docs-product-header-height\)\);/,
     );
   });
+
+  it('keeps the mobile product preview inside its viewport scene', () => {
+    expect(styles).toMatch(
+      /\.city-docs-home-preview-table\s*{[^}]*max-height:\s*9rem;[^}]*overflow-y:\s*auto;/,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-home-preview-heading button,\s*\.city-docs-home-preview input,\s*\.city-docs-home-preview \[role='combobox'\]\s*{[^}]*min-height:\s*var\(--city-control-lg\);/,
+    );
+  });
+
+  it('does not stretch the mobile screen-reader live region beyond the viewport', () => {
+    expect(styles).toContain('.city-docs-home-install-row > :not(.city-docs-sr-only)');
+  });
 });

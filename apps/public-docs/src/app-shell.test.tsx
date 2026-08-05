@@ -104,7 +104,7 @@ describe('public docs routes and shell', () => {
       }),
     ).toHaveAttribute('id', 'product-components');
     expect(within(main).getByRole('link', { name: '설치 가이드 보기' })).toBeVisible();
-    expect(within(main).getByRole('link', { name: '40 components' })).toBeVisible();
+    expect(within(main).getByRole('img', { name: '그림자 토큰' })).toBeVisible();
   });
 
   it('filters the landing preview and copies the install command', async () => {

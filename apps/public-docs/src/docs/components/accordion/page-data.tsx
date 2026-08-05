@@ -1,5 +1,7 @@
-import usageSource from './examples/usage.tsx?raw';
-import UsageExample from './examples/usage';
+import selectionSource from './examples/selection.tsx?raw';
+import AccordionSelectionExample from './examples/selection';
+import statesSource from './examples/states.tsx?raw';
+import AccordionStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
@@ -24,17 +26,25 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: UsageExample,
+      Component: AccordionSelectionExample,
+      coverage: [{ axis: 'multiple', values: ['false', 'true'] }],
+      description: '한 항목 또는 여러 항목을 열 수 있는 구조를 비교합니다.',
+      id: 'accordion-selection',
+      filename: 'selection.tsx',
+      source: selectionSource,
+      title: '열림 방식',
+    },
+    {
+      Component: AccordionStatesExample,
       coverage: [
-        { axis: 'multiple', values: ['false', 'true'] },
         { axis: 'disabled', values: ['true'] },
         { axis: 'mode', values: ['uncontrolled', 'controlled'] },
       ],
-      description: '기본 단일 열림과 비활성 항목을 함께 확인합니다.',
-      id: 'accordion-usage',
-      filename: 'usage.tsx',
-      source: usageSource,
-      title: '기본 구조',
+      description: '외부에서 열린 항목을 제어하고 전체 상호작용을 막습니다.',
+      id: 'accordion-states',
+      filename: 'states.tsx',
+      source: statesSource,
+      title: '상태 제어',
     },
   ],
   optionAxes: [

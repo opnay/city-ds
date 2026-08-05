@@ -1,3 +1,5 @@
+import hintSource from './examples/hint.tsx?raw';
+import DataTableRegionHintExample from './examples/hint';
 import overflowSource from './examples/overflow.tsx?raw';
 import OverflowExample from './examples/overflow';
 import type { ComponentPageData } from '../../types';
@@ -28,7 +30,6 @@ export const pageData = {
       Component: OverflowExample,
       coverage: [
         { axis: 'appearance', values: ['plain', 'band', 'outline'] },
-        { axis: 'showHint', values: ['true', 'false'] },
         { axis: 'overflow', values: ['scroll hint'] },
       ],
       description: '좁은 컨테이너에서 스크롤 가능한 표와 안내를 연결합니다.',
@@ -36,6 +37,15 @@ export const pageData = {
       filename: 'overflow.tsx',
       source: overflowSource,
       title: '가로 스크롤 영역',
+    },
+    {
+      Component: DataTableRegionHintExample,
+      coverage: [{ axis: 'showHint', values: ['true', 'false'] }],
+      description: '주변 문맥에 같은 안내가 있을 때 중복 힌트를 숨길 수 있습니다.',
+      id: 'data-table-region-hint',
+      filename: 'hint.tsx',
+      source: hintSource,
+      title: '스크롤 안내',
     },
   ],
   optionAxes: [

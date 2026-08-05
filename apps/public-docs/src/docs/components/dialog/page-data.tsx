@@ -1,5 +1,7 @@
 import controlledSource from './examples/controlled.tsx?raw';
 import ControlledExample from './examples/controlled';
+import scrollSource from './examples/scroll.tsx?raw';
+import DialogScrollExample from './examples/scroll';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
@@ -33,13 +35,21 @@ export const pageData = {
       coverage: [
         { axis: 'open', values: ['false', 'true'] },
         { axis: 'size', values: ['sm', 'md', 'lg', 'xl', 'full'] },
-        { axis: 'scroll', values: ['none', 'body'] },
       ],
-      description: '제어된 열림과 본문 스크롤 구조를 보여 줍니다.',
+      description: '제어된 열림과 각 Popup 최대 너비를 보여 줍니다.',
       id: 'dialog-controlled',
       filename: 'controlled.tsx',
       source: controlledSource,
       title: '편집·정보 Dialog',
+    },
+    {
+      Component: DialogScrollExample,
+      coverage: [{ axis: 'scroll', values: ['none', 'body'] }],
+      description: '내용 길이에 맞춰 전체 또는 본문 스크롤 구조를 선택합니다.',
+      id: 'dialog-scroll',
+      filename: 'scroll.tsx',
+      source: scrollSource,
+      title: '스크롤 구조',
     },
   ],
   optionAxes: [

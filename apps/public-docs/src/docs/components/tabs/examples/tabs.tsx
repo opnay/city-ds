@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Tabs } from '@opnay/city-ds-react/tabs';
+
 function Panels() {
   return (
     <>
@@ -16,14 +17,16 @@ function Panels() {
     </>
   );
 }
+
 export default function TabsExample() {
   const [value, setValue] = useState('overview');
+
   return (
     <div className="city-docs-example-stack">
-      <Tabs.Root density="comfortable" onValueChange={setValue} value={value}>
+      <Tabs.Root onValueChange={setValue} value={value}>
         <Panels />
       </Tabs.Root>
-      <Tabs.Root defaultValue="activity" density="compact">
+      <Tabs.Root defaultValue="activity">
         <Panels />
       </Tabs.Root>
     </div>

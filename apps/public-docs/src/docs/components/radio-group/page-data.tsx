@@ -1,6 +1,9 @@
 import choicesSource from './examples/choices.tsx?raw';
 import RadioGroupChoicesExample from './examples/choices';
+import sizesSource from './examples/sizes.tsx?raw';
+import RadioGroupSizesExample from './examples/sizes';
 import type { ComponentPageData } from '../../types';
+
 export const pageData = {
   api: [
     {
@@ -19,9 +22,17 @@ export const pageData = {
   ],
   examples: [
     {
+      Component: RadioGroupSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '그룹 안의 모든 라디오에 동일한 크기를 적용합니다.',
+      id: 'radio-group-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
+    },
+    {
       Component: RadioGroupChoicesExample,
       coverage: [
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
         { axis: 'mode', values: ['controlled', 'uncontrolled'] },
         { axis: 'disabled', values: ['true'] },
       ],

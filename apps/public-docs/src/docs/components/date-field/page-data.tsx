@@ -1,5 +1,7 @@
 import controlledSource from './examples/controlled.tsx?raw';
 import ControlledExample from './examples/controlled';
+import sizesSource from './examples/sizes.tsx?raw';
+import DateFieldSizesExample from './examples/sizes';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
@@ -28,9 +30,17 @@ export const pageData = {
   ],
   examples: [
     {
+      Component: DateFieldSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '날짜 세그먼트와 필드 높이를 주변 제어에 맞춥니다.',
+      id: 'date-field-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
+    },
+    {
       Component: ControlledExample,
       coverage: [
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
         { axis: 'controlled', values: ['true'] },
         { axis: 'invalid', values: ['true'] },
         { axis: 'disabled', values: ['true'] },

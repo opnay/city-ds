@@ -1,6 +1,9 @@
 import numberFieldSource from './examples/number-field.tsx?raw';
 import NumberFieldExample from './examples/number-field';
+import sizesSource from './examples/sizes.tsx?raw';
+import NumberFieldSizesExample from './examples/sizes';
 import type { ComponentPageData } from '../../types';
+
 export const pageData = {
   api: [
     {
@@ -19,13 +22,21 @@ export const pageData = {
   ],
   examples: [
     {
+      Component: NumberFieldSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '입력과 증감 버튼을 같은 제어 크기로 맞춥니다.',
+      id: 'number-field-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
+    },
+    {
       Component: NumberFieldExample,
       coverage: [
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
         { axis: 'mode', values: ['controlled', 'uncontrolled'] },
         { axis: 'disabled', values: ['true'] },
       ],
-      description: '범위가 있는 제어 값, 비제어 크기, 비활성 상태입니다.',
+      description: '범위가 있는 제어 값, 비제어 값과 비활성 상태입니다.',
       id: 'number-field-basic',
       filename: 'number-field.tsx',
       source: numberFieldSource,

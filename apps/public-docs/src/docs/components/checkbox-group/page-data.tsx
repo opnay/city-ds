@@ -1,6 +1,9 @@
-import checkboxGroupSource from './examples/checkbox-group.tsx?raw';
-import CheckboxGroupExample from './examples/checkbox-group';
+import selectionSource from './examples/selection.tsx?raw';
+import CheckboxGroupSelectionExample from './examples/selection';
+import sizesSource from './examples/sizes.tsx?raw';
+import CheckboxGroupSizesExample from './examples/sizes';
 import type { ComponentPageData } from '../../types';
+
 export const pageData = {
   api: [
     {
@@ -19,16 +22,24 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: CheckboxGroupExample,
+      Component: CheckboxGroupSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '그룹 안의 모든 체크박스에 동일한 크기를 적용합니다.',
+      id: 'checkbox-group-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
+    },
+    {
+      Component: CheckboxGroupSelectionExample,
       coverage: [
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
         { axis: 'mode', values: ['controlled', 'uncontrolled'] },
         { axis: 'disabled', values: ['true'] },
       ],
-      description: '제어·비제어 복수 선택, 크기와 비활성 항목을 함께 보여줍니다.',
-      id: 'checkbox-group-basic',
-      filename: 'checkbox-group.tsx',
-      source: checkboxGroupSource,
+      description: '제어·비제어 복수 선택과 선택할 수 없는 항목을 구분합니다.',
+      id: 'checkbox-group-selection',
+      filename: 'selection.tsx',
+      source: selectionSource,
       title: '복수 선택',
     },
   ],

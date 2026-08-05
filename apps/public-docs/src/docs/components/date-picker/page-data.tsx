@@ -1,3 +1,7 @@
+import sizesSource from './examples/sizes.tsx?raw';
+import DatePickerSizesExample from './examples/sizes';
+import statesSource from './examples/states.tsx?raw';
+import DatePickerStatesExample from './examples/states';
 import usageSource from './examples/usage.tsx?raw';
 import UsageExample from './examples/usage';
 import type { ComponentPageData } from '../../types';
@@ -28,20 +32,38 @@ export const pageData = {
   ],
   examples: [
     {
+      Component: DatePickerSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '입력 세그먼트와 달력 트리거의 제어 높이를 함께 맞춥니다.',
+      id: 'date-picker-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
+    },
+    {
       Component: UsageExample,
       coverage: [
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
         { axis: 'open', values: ['false', 'true'] },
         { axis: 'controlled', values: ['value', 'open'] },
-        { axis: 'invalid', values: ['true'] },
-        { axis: 'disabled', values: ['true'] },
-        { axis: 'readOnly', values: ['true'] },
       ],
       description: '텍스트 입력과 달력 선택이 하나의 로컬 날짜 상태를 공유합니다.',
       id: 'date-picker-usage',
       filename: 'usage.tsx',
       source: usageSource,
       title: '입력과 달력 조합',
+    },
+    {
+      Component: DatePickerStatesExample,
+      coverage: [
+        { axis: 'invalid', values: ['true'] },
+        { axis: 'disabled', values: ['true'] },
+        { axis: 'readOnly', values: ['true'] },
+      ],
+      description: '오류, 비활성, 읽기 전용 날짜 입력을 구분합니다.',
+      id: 'date-picker-states',
+      filename: 'states.tsx',
+      source: statesSource,
+      title: '입력 상태',
     },
   ],
   optionAxes: [

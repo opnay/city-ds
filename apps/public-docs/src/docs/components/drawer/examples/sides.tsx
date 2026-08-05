@@ -9,25 +9,13 @@ export default function DrawerSidesExample() {
     <div className="city-docs-example-row">
       {sides.flatMap((side) =>
         sizes.map((size) => (
-          <Drawer.Root
-            key={`${side}-${size}`}
-            modal={!(side === 'right' && size === 'md')}
-            swipeDirection={side === 'bottom' ? 'down' : side}
-          >
+          <Drawer.Root key={`${side}-${size}`} swipeDirection={side === 'bottom' ? 'down' : side}>
             <Drawer.Trigger render={<Button variant="secondary" />}>
               {side} · {size}
-              {side === 'right' && size === 'md' ? ' · non-modal' : ''}
             </Drawer.Trigger>
             <Drawer.Portal>
-              {(side !== 'right' || size !== 'md') && (
-                <Drawer.Backdrop data-docs-drawer-backdrop="" />
-              )}
-              <Drawer.Viewport
-                {...(side === 'right' && size === 'md'
-                  ? { className: 'city-docs-nonmodal-drawer-viewport' }
-                  : {})}
-                side={side}
-              >
+              <Drawer.Backdrop />
+              <Drawer.Viewport side={side}>
                 <Drawer.Popup side={side} size={size}>
                   <Drawer.Header>
                     <div>

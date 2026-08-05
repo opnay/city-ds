@@ -1,6 +1,9 @@
+import sizesSource from './examples/sizes.tsx?raw';
+import SwitchSizesExample from './examples/sizes';
 import statesSource from './examples/states.tsx?raw';
 import SwitchStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
+
 export const pageData = {
   api: [
     {
@@ -21,7 +24,6 @@ export const pageData = {
     {
       Component: SwitchStatesExample,
       coverage: [
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
         { axis: 'checked', values: ['false', 'true'] },
         { axis: 'disabled', values: ['true'] },
       ],
@@ -30,6 +32,15 @@ export const pageData = {
       filename: 'states.tsx',
       source: statesSource,
       title: '켜짐 상태',
+    },
+    {
+      Component: SwitchSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '주변 설정 제어와 스위치 크기를 맞춥니다.',
+      id: 'switch-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
     },
   ],
   optionAxes: [

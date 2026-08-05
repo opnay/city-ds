@@ -1,6 +1,9 @@
+import densitySource from './examples/density.tsx?raw';
+import TabsDensityExample from './examples/density';
 import tabsSource from './examples/tabs.tsx?raw';
 import TabsExample from './examples/tabs';
 import type { ComponentPageData } from '../../types';
+
 export const pageData = {
   api: [
     {
@@ -19,13 +22,21 @@ export const pageData = {
   ],
   examples: [
     {
+      Component: TabsDensityExample,
+      coverage: [{ axis: 'density', values: ['comfortable', 'compact'] }],
+      description: '콘텐츠 밀도에 맞춰 탭 목록의 여백을 조정합니다.',
+      id: 'tabs-density',
+      filename: 'density.tsx',
+      source: densitySource,
+      title: '밀도',
+    },
+    {
       Component: TabsExample,
       coverage: [
-        { axis: 'density', values: ['comfortable', 'compact'] },
         { axis: 'mode', values: ['controlled', 'uncontrolled'] },
         { axis: 'disabled', values: ['true'] },
       ],
-      description: '제어·비제어 탭, 두 밀도와 비활성 탭을 보여줍니다.',
+      description: '제어·비제어 활성 탭과 열 수 없는 탭을 구분합니다.',
       id: 'tabs-basic',
       filename: 'tabs.tsx',
       source: tabsSource,

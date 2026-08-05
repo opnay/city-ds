@@ -82,6 +82,12 @@ describe('component document content', () => {
         } else {
           expect(example.filename).toMatch(/\.tsx$/);
           expect(example.source.trim().length).toBeGreaterThan(0);
+          expect(example.source).not.toMatch(
+            /^import[^\n]*;\n(?:import[^\n]*;\n)*(?:const|let|type|interface|function|export default function)/,
+          );
+          expect(example.source).not.toMatch(
+            /^}\n(?:const|let|type|interface|function|export default function)/m,
+          );
         }
       }
 

@@ -1,5 +1,9 @@
-import localFilesSource from './examples/local-files.tsx?raw';
-import LocalFilesExample from './examples/local-files';
+import densitySource from './examples/density.tsx?raw';
+import FileUploadDensityExample from './examples/density';
+import disabledSource from './examples/disabled.tsx?raw';
+import FileUploadDisabledExample from './examples/disabled';
+import selectionSource from './examples/selection.tsx?raw';
+import FileUploadSelectionExample from './examples/selection';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
@@ -24,19 +28,35 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: LocalFilesExample,
+      Component: FileUploadSelectionExample,
       coverage: [
         { axis: 'multiple', values: ['false', 'true'] },
         { axis: 'controlled', values: ['true'] },
         { axis: 'empty', values: ['true', 'false'] },
-        { axis: 'disabled', values: ['true'] },
-        { axis: 'density', values: ['comfortable', 'compact'] },
       ],
-      description: '선택과 제거를 로컬 상태로만 처리합니다.',
-      id: 'file-upload-local-files',
-      filename: 'local-files.tsx',
-      source: localFilesSource,
+      description: '단일·복수 파일 선택과 목록을 로컬 상태로만 관리합니다.',
+      id: 'file-upload-selection',
+      filename: 'selection.tsx',
+      source: selectionSource,
       title: '로컬 파일 선택',
+    },
+    {
+      Component: FileUploadDensityExample,
+      coverage: [{ axis: 'density', values: ['comfortable', 'compact'] }],
+      description: '주변 폼 밀도에 맞춰 트리거와 파일 목록 간격을 선택합니다.',
+      id: 'file-upload-density',
+      filename: 'density.tsx',
+      source: densitySource,
+      title: '밀도',
+    },
+    {
+      Component: FileUploadDisabledExample,
+      coverage: [{ axis: 'disabled', values: ['true'] }],
+      description: '파일을 변경할 수 없는 이유를 주변 문맥과 함께 제공합니다.',
+      id: 'file-upload-disabled',
+      filename: 'disabled.tsx',
+      source: disabledSource,
+      title: '비활성 상태',
     },
   ],
   optionAxes: [

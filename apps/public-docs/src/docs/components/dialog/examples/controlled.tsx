@@ -3,11 +3,11 @@ import { Button } from '@opnay/city-ds-react/button';
 import { Dialog } from '@opnay/city-ds-react/dialog';
 
 const dialogs = [
-  { size: 'sm', scroll: 'none', trigger: 'sm Dialog' },
-  { size: 'md', scroll: 'body', trigger: '세부 정보' },
-  { size: 'lg', scroll: 'none', trigger: 'lg Dialog' },
-  { size: 'xl', scroll: 'body', trigger: 'xl Dialog' },
-  { size: 'full', scroll: 'body', trigger: 'full Dialog' },
+  { size: 'sm', trigger: 'sm Dialog' },
+  { size: 'md', trigger: '세부 정보' },
+  { size: 'lg', trigger: 'lg Dialog' },
+  { size: 'xl', trigger: 'xl Dialog' },
+  { size: 'full', trigger: 'full Dialog' },
 ] as const;
 
 type DialogSize = (typeof dialogs)[number]['size'];
@@ -17,7 +17,7 @@ export default function DialogControlledExample() {
 
   return (
     <div className="city-docs-example-row">
-      {dialogs.map(({ scroll, size, trigger }) => {
+      {dialogs.map(({ size, trigger }) => {
         const isPrimaryExample = size === 'md';
 
         return (
@@ -30,7 +30,7 @@ export default function DialogControlledExample() {
             <Dialog.Portal>
               <Dialog.Backdrop />
               <Dialog.Viewport>
-                <Dialog.Popup scroll={scroll} size={size}>
+                <Dialog.Popup size={size}>
                   <Dialog.Header>
                     <div>
                       <Dialog.Title>
@@ -39,7 +39,7 @@ export default function DialogControlledExample() {
                       <Dialog.Description>
                         {isPrimaryExample
                           ? '현재 페이지를 벗어나지 않고 확인합니다.'
-                          : `${scroll} 스크롤 구조를 확인합니다.`}
+                          : `${size} 크기를 확인합니다.`}
                       </Dialog.Description>
                     </div>
                   </Dialog.Header>

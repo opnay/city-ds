@@ -15,7 +15,9 @@ describe('public docs routes and shell', () => {
   ])('renders %s', async (path, title) => {
     await renderDocs([path]);
 
-    expect(screen.getByRole('heading', { level: 1, name: title })).toBeVisible();
+    expect(screen.getByRole('heading', { level: 1, name: title })).toHaveClass(
+      'city-text-page-title',
+    );
     expect(screen.getByRole('navigation', { name: '현재 위치' })).toBeVisible();
   });
 
@@ -55,25 +57,26 @@ describe('public docs routes and shell', () => {
     await renderDocs(['/']);
     const main = screen.getByRole('main');
 
+    const pageTitle = within(main).getByRole('heading', {
+      level: 1,
+      name: '운영 제품을 위한 React 디자인 시스템',
+    });
+    expect(pageTitle).toHaveClass('city-text-display');
     expect(
       within(main).getByRole('heading', {
-        level: 1,
-        name: '운영 제품을 위한 React 디자인 시스템',
+        level: 2,
+        name: '컴포넌트뿐 아니라 선택 기준까지 제공합니다.',
       }),
-    ).toBeVisible();
+    ).toHaveClass('city-text-section-title');
     expect(screen.getByRole('navigation', { name: '제품 소개 탐색' })).toBeVisible();
     expect(screen.queryByRole('navigation', { name: '현재 위치' })).not.toBeInTheDocument();
     expect(
       within(main).getByText(/복잡한 운영 도구, 데이터 화면, 폼을 빠르고 일관되게/),
     ).toBeVisible();
     expect(within(main).getByRole('progressbar', { name: '릴리스 준비도' })).toBeVisible();
-    expect(
-      within(main).getByRole('heading', {
-        level: 2,
-        name: '컴포넌트뿐 아니라 선택 기준까지 제공합니다.',
-      }),
-    ).toBeVisible();
-    expect(within(main).getByRole('heading', { level: 3, name: '운영 도구' })).toBeVisible();
+    expect(within(main).getByRole('heading', { level: 3, name: '운영 도구' })).toHaveClass(
+      'city-text-subsection-title',
+    );
     expect(within(main).getByRole('heading', { level: 3, name: '데이터 화면' })).toBeVisible();
     expect(within(main).getByRole('heading', { level: 3, name: '입력 흐름' })).toBeVisible();
     expect(within(main).getByRole('link', { name: '설치하고 시작하기' })).toBeVisible();
@@ -81,14 +84,18 @@ describe('public docs routes and shell', () => {
   });
 
   it('documents content typography roles and semantic structure', async () => {
-    await renderDocs(['/foundations']);
+    const { container } = await renderDocs(['/foundations']);
     const main = screen.getByRole('main');
 
     expect(
       within(main).getByRole('heading', { level: 2, name: '콘텐츠 타이포그래피' }),
-    ).toBeVisible();
+    ).toHaveClass('city-text-section-title');
     expect(within(main).getAllByText('city-text-page-title').length).toBeGreaterThan(0);
-    expect(within(main).getByText(/heading 수준은 문서 구조를 나타내고/)).toBeVisible();
+    expect(within(main).getByText(/heading 수준은 문서 구조를 나타내고/)).toHaveClass(
+      'city-text-body',
+    );
+    expect(container.querySelector('.city-docs-page-description')).toHaveClass('city-text-lead');
+    expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
   });
 
   it('closes the mobile drawer after navigation', async () => {
@@ -141,6 +148,21 @@ describe('catalog and local UI state', () => {
     expect(within(main).getByText('컴포넌트 15개')).toBeVisible();
     expect(within(main).getByRole('link', { name: /^Field레이블/ })).toBeVisible();
     expect(within(main).queryByRole('link', { name: /Button/ })).not.toBeInTheDocument();
+  });
+
+  it('uses content roles for every catalog group and description', async () => {
+    const { container } = await renderDocs(['/components']);
+
+    const groupHeadings = container.querySelectorAll('.city-docs-component-groups h2');
+    const descriptions = container.querySelectorAll(
+      '.city-docs-component-grid .city-text-supporting',
+    );
+
+    expect(groupHeadings.length).toBeGreaterThan(0);
+    for (const heading of groupHeadings) {
+      expect(heading).toHaveClass('city-text-section-title');
+    }
+    expect(descriptions).toHaveLength(40);
   });
 
   it('restores only a valid stored theme and lets the user change it', async () => {

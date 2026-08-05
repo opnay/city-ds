@@ -24,6 +24,10 @@ interface CodeFilesProps {
   files: readonly [CodeFile, CodeFile, ...CodeFile[]];
 }
 
+function addRequiredClassName(className: string | undefined, requiredClassName: string) {
+  return className ? `${className} ${requiredClassName}` : requiredClassName;
+}
+
 function ExampleFrame({ example }: { example: DocExample }) {
   const titleId = `example-${example.id}`;
   const Example = example.Component;
@@ -32,8 +36,10 @@ function ExampleFrame({ example }: { example: DocExample }) {
     <section aria-labelledby={titleId} className="city-docs-example">
       <header className="city-docs-example-heading">
         <div>
-          <h3 id={titleId}>{example.title}</h3>
-          <p>{example.description}</p>
+          <h3 className="city-text-subsection-title" id={titleId}>
+            {example.title}
+          </h3>
+          <p className="city-text-supporting">{example.description}</p>
         </div>
         <div aria-label="이 예제가 다루는 옵션" className="city-docs-coverage-list">
           {example.coverage.flatMap((item) =>
@@ -177,10 +183,37 @@ function MdxTable(props: ComponentPropsWithoutRef<'table'>) {
   );
 }
 
+function MdxHeading2({ className, ...props }: ComponentPropsWithoutRef<'h2'>) {
+  return <h2 {...props} className={addRequiredClassName(className, 'city-text-section-title')} />;
+}
+
+function MdxHeading3({ className, ...props }: ComponentPropsWithoutRef<'h3'>) {
+  return (
+    <h3 {...props} className={addRequiredClassName(className, 'city-text-subsection-title')} />
+  );
+}
+
+function MdxParagraph({ className, ...props }: ComponentPropsWithoutRef<'p'>) {
+  return <p {...props} className={addRequiredClassName(className, 'city-text-body')} />;
+}
+
+function MdxListItem({ className, ...props }: ComponentPropsWithoutRef<'li'>) {
+  return <li {...props} className={addRequiredClassName(className, 'city-text-body')} />;
+}
+
+function MdxBlockquote({ className, ...props }: ComponentPropsWithoutRef<'blockquote'>) {
+  return <blockquote {...props} className={addRequiredClassName(className, 'city-text-body')} />;
+}
+
 const MDX_COMPONENTS = {
   ApiTable,
   CodeFiles,
   ExampleSet,
+  blockquote: MdxBlockquote,
+  h2: MdxHeading2,
+  h3: MdxHeading3,
+  li: MdxListItem,
+  p: MdxParagraph,
   pre: MdxPre,
   table: MdxTable,
 } satisfies MDXComponents;

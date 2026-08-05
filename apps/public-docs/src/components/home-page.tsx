@@ -121,14 +121,14 @@ export function HomePage() {
     <article className="city-docs-home">
       <header className="city-docs-home-hero">
         <div className="city-docs-home-hero-copy">
-          <p className="city-docs-home-kicker">
+          <p className="city-docs-home-kicker city-text-caption">
             <span aria-hidden="true" />
             city design system · react
           </p>
-          <h1>
+          <h1 className="city-text-display">
             운영 제품을 위한 <span>React 디자인 시스템</span>
           </h1>
-          <p className="city-docs-home-lead">
+          <p className="city-docs-home-lead city-text-lead">
             city-ds는 복잡한 운영 도구, 데이터 화면, 폼을 빠르고 일관되게 만드는 컴포넌트와 디자인
             기준을 제공합니다. Base UI의 접근 가능한 동작과 절제된 모노크롬 시각 언어를 하나의 공개
             API로 사용하십시오.
@@ -157,15 +157,15 @@ export function HomePage() {
           <dl aria-label="city-ds 지원 범위" className="city-docs-home-facts">
             <div>
               <dt>{COMPONENT_DOCS.length}</dt>
-              <dd>공개 컴포넌트</dd>
+              <dd className="city-text-caption">공개 컴포넌트</dd>
             </div>
             <div>
               <dt>18 · 19</dt>
-              <dd>React 지원</dd>
+              <dd className="city-text-caption">React 지원</dd>
             </div>
             <div>
               <dt>3</dt>
-              <dd>light · dark · system</dd>
+              <dd className="city-text-caption">light · dark · system</dd>
             </div>
           </dl>
         </div>
@@ -174,10 +174,12 @@ export function HomePage() {
 
       <section aria-labelledby="product-foundation" className="city-docs-home-section">
         <div className="city-docs-home-section-heading">
-          <p>제품을 위한 기반</p>
+          <p className="city-text-caption">제품을 위한 기반</p>
           <div>
-            <h2 id="product-foundation">컴포넌트뿐 아니라 선택 기준까지 제공합니다.</h2>
-            <p>
+            <h2 className="city-text-section-title" id="product-foundation">
+              컴포넌트뿐 아니라 선택 기준까지 제공합니다.
+            </h2>
+            <p className="city-text-body">
               화면을 더 빨리 그리는 데서 멈추지 않습니다. 사용자의 목표와 상태에 맞는 선택을 반복할
               수 있도록 코드와 디자인 판단을 함께 제공합니다.
             </p>
@@ -186,25 +188,25 @@ export function HomePage() {
         <div className="city-docs-home-principles">
           <article>
             <Accessibility aria-hidden="true" />
-            <span>01</span>
-            <h3>접근성을 기본값으로</h3>
-            <p>
+            <span className="city-text-caption">01</span>
+            <h3 className="city-text-subsection-title">접근성을 기본값으로</h3>
+            <p className="city-text-supporting">
               Base UI가 제공하는 키보드 탐색, 포커스 관리, 의미 구조를 제품의 출발점으로 삼습니다.
             </p>
           </article>
           <article>
             <BookOpenCheck aria-hidden="true" />
-            <span>02</span>
-            <h3>선택 기준을 함께</h3>
-            <p>
+            <span className="city-text-caption">02</span>
+            <h3 className="city-text-subsection-title">선택 기준을 함께</h3>
+            <p className="city-text-supporting">
               사용·비사용 기준, 옵션 축, 의미 있는 상태와 조합 패턴을 소비자 관점에서 설명합니다.
             </p>
           </article>
           <article>
             <Blocks aria-hidden="true" />
-            <span>03</span>
-            <h3>제품 안에서 조합되도록</h3>
-            <p>
+            <span className="city-text-caption">03</span>
+            <h3 className="city-text-subsection-title">제품 안에서 조합되도록</h3>
+            <p className="city-text-supporting">
               공개 subpath와 render 합성 API로 Vite와 Next.js 제품 흐름에 자연스럽게 연결합니다.
             </p>
           </article>
@@ -213,10 +215,12 @@ export function HomePage() {
 
       <section aria-labelledby="product-contexts" className="city-docs-home-section">
         <div className="city-docs-home-section-heading">
-          <p>사용 맥락</p>
+          <p className="city-text-caption">사용 맥락</p>
           <div>
-            <h2 id="product-contexts">운영 제품의 반복되는 문제를 다룹니다.</h2>
-            <p>
+            <h2 className="city-text-section-title" id="product-contexts">
+              운영 제품의 반복되는 문제를 다룹니다.
+            </h2>
+            <p className="city-text-body">
               화면 유형마다 필요한 밀도와 상태, 액션 위계는 달라도 하나의 시각 언어를 유지합니다.
             </p>
           </div>
@@ -226,10 +230,10 @@ export function HomePage() {
             <article key={title}>
               <div>
                 <Icon aria-hidden="true" />
-                <h3>{title}</h3>
+                <h3 className="city-text-subsection-title">{title}</h3>
               </div>
-              <p>{description}</p>
-              <small>{components}</small>
+              <p className="city-text-supporting">{description}</p>
+              <small className="city-text-caption">{components}</small>
             </article>
           ))}
         </div>
@@ -241,10 +245,12 @@ export function HomePage() {
 
       <section aria-labelledby="product-start" className="city-docs-home-start">
         <div className="city-docs-home-section-heading">
-          <p>제품에 연결하기</p>
+          <p className="city-text-caption">제품에 연결하기</p>
           <div>
-            <h2 id="product-start">첫 화면을 city-ds로 시작하십시오.</h2>
-            <p>
+            <h2 className="city-text-section-title" id="product-start">
+              첫 화면을 city-ds로 시작하십시오.
+            </h2>
+            <p className="city-text-body">
               패키지를 설치하고 CSS를 한 번 불러오면 공개 컴포넌트와 토큰을 바로 사용할 수 있습니다.
             </p>
           </div>

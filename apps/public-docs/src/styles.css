@@ -376,12 +376,13 @@
     display: grid;
     max-width: 52rem;
     gap: var(--city-space-3);
+    overflow-wrap: anywhere;
+    word-break: keep-all;
   }
 
-  .city-docs-page-heading > p {
+  .city-docs-page-eyebrow {
     margin: 0;
     color: var(--city-color-muted-foreground);
-    font-size: var(--city-font-size-xs);
     font-weight: var(--city-font-weight-semibold);
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -389,48 +390,32 @@
 
   .city-docs-page-heading h1 {
     margin: 0;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    line-height: 1.05;
-    font-weight: var(--city-font-weight-semibold);
-    letter-spacing: -0.035em;
   }
 
-  .city-docs-page-heading > div {
+  .city-docs-page-description {
+    margin: 0;
     color: var(--city-color-muted-foreground);
-    font-size: var(--city-font-size-lg);
-    line-height: var(--city-line-height-lg);
   }
 
   .city-docs-prose {
-    display: grid;
     min-width: 0;
-    max-width: 64rem;
-    gap: var(--city-space-6);
+    max-inline-size: 64rem;
   }
 
-  .city-docs-prose > h2,
+  .city-docs-prose > :where(h2, h3, p, ul, ol, blockquote) {
+    max-inline-size: 68ch;
+  }
+
   .city-docs-related > h2,
   .city-docs-import-block > h2,
   .city-docs-component-groups section > h2 {
-    margin: var(--city-space-6) 0 0;
-    font-size: var(--city-font-size-xl);
-    line-height: var(--city-line-height-xl);
-    font-weight: var(--city-font-weight-semibold);
-    letter-spacing: -0.02em;
-  }
-
-  .city-docs-prose > h3 {
-    margin: var(--city-space-3) 0 0;
-    font-size: var(--city-font-size-lg);
-    line-height: var(--city-line-height-lg);
-    font-weight: var(--city-font-weight-semibold);
+    margin: 0;
   }
 
   .city-docs-prose p,
   .city-docs-prose ul,
   .city-docs-prose ol,
   .city-docs-prose blockquote {
-    max-width: 48rem;
     margin: 0;
   }
 
@@ -637,6 +622,8 @@
     min-width: 0;
     padding-bottom: var(--city-space-8);
     gap: var(--city-space-16);
+    overflow-wrap: anywhere;
+    word-break: keep-all;
   }
 
   .city-docs-home-hero {
@@ -666,8 +653,6 @@
     align-items: center;
     gap: var(--city-space-2);
     font-family: var(--city-font-family-mono);
-    font-size: var(--city-font-size-2xs);
-    line-height: var(--city-line-height-2xs);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -681,10 +666,6 @@
 
   .city-docs-home-hero h1 {
     margin: 0;
-    font-size: clamp(2.75rem, 5.25vw, 4.75rem);
-    line-height: 0.98;
-    font-weight: var(--city-font-weight-semibold);
-    letter-spacing: -0.055em;
   }
 
   .city-docs-home-hero h1 > span {
@@ -695,8 +676,6 @@
     max-width: 42rem;
     margin: 0;
     color: var(--city-color-muted-foreground);
-    font-size: var(--city-font-size-lg);
-    line-height: var(--city-line-height-lg);
   }
 
   .city-docs-home-actions {
@@ -737,8 +716,6 @@
   .city-docs-home-facts dd {
     margin: 0;
     color: var(--city-color-muted-foreground);
-    font-size: var(--city-font-size-xs);
-    line-height: var(--city-line-height-xs);
   }
 
   .city-docs-home-preview {
@@ -918,8 +895,6 @@
     margin: var(--city-space-1) 0 0;
     color: var(--city-color-muted-foreground);
     font-family: var(--city-font-family-mono);
-    font-size: var(--city-font-size-2xs);
-    line-height: var(--city-line-height-2xs);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -933,13 +908,6 @@
   .city-docs-home-section-heading h2,
   .city-docs-home-section-heading > div > p {
     margin: 0;
-  }
-
-  .city-docs-home-section-heading h2 {
-    font-size: clamp(1.75rem, 3vw, 2.75rem);
-    line-height: 1.12;
-    font-weight: var(--city-font-weight-semibold);
-    letter-spacing: -0.035em;
   }
 
   .city-docs-home-section-heading > div > p {
@@ -973,7 +941,6 @@
   .city-docs-home-principles article > span {
     color: var(--city-color-muted-foreground);
     font-family: var(--city-font-family-mono);
-    font-size: var(--city-font-size-2xs);
   }
 
   .city-docs-home-principles h3,
@@ -981,16 +948,8 @@
     margin: 0;
   }
 
-  .city-docs-home-principles h3 {
-    font-size: var(--city-font-size-lg);
-    line-height: var(--city-line-height-lg);
-    font-weight: var(--city-font-weight-semibold);
-  }
-
   .city-docs-home-principles p {
     color: var(--city-color-muted-foreground);
-    font-size: var(--city-font-size-sm);
-    line-height: var(--city-line-height-sm);
   }
 
   .city-docs-home-contexts {
@@ -1025,23 +984,13 @@
     margin: 0;
   }
 
-  .city-docs-home-contexts h3 {
-    font-size: var(--city-font-size-lg);
-    line-height: var(--city-line-height-lg);
-    font-weight: var(--city-font-weight-semibold);
-  }
-
   .city-docs-home-contexts p {
     color: var(--city-color-muted-foreground);
-    font-size: var(--city-font-size-sm);
-    line-height: var(--city-line-height-sm);
   }
 
   .city-docs-home-contexts small {
     color: var(--city-color-muted-foreground);
     font-family: var(--city-font-family-mono);
-    font-size: var(--city-font-size-2xs);
-    line-height: 1.5;
   }
 
   .city-docs-home-section > [role='link'] {
@@ -1098,7 +1047,6 @@
   .city-docs-example-heading p {
     margin-top: var(--city-space-1);
     color: var(--city-color-muted-foreground);
-    font-size: var(--city-font-size-sm);
   }
 
   .city-docs-coverage-list {
@@ -1223,11 +1171,9 @@
     gap: var(--city-space-1);
   }
 
-  .city-docs-related small,
-  .city-docs-component-grid small {
+  .city-docs-related .city-text-supporting,
+  .city-docs-component-grid .city-text-supporting {
     color: var(--city-color-muted-foreground);
-    font-size: var(--city-font-size-xs);
-    line-height: var(--city-line-height-xs);
   }
 
   .city-docs-component-groups {
@@ -1243,7 +1189,6 @@
   .city-docs-results-count {
     margin: 0;
     color: var(--city-color-muted-foreground);
-    font-size: var(--city-font-size-sm);
   }
 
   .city-docs-pending {
@@ -1333,25 +1278,12 @@
       flex-direction: column;
     }
 
-    .city-docs-page-heading h1 {
-      font-size: 2.25rem;
-    }
-
-    .city-docs-page-heading > div {
-      font-size: var(--city-font-size-md);
-      line-height: var(--city-line-height-md);
-    }
-
     .city-docs-home {
       gap: var(--city-space-12);
     }
 
     .city-docs-home-hero {
       padding-top: var(--city-space-5);
-    }
-
-    .city-docs-home-hero h1 {
-      font-size: clamp(2.5rem, 11vw, 4rem);
     }
 
     .city-docs-home-section-heading {

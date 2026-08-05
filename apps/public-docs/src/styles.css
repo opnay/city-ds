@@ -633,8 +633,7 @@
   .city-docs-home-hero,
   .city-docs-home-section {
     box-sizing: border-box;
-    min-height: calc(100vh - var(--city-docs-product-header-height));
-    min-height: calc(100dvh - var(--city-docs-product-header-height));
+    min-height: 50rem;
     min-width: 0;
     border-bottom: 1px solid var(--city-color-border);
     scroll-margin-top: var(--city-docs-product-header-height);
@@ -771,7 +770,8 @@
   .city-docs-home-section {
     display: grid;
     padding: clamp(var(--city-space-10), 9vh, var(--city-space-16)) 0;
-    grid-template-rows: auto 1fr;
+    align-content: center;
+    grid-template-rows: auto auto;
     gap: clamp(var(--city-space-12), 10vh, 7rem);
   }
 
@@ -806,10 +806,6 @@
     border-bottom: 1px solid var(--city-color-border);
     align-self: end;
     grid-template-columns: minmax(14rem, 1.35fr) repeat(4, minmax(0, 1fr));
-  }
-
-  .city-docs-home-foundation .city-docs-home-token-strip {
-    align-self: stretch;
   }
 
   .city-docs-home-token-strip > div {
@@ -1038,6 +1034,23 @@
     font-size: var(--city-font-size-md);
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  @media (min-width: 80rem) {
+    .city-docs-home-hero,
+    .city-docs-home-section {
+      min-height: calc(100vh - var(--city-docs-product-header-height));
+      min-height: calc(100dvh - var(--city-docs-product-header-height));
+    }
+
+    .city-docs-home-foundation {
+      align-content: normal;
+      grid-template-rows: auto 1fr;
+    }
+
+    .city-docs-home-foundation .city-docs-home-token-strip {
+      align-self: stretch;
+    }
   }
 
   @media (max-width: 72rem) {
@@ -1346,18 +1359,14 @@
     .city-docs-home-context-section,
     .city-docs-home-components-section,
     .city-docs-home-start {
-      align-content: normal;
+      align-content: center;
       align-items: stretch;
       grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: auto 1fr;
+      grid-template-rows: auto auto;
     }
 
     .city-docs-home-token-strip {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .city-docs-home-foundation .city-docs-home-token-strip {
-      align-self: end;
     }
 
     .city-docs-home-token-strip > div {

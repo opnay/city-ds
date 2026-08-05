@@ -6,9 +6,11 @@ import { COMPONENT_DOCS } from './doc-catalog';
 
 describe('all component document routes', () => {
   it.each(COMPONENT_DOCS)('renders $slug with examples and API', async (entry) => {
-    await renderDocs([`/components/${entry.slug}`]);
+    const { container } = await renderDocs([`/components/${entry.slug}`]);
 
-    expect(screen.getByRole('heading', { level: 1, name: entry.title })).toBeVisible();
+    expect(screen.getByRole('heading', { level: 1, name: entry.title })).toHaveClass(
+      'city-text-page-title',
+    );
     for (const heading of [
       '언제 사용합니까',
       '언제 피해야 합니까',
@@ -17,8 +19,22 @@ describe('all component document routes', () => {
       '주요 API',
       '접근성',
     ]) {
-      expect(screen.getByRole('heading', { level: 2, name: heading })).toBeVisible();
+      expect(screen.getByRole('heading', { level: 2, name: heading })).toHaveClass(
+        'city-text-section-title',
+      );
     }
+    const exampleTitles = container.querySelectorAll('.city-docs-example-heading h3');
+    const exampleDescriptions = container.querySelectorAll('.city-docs-example-heading p');
+
+    expect(exampleTitles.length).toBeGreaterThan(0);
+    expect(exampleDescriptions).toHaveLength(exampleTitles.length);
+    for (const title of exampleTitles) {
+      expect(title).toHaveClass('city-text-subsection-title');
+    }
+    for (const description of exampleDescriptions) {
+      expect(description).toHaveClass('city-text-supporting');
+    }
+    expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
     const apiRegion = screen.getByRole('region', { name: '주요 API' });
     expect(within(apiRegion).getByRole('table')).toBeVisible();
   });

@@ -76,7 +76,7 @@ export function ComponentCatalog() {
         </Select.Root>
       </FilterBar>
 
-      <p className="city-docs-results-count" aria-live="polite">
+      <p className="city-docs-results-count city-text-supporting" aria-live="polite">
         컴포넌트 {results.length}개
       </p>
 
@@ -103,13 +103,15 @@ export function ComponentCatalog() {
 
             return (
               <section aria-labelledby={`catalog-${group}`} key={group}>
-                <h2 id={`catalog-${group}`}>{CATEGORY_LABELS[group]}</h2>
+                <h2 className="city-text-section-title" id={`catalog-${group}`}>
+                  {CATEGORY_LABELS[group]}
+                </h2>
                 <div className="city-docs-component-grid">
                   {entries.map((entry) => (
                     <Link key={entry.slug} params={{ slug: entry.slug }} to="/components/$slug">
                       <span>
                         <strong>{entry.title}</strong>
-                        <small>{entry.description}</small>
+                        <span className="city-text-supporting">{entry.description}</span>
                       </span>
                       <ArrowRight aria-hidden="true" size={16} />
                     </Link>

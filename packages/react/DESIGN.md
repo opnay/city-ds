@@ -47,6 +47,34 @@ import '@opnay/city-ds-react/styles.css';
 
 자식 요소에 더 강한 지속적 강조가 필요하면 크기나 색상을 예외로 키우지 말고 해당 요소가 더 높은 영역에 속해야 하는지 검토하십시오. 오류, 포커스, 선택, 진행 표시는 기능 상태이므로 필요한 가시성을 유지하되 정보 위계를 바꾸는 장식으로 사용하지 마십시오.
 
+### 콘텐츠 타이포그래피
+
+컴포넌트 밖의 제목, 문장과 문단은 의미 HTML과 시각 역할을 분리하십시오. heading 수준은 문서 구조를 따르고 `city-text-*` 클래스는 글꼴, 크기, 행간, 굵기와 자간만 정합니다.
+
+| 역할 클래스                  | 규격                           | 대표 용도         |
+| ---------------------------- | ------------------------------ | ----------------- |
+| `city-text-display`          | 36–48px / 1                    | 대표 메시지       |
+| `city-text-page-title`       | 30–36px / 1.1                  | 페이지 제목       |
+| `city-text-section-title`    | 24px / 2rem(32px), semibold    | 섹션 제목         |
+| `city-text-subsection-title` | 20px / 1.75rem(28px), semibold | 하위 섹션 제목    |
+| `city-text-lead`             | 18px / 1.75rem(28px), regular  | 도입 문단         |
+| `city-text-body`             | 16px / 1.5rem(24px), regular   | 기본 문장과 문단  |
+| `city-text-supporting`       | 14px / 1.25rem(20px), regular  | 보조 설명         |
+| `city-text-caption`          | 12px / 1rem(16px), regular     | 캡션과 메타데이터 |
+
+여러 문단에는 `city-prose`를 사용하십시오. 이 클래스는 68ch 읽기 폭, 16px 흐름 간격, 제목 전 추가 간격, 목록 들여쓰기와 긴 문자열 줄바꿈만 제공하며 하위 요소의 텍스트 역할은 자동으로 정하지 않습니다.
+
+```tsx
+<article className="city-prose">
+  <h1 className="city-text-page-title">교통 관제 요약</h1>
+  <p className="city-text-lead">오늘의 주요 운영 상태입니다.</p>
+  <h2 className="city-text-section-title">운행 상태</h2>
+  <p className="city-text-body">일반적인 설명을 여기에 작성합니다.</p>
+</article>
+```
+
+역할 클래스는 색상과 외부 여백을 포함하지 않습니다. 오류와 필수 안내를 `city-text-caption` 또는 낮은 대비로 약화하지 말고, 색상만으로 정보 위계를 표현하지 마십시오. Button·Input·Badge 같은 컴포넌트 내부 텍스트는 각 컴포넌트와 Control Text 계약을 유지하십시오.
+
 ### 버튼 우선순위
 
 한 그룹에는 원칙적으로 하나의 `primary` 액션만 두십시오. 페이지의 주요 액션과 다이얼로그의 주요 액션은 서로 다른 그룹이므로 각각 하나씩 가질 수 있습니다.

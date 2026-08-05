@@ -1,0 +1,182 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Table } from '@opnay/city-ds-react';
+import { ComponentSpecimen } from '../docs/component-specimen';
+
+<Meta title="디자인 패턴/Typography/Content Text" />
+
+# Content Text
+
+Content Text는 페이지 제목, 섹션 제목, 문장과 문단처럼 컴포넌트 밖에서 읽는 텍스트의
+역할과 리듬을 정의합니다. 의미 있는 HTML 요소를 먼저 선택하고 `city-text-*` 클래스로 시각
+역할을 적용하십시오. Button·Input·Badge 같은 컴포넌트 내부 텍스트는
+[Control Text](?path=/docs/디자인-패턴-typography-control-text--docs) 계약을 따릅니다.
+
+## 역할 체계
+
+<ComponentSpecimen>
+  <div className="grid gap-6 py-4">
+    <p className="city-text-display m-0">도시 운영 현황</p>
+    <p className="city-text-page-title m-0">교통 관제 대시보드</p>
+    <p className="city-text-section-title m-0">오늘의 운행 상태</p>
+    <p className="city-text-subsection-title m-0">지연이 발생한 노선</p>
+    <p className="city-text-lead m-0">중요한 맥락을 먼저 설명하는 도입 문단입니다.</p>
+    <p className="city-text-body m-0">일반적인 설명과 여러 문장으로 이어지는 본문입니다.</p>
+    <p className="city-text-supporting m-0">주요 내용을 보완하는 짧은 설명입니다.</p>
+    <p className="city-text-caption m-0">마지막 갱신 2026년 8월 4일 14:30</p>
+  </div>
+</ComponentSpecimen>
+
+<ComponentSpecimen>
+  <Table.ScrollArea
+    appearance="outline"
+    aria-label="콘텐츠 텍스트 역할 계약 가로 스크롤 영역"
+    className="my-6 max-w-3xl"
+  >
+    <Table.Root aria-label="콘텐츠 텍스트 역할 계약" size="sm">
+      <Table.Header>
+        <Table.Row>
+          <Table.Head>역할 클래스</Table.Head>
+          <Table.Head>크기 / 행간</Table.Head>
+          <Table.Head>굵기</Table.Head>
+          <Table.Head>대표 용도</Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Head scope="row">
+            <code>city-text-display</code>
+          </Table.Head>
+          <Table.Cell>36–48px / 1</Table.Cell>
+          <Table.Cell>semibold</Table.Cell>
+          <Table.Cell>랜딩과 대표 메시지</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">
+            <code>city-text-page-title</code>
+          </Table.Head>
+          <Table.Cell>30–36px / 1.1</Table.Cell>
+          <Table.Cell>semibold</Table.Cell>
+          <Table.Cell>페이지 제목</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">
+            <code>city-text-section-title</code>
+          </Table.Head>
+          <Table.Cell>24px / 2rem(32px)</Table.Cell>
+          <Table.Cell>semibold</Table.Cell>
+          <Table.Cell>섹션 제목</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">
+            <code>city-text-subsection-title</code>
+          </Table.Head>
+          <Table.Cell>20px / 1.75rem(28px)</Table.Cell>
+          <Table.Cell>semibold</Table.Cell>
+          <Table.Cell>하위 섹션 제목</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">
+            <code>city-text-lead</code>
+          </Table.Head>
+          <Table.Cell>18px / 1.75rem(28px)</Table.Cell>
+          <Table.Cell>regular</Table.Cell>
+          <Table.Cell>도입 문단</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">
+            <code>city-text-body</code>
+          </Table.Head>
+          <Table.Cell>16px / 1.5rem(24px)</Table.Cell>
+          <Table.Cell>regular</Table.Cell>
+          <Table.Cell>기본 문장과 문단</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">
+            <code>city-text-supporting</code>
+          </Table.Head>
+          <Table.Cell>14px / 1.25rem(20px)</Table.Cell>
+          <Table.Cell>regular</Table.Cell>
+          <Table.Cell>보조 설명</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">
+            <code>city-text-caption</code>
+          </Table.Head>
+          <Table.Cell>12px / 1rem(16px)</Table.Cell>
+          <Table.Cell>regular</Table.Cell>
+          <Table.Cell>캡션과 메타데이터</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table.Root>
+  </Table.ScrollArea>
+</ComponentSpecimen>
+
+`display`와 `page-title`만 viewport에 따라 정해진 범위 안에서 유동적으로 바뀝니다. 역할
+클래스는 글꼴, 크기, 행간, 굵기와 자간만 정합니다. 색상과 외부 여백은 정보 의미와
+레이아웃에서 별도로 선택하십시오.
+
+## 문단 흐름
+
+`city-prose`는 68ch 읽기 폭, 16px 흐름 간격, 제목 전 추가 간격, 목록 들여쓰기와 긴 문자열
+줄바꿈을 제공합니다. 하위 요소의 텍스트 역할은 자동으로 정하지 않습니다.
+
+<ComponentSpecimen>
+  <article className="city-prose rounded-city-md border border-city-border p-6">
+    <h1 className="city-text-page-title">교통 관제 요약</h1>
+    <p className="city-text-lead">
+      운영자는 지연 원인과 영향을 먼저 이해하고 필요한 조치를 선택할 수 있어야 합니다.
+    </p>
+    <h2 className="city-text-section-title">운행 상태</h2>
+    <p className="city-text-body">
+      2호선 일부 구간의 신호 점검으로 열차 간격이 평소보다 길어졌습니다. 현재 복구 작업이 진행
+      중이며 다음 갱신에서 예상 정상화 시간을 안내합니다.
+    </p>
+    <h3 className="city-text-subsection-title">확인할 내용</h3>
+    <ul className="city-text-body">
+      <li>영향을 받는 구간과 운행 방향</li>
+      <li>대체 노선과 현장 안내 상태</li>
+    </ul>
+    <p className="city-text-supporting">
+      상태 색상과 관계없이 제목과 본문만으로도 상황을 이해할 수 있어야 합니다.
+    </p>
+    <footer className="city-text-caption">관제 시스템에서 14:30에 갱신</footer>
+  </article>
+</ComponentSpecimen>
+
+```tsx
+<article className="city-prose">
+  <h1 className="city-text-page-title">교통 관제 요약</h1>
+  <p className="city-text-lead">오늘의 주요 운영 상태입니다.</p>
+  <h2 className="city-text-section-title">운행 상태</h2>
+  <p className="city-text-body">일반적인 설명을 여기에 작성합니다.</p>
+</article>
+```
+
+## 좁은 영역과 긴 문구
+
+<ComponentSpecimen>
+  <div className="city-prose max-w-80 rounded-city-md border border-city-border p-4">
+    <h2 className="city-text-section-title">긴 제목도 글자 크기를 줄이지 않고 줄바꿈합니다</h2>
+    <p className="city-text-body">
+      한글 단어는 가능한 한 유지하고, localization으로 길어진 문장과
+      https://operations.example.com/incidents/2026/08/04/transit-line-status 같은 긴 문자열은 영역
+      밖으로 넘치지 않게 줄바꿈합니다.
+    </p>
+  </div>
+</ComponentSpecimen>
+
+## 적용 순서
+
+1. 문서 구조에 맞는 `h1`–`h6`, `p`, `figcaption` 같은 의미 요소를 먼저 선택합니다.
+2. 화면과 영역의 정보 위계에 맞는 `city-text-*` 역할을 적용합니다.
+3. 여러 문단의 읽기 흐름이 필요할 때만 부모에 `city-prose`를 추가합니다.
+4. 색상, 정렬과 여백은 해당 정보의 의미와 레이아웃 규칙으로 정합니다.
+
+## 검토 기준
+
+1. heading 수준이 글자 크기가 아니라 문서 구조를 따릅니까?
+2. 같은 역할의 크기, 행간, 굵기가 화면마다 일치합니까?
+3. 일반 문단이 `city-text-body`와 읽기 쉬운 폭을 사용합니까?
+4. 긴 한글·영문·URL이 글자 크기를 줄이지 않고 안전하게 줄바꿈합니까?
+5. 오류와 필수 안내를 `caption` 크기나 낮은 대비로 약화하지 않습니까?
+6. 정보 위계를 색상만으로 표현하지 않습니까?

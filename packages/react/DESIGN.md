@@ -51,16 +51,16 @@ import '@opnay/city-ds-react/styles.css';
 
 컴포넌트 밖의 제목, 문장과 문단은 의미 HTML과 시각 역할을 분리하십시오. heading 수준은 문서 구조를 따르고 `city-text-*` 클래스는 글꼴, 크기, 행간, 굵기와 자간만 정합니다.
 
-| 역할 클래스                  | 규격                | 대표 용도         |
-| ---------------------------- | ------------------- | ----------------- |
-| `city-text-display`          | 36–48px / 1         | 대표 메시지       |
-| `city-text-page-title`       | 30–36px / 1.1       | 페이지 제목       |
-| `city-text-section-title`    | 24 / 32px, semibold | 섹션 제목         |
-| `city-text-subsection-title` | 20 / 28px, semibold | 하위 섹션 제목    |
-| `city-text-lead`             | 18 / 28px, regular  | 도입 문단         |
-| `city-text-body`             | 16 / 24px, regular  | 기본 문장과 문단  |
-| `city-text-supporting`       | 14 / 20px, regular  | 보조 설명         |
-| `city-text-caption`          | 12 / 16px, regular  | 캡션과 메타데이터 |
+| 역할 클래스                  | 규격                           | 대표 용도         |
+| ---------------------------- | ------------------------------ | ----------------- |
+| `city-text-display`          | 36–48px / 1                    | 대표 메시지       |
+| `city-text-page-title`       | 30–36px / 1.1                  | 페이지 제목       |
+| `city-text-section-title`    | 24px / 2rem(32px), semibold    | 섹션 제목         |
+| `city-text-subsection-title` | 20px / 1.75rem(28px), semibold | 하위 섹션 제목    |
+| `city-text-lead`             | 18px / 1.75rem(28px), regular  | 도입 문단         |
+| `city-text-body`             | 16px / 1.5rem(24px), regular   | 기본 문장과 문단  |
+| `city-text-supporting`       | 14px / 1.25rem(20px), regular  | 보조 설명         |
+| `city-text-caption`          | 12px / 1rem(16px), regular     | 캡션과 메타데이터 |
 
 여러 문단에는 `city-prose`를 사용하십시오. 이 클래스는 68ch 읽기 폭, 16px 흐름 간격, 제목 전 추가 간격, 목록 들여쓰기와 긴 문자열 줄바꿈만 제공하며 하위 요소의 텍스트 역할은 자동으로 정하지 않습니다.
 

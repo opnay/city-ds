@@ -508,6 +508,8 @@
     border-radius: var(--city-radius-xs);
     background: var(--city-color-muted);
     font-size: var(--city-font-size-sm);
+    line-height: 1.25;
+    vertical-align: 0.05em;
   }
 
   .city-docs-prose-code,

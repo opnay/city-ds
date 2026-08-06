@@ -1,7 +1,6 @@
 import type { ComponentType, ReactNode } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
-import { Badge } from '@opnay/city-ds-react/badge';
 
 import { CATEGORY_LABELS, getComponentDoc } from '../docs/doc-catalog';
 import type { ComponentDocEntry } from '../docs/types';
@@ -41,9 +40,9 @@ export function ComponentDocPage({ Content, entry }: ComponentDocPageProps) {
   return (
     <article className="city-docs-article">
       <header className="city-docs-page-heading">
-        <Badge appearance="outline" tone="neutral">
-          {CATEGORY_LABELS[entry.category]}
-        </Badge>
+        <p className="city-docs-page-eyebrow city-text-caption">
+          컴포넌트 · {CATEGORY_LABELS[entry.category]}
+        </p>
         <h1 className="city-text-page-title">{entry.title}</h1>
         <p className="city-docs-page-description city-text-lead">{entry.description}</p>
       </header>

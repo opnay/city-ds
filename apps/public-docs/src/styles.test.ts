@@ -63,8 +63,10 @@ describe('public docs layout styles', () => {
     expect(styles).not.toMatch(/\.city-docs-prose ul,\s*\n\s*\.city-docs-prose ol/);
   });
 
-  it('places the shared settings control inside each preview', () => {
-    expect(styles).toMatch(/\.city-docs-example-preview-toolbar\s*{/);
+  it('uses a code-block-style header for preview settings', () => {
+    expect(styles).toMatch(/\.city-docs-code-header,\s*\n\s*\.city-docs-example-heading\s*{/);
+    expect(styles).toMatch(/\.city-docs-example-actions\s*{/);
+    expect(styles).not.toMatch(/\.city-docs-example-preview-toolbar\s*{/);
     expect(styles).toMatch(/\.city-docs-preview-settings-option\s*{/);
   });
 });

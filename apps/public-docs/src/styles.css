@@ -522,7 +522,8 @@
     background: var(--city-color-muted);
   }
 
-  .city-docs-code-header {
+  .city-docs-code-header,
+  .city-docs-example-heading {
     display: flex;
     min-height: var(--city-control-lg);
     padding: var(--city-space-2) var(--city-space-3);
@@ -1097,23 +1098,23 @@
   }
 
   .city-docs-example-heading {
-    display: flex;
-    padding: var(--city-space-4);
-    border-bottom: 1px solid var(--city-color-border);
-    background: var(--city-color-surface-raised);
-    align-items: flex-start;
     justify-content: space-between;
-    gap: var(--city-space-4);
   }
 
-  .city-docs-example-heading h3,
-  .city-docs-example-heading p {
+  .city-docs-example-title {
     margin: 0;
+    font-size: var(--city-font-size-sm);
+    line-height: var(--city-line-height-sm);
+    font-weight: var(--city-font-weight-semibold);
   }
 
-  .city-docs-example-heading p {
-    margin-top: var(--city-space-1);
-    color: var(--city-color-muted-foreground);
+  .city-docs-example-actions {
+    display: flex;
+    min-width: 0;
+    margin-left: auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--city-space-2);
   }
 
   .city-docs-coverage-list {
@@ -1137,7 +1138,6 @@
   .city-docs-example-preview {
     --city-docs-preview-grid-color: color-mix(in oklab, var(--city-color-border) 20%, transparent);
 
-    display: grid;
     min-height: 8rem;
     padding: clamp(var(--city-space-4), 5vw, var(--city-space-8));
     background:
@@ -1145,17 +1145,10 @@
       linear-gradient(90deg, var(--city-docs-preview-grid-color) 1px, transparent 1px),
       var(--city-color-background);
     background-size: 1.5rem 1.5rem;
-    gap: var(--city-space-4);
   }
 
   html[data-city-docs-preview-grid='off'] .city-docs-example-preview {
     background: var(--city-color-background);
-  }
-
-  .city-docs-example-preview-toolbar {
-    display: flex;
-    min-width: 0;
-    justify-content: flex-end;
   }
 
   .city-docs-example-preview-content {
@@ -1406,10 +1399,6 @@
     .city-docs-home-principles,
     .city-docs-home-contexts {
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-    }
-
-    .city-docs-example-heading {
-      display: grid;
     }
 
     .city-docs-coverage-list {

@@ -36,26 +36,24 @@ function ExampleFrame({ example }: { example: DocExample }) {
   return (
     <section aria-labelledby={titleId} className="city-docs-example">
       <header className="city-docs-example-heading">
-        <div>
-          <h3 className="city-text-subsection-title" id={titleId}>
-            {example.title}
-          </h3>
-          <p className="city-text-supporting">{example.description}</p>
-        </div>
-        <div aria-label="이 예제가 다루는 옵션" className="city-docs-coverage-list">
-          {example.coverage.flatMap((item) =>
-            item.values.map((value) => (
-              <span key={`${item.axis}-${value}`}>
-                {item.axis}: {value}
-              </span>
-            )),
-          )}
+        <h3 className="city-docs-example-title" id={titleId}>
+          {example.title}
+        </h3>
+        <p className="city-docs-sr-only">{example.description}</p>
+        <div className="city-docs-example-actions">
+          <div aria-label="이 예제가 다루는 옵션" className="city-docs-coverage-list">
+            {example.coverage.flatMap((item) =>
+              item.values.map((value) => (
+                <span key={`${item.axis}-${value}`}>
+                  {item.axis}: {value}
+                </span>
+              )),
+            )}
+          </div>
+          <PreviewSettingsButton />
         </div>
       </header>
       <div className="city-docs-example-preview">
-        <div className="city-docs-example-preview-toolbar">
-          <PreviewSettingsButton />
-        </div>
         <div className="city-docs-example-preview-content">
           <Example />
         </div>

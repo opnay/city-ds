@@ -14,6 +14,14 @@ describe('public docs layout styles', () => {
     expect(styles).not.toContain('.city-docs-component-nav');
   });
 
+  it('restores document list markers and compacts inline code', () => {
+    expect(styles).toMatch(/\.city-docs-prose > ul,[^}]*list-style-type:\s*disc;/s);
+    expect(styles).toMatch(/\.city-docs-prose > ol,[^}]*list-style-type:\s*decimal;/s);
+    expect(styles).toMatch(
+      /\.city-docs-prose > :where\(h2, h3, p\) > code,[^}]*margin-inline:\s*4px;[^}]*font-size:\s*var\(--city-font-size-sm\);[^}]*line-height:\s*1\.25;[^}]*vertical-align:\s*0\.05em;/s,
+    );
+  });
+
   it('keeps the organism mosaic at desktop geometry when mobile crops it', () => {
     expect(styles).toMatch(/\.city-showcase-grid\s*{[^}]*grid-template-columns:\s*repeat\(12,/s);
     expect(styles).toMatch(

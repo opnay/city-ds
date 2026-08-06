@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { renderDocs } from '../test/render-docs';
-import { COMPONENT_DOCS } from './doc-catalog';
+import { CATEGORY_LABELS, COMPONENT_DOCS } from './doc-catalog';
 
 describe('all component document routes', () => {
   it.each(COMPONENT_DOCS)('renders $slug with examples and API', async (entry) => {
@@ -11,6 +11,15 @@ describe('all component document routes', () => {
     expect(screen.getByRole('heading', { level: 1, name: entry.title })).toHaveClass(
       'city-text-page-title',
     );
+    const pageHeading = screen
+      .getByRole('heading', { level: 1, name: entry.title })
+      .closest('header');
+
+    expect(pageHeading).not.toBeNull();
+    expect(
+      within(pageHeading as HTMLElement).getByText(`컴포넌트 · ${CATEGORY_LABELS[entry.category]}`),
+    ).toHaveClass('city-docs-page-eyebrow', 'city-text-caption');
+    expect(pageHeading?.querySelector('[data-city-badge]')).not.toBeInTheDocument();
     for (const heading of [
       '언제 사용합니까',
       '언제 피해야 합니까',

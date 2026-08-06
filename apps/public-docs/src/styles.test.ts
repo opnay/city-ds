@@ -9,9 +9,9 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(/\.city-docs-example-code\s*{\s*min-width:\s*0;/);
   });
 
-  it('keeps mobile and tablet landing scenes at least 800 pixels tall', () => {
+  it('keeps mobile and tablet landing scenes at least 600 pixels tall', () => {
     expect(styles).toMatch(
-      /\.city-docs-home-hero,\s*\.city-docs-home-section\s*{[^}]*min-height:\s*50rem;/,
+      /\.city-docs-home-hero,\s*\.city-docs-home-section\s*{[^}]*min-height:\s*37\.5rem;/,
     );
   });
 

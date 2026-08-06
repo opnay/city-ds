@@ -633,7 +633,7 @@
   .city-docs-home-hero,
   .city-docs-home-section {
     box-sizing: border-box;
-    min-height: 50rem;
+    min-height: 37.5rem;
     min-width: 0;
     border-bottom: 1px solid var(--city-color-border);
     scroll-margin-top: var(--city-docs-product-header-height);

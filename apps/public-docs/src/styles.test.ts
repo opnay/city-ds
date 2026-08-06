@@ -22,6 +22,25 @@ describe('public docs layout styles', () => {
     );
   });
 
+  it('keeps reading code aligned with the document measure', () => {
+    expect(styles).toMatch(/--city-docs-reading-max:\s*48rem;/);
+    expect(styles).toMatch(
+      /\.city-docs-prose-code-wrap\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-import-block\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);/s,
+    );
+  });
+
+  it('presents task lists as one divided checklist surface', () => {
+    expect(styles).toMatch(
+      /\.city-docs-prose > ul\.city-docs-checklist\s*{[^}]*border:\s*1px solid var\(--city-color-border\);[^}]*list-style:\s*none;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-checklist > \.city-docs-checklist-item \+ \.city-docs-checklist-item\s*{[^}]*border-top:/s,
+    );
+  });
+
   it('keeps the organism mosaic at desktop geometry when mobile crops it', () => {
     expect(styles).toMatch(/\.city-showcase-grid\s*{[^}]*grid-template-columns:\s*repeat\(12,/s);
     expect(styles).toMatch(

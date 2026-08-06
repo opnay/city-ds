@@ -35,6 +35,7 @@
 
   .city-docs-shell {
     --city-docs-content-max: 78rem;
+    --city-docs-reading-max: 48rem;
     --city-docs-sidebar-width: 18rem;
 
     display: grid;
@@ -433,7 +434,7 @@
 
   .city-docs-page-heading {
     display: grid;
-    max-width: 52rem;
+    max-width: var(--city-docs-reading-max);
     gap: var(--city-space-3);
     overflow-wrap: anywhere;
     word-break: keep-all;
@@ -492,6 +493,56 @@
     list-style-type: decimal;
   }
 
+  .city-docs-prose > ul.city-docs-checklist {
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--city-color-border);
+    border-radius: var(--city-radius-md);
+    background: var(--city-color-surface);
+    gap: 0;
+    list-style: none;
+  }
+
+  .city-docs-checklist > .city-docs-checklist-item {
+    display: block;
+    list-style: none;
+  }
+
+  .city-docs-checklist > .city-docs-checklist-item + .city-docs-checklist-item {
+    border-top: 1px solid var(--city-color-border);
+  }
+
+  .city-docs-checklist-row {
+    display: grid;
+    min-height: var(--city-control-lg);
+    padding: var(--city-space-3) var(--city-space-4);
+    background: var(--city-color-surface-raised);
+    align-items: start;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--city-space-3);
+    cursor: pointer;
+    transition: background-color var(--city-duration-fast) var(--city-easing-standard);
+  }
+
+  .city-docs-checklist-row:hover {
+    background: var(--city-color-accent);
+  }
+
+  .city-docs-checklist-control {
+    margin-top: var(--city-space-1);
+  }
+
+  .city-docs-checklist-label {
+    min-width: 0;
+  }
+
+  .city-docs-checklist-row:has(.city-docs-checklist-control[data-checked])
+    .city-docs-checklist-label {
+    color: var(--city-color-muted-foreground);
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+
   .city-docs-prose > :where(h2, h3, p, ul, ol, blockquote) a {
     color: var(--city-color-foreground);
     text-decoration-color: var(--city-color-border-strong);
@@ -537,6 +588,11 @@
     border: 1px solid var(--city-color-border);
     border-radius: var(--city-radius-md);
     background: var(--city-color-muted);
+  }
+
+  .city-docs-prose-code-wrap {
+    width: min(100%, var(--city-docs-reading-max));
+    min-width: 0;
   }
 
   .city-docs-code-header,
@@ -621,7 +677,7 @@
 
   .city-docs-import-block {
     display: grid;
-    max-width: 48rem;
+    max-width: var(--city-docs-reading-max);
     gap: var(--city-space-3);
   }
 

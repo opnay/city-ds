@@ -105,18 +105,10 @@
     gap: var(--city-space-2);
   }
 
-  .city-docs-preview-grid-option,
   .city-docs-topbar-actions {
     display: flex;
     align-items: center;
     gap: var(--city-space-2);
-  }
-
-  .city-docs-preview-grid-option {
-    color: var(--city-color-muted-foreground);
-    font-size: var(--city-font-size-xs);
-    line-height: var(--city-line-height-xs);
-    white-space: nowrap;
   }
 
   .city-docs-product-main {
@@ -479,27 +471,27 @@
     margin: 0;
   }
 
-  .city-docs-prose p,
-  .city-docs-prose ul,
-  .city-docs-prose ol,
-  .city-docs-prose blockquote {
+  .city-docs-prose > :where(p, ul, ol, blockquote) {
     margin: 0;
   }
 
-  .city-docs-prose ul,
-  .city-docs-prose ol {
+  .city-docs-prose > :where(ul, ol),
+  .city-docs-prose > :where(ul, ol) :where(ul, ol) {
     display: grid;
     padding-left: var(--city-space-6);
     gap: var(--city-space-2);
   }
 
-  .city-docs-prose a {
+  .city-docs-prose > :where(h2, h3, p, ul, ol, blockquote) a {
     color: var(--city-color-foreground);
     text-decoration-color: var(--city-color-border-strong);
     text-underline-offset: 0.2em;
   }
 
-  .city-docs-prose :not(pre) > code {
+  .city-docs-prose > :where(h2, h3, p) > code,
+  .city-docs-prose > :where(ul, ol, blockquote) :not(pre) > code,
+  .city-docs-api-table code,
+  .city-docs-prose-table-wrap code {
     padding: 0.1em 0.35em;
     border: 1px solid var(--city-color-border);
     border-radius: var(--city-radius-xs);
@@ -1145,6 +1137,7 @@
   .city-docs-example-preview {
     --city-docs-preview-grid-color: color-mix(in oklab, var(--city-color-border) 20%, transparent);
 
+    display: grid;
     min-height: 8rem;
     padding: clamp(var(--city-space-4), 5vw, var(--city-space-8));
     background:
@@ -1152,10 +1145,48 @@
       linear-gradient(90deg, var(--city-docs-preview-grid-color) 1px, transparent 1px),
       var(--city-color-background);
     background-size: 1.5rem 1.5rem;
+    gap: var(--city-space-4);
   }
 
   html[data-city-docs-preview-grid='off'] .city-docs-example-preview {
     background: var(--city-color-background);
+  }
+
+  .city-docs-example-preview-toolbar {
+    display: flex;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+
+  .city-docs-example-preview-content {
+    min-width: 0;
+  }
+
+  .city-docs-preview-settings-option {
+    display: flex;
+    margin-top: var(--city-space-4);
+    padding-top: var(--city-space-4);
+    border-top: 1px solid var(--city-color-border);
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--city-space-4);
+  }
+
+  .city-docs-preview-settings-option > div {
+    display: grid;
+    gap: var(--city-space-1);
+  }
+
+  .city-docs-preview-settings-option strong {
+    font-size: var(--city-font-size-sm);
+    line-height: var(--city-line-height-sm);
+    font-weight: var(--city-font-weight-medium);
+  }
+
+  .city-docs-preview-settings-option span {
+    color: var(--city-color-muted-foreground);
+    font-size: var(--city-font-size-xs);
+    line-height: var(--city-line-height-xs);
   }
 
   .city-docs-example-stack,
@@ -1393,18 +1424,6 @@
 
     .city-docs-theme-trigger {
       width: 7.75rem;
-    }
-
-    .city-docs-preview-grid-option > span {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
     }
 
     .city-docs-mobile-brand .city-docs-brand {

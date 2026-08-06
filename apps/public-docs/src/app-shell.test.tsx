@@ -278,7 +278,9 @@ describe('catalog and local UI state', () => {
     const user = userEvent.setup();
     const { router } = await renderDocs(['/components/button']);
 
-    const gridSwitch = screen.getByRole('switch', { name: '격자 보기' });
+    expect(screen.queryByRole('switch', { name: '격자 보기' })).not.toBeInTheDocument();
+    await user.click(screen.getAllByRole('button', { name: '미리보기 설정' })[0]!);
+    const gridSwitch = await screen.findByRole('switch', { name: '격자 보기' });
     expect(gridSwitch).not.toBeChecked();
     await waitFor(() =>
       expect(document.documentElement).toHaveAttribute('data-city-docs-preview-grid', 'off'),
@@ -295,7 +297,8 @@ describe('catalog and local UI state', () => {
       await router.navigate({ params: { slug: 'calendar' }, to: '/components/$slug' });
     });
     expect(await screen.findByRole('heading', { level: 1, name: 'Calendar' })).toBeVisible();
-    expect(screen.getByRole('switch', { name: '격자 보기' })).toBeChecked();
+    await user.click(screen.getAllByRole('button', { name: '미리보기 설정' })[0]!);
+    expect(await screen.findByRole('switch', { name: '격자 보기' })).toBeChecked();
     expect(document.documentElement).toHaveAttribute('data-city-docs-preview-grid', 'on');
   });
 

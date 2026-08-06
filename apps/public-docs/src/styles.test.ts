@@ -57,4 +57,14 @@ describe('public docs layout styles', () => {
       /html\[data-city-docs-preview-grid='off'\] \.city-docs-example-preview\s*{\s*background:\s*var\(--city-color-background\);/,
     );
   });
+
+  it('keeps prose list layout out of list-based component previews', () => {
+    expect(styles).toMatch(/\.city-docs-prose > :where\(ul, ol\)/);
+    expect(styles).not.toMatch(/\.city-docs-prose ul,\s*\n\s*\.city-docs-prose ol/);
+  });
+
+  it('places the shared settings control inside each preview', () => {
+    expect(styles).toMatch(/\.city-docs-example-preview-toolbar\s*{/);
+    expect(styles).toMatch(/\.city-docs-preview-settings-option\s*{/);
+  });
 });

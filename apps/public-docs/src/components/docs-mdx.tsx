@@ -6,6 +6,7 @@ import type { MDXComponents } from 'mdx/types.js';
 
 import type { ApiItem, DocExample } from '../docs/types';
 import { CodeBlock, type CodeFile } from './code-block';
+import { PreviewSettingsButton } from './preview-settings';
 
 interface DocsMdxProviderProps {
   children: ReactNode;
@@ -52,7 +53,12 @@ function ExampleFrame({ example }: { example: DocExample }) {
         </div>
       </header>
       <div className="city-docs-example-preview">
-        <Example />
+        <div className="city-docs-example-preview-toolbar">
+          <PreviewSettingsButton />
+        </div>
+        <div className="city-docs-example-preview-content">
+          <Example />
+        </div>
       </div>
       <details className="city-docs-example-code">
         <summary>코드 보기</summary>
@@ -89,6 +95,7 @@ export function ExampleSet({ examples }: ExampleSetProps) {
 export function ApiTable({ items }: ApiTableProps) {
   return (
     <DataTableRegion
+      className="city-docs-api-table"
       hint="표를 가로로 스크롤하면 모든 API 열을 확인할 수 있습니다."
       label="주요 API"
     >

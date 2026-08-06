@@ -25,9 +25,7 @@ describe('all component document routes', () => {
     }
     const exampleTitles = container.querySelectorAll('.city-docs-example-title');
     const exampleTitleRows = container.querySelectorAll('.city-docs-example-title-row');
-    const exampleDescriptions = container.querySelectorAll(
-      '.city-docs-example-heading .city-docs-sr-only',
-    );
+    const exampleDescriptions = container.querySelectorAll('.city-docs-example-description');
     const exampleCoverageRows = container.querySelectorAll('.city-docs-coverage-list');
 
     expect(exampleTitles.length).toBeGreaterThan(0);
@@ -36,10 +34,13 @@ describe('all component document routes', () => {
     expect(exampleCoverageRows).toHaveLength(exampleTitles.length);
     for (const title of exampleTitles) {
       expect(title.tagName).toBe('H3');
-      expect(title.parentElement).toHaveClass('city-docs-example-title-row');
+      expect(title.parentElement).toHaveClass('city-docs-example-heading-copy');
+      expect(title.parentElement?.parentElement).toHaveClass('city-docs-example-title-row');
     }
     for (const description of exampleDescriptions) {
       expect(description).not.toBeEmptyDOMElement();
+      expect(description).toBeVisible();
+      expect(description).not.toHaveClass('city-docs-sr-only');
     }
     for (const titleRow of exampleTitleRows) {
       expect(

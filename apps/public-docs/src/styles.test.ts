@@ -66,6 +66,12 @@ describe('public docs layout styles', () => {
   it('uses a two-row code-block-style header for preview settings and option tags', () => {
     expect(styles).toMatch(/\.city-docs-code-header,\s*\n\s*\.city-docs-example-title-row\s*{/);
     expect(styles).toMatch(
+      /\.city-docs-example-heading-copy\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-1\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-example-description\s*{[^}]*color:\s*var\(--city-color-muted-foreground\);[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s,
+    );
+    expect(styles).toMatch(
       /\.city-docs-coverage-list\s*{[^}]*overflow-x:\s*auto;[^}]*flex-wrap:\s*nowrap;[^}]*scrollbar-width:\s*thin;/s,
     );
     expect(styles).toMatch(

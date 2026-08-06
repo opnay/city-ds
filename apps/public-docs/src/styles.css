@@ -1117,6 +1117,12 @@
     justify-content: space-between;
   }
 
+  .city-docs-example-heading-copy {
+    display: grid;
+    min-width: 0;
+    gap: var(--city-space-1);
+  }
+
   .city-docs-example-title {
     min-width: 0;
     margin: 0;
@@ -1124,6 +1130,17 @@
     font-size: var(--city-font-size-sm);
     line-height: var(--city-line-height-sm);
     font-weight: var(--city-font-weight-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .city-docs-example-description {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: var(--city-color-muted-foreground);
+    font-size: var(--city-font-size-xs);
+    line-height: var(--city-line-height-xs);
     text-overflow: ellipsis;
     white-space: nowrap;
   }

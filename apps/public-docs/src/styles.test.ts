@@ -63,10 +63,23 @@ describe('public docs layout styles', () => {
     expect(styles).not.toMatch(/\.city-docs-prose ul,\s*\n\s*\.city-docs-prose ol/);
   });
 
-  it('uses a code-block-style header for preview settings', () => {
-    expect(styles).toMatch(/\.city-docs-code-header,\s*\n\s*\.city-docs-example-heading\s*{/);
-    expect(styles).toMatch(/\.city-docs-example-actions\s*{/);
+  it('uses a two-row code-block-style header for preview settings and option tags', () => {
+    expect(styles).toMatch(/\.city-docs-code-header,\s*\n\s*\.city-docs-example-title-row\s*{/);
+    expect(styles).toMatch(
+      /\.city-docs-coverage-list\s*{[^}]*overflow-x:\s*auto;[^}]*flex-wrap:\s*nowrap;[^}]*scrollbar-width:\s*thin;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-coverage-list span\s*{[^}]*flex:\s*0 0 auto;[^}]*white-space:\s*nowrap;/s,
+    );
     expect(styles).not.toMatch(/\.city-docs-example-preview-toolbar\s*{/);
     expect(styles).toMatch(/\.city-docs-preview-settings-option\s*{/);
+  });
+
+  it('caps every code surface at 22 lines with internal scrolling', () => {
+    expect(styles).toMatch(
+      /--city-docs-code-max-height:\s*calc\(\s*36\.3em \+ var\(--city-space-4\) \+ var\(--city-space-4\)\s*\);/,
+    );
+    expect(styles).toMatch(/max-height:\s*var\(--city-docs-code-max-height\);/);
+    expect(styles).toMatch(/line-height:\s*1\.65;/);
   });
 });

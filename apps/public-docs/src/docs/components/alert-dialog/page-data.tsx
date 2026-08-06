@@ -3,6 +3,7 @@ import ConfirmExample from './examples/confirm';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'alert-dialog-confirm',
   api: [
     {
       name: 'open / defaultOpen',

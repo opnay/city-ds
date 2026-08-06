@@ -7,6 +7,7 @@ import StatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'calendar-states',
   api: [
     {
       name: 'value / defaultValue',

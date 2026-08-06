@@ -5,6 +5,7 @@ import CheckboxGroupSizesExample from './examples/sizes';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'checkbox-group-selection',
   api: [
     {
       name: 'value / onValueChange',

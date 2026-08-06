@@ -7,6 +7,7 @@ import FileUploadSelectionExample from './examples/selection';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'file-upload-selection',
   api: [
     {
       name: 'files / defaultFiles',

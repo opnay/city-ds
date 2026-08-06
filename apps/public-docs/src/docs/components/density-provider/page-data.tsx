@@ -3,6 +3,7 @@ import DensityExample from './examples/density';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'density-provider',
   api: [
     {
       name: 'density',

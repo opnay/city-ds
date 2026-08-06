@@ -5,6 +5,7 @@ import OverflowExample from './examples/overflow';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'data-table-region-overflow',
   api: [
     {
       name: 'label',

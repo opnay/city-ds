@@ -5,6 +5,7 @@ import TabsExample from './examples/tabs';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'tabs-basic',
   api: [
     {
       name: 'value / onValueChange',

@@ -7,6 +7,7 @@ import BadgeVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'badge-presentation',
   api: [
     {
       name: 'tone',

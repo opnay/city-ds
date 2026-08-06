@@ -9,6 +9,7 @@ import TableStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'table-interactions',
   api: [
     {
       defaultValue: "'md'",

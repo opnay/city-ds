@@ -7,6 +7,7 @@ import PopoverPlacementsExample from './examples/placements';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'popover-controlled',
   api: [
     {
       name: 'open / onOpenChange',

@@ -31,6 +31,7 @@ describe('component document catalog', () => {
     for (const entry of COMPONENT_DOCS) {
       expect(entry.importPath).toBe(`@opnay/city-ds-react/${entry.slug}`);
       expect(entry.related.every((slug) => getComponentDoc(slug) !== undefined)).toBe(true);
+      expect(entry.selectionGuidance.trim().length).toBeGreaterThan(0);
     }
   });
 

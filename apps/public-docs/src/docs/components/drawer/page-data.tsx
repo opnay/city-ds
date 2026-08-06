@@ -5,6 +5,7 @@ import SidesExample from './examples/sides';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'drawer-modality',
   api: [
     {
       name: 'side',

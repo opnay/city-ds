@@ -5,6 +5,7 @@ import ToastUsageExample from './examples/usage';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'toast-usage',
   api: [
     {
       name: 'tone',

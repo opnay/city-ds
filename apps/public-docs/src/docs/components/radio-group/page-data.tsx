@@ -5,6 +5,7 @@ import RadioGroupSizesExample from './examples/sizes';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'radio-group-choices',
   api: [
     {
       name: 'value / onValueChange',

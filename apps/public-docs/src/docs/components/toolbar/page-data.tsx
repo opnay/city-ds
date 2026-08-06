@@ -13,6 +13,7 @@ import ToolbarToggleVariantsExample from './examples/toggle-variants';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'toolbar-appearances',
   api: [
     {
       name: 'appearance',

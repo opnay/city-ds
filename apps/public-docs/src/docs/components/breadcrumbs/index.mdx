@@ -1,24 +1,6 @@
 import { pageData } from './page-data';
 
-## 언제 사용합니까
-
-현재 페이지의 상위 계층을 보이고 빠르게 되돌아갈 수 있게 할 때 사용하십시오.
-
-## 언제 피해야 합니까
-
-단일 수준의 페이지나 주 탐색 자체를 Breadcrumbs로 대체하지 마십시오.
-
-## 합성 구조
-
-`Root > List > Item` 안에서 이전 항목은 `Link`, 마지막 항목은 `Page`로 구성하십시오. 긴 경로는 필요한 위치에 `Ellipsis`를 직접 넣으십시오.
-
-## 옵션과 상태
-
-<ExampleSet examples={pageData.examples} />
-
-## 주요 API
-
-<ApiTable items={pageData.api} />
+<ComponentReference data={pageData} />
 
 ## 접근성
 

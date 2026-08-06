@@ -1,24 +1,6 @@
 import { pageData } from './page-data';
 
-## 언제 사용합니까
-
-현재 페이지를 유지하면서 모바일 탐색이나 보조 작업을 보여 줄 때 사용하십시오.
-
-## 언제 피해야 합니까
-
-핵심 편집 흐름이나 복구하기 어려운 결정을 Drawer에 숨기지 마십시오.
-
-## 합성 구조
-
-`Root > Trigger + Portal(Backdrop + Viewport + Popup)`을 사용하고 Viewport와 Popup의 `side`를 맞추십시오. Root의 `swipeDirection`은 닫히는 방향입니다.
-
-## 옵션과 상태
-
-<ExampleSet examples={pageData.examples} />
-
-## 주요 API
-
-<ApiTable items={pageData.api} />
+<ComponentReference data={pageData} />
 
 ## 접근성
 

@@ -5,6 +5,7 @@ import SwitchStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'switch-states',
   api: [
     {
       name: 'checked / onCheckedChange',

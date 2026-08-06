@@ -5,6 +5,7 @@ import TooltipPlacementsExample from './examples/placements';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'tooltip-placements',
   api: [
     { name: 'delay', type: 'number', description: '표시 전 대기 시간입니다.' },
     {

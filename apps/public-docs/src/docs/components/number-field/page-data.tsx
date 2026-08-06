@@ -5,6 +5,7 @@ import NumberFieldSizesExample from './examples/sizes';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'number-field-basic',
   api: [
     {
       name: 'value / onValueChange',

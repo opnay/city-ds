@@ -63,6 +63,7 @@ describe('component document content', () => {
       expect(pageData.examples.length).toBeGreaterThan(0);
       expect(pageData.optionAxes.length).toBeGreaterThan(0);
       expect(new Set(exampleIds).size).toBe(exampleIds.length);
+      expect(exampleIds).toContain(pageData.featuredExampleId);
 
       for (const example of pageData.examples) {
         expect(example.Component).toBeTypeOf('function');

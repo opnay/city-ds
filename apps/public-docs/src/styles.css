@@ -466,7 +466,7 @@
   }
 
   .city-docs-related > h2,
-  .city-docs-import-block > h2,
+  .city-docs-component-reference-section > h2,
   .city-docs-component-groups section > h2 {
     margin: 0;
   }
@@ -622,7 +622,21 @@
   .city-docs-import-block {
     display: grid;
     max-width: 48rem;
+    margin-top: var(--city-space-3);
     gap: var(--city-space-3);
+  }
+
+  .city-docs-component-reference {
+    display: grid;
+    min-width: 0;
+    max-width: 64rem;
+    gap: var(--city-space-10);
+  }
+
+  .city-docs-component-reference-section {
+    display: grid;
+    min-width: 0;
+    gap: var(--city-space-4);
   }
 
   .city-docs-prose-table-wrap {
@@ -1289,6 +1303,25 @@
     border: 0;
     border-top: 1px solid var(--city-color-border);
     border-radius: 0;
+  }
+
+  .city-docs-selection-guidance {
+    display: grid;
+    max-width: 68ch;
+    padding: var(--city-space-4);
+    border: 1px solid var(--city-color-border);
+    border-radius: var(--city-radius-md);
+    background: var(--city-color-muted);
+    gap: var(--city-space-1);
+  }
+
+  .city-docs-selection-guidance > p {
+    margin: 0;
+  }
+
+  .city-docs-selection-guidance-label {
+    color: var(--city-color-muted-foreground);
+    font-weight: var(--city-font-weight-semibold);
   }
 
   .city-docs-related {

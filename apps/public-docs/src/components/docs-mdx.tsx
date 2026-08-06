@@ -4,7 +4,7 @@ import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Table } from '@opnay/city-ds-react/table';
 import type { MDXComponents } from 'mdx/types.js';
 
-import type { ApiItem, DocExample } from '../docs/types';
+import type { ApiItem, ComponentPageData, DocExample } from '../docs/types';
 import { CodeBlock, type CodeFile } from './code-block';
 import { PreviewSettingsButton } from './preview-settings';
 
@@ -18,6 +18,10 @@ interface ExampleSetProps {
 
 interface ApiTableProps {
   items: readonly ApiItem[];
+}
+
+interface ComponentReferenceProps {
+  data: ComponentPageData;
 }
 
 interface CodeFilesProps {
@@ -88,6 +92,40 @@ export function ExampleSet({ examples }: ExampleSetProps) {
       {examples.map((example) => (
         <ExampleFrame example={example} key={example.id} />
       ))}
+    </div>
+  );
+}
+
+export function ComponentReference({ data }: ComponentReferenceProps) {
+  const featuredExample = data.examples.find((example) => example.id === data.featuredExampleId);
+  if (!featuredExample) {
+    throw new Error(`대표 예제를 찾을 수 없습니다: ${data.featuredExampleId}`);
+  }
+
+  const optionExamples = data.examples.filter((example) => example.id !== featuredExample.id);
+
+  return (
+    <div className="city-docs-component-reference">
+      <section className="city-docs-component-reference-section">
+        <h2 className="city-text-section-title" id="component-featured-example">
+          대표 예제
+        </h2>
+        <ExampleFrame example={featuredExample} />
+      </section>
+      <section className="city-docs-component-reference-section">
+        <h2 className="city-text-section-title" id="component-api">
+          주요 API
+        </h2>
+        <ApiTable items={data.api} />
+      </section>
+      {optionExamples.length > 0 ? (
+        <section className="city-docs-component-reference-section">
+          <h2 className="city-text-section-title" id="component-options">
+            옵션과 사용법
+          </h2>
+          <ExampleSet examples={optionExamples} />
+        </section>
+      ) : null}
     </div>
   );
 }
@@ -215,6 +253,7 @@ function MdxBlockquote({ className, ...props }: ComponentPropsWithoutRef<'blockq
 const MDX_COMPONENTS = {
   ApiTable,
   CodeFiles,
+  ComponentReference,
   ExampleSet,
   blockquote: MdxBlockquote,
   h2: MdxHeading2,

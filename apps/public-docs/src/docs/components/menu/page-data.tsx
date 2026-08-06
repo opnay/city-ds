@@ -7,6 +7,7 @@ import MenuVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'menu-variants',
   api: [
     { name: 'density', type: "'comfortable' | 'compact'", description: '항목의 밀도입니다.' },
     {

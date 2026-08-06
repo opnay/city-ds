@@ -36,9 +36,8 @@ describe('public docs routes and shell', () => {
   it('navigates with internal links, focuses main content and supports back history', async () => {
     const user = userEvent.setup();
     const { history } = await renderDocs(['/']);
-    const main = screen.getByRole('main');
 
-    await user.click(within(main).getByRole('link', { name: '시작하기' }));
+    await user.click(screen.getByRole('link', { name: '문서' }));
 
     expect(await screen.findByRole('heading', { level: 1, name: '시작하기' })).toBeVisible();
     await waitFor(() => expect(screen.getByRole('main')).toHaveFocus());
@@ -46,41 +45,52 @@ describe('public docs routes and shell', () => {
     act(() => history.back());
 
     expect(
-      await screen.findByRole('heading', {
-        level: 1,
-        name: '운영 제품을 위한 React 디자인 시스템',
-      }),
+      await screen.findByRole('heading', { level: 1, name: 'city-ds organism gallery' }),
     ).toBeVisible();
   });
 
-  it('introduces the product and offers task-oriented starting paths', async () => {
+  it('presents ten product organisms without the former marketing sections', async () => {
     await renderDocs(['/']);
     const main = screen.getByRole('main');
 
-    const pageTitle = within(main).getByRole('heading', {
-      level: 1,
-      name: '운영 제품을 위한 React 디자인 시스템',
-    });
-    expect(pageTitle).toHaveClass('city-text-display');
     expect(
-      within(main).getByRole('heading', {
-        level: 2,
-        name: '컴포넌트뿐 아니라 선택 기준까지 제공합니다.',
-      }),
-    ).toHaveClass('city-text-section-title');
-    expect(screen.getByRole('navigation', { name: '제품 소개 탐색' })).toBeVisible();
-    expect(screen.queryByRole('navigation', { name: '현재 위치' })).not.toBeInTheDocument();
-    expect(
-      within(main).getByText(/복잡한 운영 도구, 데이터 화면, 폼을 빠르고 일관되게/),
+      within(main).getByRole('heading', { level: 1, name: 'city-ds organism gallery' }),
     ).toBeVisible();
-    expect(within(main).getByRole('progressbar', { name: '릴리스 준비도' })).toBeVisible();
-    expect(within(main).getByRole('heading', { level: 3, name: '운영 도구' })).toHaveClass(
-      'city-text-subsection-title',
+    expect(screen.getByRole('navigation', { name: '주요 문서' })).toBeVisible();
+    expect(screen.queryByRole('navigation', { name: '현재 위치' })).not.toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: '전체 문서 검색' })).toBeVisible();
+    expect(within(main).getByText('organism 10개')).toBeVisible();
+    expect(within(main).getAllByRole('heading', { level: 2 })).toHaveLength(10);
+    expect(within(main).getByRole('heading', { level: 2, name: 'Orders' })).toBeVisible();
+    expect(within(main).getByRole('heading', { level: 2, name: 'Issue triage' })).toBeVisible();
+    expect(within(main).getByRole('heading', { level: 2, name: 'Checkout' })).toBeVisible();
+    expect(within(main).queryByText(/React 디자인 시스템을/)).not.toBeInTheDocument();
+  });
+
+  it('searches all documents from the landing combobox and navigates with the router', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/']);
+    const search = screen.getByRole('combobox', { name: '전체 문서 검색' });
+
+    await user.type(search, 'Button');
+    await user.click(await screen.findByRole('option', { name: /Button/ }));
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Button' })).toBeVisible();
+    await waitFor(() => expect(screen.getByRole('main')).toHaveFocus());
+  });
+
+  it('navigates from the landing mobile drawer and closes it', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/']);
+
+    await user.click(screen.getByRole('button', { name: '랜딩 메뉴 열기' }));
+    const drawer = await screen.findByRole('dialog', { name: '문서 메뉴' });
+    await user.click(within(drawer).getByRole('link', { name: '패턴' }));
+
+    expect(await screen.findByRole('heading', { level: 1, name: '패턴' })).toBeVisible();
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog', { name: '문서 메뉴' })).not.toBeInTheDocument(),
     );
-    expect(within(main).getByRole('heading', { level: 3, name: '데이터 화면' })).toBeVisible();
-    expect(within(main).getByRole('heading', { level: 3, name: '입력 흐름' })).toBeVisible();
-    expect(within(main).getByRole('link', { name: '설치하고 시작하기' })).toBeVisible();
-    expect(within(main).getByRole('link', { name: '전체 컴포넌트 보기' })).toBeVisible();
   });
 
   it('documents content typography roles and semantic structure', async () => {
@@ -143,6 +153,77 @@ describe('public docs routes and shell', () => {
     await waitFor(() =>
       expect(screen.queryByRole('dialog', { name: '문서 메뉴' })).not.toBeInTheDocument(),
     );
+  });
+});
+
+describe('organism mosaic interactions', () => {
+  it('filters organisms while preserving order selection and switches issue queues', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/']);
+    const main = screen.getByRole('main');
+
+    await user.click(within(main).getByRole('button', { name: '커머스' }));
+    expect(within(main).getByText('organism 2개')).toBeVisible();
+    expect(within(main).getByRole('heading', { name: 'Orders' })).toBeVisible();
+    expect(within(main).queryByRole('heading', { name: 'Issue triage' })).not.toBeInTheDocument();
+
+    await user.click(within(main).getByRole('checkbox', { name: 'Select ORD-98421' }));
+    expect(within(main).getByText('2 selected')).toBeVisible();
+    await user.click(within(main).getByRole('button', { name: '지원' }));
+    await user.click(within(main).getByRole('tab', { name: 'Mine' }));
+    expect(within(main).getByText('Mobile drawer traps focus')).toBeVisible();
+    await user.click(within(main).getByRole('button', { name: '커머스' }));
+    expect(within(main).getByText('2 selected')).toBeVisible();
+  });
+
+  it('validates invitations, filters commands and manages local files and sessions', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/']);
+    const main = screen.getByRole('main');
+
+    await user.click(within(main).getByRole('button', { name: '워크스페이스' }));
+    const invite = within(main).getByRole('heading', { name: 'Invite members' }).closest('article');
+    if (!invite) throw new Error('Invite members card was not rendered.');
+    await user.click(within(invite).getByRole('button', { name: /Send invite as/ }));
+    expect(within(invite).getByText('Enter a valid email address.')).toBeVisible();
+    await user.type(within(invite).getByRole('textbox', { name: 'Email' }), 'new@acme.com');
+    await user.click(within(invite).getByRole('button', { name: /Send invite as/ }));
+    expect(within(invite).getByText('new@acme.com')).toBeVisible();
+
+    const command = within(main).getByRole('heading', { name: 'Quick command' }).closest('article');
+    if (!command) throw new Error('Quick command card was not rendered.');
+    await user.type(within(command).getByRole('searchbox', { name: 'Search commands' }), 'access');
+    expect(within(command).getByRole('link', { name: /Accessibility guide/ })).toBeVisible();
+    expect(within(command).queryByRole('link', { name: /Open orders/ })).not.toBeInTheDocument();
+
+    const file = new File(['local only'], 'contract.pdf', { type: 'application/pdf' });
+    await user.upload(within(main).getByLabelText('Upload local documents'), file);
+    expect(within(main).getByText('contract.pdf')).toBeVisible();
+
+    await user.click(within(main).getByRole('button', { name: '설정' }));
+    await user.click(within(main).getByRole('button', { name: 'Revoke Safari on iOS' }));
+    expect(within(main).queryByText('Safari on iOS')).not.toBeInTheDocument();
+  });
+
+  it('confirms checkout and scheduling and reports notification saves', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/']);
+    const main = screen.getByRole('main');
+
+    await user.click(within(main).getByRole('button', { name: '커머스' }));
+    await user.click(within(main).getByRole('button', { name: 'Place order' }));
+    expect(await screen.findByText('Order placed')).toBeVisible();
+    expect(within(main).getByText('Order AC-20984 confirmed')).toBeVisible();
+
+    await user.click(within(main).getByRole('button', { name: '일정' }));
+    await user.click(within(main).getByRole('button', { name: '11:00 AM' }));
+    await user.click(within(main).getByRole('button', { name: 'Confirm' }));
+    expect(within(main).getByText(/Confirmed for .* at 11:00 AM/)).toBeVisible();
+
+    await user.click(within(main).getByRole('button', { name: '설정' }));
+    await user.click(within(main).getByRole('switch', { name: 'Weekly digest' }));
+    await user.click(within(main).getByRole('button', { name: 'Save preferences' }));
+    expect(await screen.findByText('Preferences saved')).toBeVisible();
   });
 });
 

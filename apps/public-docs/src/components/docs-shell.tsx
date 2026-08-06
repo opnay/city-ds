@@ -1,10 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, BookOpen, Menu as MenuIcon, X } from 'lucide-react';
-import { Link, Outlet, useLocation, type ErrorComponentProps } from '@tanstack/react-router';
+import { BookOpen, Code2, Menu as MenuIcon, Search, X } from 'lucide-react';
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  type ErrorComponentProps,
+} from '@tanstack/react-router';
 import type { CityTheme } from '@opnay/city-ds-react';
 import { Breadcrumbs } from '@opnay/city-ds-react/breadcrumbs';
 import { Button } from '@opnay/city-ds-react/button';
 import { Callout } from '@opnay/city-ds-react/callout';
+import { Combobox } from '@opnay/city-ds-react/combobox';
 import { Drawer } from '@opnay/city-ds-react/drawer';
 import { SearchField } from '@opnay/city-ds-react/search-field';
 import { Select } from '@opnay/city-ds-react/select';
@@ -303,6 +310,73 @@ function Brand({
   );
 }
 
+function getSearchResultLabel(result: DocumentSearchResult) {
+  return result.kind === 'static' ? result.entry.label : result.entry.title;
+}
+
+function getSearchResultPath(result: DocumentSearchResult) {
+  return result.kind === 'static' ? result.entry.path : `/components/${result.entry.slug}`;
+}
+
+function ProductSearch() {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState('');
+  const results = useMemo(
+    () => (query.trim() ? filterDocumentPages(query).slice(0, 8) : []),
+    [query],
+  );
+  const labels = results.map(getSearchResultLabel);
+
+  return (
+    <Combobox.Root
+      inputValue={query}
+      items={labels}
+      onInputValueChange={setQuery}
+      onValueChange={(label) => {
+        const result = results.find((item) => getSearchResultLabel(item) === label);
+        if (!result) return;
+        setQuery('');
+        void navigate({ to: getSearchResultPath(result) });
+      }}
+      size="sm"
+      value={null}
+    >
+      <Combobox.InputGroup className="city-docs-product-search">
+        <Search aria-hidden="true" className="city-docs-product-search-icon" size={15} />
+        <Combobox.Input aria-label="전체 문서 검색" placeholder="전체 문서 검색" />
+        <Combobox.Clear aria-label="검색어 지우기" />
+      </Combobox.InputGroup>
+      <Combobox.Portal>
+        <Combobox.Positioner sideOffset={5}>
+          <Combobox.Popup className="city-docs-product-search-popup">
+            <Combobox.Empty>일치하는 문서가 없습니다.</Combobox.Empty>
+            <Combobox.List>
+              {labels.map((label) => {
+                const result = results.find((item) => getSearchResultLabel(item) === label);
+                if (!result) return null;
+                return (
+                  <Combobox.Item key={getSearchResultPath(result)} value={label}>
+                    <Combobox.ItemIndicator />
+                    <span className="city-docs-product-search-result">
+                      <span>{label}</span>
+                      <small>
+                        {result.kind === 'static'
+                          ? '문서'
+                          : `컴포넌트 · ${CATEGORY_LABELS[result.entry.category]}`}
+                      </small>
+                    </span>
+                  </Combobox.Item>
+                );
+              })}
+            </Combobox.List>
+            <Combobox.Status>{results.length}개 결과</Combobox.Status>
+          </Combobox.Popup>
+        </Combobox.Positioner>
+      </Combobox.Portal>
+    </Combobox.Root>
+  );
+}
+
 function ProductHeader({
   onThemeChange,
   theme,
@@ -310,27 +384,76 @@ function ProductHeader({
   onThemeChange: (theme: CityTheme) => void;
   theme: CityTheme;
 }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
     <header className="city-docs-product-header">
       <div className="city-docs-product-header-inner">
         <Brand subtitle="React 디자인 시스템" />
-        <nav aria-label="제품 소개 탐색" className="city-docs-product-navigation">
-          <a href="#product-foundation">제품 기반</a>
-          <a href="#product-contexts">사용 맥락</a>
+        <nav aria-label="주요 문서" className="city-docs-product-navigation">
+          <Link to="/getting-started">문서</Link>
+          <Link to="/foundations">기초</Link>
+          <Link to="/patterns">패턴</Link>
           <Link to="/components">컴포넌트</Link>
         </nav>
         <div className="city-docs-product-actions">
+          <ProductSearch />
           <ThemeSelect onChange={onThemeChange} value={theme} />
           <Button
             nativeButton={false}
-            render={<Link to="/getting-started" />}
+            render={<a href="https://github.com/opnay/city-ds" rel="noreferrer" target="_blank" />}
             role="link"
             size="sm"
-            variant="primary"
+            variant="ghost"
+            aria-label="GitHub에서 city-ds 열기"
           >
-            문서 열기
-            <ArrowRight aria-hidden="true" size={16} />
+            <Code2 aria-hidden="true" size={17} />
           </Button>
+          <Drawer.Root onOpenChange={setMobileOpen} open={mobileOpen} swipeDirection="left">
+            <Drawer.Trigger
+              className="city-docs-product-menu-trigger"
+              render={<Button aria-label="랜딩 메뉴 열기" size="sm" variant="outline" />}
+            >
+              <MenuIcon aria-hidden="true" size={16} />
+            </Drawer.Trigger>
+            <Drawer.Portal>
+              <Drawer.Backdrop />
+              <Drawer.Viewport side="left">
+                <Drawer.Popup side="left" size="sm">
+                  <Drawer.Header>
+                    <div>
+                      <Drawer.Title>문서 메뉴</Drawer.Title>
+                      <Drawer.Description>city-ds의 주요 문서로 이동합니다.</Drawer.Description>
+                    </div>
+                    <Drawer.Close
+                      render={<Button aria-label="랜딩 메뉴 닫기" size="sm" variant="ghost" />}
+                    >
+                      <X aria-hidden="true" size={17} />
+                    </Drawer.Close>
+                  </Drawer.Header>
+                  <Drawer.Body>
+                    <nav
+                      aria-label="모바일 주요 문서"
+                      className="city-docs-product-mobile-navigation"
+                    >
+                      <Link onClick={() => setMobileOpen(false)} to="/getting-started">
+                        문서
+                      </Link>
+                      <Link onClick={() => setMobileOpen(false)} to="/foundations">
+                        기초
+                      </Link>
+                      <Link onClick={() => setMobileOpen(false)} to="/patterns">
+                        패턴
+                      </Link>
+                      <Link onClick={() => setMobileOpen(false)} to="/components">
+                        컴포넌트
+                      </Link>
+                    </nav>
+                  </Drawer.Body>
+                </Drawer.Popup>
+              </Drawer.Viewport>
+            </Drawer.Portal>
+          </Drawer.Root>
         </div>
       </div>
     </header>
@@ -420,10 +543,6 @@ export function DocsShell() {
         <main className="city-docs-product-main" id="main-content" ref={mainRef} tabIndex={-1}>
           <Outlet />
         </main>
-        <footer className="city-docs-product-footer">
-          <strong>city-ds</strong>
-          <span>Base UI 기반 · React 18·19 · Vite · Next.js</span>
-        </footer>
       </div>
     );
   }

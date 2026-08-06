@@ -502,7 +502,7 @@
   .city-docs-prose > :where(ul, ol, blockquote) :not(pre) > code,
   .city-docs-api-table code,
   .city-docs-prose-table-wrap code {
-    margin-inline: 2px;
+    margin-inline: 4px;
     padding: 0.1em 0.35em;
     border: 1px solid var(--city-color-border);
     border-radius: var(--city-radius-xs);

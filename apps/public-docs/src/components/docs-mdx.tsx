@@ -6,6 +6,7 @@ import type { MDXComponents } from 'mdx/types.js';
 
 import type { ApiItem, DocExample } from '../docs/types';
 import { CodeBlock, type CodeFile } from './code-block';
+import { PreviewSettingsButton } from './preview-settings';
 
 interface DocsMdxProviderProps {
   children: ReactNode;
@@ -35,11 +36,14 @@ function ExampleFrame({ example }: { example: DocExample }) {
   return (
     <section aria-labelledby={titleId} className="city-docs-example">
       <header className="city-docs-example-heading">
-        <div>
-          <h3 className="city-text-subsection-title" id={titleId}>
-            {example.title}
-          </h3>
-          <p className="city-text-supporting">{example.description}</p>
+        <div className="city-docs-example-title-row">
+          <div className="city-docs-example-heading-copy">
+            <h3 className="city-docs-example-title" id={titleId}>
+              {example.title}
+            </h3>
+            <p className="city-docs-example-description">{example.description}</p>
+          </div>
+          <PreviewSettingsButton />
         </div>
         <div aria-label="이 예제가 다루는 옵션" className="city-docs-coverage-list">
           {example.coverage.flatMap((item) =>
@@ -52,7 +56,9 @@ function ExampleFrame({ example }: { example: DocExample }) {
         </div>
       </header>
       <div className="city-docs-example-preview">
-        <Example />
+        <div className="city-docs-example-preview-content">
+          <Example />
+        </div>
       </div>
       <details className="city-docs-example-code">
         <summary>코드 보기</summary>
@@ -89,6 +95,7 @@ export function ExampleSet({ examples }: ExampleSetProps) {
 export function ApiTable({ items }: ApiTableProps) {
   return (
     <DataTableRegion
+      className="city-docs-api-table"
       hint="표를 가로로 스크롤하면 모든 API 열을 확인할 수 있습니다."
       label="주요 API"
     >

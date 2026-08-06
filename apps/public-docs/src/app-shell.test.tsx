@@ -273,6 +273,35 @@ describe('catalog and local UI state', () => {
     expect(window.localStorage.getItem('city-docs-theme')).toBe('dark');
   });
 
+  it('applies one persisted preview grid option across document pages', async () => {
+    window.localStorage.setItem('city-docs-preview-grid', 'off');
+    const user = userEvent.setup();
+    const { router } = await renderDocs(['/components/button']);
+
+    expect(screen.queryByRole('switch', { name: '격자 보기' })).not.toBeInTheDocument();
+    await user.click(screen.getAllByRole('button', { name: '미리보기 설정' })[0]!);
+    const gridSwitch = await screen.findByRole('switch', { name: '격자 보기' });
+    expect(gridSwitch).not.toBeChecked();
+    await waitFor(() =>
+      expect(document.documentElement).toHaveAttribute('data-city-docs-preview-grid', 'off'),
+    );
+
+    await user.click(gridSwitch);
+    expect(gridSwitch).toBeChecked();
+    await waitFor(() => {
+      expect(document.documentElement).toHaveAttribute('data-city-docs-preview-grid', 'on');
+      expect(window.localStorage.getItem('city-docs-preview-grid')).toBe('on');
+    });
+
+    await act(async () => {
+      await router.navigate({ params: { slug: 'calendar' }, to: '/components/$slug' });
+    });
+    expect(await screen.findByRole('heading', { level: 1, name: 'Calendar' })).toBeVisible();
+    await user.click(screen.getAllByRole('button', { name: '미리보기 설정' })[0]!);
+    expect(await screen.findByRole('switch', { name: '격자 보기' })).toBeChecked();
+    expect(document.documentElement).toHaveAttribute('data-city-docs-preview-grid', 'on');
+  });
+
   it('announces a clipboard failure and leaves source visible', async () => {
     const user = userEvent.setup();
     const clipboard = vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(new Error('no'));

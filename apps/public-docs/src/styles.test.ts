@@ -44,4 +44,48 @@ describe('public docs layout styles', () => {
       mosaic.indexOf("'orders orders orders orders orders orders"),
     );
   });
+
+  it('keeps intrinsically wide examples in non-overlapping grid tracks', () => {
+    expect(styles).toMatch(
+      /\.city-docs-example-grid\s*{\s*grid-template-columns:\s*repeat\(auto-fit, minmax\(min\(100%, 18rem\), 1fr\)\);/,
+    );
+  });
+
+  it('uses a subtle optional grid for every example preview', () => {
+    expect(styles).toMatch(/var\(--city-color-border\) 20%,\s*transparent/);
+    expect(styles).toMatch(
+      /html\[data-city-docs-preview-grid='off'\] \.city-docs-example-preview\s*{\s*background:\s*var\(--city-color-background\);/,
+    );
+  });
+
+  it('keeps prose list layout out of list-based component previews', () => {
+    expect(styles).toMatch(/\.city-docs-prose > :where\(ul, ol\)/);
+    expect(styles).not.toMatch(/\.city-docs-prose ul,\s*\n\s*\.city-docs-prose ol/);
+  });
+
+  it('uses a two-row code-block-style header for preview settings and option tags', () => {
+    expect(styles).toMatch(/\.city-docs-code-header,\s*\n\s*\.city-docs-example-title-row\s*{/);
+    expect(styles).toMatch(
+      /\.city-docs-example-heading-copy\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-1\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-example-description\s*{[^}]*color:\s*var\(--city-color-muted-foreground\);[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-coverage-list\s*{[^}]*overflow-x:\s*auto;[^}]*flex-wrap:\s*nowrap;[^}]*scrollbar-width:\s*thin;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-coverage-list span\s*{[^}]*flex:\s*0 0 auto;[^}]*white-space:\s*nowrap;/s,
+    );
+    expect(styles).not.toMatch(/\.city-docs-example-preview-toolbar\s*{/);
+    expect(styles).toMatch(/\.city-docs-preview-settings-option\s*{/);
+  });
+
+  it('caps every code surface at 22 lines with internal scrolling', () => {
+    expect(styles).toMatch(
+      /--city-docs-code-max-height:\s*calc\(\s*36\.3em \+ var\(--city-space-4\) \+ var\(--city-space-4\)\s*\);/,
+    );
+    expect(styles).toMatch(/max-height:\s*var\(--city-docs-code-max-height\);/);
+    expect(styles).toMatch(/line-height:\s*1\.65;/);
+  });
 });

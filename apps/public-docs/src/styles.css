@@ -105,6 +105,12 @@
     gap: var(--city-space-2);
   }
 
+  .city-docs-topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--city-space-2);
+  }
+
   .city-docs-product-main {
     display: grid;
     width: min(100%, 88rem);
@@ -465,27 +471,27 @@
     margin: 0;
   }
 
-  .city-docs-prose p,
-  .city-docs-prose ul,
-  .city-docs-prose ol,
-  .city-docs-prose blockquote {
+  .city-docs-prose > :where(p, ul, ol, blockquote) {
     margin: 0;
   }
 
-  .city-docs-prose ul,
-  .city-docs-prose ol {
+  .city-docs-prose > :where(ul, ol),
+  .city-docs-prose > :where(ul, ol) :where(ul, ol) {
     display: grid;
     padding-left: var(--city-space-6);
     gap: var(--city-space-2);
   }
 
-  .city-docs-prose a {
+  .city-docs-prose > :where(h2, h3, p, ul, ol, blockquote) a {
     color: var(--city-color-foreground);
     text-decoration-color: var(--city-color-border-strong);
     text-underline-offset: 0.2em;
   }
 
-  .city-docs-prose :not(pre) > code {
+  .city-docs-prose > :where(h2, h3, p) > code,
+  .city-docs-prose > :where(ul, ol, blockquote) :not(pre) > code,
+  .city-docs-api-table code,
+  .city-docs-prose-table-wrap code {
     padding: 0.1em 0.35em;
     border: 1px solid var(--city-color-border);
     border-radius: var(--city-radius-xs);
@@ -496,7 +502,11 @@
   .city-docs-prose-code,
   .city-docs-import-block pre,
   .city-docs-example-code pre {
+    /* 22 code lines at 1.65 line-height plus vertical padding. */
+    --city-docs-code-max-height: calc(36.3em + var(--city-space-4) + var(--city-space-4));
+
     max-width: 100%;
+    max-height: var(--city-docs-code-max-height);
     margin: 0;
     padding: var(--city-space-4);
     overflow: auto;
@@ -516,15 +526,19 @@
     background: var(--city-color-muted);
   }
 
-  .city-docs-code-header {
+  .city-docs-code-header,
+  .city-docs-example-title-row {
     display: flex;
     min-height: var(--city-control-lg);
     padding: var(--city-space-2) var(--city-space-3);
-    border-bottom: 1px solid var(--city-color-border);
     background: var(--city-color-surface-raised);
     align-items: center;
-    flex-wrap: wrap;
     gap: var(--city-space-2);
+  }
+
+  .city-docs-code-header {
+    border-bottom: 1px solid var(--city-color-border);
+    flex-wrap: wrap;
   }
 
   .city-docs-code-context {
@@ -656,8 +670,16 @@
   .city-docs-related-grid,
   .city-docs-example-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
     gap: var(--city-space-3);
+  }
+
+  .city-docs-component-grid,
+  .city-docs-related-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  }
+
+  .city-docs-example-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
   }
 
   .city-docs-example-item,
@@ -1083,31 +1105,54 @@
   }
 
   .city-docs-example-heading {
-    display: flex;
-    padding: var(--city-space-4);
+    display: grid;
+    min-width: 0;
+    overflow: hidden;
     border-bottom: 1px solid var(--city-color-border);
     background: var(--city-color-surface-raised);
-    align-items: flex-start;
+  }
+
+  .city-docs-example-title-row {
+    min-width: 0;
     justify-content: space-between;
-    gap: var(--city-space-4);
   }
 
-  .city-docs-example-heading h3,
-  .city-docs-example-heading p {
+  .city-docs-example-heading-copy {
+    display: grid;
+    min-width: 0;
+    gap: var(--city-space-1);
+  }
+
+  .city-docs-example-title {
+    min-width: 0;
     margin: 0;
+    overflow: hidden;
+    font-size: var(--city-font-size-sm);
+    line-height: var(--city-line-height-sm);
+    font-weight: var(--city-font-weight-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .city-docs-example-heading p {
-    margin-top: var(--city-space-1);
+  .city-docs-example-description {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
     color: var(--city-color-muted-foreground);
+    font-size: var(--city-font-size-xs);
+    line-height: var(--city-line-height-xs);
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .city-docs-coverage-list {
     display: flex;
-    max-width: 24rem;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    min-width: 0;
+    padding: 0 var(--city-space-3) var(--city-space-2);
+    overflow-x: auto;
+    flex-wrap: nowrap;
     gap: var(--city-space-1);
+    scrollbar-width: thin;
   }
 
   .city-docs-coverage-list span,
@@ -1120,14 +1165,56 @@
     line-height: var(--city-line-height-2xs);
   }
 
+  .city-docs-coverage-list span {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
   .city-docs-example-preview {
+    --city-docs-preview-grid-color: color-mix(in oklab, var(--city-color-border) 20%, transparent);
+
     min-height: 8rem;
     padding: clamp(var(--city-space-4), 5vw, var(--city-space-8));
     background:
-      linear-gradient(var(--city-color-border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--city-color-border) 1px, transparent 1px),
+      linear-gradient(var(--city-docs-preview-grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--city-docs-preview-grid-color) 1px, transparent 1px),
       var(--city-color-background);
     background-size: 1.5rem 1.5rem;
+  }
+
+  html[data-city-docs-preview-grid='off'] .city-docs-example-preview {
+    background: var(--city-color-background);
+  }
+
+  .city-docs-example-preview-content {
+    min-width: 0;
+  }
+
+  .city-docs-preview-settings-option {
+    display: flex;
+    margin-top: var(--city-space-4);
+    padding-top: var(--city-space-4);
+    border-top: 1px solid var(--city-color-border);
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--city-space-4);
+  }
+
+  .city-docs-preview-settings-option > div {
+    display: grid;
+    gap: var(--city-space-1);
+  }
+
+  .city-docs-preview-settings-option strong {
+    font-size: var(--city-font-size-sm);
+    line-height: var(--city-line-height-sm);
+    font-weight: var(--city-font-weight-medium);
+  }
+
+  .city-docs-preview-settings-option span {
+    color: var(--city-color-muted-foreground);
+    font-size: var(--city-font-size-xs);
+    line-height: var(--city-line-height-xs);
   }
 
   .city-docs-example-stack,
@@ -1347,14 +1434,6 @@
     .city-docs-home-principles,
     .city-docs-home-contexts {
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-    }
-
-    .city-docs-example-heading {
-      display: grid;
-    }
-
-    .city-docs-coverage-list {
-      justify-content: flex-start;
     }
   }
 

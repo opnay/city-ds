@@ -23,16 +23,29 @@ describe('all component document routes', () => {
         'city-text-section-title',
       );
     }
-    const exampleTitles = container.querySelectorAll('.city-docs-example-heading h3');
-    const exampleDescriptions = container.querySelectorAll('.city-docs-example-heading p');
+    const exampleTitles = container.querySelectorAll('.city-docs-example-title');
+    const exampleTitleRows = container.querySelectorAll('.city-docs-example-title-row');
+    const exampleDescriptions = container.querySelectorAll('.city-docs-example-description');
+    const exampleCoverageRows = container.querySelectorAll('.city-docs-coverage-list');
 
     expect(exampleTitles.length).toBeGreaterThan(0);
+    expect(exampleTitleRows).toHaveLength(exampleTitles.length);
     expect(exampleDescriptions).toHaveLength(exampleTitles.length);
+    expect(exampleCoverageRows).toHaveLength(exampleTitles.length);
     for (const title of exampleTitles) {
-      expect(title).toHaveClass('city-text-subsection-title');
+      expect(title.tagName).toBe('H3');
+      expect(title.parentElement).toHaveClass('city-docs-example-heading-copy');
+      expect(title.parentElement?.parentElement).toHaveClass('city-docs-example-title-row');
     }
     for (const description of exampleDescriptions) {
-      expect(description).toHaveClass('city-text-supporting');
+      expect(description).not.toBeEmptyDOMElement();
+      expect(description).toBeVisible();
+      expect(description).not.toHaveClass('city-docs-sr-only');
+    }
+    for (const titleRow of exampleTitleRows) {
+      expect(
+        within(titleRow as HTMLElement).getByRole('button', { name: '미리보기 설정' }),
+      ).toBeVisible();
     }
     expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
     const apiRegion = screen.getByRole('region', { name: '주요 API' });

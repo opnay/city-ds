@@ -486,7 +486,9 @@ export function DocsShell() {
             <span>현재 문서</span>
             <strong>{page.title}</strong>
           </div>
-          <ThemeSelect onChange={setTheme} value={theme} />
+          <div className="city-docs-topbar-actions">
+            <ThemeSelect onChange={setTheme} value={theme} />
+          </div>
         </header>
         <main className="city-docs-main" id="main-content" ref={mainRef} tabIndex={-1}>
           <CurrentBreadcrumbs pathname={pathname} />

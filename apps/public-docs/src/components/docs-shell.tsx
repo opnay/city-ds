@@ -9,6 +9,7 @@ import { Drawer } from '@opnay/city-ds-react/drawer';
 import { SearchField } from '@opnay/city-ds-react/search-field';
 import { Select } from '@opnay/city-ds-react/select';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
+import { Switch } from '@opnay/city-ds-react/switch';
 
 import {
   CATEGORY_LABELS,
@@ -25,6 +26,7 @@ import type { ComponentDocEntry, DocumentSearchResult, StaticDocEntry } from '..
 import { GuidePage } from './doc-page';
 
 const THEME_STORAGE_KEY = 'city-docs-theme';
+const PREVIEW_GRID_STORAGE_KEY = 'city-docs-preview-grid';
 const THEMES: readonly CityTheme[] = ['system', 'light', 'dark'];
 const THEME_ITEMS: Record<CityTheme, string> = {
   dark: '다크 테마',
@@ -48,6 +50,14 @@ function readStoredTheme(): CityTheme {
     return isCityTheme(value) ? value : 'system';
   } catch {
     return 'system';
+  }
+}
+
+function readStoredPreviewGrid() {
+  try {
+    return window.localStorage.getItem(PREVIEW_GRID_STORAGE_KEY) !== 'off';
+  } catch {
+    return true;
   }
 }
 
@@ -283,6 +293,26 @@ function ThemeSelect({
   );
 }
 
+function PreviewGridSwitch({
+  checked,
+  onCheckedChange,
+}: {
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+}) {
+  return (
+    <div className="city-docs-preview-grid-option">
+      <span id="city-docs-preview-grid-label">격자 보기</span>
+      <Switch
+        aria-labelledby="city-docs-preview-grid-label"
+        checked={checked}
+        onCheckedChange={onCheckedChange}
+        size="sm"
+      />
+    </div>
+  );
+}
+
 function Brand({
   onNavigate,
   subtitle = '소비자 문서',
@@ -304,10 +334,14 @@ function Brand({
 }
 
 function ProductHeader({
+  onPreviewGridChange,
   onThemeChange,
+  previewGrid,
   theme,
 }: {
+  onPreviewGridChange: (checked: boolean) => void;
   onThemeChange: (theme: CityTheme) => void;
+  previewGrid: boolean;
   theme: CityTheme;
 }) {
   return (
@@ -320,6 +354,7 @@ function ProductHeader({
           <Link to="/components">컴포넌트</Link>
         </nav>
         <div className="city-docs-product-actions">
+          <PreviewGridSwitch checked={previewGrid} onCheckedChange={onPreviewGridChange} />
           <ThemeSelect onChange={onThemeChange} value={theme} />
           <Button
             nativeButton={false}
@@ -385,6 +420,7 @@ export function DocsShell() {
   const mainRef = useRef<HTMLElement>(null);
   const previousPathRef = useRef(pathname);
   const [mobileNavigationOpen, setMobileNavigationOpen] = useState(false);
+  const [previewGrid, setPreviewGrid] = useState(readStoredPreviewGrid);
   const [query, setQuery] = useState('');
   const [theme, setTheme] = useState<CityTheme>(readStoredTheme);
 
@@ -404,6 +440,16 @@ export function DocsShell() {
   }, [theme]);
 
   useEffect(() => {
+    document.documentElement.dataset.cityDocsPreviewGrid = previewGrid ? 'on' : 'off';
+
+    try {
+      window.localStorage.setItem(PREVIEW_GRID_STORAGE_KEY, previewGrid ? 'on' : 'off');
+    } catch {
+      // The preview setting still applies for this session when storage is unavailable.
+    }
+  }, [previewGrid]);
+
+  useEffect(() => {
     if (previousPathRef.current === pathname) return;
     previousPathRef.current = pathname;
     setMobileNavigationOpen(false);
@@ -416,7 +462,12 @@ export function DocsShell() {
         <a className="city-docs-skip-link" href="#main-content">
           본문으로 건너뛰기
         </a>
-        <ProductHeader onThemeChange={setTheme} theme={theme} />
+        <ProductHeader
+          onPreviewGridChange={setPreviewGrid}
+          onThemeChange={setTheme}
+          previewGrid={previewGrid}
+          theme={theme}
+        />
         <main className="city-docs-product-main" id="main-content" ref={mainRef} tabIndex={-1}>
           <Outlet />
         </main>
@@ -486,7 +537,10 @@ export function DocsShell() {
             <span>현재 문서</span>
             <strong>{page.title}</strong>
           </div>
-          <ThemeSelect onChange={setTheme} value={theme} />
+          <div className="city-docs-topbar-actions">
+            <PreviewGridSwitch checked={previewGrid} onCheckedChange={setPreviewGrid} />
+            <ThemeSelect onChange={setTheme} value={theme} />
+          </div>
         </header>
         <main className="city-docs-main" id="main-content" ref={mainRef} tabIndex={-1}>
           <CurrentBreadcrumbs pathname={pathname} />

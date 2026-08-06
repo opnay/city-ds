@@ -20,6 +20,7 @@ if (!window.matchMedia) {
 
 afterEach(() => {
   cleanup();
+  delete document.documentElement.dataset.cityDocsPreviewGrid;
   delete document.documentElement.dataset.theme;
   window.localStorage.clear();
   window.history.replaceState(null, '', '/');

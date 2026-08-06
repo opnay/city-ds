@@ -105,6 +105,20 @@
     gap: var(--city-space-2);
   }
 
+  .city-docs-preview-grid-option,
+  .city-docs-topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--city-space-2);
+  }
+
+  .city-docs-preview-grid-option {
+    color: var(--city-color-muted-foreground);
+    font-size: var(--city-font-size-xs);
+    line-height: var(--city-line-height-xs);
+    white-space: nowrap;
+  }
+
   .city-docs-product-main {
     display: grid;
     width: min(100%, 88rem);
@@ -656,8 +670,16 @@
   .city-docs-related-grid,
   .city-docs-example-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
     gap: var(--city-space-3);
+  }
+
+  .city-docs-component-grid,
+  .city-docs-related-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  }
+
+  .city-docs-example-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
   }
 
   .city-docs-example-item,
@@ -1121,13 +1143,19 @@
   }
 
   .city-docs-example-preview {
+    --city-docs-preview-grid-color: color-mix(in oklab, var(--city-color-border) 20%, transparent);
+
     min-height: 8rem;
     padding: clamp(var(--city-space-4), 5vw, var(--city-space-8));
     background:
-      linear-gradient(var(--city-color-border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--city-color-border) 1px, transparent 1px),
+      linear-gradient(var(--city-docs-preview-grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--city-docs-preview-grid-color) 1px, transparent 1px),
       var(--city-color-background);
     background-size: 1.5rem 1.5rem;
+  }
+
+  html[data-city-docs-preview-grid='off'] .city-docs-example-preview {
+    background: var(--city-color-background);
   }
 
   .city-docs-example-stack,
@@ -1365,6 +1393,18 @@
 
     .city-docs-theme-trigger {
       width: 7.75rem;
+    }
+
+    .city-docs-preview-grid-option > span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .city-docs-mobile-brand .city-docs-brand {

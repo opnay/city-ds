@@ -44,4 +44,17 @@ describe('public docs layout styles', () => {
       mosaic.indexOf("'orders orders orders orders orders orders"),
     );
   });
+
+  it('keeps intrinsically wide examples in non-overlapping grid tracks', () => {
+    expect(styles).toMatch(
+      /\.city-docs-example-grid\s*{\s*grid-template-columns:\s*repeat\(auto-fit, minmax\(min\(100%, 18rem\), 1fr\)\);/,
+    );
+  });
+
+  it('uses a subtle optional grid for every example preview', () => {
+    expect(styles).toMatch(/var\(--city-color-border\) 20%,\s*transparent/);
+    expect(styles).toMatch(
+      /html\[data-city-docs-preview-grid='off'\] \.city-docs-example-preview\s*{\s*background:\s*var\(--city-color-background\);/,
+    );
+  });
 });

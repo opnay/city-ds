@@ -482,6 +482,16 @@
     gap: var(--city-space-2);
   }
 
+  .city-docs-prose > ul,
+  .city-docs-prose > :where(ul, ol) ul {
+    list-style-type: disc;
+  }
+
+  .city-docs-prose > ol,
+  .city-docs-prose > :where(ul, ol) ol {
+    list-style-type: decimal;
+  }
+
   .city-docs-prose > :where(h2, h3, p, ul, ol, blockquote) a {
     color: var(--city-color-foreground);
     text-decoration-color: var(--city-color-border-strong);
@@ -492,11 +502,12 @@
   .city-docs-prose > :where(ul, ol, blockquote) :not(pre) > code,
   .city-docs-api-table code,
   .city-docs-prose-table-wrap code {
+    margin-inline: 2px;
     padding: 0.1em 0.35em;
     border: 1px solid var(--city-color-border);
     border-radius: var(--city-radius-xs);
     background: var(--city-color-muted);
-    font-size: 0.9em;
+    font-size: var(--city-font-size-sm);
   }
 
   .city-docs-prose-code,

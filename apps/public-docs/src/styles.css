@@ -224,7 +224,7 @@
     overflow: hidden;
     flex: 1;
     flex-direction: column;
-    gap: var(--city-space-4);
+    gap: var(--city-space-3);
   }
 
   .city-docs-nav-section {
@@ -232,7 +232,8 @@
     gap: var(--city-space-1);
   }
 
-  .city-docs-nav-section h2 {
+  .city-docs-nav-section h2,
+  .city-docs-nav-subsection h3 {
     margin: 0;
     padding: 0 var(--city-space-2) var(--city-space-1);
     color: var(--city-color-muted-foreground);
@@ -276,18 +277,70 @@
 
   .city-docs-nav-search {
     padding-inline: var(--city-space-1);
+    flex: none;
   }
 
-  .city-docs-component-nav {
+  .city-docs-nav-scroll {
     display: grid;
     min-height: 0;
     padding-right: var(--city-space-1);
     overflow-y: auto;
-    gap: var(--city-space-4);
+    align-content: start;
+    flex: 1;
+    gap: var(--city-space-6);
     scrollbar-gutter: stable;
   }
 
-  .city-docs-component-nav > p {
+  .city-docs-nav-categories {
+    display: grid;
+    margin-top: var(--city-space-3);
+    gap: var(--city-space-4);
+  }
+
+  .city-docs-nav-subsection {
+    display: grid;
+    gap: var(--city-space-1);
+  }
+
+  .city-docs-nav-results-heading {
+    display: flex;
+    padding-inline: var(--city-space-2);
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--city-space-2);
+  }
+
+  .city-docs-nav-results-heading h2 {
+    padding: 0;
+  }
+
+  .city-docs-nav-results-heading > span {
+    color: var(--city-color-muted-foreground);
+    font-size: var(--city-font-size-2xs);
+    line-height: var(--city-line-height-2xs);
+  }
+
+  .city-docs-nav-search-results a {
+    align-items: flex-start;
+  }
+
+  .city-docs-nav-result-copy {
+    display: grid;
+    min-width: 0;
+    gap: var(--city-space-0-5);
+  }
+
+  .city-docs-nav-result-copy > span {
+    overflow-wrap: anywhere;
+  }
+
+  .city-docs-nav-result-copy small {
+    color: var(--city-color-muted-foreground);
+    font-size: var(--city-font-size-2xs);
+    line-height: var(--city-line-height-2xs);
+  }
+
+  .city-docs-nav-empty {
     margin: 0;
     padding: var(--city-space-3) var(--city-space-2);
     color: var(--city-color-muted-foreground);

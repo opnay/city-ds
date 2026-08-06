@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
 import reactPackage from '../../../../packages/react/package.json';
-import { COMPONENT_DOCS, filterComponentDocs, getComponentDoc } from './doc-catalog';
+import {
+  COMPONENT_DOCS,
+  STATIC_DOCS,
+  filterComponentDocs,
+  filterDocumentPages,
+  getComponentDoc,
+} from './doc-catalog';
 
 const NON_COMPONENT_EXPORTS = new Set(['.', './package.json', './styles.css', './theme.css']);
 
@@ -35,5 +41,57 @@ describe('component document catalog', () => {
     );
     expect(filterComponentDocs('', 'Overlays')).toHaveLength(5);
     expect(filterComponentDocs('존재하지 않는 검색어')).toEqual([]);
+  });
+});
+
+describe('document page search', () => {
+  it('indexes every static and component document path exactly once', () => {
+    const paths = filterDocumentPages('').map((result) =>
+      result.kind === 'static' ? result.entry.path : `/components/${result.entry.slug}`,
+    );
+
+    expect(STATIC_DOCS).toHaveLength(6);
+    expect(paths).toHaveLength(46);
+    expect(new Set(paths).size).toBe(46);
+  });
+
+  it('searches page titles, descriptions, paths, categories and keywords', () => {
+    expect(filterDocumentPages('Getting started')).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          entry: expect.objectContaining({ path: '/getting-started' }),
+          kind: 'static',
+        }),
+      ]),
+    );
+    expect(filterDocumentPages('설치')).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          entry: expect.objectContaining({ path: '/getting-started' }),
+          kind: 'static',
+        }),
+      ]),
+    );
+    expect(filterDocumentPages('/components/button')).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          entry: expect.objectContaining({ slug: 'button' }),
+          kind: 'component',
+        }),
+      ]),
+    );
+    expect(filterDocumentPages('폼')).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          entry: expect.objectContaining({ path: '/patterns' }),
+          kind: 'static',
+        }),
+        expect.objectContaining({
+          entry: expect.objectContaining({ slug: 'field' }),
+          kind: 'component',
+        }),
+      ]),
+    );
+    expect(filterDocumentPages('존재하지 않는 검색어')).toEqual([]);
   });
 });

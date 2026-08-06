@@ -1,4 +1,9 @@
-import type { ComponentCategory, ComponentDocEntry } from './types';
+import type {
+  ComponentCategory,
+  ComponentDocEntry,
+  DocumentSearchResult,
+  StaticDocEntry,
+} from './types';
 
 export const COMPONENT_CATEGORIES: readonly ComponentCategory[] = [
   'Foundations',
@@ -24,13 +29,72 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   Overlays: '오버레이',
 };
 
-export const GUIDE_LINKS = [
-  { label: '소개', path: '/' },
-  { label: '시작하기', path: '/getting-started' },
-  { label: '기초', path: '/foundations' },
-  { label: '패턴', path: '/patterns' },
-  { label: '접근성', path: '/accessibility' },
-] as const;
+export const START_DOCS = [
+  {
+    description: 'city-ds의 목적과 지원 환경, 설계 원칙을 소개합니다.',
+    englishTitle: 'Overview',
+    keywords: ['디자인 시스템', 'react', 'base ui', 'overview'],
+    label: '소개',
+    path: '/',
+    section: 'start',
+    title: '운영 제품을 위한 React 디자인 시스템',
+  },
+  {
+    description: '패키지를 연결하고 CSS·테마를 애플리케이션 진입점에 적용합니다.',
+    englishTitle: 'Getting started',
+    keywords: ['설치', 'pnpm', 'css', '테마', 'vite', 'next.js'],
+    label: '시작하기',
+    path: '/getting-started',
+    section: 'start',
+    title: '시작하기',
+  },
+] as const satisfies readonly StaticDocEntry[];
+
+export const GUIDE_DOCS = [
+  {
+    description: '토큰, 크기, 밀도, 표면과 테마를 같은 시각 언어로 적용합니다.',
+    englishTitle: 'Foundations',
+    keywords: ['토큰', '크기', '밀도', '표면', '테마'],
+    label: '기초',
+    path: '/foundations',
+    section: 'guides',
+    title: '기초',
+  },
+  {
+    description: '폼, 데이터 목록, 피드백과 오버레이를 사용자 작업 단위로 조합합니다.',
+    englishTitle: 'Patterns',
+    keywords: ['폼', '데이터 목록', '피드백', '오버레이', '조합'],
+    label: '패턴',
+    path: '/patterns',
+    section: 'guides',
+    title: '패턴',
+  },
+  {
+    description: '이름, 설명, 키보드, 포커스, 상태와 작은 화면을 함께 점검합니다.',
+    englishTitle: 'Accessibility',
+    keywords: ['키보드', '포커스', '보조 기술', '작은 화면', 'a11y'],
+    label: '접근성',
+    path: '/accessibility',
+    section: 'guides',
+    title: '접근성',
+  },
+] as const satisfies readonly StaticDocEntry[];
+
+export const COMPONENT_INDEX_DOC = {
+  description: '사용 목적과 범주를 기준으로 모든 공개 컴포넌트를 탐색합니다.',
+  englishTitle: 'Components',
+  keywords: ['컴포넌트 목록', '카탈로그', 'component catalog'],
+  label: '전체 보기',
+  path: '/components',
+  section: 'components',
+  title: '컴포넌트',
+} as const satisfies StaticDocEntry;
+
+export const STATIC_DOCS: readonly StaticDocEntry[] = [
+  ...START_DOCS,
+  ...GUIDE_DOCS,
+  COMPONENT_INDEX_DOC,
+];
 
 export const COMPONENT_DOCS = [
   {
@@ -437,6 +501,20 @@ export const COMPONENT_DOCS = [
 
 export type ComponentSlug = (typeof COMPONENT_DOCS)[number]['slug'];
 
+function normalizeSearchValue(value: string): string {
+  return value.trim().toLocaleLowerCase('ko-KR');
+}
+
+function includesSearchQuery(fields: readonly string[], normalizedQuery: string): boolean {
+  if (normalizedQuery.length === 0) return true;
+
+  return fields.join(' ').toLocaleLowerCase('ko-KR').includes(normalizedQuery);
+}
+
+export function getStaticDoc(pathname: string): StaticDocEntry | undefined {
+  return STATIC_DOCS.find((entry) => entry.path === pathname);
+}
+
 export function getComponentDoc(slug: string): ComponentDocEntry | undefined {
   return COMPONENT_DOCS.find((entry) => entry.slug === slug);
 }
@@ -445,22 +523,55 @@ export function filterComponentDocs(
   query: string,
   category: ComponentCategory | 'all' = 'all',
 ): readonly ComponentDocEntry[] {
-  const normalizedQuery = query.trim().toLocaleLowerCase('ko-KR');
+  const normalizedQuery = normalizeSearchValue(query);
 
   return COMPONENT_DOCS.filter((entry) => {
     if (category !== 'all' && entry.category !== category) return false;
-    if (normalizedQuery.length === 0) return true;
 
-    return [
-      entry.title,
-      entry.slug,
-      entry.category,
-      CATEGORY_LABELS[entry.category],
-      entry.description,
-      ...entry.keywords,
-    ]
-      .join(' ')
-      .toLocaleLowerCase('ko-KR')
-      .includes(normalizedQuery);
+    return includesSearchQuery(
+      [
+        entry.title,
+        entry.slug,
+        entry.category,
+        CATEGORY_LABELS[entry.category],
+        entry.description,
+        ...entry.keywords,
+      ],
+      normalizedQuery,
+    );
   });
+}
+
+export function filterDocumentPages(query: string): readonly DocumentSearchResult[] {
+  const normalizedQuery = normalizeSearchValue(query);
+  const staticResults: DocumentSearchResult[] = STATIC_DOCS.filter((entry) =>
+    includesSearchQuery(
+      [
+        entry.label,
+        entry.title,
+        entry.englishTitle,
+        entry.path,
+        entry.description,
+        ...entry.keywords,
+      ],
+      normalizedQuery,
+    ),
+  ).map((entry) => ({ entry, kind: 'static' }));
+  const componentResults: DocumentSearchResult[] = COMPONENT_DOCS.filter((entry) =>
+    includesSearchQuery(
+      [
+        entry.title,
+        entry.slug,
+        `/components/${entry.slug}`,
+        entry.importPath,
+        entry.category,
+        CATEGORY_LABELS[entry.category],
+        entry.description,
+        ...entry.keywords,
+      ],
+      normalizedQuery,
+    ),
+  ).map((entry) => ({ entry, kind: 'component' }));
+
+  return [...staticResults, ...componentResults];
 }

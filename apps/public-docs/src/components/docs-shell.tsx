@@ -13,10 +13,15 @@ import { Skeleton } from '@opnay/city-ds-react/skeleton';
 import {
   CATEGORY_LABELS,
   COMPONENT_CATEGORIES,
-  GUIDE_LINKS,
-  filterComponentDocs,
+  COMPONENT_DOCS,
+  COMPONENT_INDEX_DOC,
+  GUIDE_DOCS,
+  START_DOCS,
+  filterDocumentPages,
   getComponentDoc,
+  getStaticDoc,
 } from '../docs/doc-catalog';
+import type { ComponentDocEntry, DocumentSearchResult, StaticDocEntry } from '../docs/types';
 import { GuidePage } from './doc-page';
 
 const THEME_STORAGE_KEY = 'city-docs-theme';
@@ -27,13 +32,10 @@ const THEME_ITEMS: Record<CityTheme, string> = {
   system: '시스템 테마',
 };
 
-const CORE_PAGE_TITLES: Record<string, string> = {
-  '/': '소개',
-  '/accessibility': '접근성',
-  '/components': '컴포넌트',
-  '/foundations': '기초',
-  '/getting-started': '시작하기',
-  '/patterns': '패턴',
+const STATIC_SECTION_LABELS = {
+  components: '컴포넌트',
+  guides: '가이드',
+  start: '시작',
 };
 
 function isCityTheme(value: string | null): value is CityTheme {
@@ -56,7 +58,7 @@ function resolvePage(pathname: string) {
     if (component) return { component, title: component.title };
   }
 
-  return { component: undefined, title: CORE_PAGE_TITLES[pathname] ?? '페이지 없음' };
+  return { component: undefined, title: getStaticDoc(pathname)?.title ?? '페이지 없음' };
 }
 
 interface DocsNavigationProps {
@@ -65,75 +67,179 @@ interface DocsNavigationProps {
   setQuery: (query: string) => void;
 }
 
+function StaticNavigationLink({
+  entry,
+  onNavigate,
+  showContext = false,
+}: {
+  entry: StaticDocEntry;
+  onNavigate: () => void;
+  showContext?: boolean;
+}) {
+  return (
+    <Link
+      activeOptions={{ exact: true }}
+      activeProps={{ 'aria-current': 'page' }}
+      onClick={onNavigate}
+      to={entry.path}
+    >
+      {showContext ? (
+        <span className="city-docs-nav-result-copy">
+          <span>{entry.label}</span>
+          <small>{STATIC_SECTION_LABELS[entry.section]}</small>
+        </span>
+      ) : (
+        entry.label
+      )}
+    </Link>
+  );
+}
+
+function ComponentNavigationLink({
+  entry,
+  onNavigate,
+  showContext = false,
+}: {
+  entry: ComponentDocEntry;
+  onNavigate: () => void;
+  showContext?: boolean;
+}) {
+  return (
+    <Link
+      activeProps={{ 'aria-current': 'page' }}
+      onClick={onNavigate}
+      params={{ slug: entry.slug }}
+      to="/components/$slug"
+    >
+      {showContext ? (
+        <span className="city-docs-nav-result-copy">
+          <span>{entry.title}</span>
+          <small>컴포넌트 · {CATEGORY_LABELS[entry.category]}</small>
+        </span>
+      ) : (
+        entry.title
+      )}
+    </Link>
+  );
+}
+
+function SearchResultLink({
+  onNavigate,
+  result,
+}: {
+  onNavigate: () => void;
+  result: DocumentSearchResult;
+}) {
+  return result.kind === 'static' ? (
+    <StaticNavigationLink entry={result.entry} onNavigate={onNavigate} showContext />
+  ) : (
+    <ComponentNavigationLink entry={result.entry} onNavigate={onNavigate} showContext />
+  );
+}
+
 function DocsNavigation({ onNavigate, query, setQuery }: DocsNavigationProps) {
-  const componentResults = useMemo(() => filterComponentDocs(query), [query]);
+  const isSearching = query.trim().length > 0;
+  const searchResults = useMemo(
+    () => (isSearching ? filterDocumentPages(query) : []),
+    [isSearching, query],
+  );
+  const handleNavigate = () => {
+    setQuery('');
+    onNavigate?.();
+  };
 
   return (
     <nav aria-label="문서 탐색" className="city-docs-navigation">
-      <section className="city-docs-nav-section">
-        <h2>가이드</h2>
-        <ul>
-          {GUIDE_LINKS.map((item) => (
-            <li key={item.path}>
-              <Link activeProps={{ 'aria-current': 'page' }} onClick={onNavigate} to={item.path}>
-                {item.label}
-              </Link>
-            </li>
-          ))}
-          <li>
-            <Link
-              activeOptions={{ exact: true }}
-              activeProps={{ 'aria-current': 'page' }}
-              onClick={onNavigate}
-              to="/components"
-            >
-              컴포넌트
-            </Link>
-          </li>
-        </ul>
-      </section>
-
       <SearchField.Root
         className="city-docs-nav-search"
         onValueChange={setQuery}
         size="sm"
         value={query}
       >
-        <SearchField.Label className="city-docs-sr-only">사이드바 컴포넌트 검색</SearchField.Label>
+        <SearchField.Label className="city-docs-sr-only">문서 검색</SearchField.Label>
         <SearchField.Group>
-          <SearchField.Input placeholder="컴포넌트 검색" />
+          <SearchField.Input placeholder="문서 검색" />
           <SearchField.Clear aria-label="검색어 지우기" />
         </SearchField.Group>
       </SearchField.Root>
 
-      <div className="city-docs-component-nav">
-        {componentResults.length === 0 ? (
-          <p>일치하는 컴포넌트가 없습니다.</p>
-        ) : (
-          COMPONENT_CATEGORIES.map((category) => {
-            const entries = componentResults.filter((entry) => entry.category === category);
-            if (entries.length === 0) return null;
+      <div className="city-docs-nav-scroll">
+        {isSearching ? (
+          <section className="city-docs-nav-section city-docs-nav-search-results">
+            <div className="city-docs-nav-results-heading">
+              <h2>검색 결과</h2>
+              <span role="status">{searchResults.length}개</span>
+            </div>
+            {searchResults.length === 0 ? (
+              <p className="city-docs-nav-empty">일치하는 문서가 없습니다.</p>
+            ) : (
+              <ul>
+                {searchResults.map((result) => {
+                  const key =
+                    result.kind === 'static'
+                      ? result.entry.path
+                      : `/components/${result.entry.slug}`;
 
-            return (
-              <section className="city-docs-nav-section" key={category}>
-                <h2>{CATEGORY_LABELS[category]}</h2>
-                <ul>
-                  {entries.map((entry) => (
-                    <li key={entry.slug}>
-                      <Link
-                        activeProps={{ 'aria-current': 'page' }}
-                        onClick={onNavigate}
-                        params={{ slug: entry.slug }}
-                        to="/components/$slug"
-                      >
-                        {entry.title}
-                      </Link>
+                  return (
+                    <li key={key}>
+                      <SearchResultLink onNavigate={handleNavigate} result={result} />
                     </li>
-                  ))}
-                </ul>
-              </section>
-            );
-          })
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+        ) : (
+          <>
+            <section className="city-docs-nav-section">
+              <h2>시작</h2>
+              <ul>
+                {START_DOCS.map((entry) => (
+                  <li key={entry.path}>
+                    <StaticNavigationLink entry={entry} onNavigate={handleNavigate} />
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section className="city-docs-nav-section">
+              <h2>가이드</h2>
+              <ul>
+                {GUIDE_DOCS.map((entry) => (
+                  <li key={entry.path}>
+                    <StaticNavigationLink entry={entry} onNavigate={handleNavigate} />
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section className="city-docs-nav-section city-docs-nav-components">
+              <h2>컴포넌트</h2>
+              <ul>
+                <li>
+                  <StaticNavigationLink entry={COMPONENT_INDEX_DOC} onNavigate={handleNavigate} />
+                </li>
+              </ul>
+              <div className="city-docs-nav-categories">
+                {COMPONENT_CATEGORIES.map((category) => {
+                  const entries = COMPONENT_DOCS.filter((entry) => entry.category === category);
+
+                  return (
+                    <section className="city-docs-nav-subsection" key={category}>
+                      <h3>{CATEGORY_LABELS[category]}</h3>
+                      <ul>
+                        {entries.map((entry) => (
+                          <li key={entry.slug}>
+                            <ComponentNavigationLink entry={entry} onNavigate={handleNavigate} />
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  );
+                })}
+              </div>
+            </section>
+          </>
         )}
       </div>
     </nav>
@@ -355,7 +461,9 @@ export function DocsShell() {
                   <Drawer.Header>
                     <div>
                       <Drawer.Title>문서 메뉴</Drawer.Title>
-                      <Drawer.Description>가이드와 컴포넌트 문서로 이동합니다.</Drawer.Description>
+                      <Drawer.Description>
+                        시작 안내, 가이드와 컴포넌트 문서로 이동합니다.
+                      </Drawer.Description>
                     </div>
                     <Drawer.Close
                       render={<Button aria-label="문서 메뉴 닫기" size="sm" variant="ghost" />}

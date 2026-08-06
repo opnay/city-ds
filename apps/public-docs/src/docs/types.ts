@@ -26,6 +26,30 @@ export interface ComponentDocEntry {
   title: string;
 }
 
+export type StaticDocSection = 'components' | 'guides' | 'start';
+
+export type StaticDocPath =
+  | '/'
+  | '/accessibility'
+  | '/components'
+  | '/foundations'
+  | '/getting-started'
+  | '/patterns';
+
+export interface StaticDocEntry {
+  description: string;
+  englishTitle: string;
+  keywords: readonly string[];
+  label: string;
+  path: StaticDocPath;
+  section: StaticDocSection;
+  title: string;
+}
+
+export type DocumentSearchResult =
+  | { entry: ComponentDocEntry; kind: 'component' }
+  | { entry: StaticDocEntry; kind: 'static' };
+
 export interface ApiItem {
   defaultValue?: string;
   description: string;

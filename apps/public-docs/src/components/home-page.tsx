@@ -1,54 +1,40 @@
-import { useState } from 'react';
-import { ToggleGroup } from '@opnay/city-ds-react/toggle-group';
+import { ArrowRight } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
+import { Button } from '@opnay/city-ds-react/button';
 
-import { HomeShowcase, type ShowcaseCategory } from './home-showcase';
-
-const FILTERS: readonly { label: string; value: ShowcaseCategory }[] = [
-  { label: '전체', value: 'all' },
-  { label: '워크스페이스', value: 'workspace' },
-  { label: '커머스', value: 'commerce' },
-  { label: '지원', value: 'support' },
-  { label: '일정', value: 'scheduling' },
-  { label: '설정', value: 'settings' },
-];
-
-const FILTER_COUNTS: Record<ShowcaseCategory, number> = {
-  all: 10,
-  commerce: 2,
-  scheduling: 1,
-  settings: 2,
-  support: 2,
-  workspace: 3,
-};
+import { HomeShowcase } from './home-showcase';
 
 export function HomePage() {
-  const [category, setCategory] = useState<ShowcaseCategory>('all');
-
   return (
     <article className="city-docs-home">
-      <h1 className="city-docs-sr-only">city-ds organism gallery</h1>
-      <div className="city-docs-home-filterbar">
-        <ToggleGroup
-          aria-label="예제 범주"
-          className="city-docs-home-filters"
-          multiple={false}
-          onValueChange={(value) => {
-            const next = value[0] as ShowcaseCategory | undefined;
-            if (next) setCategory(next);
-          }}
-          size="sm"
-          value={[category]}
-          variant="ghost"
-        >
-          {FILTERS.map((filter) => (
-            <ToggleGroup.Item key={filter.value} value={filter.value}>
-              {filter.label}
-            </ToggleGroup.Item>
-          ))}
-        </ToggleGroup>
-        <p aria-live="polite">organism {FILTER_COUNTS[category]}개</p>
+      <header className="city-docs-home-hero city-docs-home-intro" id="product-foundation">
+        <div className="city-docs-home-hero-copy">
+          <h1 className="city-text-display">
+            운영 제품을 위한 <span>React 디자인 시스템</span>
+          </h1>
+          <p className="city-docs-home-lead city-text-lead">
+            city-ds는 복잡한 운영 도구, 데이터 화면, 폼을 빠르고 일관되게 만드는 컴포넌트와 디자인
+            기준을 제공합니다. Base UI의 접근 가능한 동작과 절제된 모노크롬 시각 언어를 하나의 공개
+            API로 사용하십시오.
+          </p>
+          <div className="city-docs-home-actions">
+            <Button
+              nativeButton={false}
+              render={<Link to="/getting-started" />}
+              role="link"
+              size="lg"
+              variant="primary"
+            >
+              문서 보기
+              <ArrowRight aria-hidden="true" size={17} />
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <div className="city-showcase-viewport">
+        <HomeShowcase />
       </div>
-      <HomeShowcase category={category} />
     </article>
   );
 }

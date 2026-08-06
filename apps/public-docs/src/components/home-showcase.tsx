@@ -31,14 +31,6 @@ import { Table, type TableSortDirection } from '@opnay/city-ds-react/table';
 import { Tabs } from '@opnay/city-ds-react/tabs';
 import { Toast } from '@opnay/city-ds-react/toast';
 
-export type ShowcaseCategory =
-  | 'all'
-  | 'workspace'
-  | 'commerce'
-  | 'support'
-  | 'scheduling'
-  | 'settings';
-
 interface ShowcaseCardProps {
   className?: string;
   children: React.ReactNode;
@@ -805,19 +797,19 @@ function ActivityFeedCard() {
 }
 
 const SHOWCASE_ITEMS = [
-  { category: 'commerce', Component: OrdersCard, id: 'orders' },
-  { category: 'support', Component: IssueTriageCard, id: 'issues' },
-  { category: 'commerce', Component: CheckoutCard, id: 'checkout' },
-  { category: 'scheduling', Component: ScheduleCard, id: 'schedule' },
-  { category: 'workspace', Component: InviteMembersCard, id: 'invite' },
-  { category: 'workspace', Component: QuickCommandCard, id: 'command' },
-  { category: 'settings', Component: SessionSecurityCard, id: 'security' },
-  { category: 'workspace', Component: UploadDocumentsCard, id: 'upload' },
-  { category: 'settings', Component: NotificationsCard, id: 'notifications' },
-  { category: 'support', Component: ActivityFeedCard, id: 'activity' },
+  { Component: ScheduleCard, id: 'schedule' },
+  { Component: InviteMembersCard, id: 'invite' },
+  { Component: IssueTriageCard, id: 'issues' },
+  { Component: CheckoutCard, id: 'checkout' },
+  { Component: OrdersCard, id: 'orders' },
+  { Component: QuickCommandCard, id: 'command' },
+  { Component: SessionSecurityCard, id: 'security' },
+  { Component: UploadDocumentsCard, id: 'upload' },
+  { Component: NotificationsCard, id: 'notifications' },
+  { Component: ActivityFeedCard, id: 'activity' },
 ] as const;
 
-export function HomeShowcase({ category }: { category: ShowcaseCategory }) {
+export function HomeShowcase() {
   const manager = Toast.useToastManager();
 
   return (
@@ -825,15 +817,10 @@ export function HomeShowcase({ category }: { category: ShowcaseCategory }) {
       <section
         aria-label="Interactive product examples"
         className="city-showcase-grid"
-        data-category={category}
+        id="product-contexts"
       >
-        {SHOWCASE_ITEMS.map(({ category: itemCategory, Component, id }) => (
-          <div
-            className="city-showcase-item"
-            data-organism={id}
-            hidden={category !== 'all' && category !== itemCategory}
-            key={id}
-          >
+        {SHOWCASE_ITEMS.map(({ Component, id }) => (
+          <div className="city-showcase-item" data-organism={id} key={id}>
             <Component />
           </div>
         ))}

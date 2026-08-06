@@ -24,7 +24,9 @@ describe('documented component interactions', () => {
   it('updates a controlled form example and exposes its local result', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/search-field']);
-    const search = screen.getByRole('searchbox', { name: '문서 검색' });
+    const search = within(screen.getByRole('main')).getByRole('searchbox', {
+      name: '문서 검색',
+    });
 
     expect(search).toHaveValue('city');
     await user.clear(search);

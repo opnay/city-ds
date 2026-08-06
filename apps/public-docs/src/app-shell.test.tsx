@@ -98,13 +98,46 @@ describe('public docs routes and shell', () => {
     expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
   });
 
+  it('groups the full navigation and searches every document page', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components']);
+    const navigation = screen.getByRole('navigation', { name: '문서 탐색' });
+    const search = within(navigation).getByRole('searchbox', { name: '문서 검색' });
+
+    expect(within(navigation).getByRole('heading', { level: 2, name: '시작' })).toBeVisible();
+    expect(within(navigation).getByRole('heading', { level: 2, name: '가이드' })).toBeVisible();
+    expect(within(navigation).getByRole('heading', { level: 2, name: '컴포넌트' })).toBeVisible();
+    expect(within(navigation).getByRole('heading', { level: 3, name: '폼' })).toBeVisible();
+
+    await user.type(search, '설치');
+    expect(within(navigation).getByText('1개')).toBeVisible();
+    expect(within(navigation).getByRole('link', { name: /시작하기/ })).toBeVisible();
+
+    await user.clear(search);
+    await user.type(search, 'Button');
+    expect(within(navigation).getByRole('link', { name: /Button/ })).toBeVisible();
+    expect(within(navigation).getByText('컴포넌트 · 액션')).toBeVisible();
+
+    await user.clear(search);
+    await user.type(search, '존재하지 않는 검색어');
+    expect(within(navigation).getByText('일치하는 문서가 없습니다.')).toBeVisible();
+
+    await user.clear(search);
+    await user.type(search, 'Getting started');
+    await user.click(within(navigation).getByRole('link', { name: /시작하기/ }));
+
+    expect(await screen.findByRole('heading', { level: 1, name: '시작하기' })).toBeVisible();
+    await waitFor(() => expect(search).toHaveValue(''));
+  });
+
   it('closes the mobile drawer after navigation', async () => {
     const user = userEvent.setup();
     await renderDocs(['/getting-started']);
 
     await user.click(screen.getByRole('button', { name: '문서 메뉴 열기' }));
     const drawer = await screen.findByRole('dialog', { name: '문서 메뉴' });
-    await user.click(within(drawer).getByRole('link', { name: '패턴' }));
+    await user.type(within(drawer).getByRole('searchbox', { name: '문서 검색' }), 'Patterns');
+    await user.click(within(drawer).getByRole('link', { name: /패턴/ }));
 
     expect(await screen.findByRole('heading', { level: 1, name: '패턴' })).toBeVisible();
     await waitFor(() =>

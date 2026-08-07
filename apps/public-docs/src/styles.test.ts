@@ -22,26 +22,23 @@ describe('public docs layout styles', () => {
     );
   });
 
-  it('aligns reading blocks at one width and lets code blocks extend wider', () => {
+  it('aligns reading and code blocks while giving prose code extra vertical space', () => {
     expect(styles).toMatch(/--city-docs-reading-max:\s*56rem;/);
-    expect(styles).toMatch(/--city-docs-code-max:\s*64rem;/);
+    expect(styles).not.toMatch(/--city-docs-code-max\s*:/);
     expect(styles).toMatch(
       /\.city-docs-page-heading\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-prose\s*{[^}]*max-inline-size:\s*var\(--city-docs-code-max\);[^}]*margin-inline:\s*auto;/s,
+      /\.city-docs-prose\s*{[^}]*max-inline-size:\s*64rem;[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
       /\.city-docs-prose > :where\(h2, h3, p, ul, ol, blockquote\)\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-prose-code-wrap\s*{[^}]*width:\s*100%;[^}]*margin-inline:\s*auto;/s,
+      /\.city-docs-prose > \.city-docs-prose-code-wrap\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-block:\s*var\(--city-space-2\);[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-import-block\s*{[^}]*max-width:\s*var\(--city-docs-code-max\);[^}]*margin-inline:\s*auto;/s,
-    );
-    expect(styles).toMatch(
-      /\.city-docs-import-block > h2\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,
+      /\.city-docs-import-block\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
       /\.city-docs-prose-table-wrap\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,

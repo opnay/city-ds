@@ -36,7 +36,6 @@
   .city-docs-shell {
     --city-docs-content-max: 78rem;
     --city-docs-reading-max: 56rem;
-    --city-docs-code-max: 64rem;
     --city-docs-sidebar-width: 18rem;
 
     display: grid;
@@ -463,7 +462,7 @@
   .city-docs-prose {
     width: 100%;
     min-width: 0;
-    max-inline-size: var(--city-docs-code-max);
+    max-inline-size: 64rem;
     margin-inline: auto;
   }
 
@@ -476,11 +475,6 @@
   .city-docs-import-block > h2,
   .city-docs-component-groups section > h2 {
     margin: 0;
-  }
-
-  .city-docs-import-block > h2 {
-    width: min(100%, var(--city-docs-reading-max));
-    margin-inline: auto;
   }
 
   .city-docs-prose > :where(p, ul, ol, blockquote) {
@@ -601,9 +595,10 @@
     background: var(--city-color-muted);
   }
 
-  .city-docs-prose-code-wrap {
-    width: 100%;
+  .city-docs-prose > .city-docs-prose-code-wrap {
+    width: min(100%, var(--city-docs-reading-max));
     min-width: 0;
+    margin-block: var(--city-space-2);
     margin-inline: auto;
   }
 
@@ -690,7 +685,7 @@
   .city-docs-import-block {
     display: grid;
     width: 100%;
-    max-width: var(--city-docs-code-max);
+    max-width: var(--city-docs-reading-max);
     margin-inline: auto;
     gap: var(--city-space-3);
   }

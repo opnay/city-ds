@@ -22,25 +22,32 @@ describe('public docs layout styles', () => {
     );
   });
 
-  it('centers a wider reading measure while preserving wide content surfaces', () => {
+  it('aligns reading blocks at one width and lets code blocks extend wider', () => {
     expect(styles).toMatch(/--city-docs-reading-max:\s*56rem;/);
+    expect(styles).toMatch(/--city-docs-code-max:\s*64rem;/);
     expect(styles).toMatch(
       /\.city-docs-page-heading\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-prose\s*{[^}]*max-inline-size:\s*64rem;[^}]*margin-inline:\s*auto;/s,
+      /\.city-docs-prose\s*{[^}]*max-inline-size:\s*var\(--city-docs-code-max\);[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-prose > :where\(h2, h3, p, ul, ol, blockquote\)\s*{[^}]*width:\s*100%;[^}]*max-inline-size:\s*76ch;[^}]*margin-inline:\s*auto;/s,
+      /\.city-docs-prose > :where\(h2, h3, p, ul, ol, blockquote\)\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-prose-code-wrap\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,
+      /\.city-docs-prose-code-wrap\s*{[^}]*width:\s*100%;[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-import-block\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
+      /\.city-docs-import-block\s*{[^}]*max-width:\s*var\(--city-docs-code-max\);[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-related\s*{[^}]*max-width:\s*64rem;[^}]*margin-inline:\s*auto;/s,
+      /\.city-docs-import-block > h2\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-prose-table-wrap\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-related\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
     );
   });
 

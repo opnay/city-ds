@@ -103,4 +103,5 @@ export interface ComponentPageData {
   examples: readonly DocExample[];
   featuredExampleId: string;
   optionAxes: readonly OptionAxis[];
+  widePreviewIds?: readonly string[];
 }

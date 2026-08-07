@@ -8,6 +8,7 @@ import type { ComponentPageData } from '../../types';
 
 export const pageData = {
   featuredExampleId: 'calendar-states',
+  widePreviewIds: ['calendar-sizes', 'calendar-states', 'calendar-outside-days'],
   api: [
     {
       name: 'value / defaultValue',

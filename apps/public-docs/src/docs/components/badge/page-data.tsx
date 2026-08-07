@@ -8,6 +8,7 @@ import type { ComponentPageData } from '../../types';
 
 export const pageData = {
   featuredExampleId: 'badge-presentation',
+  widePreviewIds: ['badge-presentation'],
   api: [
     {
       name: 'tone',

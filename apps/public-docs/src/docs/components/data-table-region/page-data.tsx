@@ -6,6 +6,7 @@ import type { ComponentPageData } from '../../types';
 
 export const pageData = {
   featuredExampleId: 'data-table-region-overflow',
+  widePreviewIds: ['data-table-region-overflow', 'data-table-region-hint'],
   api: [
     {
       name: 'label',

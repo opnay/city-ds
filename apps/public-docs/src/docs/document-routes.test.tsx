@@ -4,6 +4,18 @@ import { describe, expect, it } from 'vitest';
 import { renderDocs } from '../test/render-docs';
 import { CATEGORY_LABELS, COMPONENT_DOCS } from './doc-catalog';
 
+const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
+  alert: 2,
+  badge: 1,
+  calendar: 3,
+  callout: 2,
+  'data-table-region': 2,
+  'filter-bar': 1,
+  progress: 1,
+  table: 4,
+  toast: 1,
+};
+
 describe('all component document routes', () => {
   it.each(COMPONENT_DOCS)('renders $slug with examples and API', async (entry) => {
     const { container } = await renderDocs([`/components/${entry.slug}`]);
@@ -46,9 +58,17 @@ describe('all component document routes', () => {
     expect(featuredExample?.querySelector('.city-docs-coverage-list')).toBeNull();
     const exampleTitles = container.querySelectorAll('.city-docs-example-title');
     const exampleTitleRows = container.querySelectorAll('.city-docs-example-title-row');
+    const previewContents = container.querySelectorAll('.city-docs-example-preview-content');
 
     expect(exampleTitles.length).toBeGreaterThan(0);
     expect(exampleTitleRows).toHaveLength(exampleTitles.length);
+    expect(previewContents).toHaveLength(exampleTitles.length);
+    expect(container.querySelectorAll("[data-city-docs-layout='wide']")).toHaveLength(
+      WIDE_PREVIEW_COUNTS[entry.slug] ?? 0,
+    );
+    for (const previewContent of previewContents) {
+      expect(previewContent.getAttribute('data-city-docs-layout')).toMatch(/^(center|wide)$/);
+    }
     const optionHeading = screen.queryByRole('heading', { level: 2, name: '옵션과 사용법' });
     const optionSection = optionHeading?.closest('.city-docs-component-reference-section');
     const optionTitles = optionSection?.querySelectorAll('.city-docs-example-title') ?? [];

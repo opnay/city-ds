@@ -4,6 +4,7 @@ import type { ComponentPageData } from '../../types';
 
 export const pageData = {
   featuredExampleId: 'filter-bar-matrix',
+  widePreviewIds: ['filter-bar-matrix'],
   api: [
     {
       name: 'appearance',

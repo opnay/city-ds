@@ -112,6 +112,21 @@ describe('public docs layout styles', () => {
     );
   });
 
+  it('centers bounded preview content while explicit wide examples keep the full canvas', () => {
+    expect(styles).toMatch(
+      /\.city-docs-example-preview\s*{[^}]*--city-docs-preview-content-max:\s*40rem;[^}]*display:\s*grid;[^}]*place-items:\s*center;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-example-preview-content\s*{[^}]*width:\s*min\(100%, var\(--city-docs-preview-content-max\)\);[^}]*justify-items:\s*center;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-example-preview-content \.city-docs-example-row\s*{[^}]*justify-content:\s*center;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-example-preview-content\[data-city-docs-layout='wide'\]\s*{[^}]*width:\s*100%;[^}]*justify-items:\s*stretch;/s,
+    );
+  });
+
   it('keeps prose list layout out of list-based component previews', () => {
     expect(styles).toMatch(/\.city-docs-prose > :where\(ul, ol\)/);
     expect(styles).not.toMatch(/\.city-docs-prose ul,\s*\n\s*\.city-docs-prose ol/);

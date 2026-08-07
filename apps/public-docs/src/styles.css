@@ -1281,8 +1281,10 @@
   }
 
   .city-docs-example-preview {
+    --city-docs-preview-content-max: 40rem;
     --city-docs-preview-grid-color: color-mix(in oklab, var(--city-color-border) 20%, transparent);
 
+    display: grid;
     min-height: 8rem;
     padding: clamp(var(--city-space-4), 5vw, var(--city-space-8));
     background:
@@ -1290,6 +1292,7 @@
       linear-gradient(90deg, var(--city-docs-preview-grid-color) 1px, transparent 1px),
       var(--city-color-background);
     background-size: 1.5rem 1.5rem;
+    place-items: center;
   }
 
   html[data-city-docs-preview-grid='off'] .city-docs-example-preview {
@@ -1297,7 +1300,36 @@
   }
 
   .city-docs-example-preview-content {
+    display: grid;
+    width: min(100%, var(--city-docs-preview-content-max));
     min-width: 0;
+    max-width: 100%;
+    justify-items: center;
+  }
+
+  .city-docs-example-preview-content > * {
+    max-width: 100%;
+  }
+
+  .city-docs-example-preview-content > :where(.city-docs-example-stack, .city-docs-example-grid) {
+    width: 100%;
+  }
+
+  .city-docs-example-preview-content .city-docs-example-row {
+    justify-content: center;
+  }
+
+  .city-docs-example-preview-content > .city-docs-example-stack {
+    justify-items: center;
+  }
+
+  .city-docs-example-preview-content[data-city-docs-layout='wide'] {
+    width: 100%;
+    justify-items: stretch;
+  }
+
+  .city-docs-example-preview-content[data-city-docs-layout='wide'] > .city-docs-example-stack {
+    justify-items: stretch;
   }
 
   .city-docs-preview-settings-option {

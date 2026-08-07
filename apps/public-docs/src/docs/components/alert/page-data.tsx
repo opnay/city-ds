@@ -8,6 +8,7 @@ import type { ComponentPageData } from '../../types';
 
 export const pageData = {
   featuredExampleId: 'alert-presentation',
+  widePreviewIds: ['alert-presentation', 'alert-variants'],
   api: [
     {
       name: 'tone',

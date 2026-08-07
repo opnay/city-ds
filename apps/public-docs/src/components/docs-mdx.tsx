@@ -1,5 +1,11 @@
 import { MDXProvider } from '@mdx-js/react';
-import { isValidElement, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import {
+  createContext,
+  isValidElement,
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+  useContext,
+} from 'react';
 import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Table } from '@opnay/city-ds-react/table';
 import type { MDXComponents } from 'mdx/types.js';
@@ -24,40 +30,68 @@ interface ComponentReferenceProps {
   data: ComponentPageData;
 }
 
+interface ComponentDocScopeProps {
+  children: ReactNode;
+  title: string;
+}
+
+interface ExampleFrameProps {
+  example: DocExample;
+  featuredTitle?: string | undefined;
+}
+
 interface CodeFilesProps {
   'aria-label'?: string | undefined;
   files: readonly [CodeFile, CodeFile, ...CodeFile[]];
 }
 
+const ComponentDocContext = createContext<string | null>(null);
+
 function addRequiredClassName(className: string | undefined, requiredClassName: string) {
   return className ? `${className} ${requiredClassName}` : requiredClassName;
 }
 
-function ExampleFrame({ example }: { example: DocExample }) {
+function useComponentDocTitle() {
+  const title = useContext(ComponentDocContext);
+  if (!title) {
+    throw new Error('컴포넌트 문서 범위에서만 ComponentReference를 사용할 수 있습니다.');
+  }
+
+  return title;
+}
+
+function ExampleFrame({ example, featuredTitle }: ExampleFrameProps) {
+  const isFeatured = featuredTitle !== undefined;
+  const title = featuredTitle ?? example.title;
   const titleId = `example-${example.id}`;
   const Example = example.Component;
+  const Heading = isFeatured ? 'h2' : 'h3';
 
   return (
     <section aria-labelledby={titleId} className="city-docs-example">
       <header className="city-docs-example-heading">
         <div className="city-docs-example-title-row">
           <div className="city-docs-example-heading-copy">
-            <h3 className="city-docs-example-title" id={titleId}>
-              {example.title}
-            </h3>
-            <p className="city-docs-example-description">{example.description}</p>
+            <Heading className="city-docs-example-title" id={titleId}>
+              {title}
+            </Heading>
+            {isFeatured ? null : (
+              <p className="city-docs-example-description">{example.description}</p>
+            )}
           </div>
           <PreviewSettingsButton />
         </div>
-        <div aria-label="이 예제가 다루는 옵션" className="city-docs-coverage-list">
-          {example.coverage.flatMap((item) =>
-            item.values.map((value) => (
-              <span key={`${item.axis}-${value}`}>
-                {item.axis}: {value}
-              </span>
-            )),
-          )}
-        </div>
+        {isFeatured ? null : (
+          <div aria-label="이 예제가 다루는 옵션" className="city-docs-coverage-list">
+            {example.coverage.flatMap((item) =>
+              item.values.map((value) => (
+                <span key={`${item.axis}-${value}`}>
+                  {item.axis}: {value}
+                </span>
+              )),
+            )}
+          </div>
+        )}
       </header>
       <div className="city-docs-example-preview">
         <div className="city-docs-example-preview-content">
@@ -97,6 +131,7 @@ export function ExampleSet({ examples }: ExampleSetProps) {
 }
 
 export function ComponentReference({ data }: ComponentReferenceProps) {
+  const componentTitle = useComponentDocTitle();
   const featuredExample = data.examples.find((example) => example.id === data.featuredExampleId);
   if (!featuredExample) {
     throw new Error(`대표 예제를 찾을 수 없습니다: ${data.featuredExampleId}`);
@@ -106,18 +141,8 @@ export function ComponentReference({ data }: ComponentReferenceProps) {
 
   return (
     <div className="city-docs-component-reference">
-      <section className="city-docs-component-reference-section">
-        <h2 className="city-text-section-title" id="component-featured-example">
-          대표 예제
-        </h2>
-        <ExampleFrame example={featuredExample} />
-      </section>
-      <section className="city-docs-component-reference-section">
-        <h2 className="city-text-section-title" id="component-api">
-          주요 API
-        </h2>
-        <ApiTable items={data.api} />
-      </section>
+      <ExampleFrame example={featuredExample} featuredTitle={componentTitle} />
+      <ApiTable items={data.api} />
       {optionExamples.length > 0 ? (
         <section className="city-docs-component-reference-section">
           <h2 className="city-text-section-title" id="component-options">
@@ -128,6 +153,10 @@ export function ComponentReference({ data }: ComponentReferenceProps) {
       ) : null}
     </div>
   );
+}
+
+export function ComponentDocScope({ children, title }: ComponentDocScopeProps) {
+  return <ComponentDocContext.Provider value={title}>{children}</ComponentDocContext.Provider>;
 }
 
 export function ApiTable({ items }: ApiTableProps) {

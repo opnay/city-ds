@@ -5,6 +5,7 @@ import { Link } from '@tanstack/react-router';
 import { CATEGORY_LABELS, getComponentDoc } from '../docs/doc-catalog';
 import type { ComponentDocEntry } from '../docs/types';
 import { CodeBlock } from './code-block';
+import { ComponentDocScope } from './docs-mdx';
 
 interface ComponentDocPageProps {
   Content: ComponentType;
@@ -59,7 +60,9 @@ export function ComponentDocPage({ Content, entry }: ComponentDocPageProps) {
         </div>
       </header>
       <div className="city-docs-prose city-prose">
-        <Content />
+        <ComponentDocScope title={entry.title}>
+          <Content />
+        </ComponentDocScope>
       </div>
       <div className="city-docs-selection-guidance">
         <p className="city-docs-selection-guidance-label city-text-caption">선택 가이드</p>

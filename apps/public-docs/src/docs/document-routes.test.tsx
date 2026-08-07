@@ -20,42 +20,56 @@ describe('all component document routes', () => {
       within(pageHeading as HTMLElement).getByText(`컴포넌트 · ${CATEGORY_LABELS[entry.category]}`),
     ).toHaveClass('city-docs-page-eyebrow', 'city-text-caption');
     expect(pageHeading?.querySelector(':scope > [data-city-badge]')).not.toBeInTheDocument();
-    for (const heading of ['대표 예제', '주요 API', '접근성']) {
-      expect(screen.getByRole('heading', { level: 2, name: heading })).toHaveClass(
-        'city-text-section-title',
-      );
-    }
-    for (const removedHeading of ['언제 사용합니까', '언제 피해야 합니까', '합성 구조']) {
+    expect(screen.getByRole('heading', { level: 2, name: '접근성' })).toHaveClass(
+      'city-text-section-title',
+    );
+    for (const removedHeading of [
+      '대표 예제',
+      '주요 API',
+      '언제 사용합니까',
+      '언제 피해야 합니까',
+      '합성 구조',
+    ]) {
       expect(screen.queryByRole('heading', { level: 2, name: removedHeading })).toBeNull();
     }
-    const sectionNames = Array.from(container.querySelectorAll('h2'), (heading) =>
-      heading.textContent?.trim(),
-    );
-    expect(sectionNames.indexOf('대표 예제')).toBeLessThan(sectionNames.indexOf('주요 API'));
-    expect(sectionNames.indexOf('주요 API')).toBeLessThan(sectionNames.indexOf('접근성'));
+    const componentReference = container.querySelector('.city-docs-component-reference');
+    const featuredExample = componentReference?.querySelector(':scope > .city-docs-example');
+    expect(componentReference).not.toBeNull();
+    expect(featuredExample).not.toBeNull();
+    expect(
+      within(featuredExample as HTMLElement).getByRole('heading', {
+        level: 2,
+        name: entry.title,
+      }),
+    ).toHaveClass('city-docs-example-title');
+    expect(featuredExample?.querySelector('.city-docs-example-description')).toBeNull();
+    expect(featuredExample?.querySelector('.city-docs-coverage-list')).toBeNull();
     const exampleTitles = container.querySelectorAll('.city-docs-example-title');
     const exampleTitleRows = container.querySelectorAll('.city-docs-example-title-row');
-    const exampleDescriptions = container.querySelectorAll('.city-docs-example-description');
-    const exampleCoverageRows = container.querySelectorAll('.city-docs-coverage-list');
 
     expect(exampleTitles.length).toBeGreaterThan(0);
     expect(exampleTitleRows).toHaveLength(exampleTitles.length);
-    expect(exampleDescriptions).toHaveLength(exampleTitles.length);
-    expect(exampleCoverageRows).toHaveLength(exampleTitles.length);
     const optionHeading = screen.queryByRole('heading', { level: 2, name: '옵션과 사용법' });
+    const optionSection = optionHeading?.closest('.city-docs-component-reference-section');
+    const optionTitles = optionSection?.querySelectorAll('.city-docs-example-title') ?? [];
+    const optionDescriptions =
+      optionSection?.querySelectorAll('.city-docs-example-description') ?? [];
+    const optionCoverageRows = optionSection?.querySelectorAll('.city-docs-coverage-list') ?? [];
+
+    expect(optionDescriptions).toHaveLength(optionTitles.length);
+    expect(optionCoverageRows).toHaveLength(optionTitles.length);
     if (exampleTitles.length > 1) {
       expect(optionHeading).toBeVisible();
-      expect(sectionNames.indexOf('주요 API')).toBeLessThan(sectionNames.indexOf('옵션과 사용법'));
-      expect(sectionNames.indexOf('옵션과 사용법')).toBeLessThan(sectionNames.indexOf('접근성'));
+      expect(optionTitles).toHaveLength(exampleTitles.length - 1);
     } else {
       expect(optionHeading).toBeNull();
     }
-    for (const title of exampleTitles) {
+    for (const title of optionTitles) {
       expect(title.tagName).toBe('H3');
       expect(title.parentElement).toHaveClass('city-docs-example-heading-copy');
       expect(title.parentElement?.parentElement).toHaveClass('city-docs-example-title-row');
     }
-    for (const description of exampleDescriptions) {
+    for (const description of optionDescriptions) {
       expect(description).not.toBeEmptyDOMElement();
       expect(description).toBeVisible();
       expect(description).not.toHaveClass('city-docs-sr-only');
@@ -71,6 +85,21 @@ describe('all component document routes', () => {
     expect(screen.queryByRole('heading', { level: 2, name: '가져오기' })).toBeNull();
     const apiRegion = screen.getByRole('region', { name: '주요 API' });
     expect(within(apiRegion).getByRole('table')).toBeVisible();
+    const accessibilityHeading = screen.getByRole('heading', { level: 2, name: '접근성' });
+    expect(featuredExample?.compareDocumentPosition(apiRegion)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(apiRegion.compareDocumentPosition(accessibilityHeading)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    if (optionHeading) {
+      expect(apiRegion.compareDocumentPosition(optionHeading)).toBe(
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      );
+      expect(optionHeading.compareDocumentPosition(accessibilityHeading)).toBe(
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      );
+    }
     const selectionGuidance = container.querySelector('.city-docs-selection-guidance');
     const related = container.querySelector('.city-docs-related');
     expect(selectionGuidance).toHaveTextContent('선택 가이드');

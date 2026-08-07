@@ -39,8 +39,12 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(/\.city-showcase-orders-table\s*{[^}]*min-width:\s*39rem;/s);
   });
 
-  it('keeps every API table column at least 120 pixels wide', () => {
-    expect(styles).toMatch(/\.city-docs-api-table :where\(th, td\)\s*{\s*min-width:\s*120px;/);
+  it('keeps API table columns readable and scrollable on narrow screens', () => {
+    expect(styles).toMatch(/\.city-docs-api-table table\s*{\s*min-width:\s*40rem;/);
+    expect(styles).toMatch(/\.city-docs-api-table :where\(th, td\)\s*{\s*min-width:\s*160px;/);
+    expect(styles).toMatch(
+      /\.city-docs-api-table :where\(th, td\):first-child\s*{\s*white-space:\s*nowrap;/,
+    );
   });
 
   it('places schedule and invite before the orders area', () => {

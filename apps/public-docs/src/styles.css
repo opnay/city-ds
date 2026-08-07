@@ -639,8 +639,16 @@
     gap: var(--city-space-4);
   }
 
+  .city-docs-api-table table {
+    min-width: 40rem;
+  }
+
   .city-docs-api-table :where(th, td) {
-    min-width: 120px;
+    min-width: 160px;
+  }
+
+  .city-docs-api-table :where(th, td):first-child {
+    white-space: nowrap;
   }
 
   .city-docs-prose-table-wrap {

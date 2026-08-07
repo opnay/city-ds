@@ -82,13 +82,15 @@ export const AccordionTrigger = React.forwardRef<HTMLElement, AccordionTriggerPr
       ref={ref}
       className={classes(
         className,
-        'focus-visible:ring-city-ring hover:bg-city-accent active:bg-city-accent-active flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-medium transition-colors outline-none focus-visible:ring-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-45',
+        'group/city-accordion-trigger focus-visible:ring-city-ring flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-medium transition-opacity outline-none active:opacity-70 focus-visible:ring-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-45',
       )}
     >
-      <span className="min-w-0 flex-1">{children}</span>
+      <span className="min-w-0 flex-1 decoration-city-muted-foreground underline-offset-4 group-hover/city-accordion-trigger:underline">
+        {children}
+      </span>
       <ChevronDown
         aria-hidden="true"
-        className="shrink-0 text-city-muted-foreground transition-transform duration-200 motion-reduce:transition-none [[data-panel-open]_&]:rotate-180"
+        className="shrink-0 text-city-muted-foreground transition-[color,transform] duration-200 group-hover/city-accordion-trigger:text-city-foreground motion-reduce:transition-none [[data-panel-open]_&]:rotate-180"
         size={16}
         strokeWidth={1.8}
       />

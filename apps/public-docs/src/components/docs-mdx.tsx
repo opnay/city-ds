@@ -1,11 +1,13 @@
 import { MDXProvider } from '@mdx-js/react';
 import {
+  Children,
   createContext,
   isValidElement,
   type ComponentPropsWithoutRef,
   type ReactNode,
   useContext,
 } from 'react';
+import { Checkbox } from '@opnay/city-ds-react/checkbox';
 import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Table } from '@opnay/city-ds-react/table';
 import type { MDXComponents } from 'mdx/types.js';
@@ -196,7 +198,14 @@ export function ApiTable({ items }: ApiTableProps) {
 
 export function CodeFiles({ 'aria-label': ariaLabel = '문서 코드 파일', files }: CodeFilesProps) {
   return (
-    <CodeBlock aria-label={ariaLabel} className="city-docs-prose-code" files={files} tabIndex={0} />
+    <div className="city-docs-prose-code-wrap">
+      <CodeBlock
+        aria-label={ariaLabel}
+        className="city-docs-prose-code"
+        files={files}
+        tabIndex={0}
+      />
+    </div>
   );
 }
 
@@ -221,26 +230,30 @@ function MdxPre({ children, className, ...props }: ComponentPropsWithoutRef<'pre
 
   if (codeBlock) {
     return (
-      <CodeBlock
-        {...props}
-        aria-label={props['aria-label'] ?? '문서 코드 예제'}
-        className={preClassName}
-        code={codeBlock.code}
-        language={codeBlock.language}
-        tabIndex={0}
-      />
+      <div className="city-docs-prose-code-wrap">
+        <CodeBlock
+          {...props}
+          aria-label={props['aria-label'] ?? '문서 코드 예제'}
+          className={preClassName}
+          code={codeBlock.code}
+          language={codeBlock.language}
+          tabIndex={0}
+        />
+      </div>
     );
   }
 
   return (
-    <pre
-      {...props}
-      aria-label={props['aria-label'] ?? '문서 코드 예제'}
-      className={preClassName}
-      tabIndex={0}
-    >
-      {children}
-    </pre>
+    <div className="city-docs-prose-code-wrap">
+      <pre
+        {...props}
+        aria-label={props['aria-label'] ?? '문서 코드 예제'}
+        className={preClassName}
+        tabIndex={0}
+      >
+        {children}
+      </pre>
+    </div>
   );
 }
 
@@ -271,8 +284,64 @@ function MdxParagraph({ className, ...props }: ComponentPropsWithoutRef<'p'>) {
   return <p {...props} className={addRequiredClassName(className, 'city-text-body')} />;
 }
 
-function MdxListItem({ className, ...props }: ComponentPropsWithoutRef<'li'>) {
-  return <li {...props} className={addRequiredClassName(className, 'city-text-body')} />;
+function getTaskListItem(children: ReactNode) {
+  const childItems = Children.toArray(children);
+  const checkboxIndex = childItems.findIndex(
+    (child) =>
+      isValidElement<ComponentPropsWithoutRef<'input'>>(child) &&
+      child.type === 'input' &&
+      child.props.type === 'checkbox',
+  );
+
+  if (checkboxIndex < 0) return undefined;
+
+  const checkbox = childItems[checkboxIndex];
+  if (!isValidElement<ComponentPropsWithoutRef<'input'>>(checkbox)) return undefined;
+
+  return {
+    checked: Boolean(checkbox.props.checked ?? checkbox.props.defaultChecked),
+    content: childItems.filter((_, index) => index !== checkboxIndex),
+  };
+}
+
+function MdxUnorderedList({ className, ...props }: ComponentPropsWithoutRef<'ul'>) {
+  const isTaskList = className?.split(/\s+/).includes('contains-task-list') ?? false;
+
+  return (
+    <ul
+      {...props}
+      className={isTaskList ? addRequiredClassName(className, 'city-docs-checklist') : className}
+    />
+  );
+}
+
+function MdxListItem({ children, className, ...props }: ComponentPropsWithoutRef<'li'>) {
+  const isTaskListItem = className?.split(/\s+/).includes('task-list-item') ?? false;
+  const taskItem = isTaskListItem ? getTaskListItem(children) : undefined;
+
+  if (!taskItem) {
+    return (
+      <li {...props} className={addRequiredClassName(className, 'city-text-body')}>
+        {children}
+      </li>
+    );
+  }
+
+  return (
+    <li
+      {...props}
+      className={addRequiredClassName(className, 'city-text-body city-docs-checklist-item')}
+    >
+      <label className="city-docs-checklist-row">
+        <Checkbox
+          className="city-docs-checklist-control"
+          defaultChecked={taskItem.checked}
+          size="md"
+        />
+        <span className="city-docs-checklist-label">{taskItem.content}</span>
+      </label>
+    </li>
+  );
 }
 
 function MdxBlockquote({ className, ...props }: ComponentPropsWithoutRef<'blockquote'>) {
@@ -291,6 +360,7 @@ const MDX_COMPONENTS = {
   p: MdxParagraph,
   pre: MdxPre,
   table: MdxTable,
+  ul: MdxUnorderedList,
 } satisfies MDXComponents;
 
 export function DocsMdxProvider({ children }: DocsMdxProviderProps) {

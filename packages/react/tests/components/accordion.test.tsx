@@ -25,6 +25,19 @@ function Example(props: React.ComponentProps<typeof Accordion.Root>) {
 }
 
 describe('Accordion', () => {
+  it('uses content feedback without separating trigger and panel surfaces', () => {
+    render(<Example defaultValue={['profile']} />);
+
+    const trigger = screen.getByRole('button', { name: 'Profile' });
+    const label = screen.getByText('Profile');
+    const icon = trigger.querySelector('svg');
+
+    expect(trigger).toHaveClass('group/city-accordion-trigger', 'active:opacity-70');
+    expect(trigger).not.toHaveClass('hover:bg-city-accent', 'active:bg-city-accent-active');
+    expect(label).toHaveClass('underline-offset-4', 'group-hover/city-accordion-trigger:underline');
+    expect(icon).toHaveClass('group-hover/city-accordion-trigger:text-city-foreground');
+  });
+
   it('links headings, triggers, and panels', () => {
     render(<Example defaultValue={['profile']} />);
 

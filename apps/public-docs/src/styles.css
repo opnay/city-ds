@@ -647,6 +647,10 @@
     min-width: 160px;
   }
 
+  .city-docs-api-table :where(th, td):nth-child(3) {
+    min-width: 120px;
+  }
+
   .city-docs-api-table :where(th, td):first-child {
     white-space: nowrap;
   }

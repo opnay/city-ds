@@ -43,6 +43,9 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(/\.city-docs-api-table table\s*{\s*min-width:\s*40rem;/);
     expect(styles).toMatch(/\.city-docs-api-table :where\(th, td\)\s*{\s*min-width:\s*160px;/);
     expect(styles).toMatch(
+      /\.city-docs-api-table :where\(th, td\):nth-child\(3\)\s*{\s*min-width:\s*120px;/,
+    );
+    expect(styles).toMatch(
       /\.city-docs-api-table :where\(th, td\):first-child\s*{\s*white-space:\s*nowrap;/,
     );
   });

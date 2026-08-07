@@ -639,6 +639,10 @@
     gap: var(--city-space-4);
   }
 
+  .city-docs-api-table :where(th, td) {
+    min-width: 120px;
+  }
+
   .city-docs-prose-table-wrap {
     max-width: 100%;
     overflow-x: auto;

@@ -39,6 +39,10 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(/\.city-showcase-orders-table\s*{[^}]*min-width:\s*39rem;/s);
   });
 
+  it('keeps every API table column at least 120 pixels wide', () => {
+    expect(styles).toMatch(/\.city-docs-api-table :where\(th, td\)\s*{\s*min-width:\s*120px;/);
+  });
+
   it('places schedule and invite before the orders area', () => {
     const mosaic = styles.slice(
       styles.indexOf('.city-showcase-grid {', styles.indexOf('/* Organism mosaic landing */')),

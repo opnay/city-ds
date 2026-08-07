@@ -5,6 +5,7 @@ import ComboboxStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'combobox-selection',
   api: [
     { name: 'items', type: 'readonly Value[]', description: '검색하고 선택할 컬렉션입니다.' },
     {

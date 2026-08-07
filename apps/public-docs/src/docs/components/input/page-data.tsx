@@ -9,6 +9,7 @@ import InputTextareaExample from './examples/textarea';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'input-addons',
   api: [
     {
       name: 'size',

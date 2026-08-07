@@ -5,6 +5,7 @@ import SelectSizesExample from './examples/sizes';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'select-selection',
   api: [
     { name: 'items', type: 'Record<Value, string> | Item[]', description: '선택 가능한 값입니다.' },
     {

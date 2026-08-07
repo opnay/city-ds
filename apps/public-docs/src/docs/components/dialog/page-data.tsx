@@ -5,6 +5,7 @@ import DialogScrollExample from './examples/scroll';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'dialog-controlled',
   api: [
     {
       name: 'open / defaultOpen',

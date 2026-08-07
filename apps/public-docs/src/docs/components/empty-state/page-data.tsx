@@ -3,6 +3,7 @@ import EmptyExample from './examples/empty';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'empty-state',
   api: [
     {
       name: 'density',

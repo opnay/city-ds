@@ -3,6 +3,7 @@ import FilterBarMatrixExample from './examples/matrix';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'filter-bar-matrix',
   api: [
     {
       name: 'appearance',

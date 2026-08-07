@@ -5,6 +5,7 @@ import FieldsetStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'fieldset-appearances',
   api: [
     {
       name: 'appearance',

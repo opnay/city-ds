@@ -2,6 +2,7 @@ import pagerSource from './examples/pager.tsx?raw';
 import PaginationExample from './examples/pager';
 import type { ComponentPageData } from '../../types';
 export const pageData = {
+  featuredExampleId: 'pagination-controlled',
   api: [
     { name: 'totalPages', type: 'number', description: '전체 페이지 수입니다.' },
     {

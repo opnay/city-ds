@@ -5,6 +5,7 @@ import { Link } from '@tanstack/react-router';
 import { CATEGORY_LABELS, getComponentDoc } from '../docs/doc-catalog';
 import type { ComponentDocEntry } from '../docs/types';
 import { CodeBlock } from './code-block';
+import { ComponentDocScope } from './docs-mdx';
 
 interface ComponentDocPageProps {
   Content: ComponentType;
@@ -45,20 +46,27 @@ export function ComponentDocPage({ Content, entry }: ComponentDocPageProps) {
         </p>
         <h1 className="city-text-page-title">{entry.title}</h1>
         <p className="city-docs-page-description city-text-lead">{entry.description}</p>
+        <div
+          aria-label={`${entry.title} 가져오기`}
+          className="city-docs-import-block"
+          role="region"
+        >
+          <CodeBlock
+            aria-label={`${entry.title} 가져오기 코드`}
+            code={`import { ${entry.title} } from '${entry.importPath}';`}
+            language="tsx"
+            tabIndex={0}
+          />
+        </div>
       </header>
-      <section aria-labelledby="component-import" className="city-docs-import-block">
-        <h2 className="city-text-section-title" id="component-import">
-          가져오기
-        </h2>
-        <CodeBlock
-          aria-label={`${entry.title} 가져오기 코드`}
-          code={`import { ${entry.title} } from '${entry.importPath}';`}
-          language="tsx"
-          tabIndex={0}
-        />
-      </section>
       <div className="city-docs-prose city-prose">
-        <Content />
+        <ComponentDocScope title={entry.title}>
+          <Content />
+        </ComponentDocScope>
+      </div>
+      <div className="city-docs-selection-guidance">
+        <p className="city-docs-selection-guidance-label city-text-caption">선택 가이드</p>
+        <p className="city-text-supporting">{entry.selectionGuidance}</p>
       </div>
       {related.length > 0 ? (
         <section aria-labelledby="related-components" className="city-docs-related">

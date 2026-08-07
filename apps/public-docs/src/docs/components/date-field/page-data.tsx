@@ -5,6 +5,7 @@ import DateFieldSizesExample from './examples/sizes';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'date-field-controlled',
   api: [
     {
       name: 'value / defaultValue',

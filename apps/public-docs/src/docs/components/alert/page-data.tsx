@@ -7,6 +7,7 @@ import AlertVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'alert-presentation',
   api: [
     {
       name: 'tone',

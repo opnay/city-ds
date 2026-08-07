@@ -7,6 +7,7 @@ import UsageExample from './examples/usage';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'date-picker-usage',
   api: [
     {
       name: 'value / defaultValue',

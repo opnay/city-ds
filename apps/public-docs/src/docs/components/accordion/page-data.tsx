@@ -5,6 +5,7 @@ import AccordionStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'accordion-selection',
   api: [
     {
       name: 'multiple',

@@ -3,6 +3,7 @@ import UsageExample from './examples/usage';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'breadcrumbs-usage',
   api: [
     {
       name: 'Breadcrumbs.Root',

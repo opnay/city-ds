@@ -2,6 +2,7 @@ import matrixSource from './examples/matrix.tsx?raw';
 import SkeletonMatrixExample from './examples/matrix';
 import type { ComponentPageData } from '../../types';
 export const pageData = {
+  featuredExampleId: 'skeleton-matrix',
   api: [
     {
       name: 'variant',

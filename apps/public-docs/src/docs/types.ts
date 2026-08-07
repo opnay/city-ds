@@ -22,6 +22,7 @@ export interface ComponentDocEntry {
   keywords: readonly string[];
   load: () => Promise<DocModule>;
   related: readonly string[];
+  selectionGuidance: string;
   slug: string;
   title: string;
 }
@@ -100,5 +101,6 @@ export type DocExample = MultiFileDocExample | SingleFileDocExample;
 export interface ComponentPageData {
   api: readonly ApiItem[];
   examples: readonly DocExample[];
+  featuredExampleId: string;
   optionAxes: readonly OptionAxis[];
 }

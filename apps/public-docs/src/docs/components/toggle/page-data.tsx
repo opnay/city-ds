@@ -7,6 +7,7 @@ import ToggleVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'toggle-variants',
   api: [
     {
       name: 'variant',

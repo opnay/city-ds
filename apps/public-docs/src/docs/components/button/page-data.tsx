@@ -7,6 +7,7 @@ import ButtonVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'button-variants',
   api: [
     {
       defaultValue: "'primary'",

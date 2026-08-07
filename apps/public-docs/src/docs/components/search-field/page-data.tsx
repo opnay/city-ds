@@ -9,6 +9,7 @@ import SearchFieldUsageExample from './examples/usage';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
+  featuredExampleId: 'search-field-usage',
   api: [
     {
       name: 'value / onValueChange',

@@ -7,7 +7,6 @@ import { CATEGORY_LABELS, COMPONENT_DOCS } from './doc-catalog';
 const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   alert: 2,
   badge: 1,
-  calendar: 3,
   callout: 2,
   'data-table-region': 2,
   'filter-bar': 1,
@@ -128,5 +127,17 @@ describe('all component document routes', () => {
     expect(selectionGuidance?.compareDocumentPosition(related as Node)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
+  });
+
+  it('keeps Calendar to one centered interactive preview', async () => {
+    const { container } = await renderDocs(['/components/calendar']);
+
+    expect(container.querySelectorAll('.city-docs-example')).toHaveLength(1);
+    expect(container.querySelectorAll("[data-city-docs-layout='center']")).toHaveLength(1);
+    expect(container.querySelectorAll("[data-city-docs-layout='wide']")).toHaveLength(0);
+    expect(screen.getAllByRole('grid')).toHaveLength(1);
+    expect(screen.getByRole('group', { name: '달력 크기' })).toBeVisible();
+    expect(screen.getByRole('group', { name: '달력 상태' })).toBeVisible();
+    expect(screen.getByRole('checkbox', { name: '인접 월 날짜 표시' })).toBeVisible();
   });
 });

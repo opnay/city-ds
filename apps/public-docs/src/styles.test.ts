@@ -22,6 +22,41 @@ describe('public docs layout styles', () => {
     );
   });
 
+  it('aligns reading and code blocks while giving prose code extra vertical space', () => {
+    expect(styles).toMatch(/--city-docs-reading-max:\s*56rem;/);
+    expect(styles).not.toMatch(/--city-docs-code-max\s*:/);
+    expect(styles).toMatch(
+      /\.city-docs-page-heading\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-prose\s*{[^}]*max-inline-size:\s*64rem;[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-prose > :where\(h2, h3, p, ul, ol, blockquote\)\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-prose > \.city-docs-prose-code-wrap\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-block:\s*var\(--city-space-2\);[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-import-block\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-prose-table-wrap\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-related\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
+    );
+  });
+
+  it('presents task lists as one divided checklist surface', () => {
+    expect(styles).toMatch(
+      /\.city-docs-prose > ul\.city-docs-checklist\s*{[^}]*border:\s*1px solid var\(--city-color-border\);[^}]*list-style:\s*none;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-checklist > \.city-docs-checklist-item \+ \.city-docs-checklist-item\s*{[^}]*border-top:/s,
+    );
+  });
+
   it('keeps the organism mosaic at desktop geometry when mobile crops it', () => {
     expect(styles).toMatch(/\.city-showcase-grid\s*{[^}]*grid-template-columns:\s*repeat\(12,/s);
     expect(styles).toMatch(

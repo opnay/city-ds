@@ -88,6 +88,32 @@ describe('public docs routes and shell', () => {
     expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
   });
 
+  it('renders the accessibility checklist with interactive city-ds controls', async () => {
+    const user = userEvent.setup();
+    const { container } = await renderDocs(['/accessibility']);
+    const checklist = container.querySelector('.city-docs-checklist');
+
+    expect(checklist).not.toBeNull();
+    expect(checklist).toHaveClass('contains-task-list');
+    expect(checklist?.querySelectorAll('.city-docs-checklist-item')).toHaveLength(7);
+
+    const firstItem = screen.getByRole('checkbox', {
+      name: 'light, dark, system에서 텍스트·경계·focus ring을 확인했습니다.',
+    });
+
+    expect(firstItem).toHaveClass('city-docs-checklist-control');
+    expect(firstItem).not.toBeChecked();
+    expect(firstItem).toBeEnabled();
+
+    await user.click(
+      within(checklist as HTMLElement).getByText(
+        'light, dark, system에서 텍스트·경계·focus ring을 확인했습니다.',
+      ),
+    );
+
+    expect(firstItem).toBeChecked();
+  });
+
   it('groups the full navigation and searches every document page', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components']);

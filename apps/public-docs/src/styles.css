@@ -693,8 +693,10 @@
 
   .city-docs-component-reference {
     display: grid;
+    width: 100%;
     min-width: 0;
-    max-width: 64rem;
+    max-width: var(--city-docs-reading-max);
+    margin-inline: auto;
     gap: var(--city-space-10);
   }
 

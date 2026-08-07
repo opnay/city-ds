@@ -129,15 +129,14 @@ describe('all component document routes', () => {
     );
   });
 
-  it('keeps Calendar to one centered interactive preview', async () => {
+  it('keeps Calendar static examples centered', async () => {
     const { container } = await renderDocs(['/components/calendar']);
 
-    expect(container.querySelectorAll('.city-docs-example')).toHaveLength(1);
-    expect(container.querySelectorAll("[data-city-docs-layout='center']")).toHaveLength(1);
+    expect(container.querySelectorAll('.city-docs-example')).toHaveLength(3);
+    expect(container.querySelectorAll("[data-city-docs-layout='center']")).toHaveLength(3);
     expect(container.querySelectorAll("[data-city-docs-layout='wide']")).toHaveLength(0);
-    expect(screen.getAllByRole('grid')).toHaveLength(1);
-    expect(screen.getByRole('group', { name: '달력 크기' })).toBeVisible();
-    expect(screen.getByRole('group', { name: '달력 상태' })).toBeVisible();
-    expect(screen.getByRole('checkbox', { name: '인접 월 날짜 표시' })).toBeVisible();
+    expect(screen.getAllByRole('grid')).toHaveLength(9);
+    expect(screen.queryByRole('group', { name: '달력 크기' })).toBeNull();
+    expect(screen.queryByRole('group', { name: '달력 상태' })).toBeNull();
   });
 });

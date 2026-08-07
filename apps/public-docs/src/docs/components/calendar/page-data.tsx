@@ -1,9 +1,13 @@
-import playgroundSource from './examples/playground.tsx?raw';
-import CalendarPlaygroundExample from './examples/playground';
+import outsideDaysSource from './examples/outside-days.tsx?raw';
+import CalendarOutsideDaysExample from './examples/outside-days';
+import sizesSource from './examples/sizes.tsx?raw';
+import CalendarSizesExample from './examples/sizes';
+import statesSource from './examples/states.tsx?raw';
+import StatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'calendar-playground',
+  featuredExampleId: 'calendar-states',
   api: [
     {
       name: 'value / defaultValue',
@@ -35,19 +39,36 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: CalendarPlaygroundExample,
+      Component: CalendarSizesExample,
+      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      description: '날짜 셀과 달력 머리글의 제어 크기를 함께 맞춥니다.',
+      id: 'calendar-sizes',
+      filename: 'sizes.tsx',
+      source: sizesSource,
+      title: '크기',
+    },
+    {
+      Component: StatesExample,
       coverage: [
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
-        { axis: 'disabled', values: ['false', 'true'] },
-        { axis: 'readOnly', values: ['false', 'true'] },
-        { axis: 'invalid', values: ['false', 'true'] },
-        { axis: 'showOutsideDays', values: ['false', 'true'] },
+        { axis: 'controlled', values: ['true'] },
+        { axis: 'readOnly', values: ['true'] },
+        { axis: 'invalid', values: ['true'] },
+        { axis: 'disabled', values: ['true'] },
       ],
-      description: '크기와 상태, 인접 월 날짜 표시를 한 달력에서 바꿔 확인합니다.',
-      id: 'calendar-playground',
-      filename: 'playground.tsx',
-      source: playgroundSource,
-      title: '달력 옵션',
+      description: '제어된 선택과 읽기 전용·유효하지 않은 상태를 확인합니다.',
+      id: 'calendar-states',
+      filename: 'states.tsx',
+      source: statesSource,
+      title: '로컬 날짜 선택',
+    },
+    {
+      Component: CalendarOutsideDaysExample,
+      coverage: [{ axis: 'showOutsideDays', values: ['false', 'true'] }],
+      description: '월 경계에서 인접 월 날짜를 함께 표시할지 선택합니다.',
+      id: 'calendar-outside-days',
+      filename: 'outside-days.tsx',
+      source: outsideDaysSource,
+      title: '인접 월 날짜',
     },
   ],
   optionAxes: [

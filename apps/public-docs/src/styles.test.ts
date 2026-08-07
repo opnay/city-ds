@@ -22,13 +22,25 @@ describe('public docs layout styles', () => {
     );
   });
 
-  it('keeps reading code aligned with the document measure', () => {
-    expect(styles).toMatch(/--city-docs-reading-max:\s*48rem;/);
+  it('centers a wider reading measure while preserving wide content surfaces', () => {
+    expect(styles).toMatch(/--city-docs-reading-max:\s*56rem;/);
     expect(styles).toMatch(
-      /\.city-docs-prose-code-wrap\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);/s,
+      /\.city-docs-page-heading\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-import-block\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);/s,
+      /\.city-docs-prose\s*{[^}]*max-inline-size:\s*64rem;[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-prose > :where\(h2, h3, p, ul, ol, blockquote\)\s*{[^}]*max-inline-size:\s*76ch;[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-prose-code-wrap\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-import-block\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-related\s*{[^}]*max-width:\s*64rem;[^}]*margin-inline:\s*auto;/s,
     );
   });
 

@@ -31,7 +31,7 @@ describe('public docs layout styles', () => {
       /\.city-docs-prose\s*{[^}]*max-inline-size:\s*64rem;[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-prose > :where\(h2, h3, p, ul, ol, blockquote\)\s*{[^}]*max-inline-size:\s*76ch;[^}]*margin-inline:\s*auto;/s,
+      /\.city-docs-prose > :where\(h2, h3, p, ul, ol, blockquote\)\s*{[^}]*width:\s*100%;[^}]*max-inline-size:\s*76ch;[^}]*margin-inline:\s*auto;/s,
     );
     expect(styles).toMatch(
       /\.city-docs-prose-code-wrap\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,

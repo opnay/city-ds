@@ -467,6 +467,7 @@
   }
 
   .city-docs-prose > :where(h2, h3, p, ul, ol, blockquote) {
+    width: 100%;
     max-inline-size: 76ch;
     margin-inline: auto;
   }

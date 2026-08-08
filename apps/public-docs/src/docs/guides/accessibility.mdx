@@ -13,9 +13,11 @@
 
 ## 레이블, 설명, 오류
 
-입력에는 보이는 `Field.Label`을 우선 사용하십시오. 레이블을 보일 수 없는 경우에만
-`aria-label` 또는 `aria-labelledby`를 제공하십시오. 도움말은 `Field.Description`,
-검증 실패와 복구 방법은 `Field.Error`에 두어 control과 연결하십시오.
+입력에는 보이는 Label을 우선 사용하십시오. Input, NumberField, Select와 입력형
+Combobox는 외부 `Field.Label`을 사용하고, SearchField, DateField, DatePicker는 각
+컴포넌트의 Label을 사용합니다. 레이블을 보일 수 없는 경우에만 `aria-label` 또는
+`aria-labelledby`를 제공하십시오. 도움말과 오류도 같은 Field 문맥의 Description과
+Error에 두어 control과 연결하십시오.
 
 ```tsx
 import { Field } from '@opnay/city-ds-react/field';
@@ -23,8 +25,8 @@ import { Input } from '@opnay/city-ds-react/input';
 
 <Field.Root invalid>
   <Field.Label>배포 이름</Field.Label>
-  <Input aria-describedby="deployment-format" />
-  <Field.Description id="deployment-format">소문자, 숫자, 하이픈만 사용하십시오.</Field.Description>
+  <Input />
+  <Field.Description>소문자, 숫자, 하이픈만 사용하십시오.</Field.Description>
   <Field.Error match>배포 이름의 형식을 확인하십시오.</Field.Error>
 </Field.Root>;
 ```

@@ -22,7 +22,11 @@ export const pageData = {
       type: 'Field parts',
       description: '제어의 이름, 도움말, 검증 메시지를 연결합니다.',
     },
-    { name: 'Control', type: 'Field.Control', description: '합성 제어를 field 관계에 연결합니다.' },
+    {
+      name: 'Control',
+      type: 'Field.Control',
+      description: '일반 Input이 아닌 사용자 정의 제어를 Field 문맥에 합성합니다.',
+    },
   ],
   examples: [
     {

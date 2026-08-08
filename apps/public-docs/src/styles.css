@@ -1282,6 +1282,10 @@
     white-space: nowrap;
   }
 
+  .city-docs-example-label {
+    width: fit-content;
+  }
+
   .city-docs-example-preview {
     --city-docs-preview-content-max: 40rem;
     --city-docs-preview-grid-color: color-mix(in oklab, var(--city-color-border) 20%, transparent);
@@ -1365,6 +1369,13 @@
   .city-docs-example-matrix {
     display: grid;
     gap: var(--city-space-4);
+  }
+
+  .city-docs-example-variant {
+    display: grid;
+    width: min(100%, 20rem);
+    align-content: start;
+    gap: var(--city-space-2);
   }
 
   .city-docs-example-matrix {

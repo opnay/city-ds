@@ -33,6 +33,23 @@ describe('public docs routes and shell', () => {
     },
   );
 
+  it('separates example state captions from accessible field labels', async () => {
+    const { container } = await renderDocs(['/components/select']);
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Select' })).toBeVisible();
+    await waitFor(() =>
+      expect(container.querySelectorAll('.city-docs-example-variant').length).toBeGreaterThan(0),
+    );
+
+    const captions = [...container.querySelectorAll('.city-docs-example-label')].map(
+      (caption) => caption.textContent,
+    );
+
+    expect(captions).toContain('제어');
+    expect(screen.getAllByRole('combobox', { name: '작업 상태' }).length).toBeGreaterThan(0);
+    expect(screen.queryByRole('combobox', { name: '제어' })).not.toBeInTheDocument();
+  });
+
   it('navigates with internal links, focuses main content and supports back history', async () => {
     const user = userEvent.setup();
     const { history } = await renderDocs(['/']);
@@ -255,7 +272,7 @@ describe('catalog and local UI state', () => {
     await user.click(await screen.findByRole('option', { name: '폼' }));
 
     expect(within(main).getByText('컴포넌트 15개')).toBeVisible();
-    expect(within(main).getByRole('link', { name: /^Field레이블/ })).toBeVisible();
+    expect(within(main).getByRole('link', { name: /^Field외부 입력/ })).toBeVisible();
     expect(within(main).queryByRole('link', { name: /Button/ })).not.toBeInTheDocument();
   });
 

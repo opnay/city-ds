@@ -2,6 +2,12 @@ import { pageData } from './page-data';
 
 <ComponentReference data={pageData} />
 
+## Label 조합
+
+단독 Select에는 `Select.Label`로 Trigger의 접근 가능한 이름을 제공하십시오. 설명이나
+오류 상태가 필요한 폼 필드에서는 외부 `Field.Root`를 사용하고, `Field.Label`과
+`Select.Root`를 형제로 배치하십시오. 이때 `Select.Label`을 중복으로 추가하지 마십시오.
+
 ## 접근성
 
 Trigger에 보이는 Label을 연결하고, 비활성 항목의 이유를 가까이 설명하십시오.

@@ -70,10 +70,13 @@ export const Sizes: Story = {
   render: () => (
     <div className="grid gap-4">
       {(['sm', 'md', 'lg'] as const).map((size) => (
-        <SearchField.Root key={size} className="w-96" defaultValue={`${size} search`} size={size}>
-          <SearchField.Label>{size.toUpperCase()} search</SearchField.Label>
-          <SearchControls />
-        </SearchField.Root>
+        <div className="grid gap-2" key={size}>
+          <span className="text-xs text-city-muted-foreground">{size.toUpperCase()}</span>
+          <SearchField.Root className="w-96" defaultValue={`${size} search`} size={size}>
+            <SearchField.Label>Search documentation</SearchField.Label>
+            <SearchControls />
+          </SearchField.Root>
+        </div>
       ))}
     </div>
   ),

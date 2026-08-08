@@ -23,11 +23,11 @@ function NumberFieldControl(props: NumberFieldRootPropsWithLabel) {
   const { label, ...rootProps } = props;
 
   return (
-    <Field.Root className="w-80">
+    <Field.Root className="w-80" disabled={rootProps.disabled}>
       <Field.Label>{label}</Field.Label>
       <NumberField.Root {...rootProps}>
         <NumberField.Group>
-          <NumberField.Input aria-label={label} />
+          <NumberField.Input />
           <NumberField.Decrement aria-label={`Decrease ${label}`} />
           <NumberField.Increment aria-label={`Increase ${label}`} />
         </NumberField.Group>
@@ -63,7 +63,7 @@ export const Formatted: Story = {
 };
 
 export const Disabled: Story = {
-  render: () => <NumberFieldControl label="Locked limit" defaultValue={10} disabled />,
+  render: () => <NumberFieldControl label="Limit" defaultValue={10} disabled />,
 };
 
 export const Invalid: Story = {
@@ -72,7 +72,7 @@ export const Invalid: Story = {
       <Field.Label>Error budget</Field.Label>
       <NumberField.Root defaultValue={120} max={100} min={0}>
         <NumberField.Group>
-          <NumberField.Input aria-label="Error budget" />
+          <NumberField.Input />
           <NumberField.Decrement aria-label="Decrease error budget" />
           <NumberField.Increment aria-label="Increase error budget" />
         </NumberField.Group>
@@ -88,7 +88,7 @@ function ControlledExample() {
   return (
     <div className="grid gap-2">
       <NumberFieldControl
-        label="Controlled threshold"
+        label="Threshold"
         max={100}
         min={0}
         onValueChange={setValue}

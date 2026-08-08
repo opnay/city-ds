@@ -2,6 +2,11 @@ import { pageData } from './page-data';
 
 <ComponentReference data={pageData} />
 
+## Field 조합
+
+SearchField는 검색 입력의 Field 문맥을 내장합니다. 외부 `Field.Root`로 감싸지 말고
+`SearchField.Label`, `SearchField.Description`, `SearchField.Error`를 사용하십시오.
+
 ## 접근성
 
 제출 버튼과 검색 입력에 명확한 이름을 제공하고 오류를 Error로 연결하십시오.

@@ -27,30 +27,39 @@ export default function SelectSelectionExample() {
 
   return (
     <div className="city-docs-example-stack">
-      <Select.Root items={items} onValueChange={setValue} value={value}>
-        <Select.Label>제어된 상태</Select.Label>
-        <Select.Trigger>
-          <Select.Value placeholder="상태 선택" />
-          <Select.Icon />
-        </Select.Trigger>
-        <Options />
-      </Select.Root>
-      <Select.Root defaultValue="review" items={items}>
-        <Select.Label>비제어 상태</Select.Label>
-        <Select.Trigger>
-          <Select.Value placeholder="상태 선택" />
-          <Select.Icon />
-        </Select.Trigger>
-        <Options />
-      </Select.Root>
-      <Select.Root defaultValue={['draft']} items={items} multiple>
-        <Select.Label>복수 상태</Select.Label>
-        <Select.Trigger>
-          <Select.Value placeholder="상태 선택" />
-          <Select.Icon />
-        </Select.Trigger>
-        <Options />
-      </Select.Root>
+      <div className="city-docs-example-variant">
+        <span className="city-docs-example-label">제어</span>
+        <Select.Root items={items} onValueChange={setValue} value={value}>
+          <Select.Label className="city-docs-sr-only">작업 상태</Select.Label>
+          <Select.Trigger>
+            <Select.Value placeholder="상태 선택" />
+            <Select.Icon />
+          </Select.Trigger>
+          <Options />
+        </Select.Root>
+      </div>
+      <div className="city-docs-example-variant">
+        <span className="city-docs-example-label">비제어</span>
+        <Select.Root defaultValue="review" items={items}>
+          <Select.Label className="city-docs-sr-only">작업 상태</Select.Label>
+          <Select.Trigger>
+            <Select.Value placeholder="상태 선택" />
+            <Select.Icon />
+          </Select.Trigger>
+          <Options />
+        </Select.Root>
+      </div>
+      <div className="city-docs-example-variant">
+        <span className="city-docs-example-label">복수</span>
+        <Select.Root defaultValue={['draft']} items={items} multiple>
+          <Select.Label className="city-docs-sr-only">작업 상태</Select.Label>
+          <Select.Trigger>
+            <Select.Value placeholder="상태 선택" />
+            <Select.Icon />
+          </Select.Trigger>
+          <Options />
+        </Select.Root>
+      </div>
     </div>
   );
 }

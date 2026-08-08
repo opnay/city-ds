@@ -24,9 +24,9 @@ function ProjectCombobox({
   size?: ControlSize;
 }) {
   return (
-    <Field.Root>
+    <Field.Root disabled={disabled}>
+      <Field.Label>Project</Field.Label>
       <Combobox.Root items={projects} defaultValue="Transit Map" disabled={disabled} size={size}>
-        <Field.Label>Project</Field.Label>
         <Combobox.InputGroup className="w-72">
           <Combobox.Input placeholder="Search projects" />
           <Combobox.Clear />
@@ -73,14 +73,14 @@ export const Sizes: Story = {
 export const Error: Story = {
   render: () => (
     <Field.Root invalid>
+      <Field.Label>Project</Field.Label>
       <Combobox.Root items={projects}>
-        <Field.Label>Project</Field.Label>
         <Combobox.InputGroup className="w-72">
           <Combobox.Input placeholder="Search projects" />
           <Combobox.Trigger />
         </Combobox.InputGroup>
-        <Field.Error match>Select an active project.</Field.Error>
       </Combobox.Root>
+      <Field.Error match>Select an active project.</Field.Error>
     </Field.Root>
   ),
 };
@@ -88,8 +88,8 @@ export const Error: Story = {
 export const EmptyResults: Story = {
   render: () => (
     <Field.Root>
+      <Field.Label>Project</Field.Label>
       <Combobox.Root items={projects} defaultInputValue="zzz">
-        <Field.Label>Project</Field.Label>
         <Combobox.InputGroup className="w-72">
           <Combobox.Input placeholder="Search projects" />
           <Combobox.Trigger />
@@ -124,8 +124,8 @@ function OwnerMultiCombobox({
 }) {
   return (
     <Field.Root>
+      <Field.Label>Owners</Field.Label>
       <Combobox.Root items={owners} multiple defaultValue={defaultValue} size={size}>
-        <Field.Label>Owners</Field.Label>
         <Combobox.InputGroup className={className}>
           <Combobox.Chips>
             <Combobox.InputRow>

@@ -8,26 +8,38 @@ export default function DateFieldControlledExample() {
 
   return (
     <div className="city-docs-example-stack">
-      <DateField.Root onValueChange={setValue} value={value}>
-        <DateField.Label>검토 날짜</DateField.Label>
-        <DateField.Input />
-        <DateField.Description>YYYY-MM-DD로 입력하십시오.</DateField.Description>
-      </DateField.Root>
-      <DateField.Root invalid>
-        <DateField.Label>배포 날짜</DateField.Label>
-        <DateField.Input />
-        <DateField.Error>가능한 날짜를 입력하십시오.</DateField.Error>
-      </DateField.Root>
-      <DateField.Root defaultValue={initial} disabled>
-        <DateField.Label>확정 날짜</DateField.Label>
-        <DateField.Input />
-        <DateField.Description>정책으로 수정할 수 없습니다.</DateField.Description>
-      </DateField.Root>
-      <DateField.Root defaultValue={initial} readOnly>
-        <DateField.Label>조회 날짜</DateField.Label>
-        <DateField.Input />
-        <DateField.Description>읽기 전용 값입니다.</DateField.Description>
-      </DateField.Root>
+      <div className="city-docs-example-variant">
+        <span className="city-docs-example-label">제어</span>
+        <DateField.Root onValueChange={setValue} value={value}>
+          <DateField.Label>검토 날짜</DateField.Label>
+          <DateField.Input />
+          <DateField.Description>YYYY-MM-DD로 입력하십시오.</DateField.Description>
+        </DateField.Root>
+      </div>
+      <div className="city-docs-example-variant">
+        <span className="city-docs-example-label">오류</span>
+        <DateField.Root invalid>
+          <DateField.Label>검토 날짜</DateField.Label>
+          <DateField.Input />
+          <DateField.Error>가능한 날짜를 입력하십시오.</DateField.Error>
+        </DateField.Root>
+      </div>
+      <div className="city-docs-example-variant">
+        <span className="city-docs-example-label">비활성</span>
+        <DateField.Root defaultValue={initial} disabled>
+          <DateField.Label>검토 날짜</DateField.Label>
+          <DateField.Input />
+          <DateField.Description>정책으로 수정할 수 없습니다.</DateField.Description>
+        </DateField.Root>
+      </div>
+      <div className="city-docs-example-variant">
+        <span className="city-docs-example-label">읽기 전용</span>
+        <DateField.Root defaultValue={initial} readOnly>
+          <DateField.Label>검토 날짜</DateField.Label>
+          <DateField.Input />
+          <DateField.Description>읽기 전용 값입니다.</DateField.Description>
+        </DateField.Root>
+      </div>
     </div>
   );
 }

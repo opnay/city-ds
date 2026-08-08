@@ -87,12 +87,10 @@ export const Sizes: Story = {
   render: () => (
     <div className="grid w-80 gap-4">
       {(['sm', 'md', 'lg'] as const).map((size) => (
-        <Picker
-          key={size}
-          defaultValue={referenceDate}
-          label={`${size.toUpperCase()} date picker`}
-          size={size}
-        />
+        <div className="grid gap-2" key={size}>
+          <span className="text-xs text-city-muted-foreground">{size.toUpperCase()}</span>
+          <Picker defaultValue={referenceDate} label="Review date" size={size} />
+        </div>
       ))}
     </div>
   ),
@@ -115,9 +113,18 @@ export const Constraints: Story = {
 export const States: Story = {
   render: () => (
     <div className="grid w-80 gap-4">
-      <Picker defaultValue={referenceDate} disabled label="Disabled" />
-      <Picker defaultValue={referenceDate} label="Read only" readOnly />
-      <Picker invalid label="Invalid" />
+      <div className="grid gap-2">
+        <span className="text-xs text-city-muted-foreground">Disabled</span>
+        <Picker defaultValue={referenceDate} disabled label="Review date" />
+      </div>
+      <div className="grid gap-2">
+        <span className="text-xs text-city-muted-foreground">Read only</span>
+        <Picker defaultValue={referenceDate} label="Review date" readOnly />
+      </div>
+      <div className="grid gap-2">
+        <span className="text-xs text-city-muted-foreground">Invalid</span>
+        <Picker invalid label="Review date" />
+      </div>
     </div>
   ),
 };

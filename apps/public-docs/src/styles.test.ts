@@ -139,6 +139,13 @@ describe('public docs layout styles', () => {
     );
   });
 
+  it('separates example captions from the field controls they describe', () => {
+    expect(styles).toMatch(
+      /\.city-docs-example-variant\s*{[^}]*display:\s*grid;[^}]*width:\s*min\(100%, 20rem\);[^}]*align-content:\s*start;[^}]*gap:\s*var\(--city-space-2\);/s,
+    );
+    expect(styles).toMatch(/\.city-docs-example-label\s*{\s*width:\s*fit-content;/);
+  });
+
   it('keeps prose list layout out of list-based component previews', () => {
     expect(styles).toMatch(/\.city-docs-prose > :where\(ul, ol\)/);
     expect(styles).not.toMatch(/\.city-docs-prose ul,\s*\n\s*\.city-docs-prose ol/);

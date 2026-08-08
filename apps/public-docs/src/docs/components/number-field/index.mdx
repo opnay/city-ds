@@ -2,6 +2,12 @@ import { pageData } from './page-data';
 
 <ComponentReference data={pageData} />
 
+## Field 조합
+
+`NumberField`는 Base UI의 숫자 입력 컴포넌트 이름입니다. 이름의 `Field`는 City DS의
+`Field` 문맥을 내장한다는 뜻이 아닙니다. 보이는 Label, 설명, 오류가 필요하면 외부
+`Field.Root` 안에 `Field.Label`과 NumberField를 함께 배치하십시오.
+
 ## 접근성
 
 Input과 증감 버튼에 수량의 단위가 드러나는 이름을 제공하십시오.

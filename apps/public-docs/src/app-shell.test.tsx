@@ -237,7 +237,9 @@ describe('catalog and local UI state', () => {
 
     await user.clear(search);
     await user.type(search, '존재하지 않는 검색어');
-    expect(within(main).getByText('조건에 맞는 컴포넌트가 없습니다.')).toBeVisible();
+    const emptyResult = within(main).getByText('조건에 맞는 컴포넌트가 없습니다.');
+    expect(emptyResult).toBeVisible();
+    expect(emptyResult.closest('section')).toHaveClass('city-docs-catalog-empty-state');
 
     await user.click(within(main).getAllByRole('button', { name: '필터 초기화' })[0]!);
     expect(search).toHaveValue('');
@@ -260,6 +262,10 @@ describe('catalog and local UI state', () => {
   it('uses content roles for every catalog group and description', async () => {
     const { container } = await renderDocs(['/components']);
 
+    expect(screen.getByRole('group', { name: '컴포넌트 필터' })).toHaveClass(
+      'city-docs-catalog-filter',
+    );
+    expect(screen.getByText('컴포넌트 40개')).toHaveClass('city-docs-results-count');
     const groupHeadings = container.querySelectorAll('.city-docs-component-groups h2');
     const descriptions = container.querySelectorAll(
       '.city-docs-component-grid .city-text-supporting',

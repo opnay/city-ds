@@ -1392,7 +1392,9 @@
 
   .city-docs-selection-guidance {
     display: grid;
-    max-width: 68ch;
+    width: 100%;
+    max-width: var(--city-docs-reading-max);
+    margin-inline: auto;
     padding: var(--city-space-4);
     border: 1px solid var(--city-color-border);
     border-radius: var(--city-radius-md);
@@ -1450,6 +1452,14 @@
     color: var(--city-color-muted-foreground);
   }
 
+  .city-docs-catalog-filter,
+  .city-docs-catalog-empty-state,
+  .city-docs-component-groups,
+  .city-docs-results-count {
+    width: min(100%, var(--city-docs-reading-max));
+    margin-inline: auto;
+  }
+
   .city-docs-component-groups {
     display: grid;
     gap: var(--city-space-8);
@@ -1461,7 +1471,7 @@
   }
 
   .city-docs-results-count {
-    margin: 0;
+    margin-block: 0;
     color: var(--city-color-muted-foreground);
   }
 

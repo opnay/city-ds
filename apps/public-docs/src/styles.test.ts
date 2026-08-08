@@ -49,6 +49,15 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(
       /\.city-docs-related\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
     );
+    expect(styles).toMatch(
+      /\.city-docs-selection-guidance\s*{[^}]*width:\s*100%;[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-catalog-filter,\s*\.city-docs-catalog-empty-state,\s*\.city-docs-component-groups,\s*\.city-docs-results-count\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-results-count\s*{[^}]*margin-block:\s*0;[^}]*color:\s*var\(--city-color-muted-foreground\);/s,
+    );
   });
 
   it('presents task lists as one divided checklist surface', () => {

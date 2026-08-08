@@ -191,6 +191,7 @@ export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetail
                       </Dialog.Description>
                       <form className="city-ops-assignment-form" onSubmit={handleAssignmentSubmit}>
                         <Field.Root invalid={assignmentError}>
+                          <Field.Label>담당팀</Field.Label>
                           <Select.Root
                             items={CREW_ITEMS}
                             onValueChange={(value) => {
@@ -199,7 +200,6 @@ export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetail
                             }}
                             value={assignmentDraft || null}
                           >
-                            <Field.Label>담당팀</Field.Label>
                             <Select.Trigger className="city-ops-field-control">
                               <Select.Value placeholder="담당팀 선택" />
                               <Select.Icon />

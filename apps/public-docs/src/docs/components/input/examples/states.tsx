@@ -4,12 +4,21 @@ import { Input } from '@opnay/city-ds-react/input';
 export default function InputStatesExample() {
   return (
     <div className="city-docs-example-stack">
-      <Field.Root invalid>
-        <Field.Label>오류 입력</Field.Label>
-        <Field.Control render={<Input placeholder="오류 상태" />} />
-        <Field.Error match>값을 확인하십시오.</Field.Error>
-      </Field.Root>
-      <Input aria-label="비활성 입력" defaultValue="수정할 수 없습니다" disabled />
+      <div className="city-docs-example-variant">
+        <span className="city-docs-example-label">오류</span>
+        <Field.Root invalid>
+          <Field.Label>프로젝트 이름</Field.Label>
+          <Input placeholder="프로젝트 이름" />
+          <Field.Error match>값을 확인하십시오.</Field.Error>
+        </Field.Root>
+      </div>
+      <div className="city-docs-example-variant">
+        <span className="city-docs-example-label">비활성</span>
+        <Field.Root disabled>
+          <Field.Label>프로젝트 이름</Field.Label>
+          <Input defaultValue="수정할 수 없습니다" disabled />
+        </Field.Root>
+      </div>
     </div>
   );
 }

@@ -2,6 +2,11 @@ import { pageData } from './page-data';
 
 <ComponentReference data={pageData} />
 
+## Field 조합
+
+DateField는 날짜 입력의 Field 문맥을 내장합니다. 외부 `Field.Root`로 감싸지 말고
+`DateField.Label`, `DateField.Description`, `DateField.Error`를 사용하십시오.
+
 ## 접근성
 
 날짜 형식을 Description으로 알려 주고, 오류는 Error로 제어와 연결하십시오.

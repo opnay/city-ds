@@ -200,7 +200,7 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Forms',
-    description: '키보드로 편집 가능한 날짜 구간 입력을 제공합니다.',
+    description: 'Label·설명·오류를 내장한 날짜 구간 입력을 제공합니다.',
     importPath: '@opnay/city-ds-react/date-field',
     keywords: ['날짜 필드', '날짜 입력', 'segment'],
     load: () => import('./components/date-field/index.mdx'),
@@ -211,7 +211,7 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Forms',
-    description: '날짜 필드와 달력 팝업을 결합한 날짜 선택기입니다.',
+    description: 'Field 문맥의 날짜 입력과 달력 팝업을 결합합니다.',
     importPath: '@opnay/city-ds-react/date-picker',
     keywords: ['데이트 피커', '날짜 선택', '달력 팝업'],
     load: () => import('./components/date-picker/index.mdx'),
@@ -222,7 +222,7 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Forms',
-    description: '레이블·설명·오류와 하나의 입력 컨트롤을 연결합니다.',
+    description: '외부 입력에 레이블·설명·오류·상태 문맥을 연결합니다.',
     importPath: '@opnay/city-ds-react/field',
     keywords: ['필드', '레이블', '오류', '설명'],
     load: () => import('./components/field/index.mdx'),
@@ -268,7 +268,7 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Forms',
-    description: '범위·증감·형식화가 필요한 숫자 값을 입력합니다.',
+    description: '외부 Field와 조합해 범위·증감·형식화된 숫자 값을 입력합니다.',
     importPath: '@opnay/city-ds-react/number-field',
     keywords: ['숫자 입력', '증감', '범위'],
     load: () => import('./components/number-field/index.mdx'),
@@ -291,7 +291,7 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Forms',
-    description: '검색어 제출·초기화·로딩·오류 상태를 하나의 입력에 제공합니다.',
+    description: 'Field 문맥과 검색어 제출·초기화·로딩 상태를 함께 제공합니다.',
     importPath: '@opnay/city-ds-react/search-field',
     keywords: ['검색', '검색 필드', 'search'],
     load: () => import('./components/search-field/index.mdx'),

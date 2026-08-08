@@ -29,26 +29,32 @@ export default function ComboboxStatesExample() {
 
   return (
     <div className="city-docs-example-stack">
-      <Field.Root>
-        <Field.Label>제어된 프로젝트</Field.Label>
-        <Combobox.Root items={projects} onValueChange={setValue} value={value}>
-          <Combobox.InputGroup>
-            <Combobox.Input placeholder="프로젝트 검색" />
-            <Combobox.Trigger />
-          </Combobox.InputGroup>
-          <ProjectOptions />
-        </Combobox.Root>
-      </Field.Root>
-      <Field.Root>
-        <Field.Label>비활성 프로젝트</Field.Label>
-        <Combobox.Root disabled items={projects}>
-          <Combobox.InputGroup>
-            <Combobox.Input placeholder="프로젝트 검색" />
-            <Combobox.Trigger />
-          </Combobox.InputGroup>
-          <ProjectOptions />
-        </Combobox.Root>
-      </Field.Root>
+      <div className="city-docs-example-variant">
+        <span className="city-docs-example-label">제어</span>
+        <Field.Root>
+          <Field.Label>프로젝트</Field.Label>
+          <Combobox.Root items={projects} onValueChange={setValue} value={value}>
+            <Combobox.InputGroup>
+              <Combobox.Input placeholder="프로젝트 검색" />
+              <Combobox.Trigger />
+            </Combobox.InputGroup>
+            <ProjectOptions />
+          </Combobox.Root>
+        </Field.Root>
+      </div>
+      <div className="city-docs-example-variant">
+        <span className="city-docs-example-label">비활성</span>
+        <Field.Root disabled>
+          <Field.Label>프로젝트</Field.Label>
+          <Combobox.Root disabled items={projects}>
+            <Combobox.InputGroup>
+              <Combobox.Input placeholder="프로젝트 검색" />
+              <Combobox.Trigger />
+            </Combobox.InputGroup>
+            <ProjectOptions />
+          </Combobox.Root>
+        </Field.Root>
+      </div>
     </div>
   );
 }

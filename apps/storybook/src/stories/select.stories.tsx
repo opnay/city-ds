@@ -102,14 +102,14 @@ export const Sizes: Story = {
 export const Invalid: Story = {
   render: () => (
     <Field.Root invalid>
+      <Field.Label>Status</Field.Label>
       <Select.Root items={statusItems}>
-        <Field.Label>Status</Field.Label>
         <Select.Trigger className="w-56">
           <Select.Value placeholder="Choose a status" />
           <Select.Icon />
         </Select.Trigger>
-        <Field.Error match>Choose a valid status.</Field.Error>
       </Select.Root>
+      <Field.Error match>Choose a valid status.</Field.Error>
     </Field.Root>
   ),
 };

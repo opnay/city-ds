@@ -4,6 +4,17 @@
 `Field`는 하나의 control을, `Fieldset`은 같은 의미의 여러 control을 묶습니다.
 입력에만 placeholder를 두고 레이블을 생략하지 마십시오.
 
+| 제어                                 | 폼 문맥과 Label                         |
+| ------------------------------------ | --------------------------------------- |
+| Input, Textarea, NumberField, Select | 외부 `Field.Root`와 `Field.Label`       |
+| 입력형 Combobox                      | 외부 `Field.Root`와 `Field.Label`       |
+| 단독 Select                          | `Select.Label`                          |
+| Trigger형 Combobox                   | `Combobox.Label`                        |
+| SearchField, DateField, DatePicker   | 컴포넌트 자체 Label, Description, Error |
+
+컴포넌트 이름의 `Field`만 보고 Field 문맥 내장 여부를 판단하지 마십시오. NumberField는
+외부 Field를 사용하고, SearchField와 DateField는 Field 문맥을 내장합니다.
+
 ```tsx
 import { Field } from '@opnay/city-ds-react/field';
 import { Input } from '@opnay/city-ds-react/input';

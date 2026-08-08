@@ -65,10 +65,13 @@ export const Sizes: Story = {
   render: () => (
     <div className="grid w-80 gap-3">
       {(['sm', 'md', 'lg'] as const).map((size) => (
-        <DateField.Root key={size} defaultValue={new Date(2026, 6, 15)} size={size}>
-          <DateField.Label>{size.toUpperCase()}</DateField.Label>
-          <DateField.Input />
-        </DateField.Root>
+        <div className="grid gap-2" key={size}>
+          <span className="text-xs text-city-muted-foreground">{size.toUpperCase()}</span>
+          <DateField.Root defaultValue={new Date(2026, 6, 15)} size={size}>
+            <DateField.Label>Review date</DateField.Label>
+            <DateField.Input />
+          </DateField.Root>
+        </div>
       ))}
     </div>
   ),
@@ -93,19 +96,28 @@ export const Constraints: Story = {
 export const States: Story = {
   render: () => (
     <div className="grid w-80 gap-4">
-      <DateField.Root defaultValue={new Date(2026, 6, 15)} disabled>
-        <DateField.Label>Disabled</DateField.Label>
-        <DateField.Input />
-      </DateField.Root>
-      <DateField.Root defaultValue={new Date(2026, 6, 15)} readOnly>
-        <DateField.Label>Read only</DateField.Label>
-        <DateField.Input />
-      </DateField.Root>
-      <DateField.Root invalid>
-        <DateField.Label>Invalid</DateField.Label>
-        <DateField.Input />
-        <DateField.Error>Check the release date.</DateField.Error>
-      </DateField.Root>
+      <div className="grid gap-2">
+        <span className="text-xs text-city-muted-foreground">Disabled</span>
+        <DateField.Root defaultValue={new Date(2026, 6, 15)} disabled>
+          <DateField.Label>Review date</DateField.Label>
+          <DateField.Input />
+        </DateField.Root>
+      </div>
+      <div className="grid gap-2">
+        <span className="text-xs text-city-muted-foreground">Read only</span>
+        <DateField.Root defaultValue={new Date(2026, 6, 15)} readOnly>
+          <DateField.Label>Review date</DateField.Label>
+          <DateField.Input />
+        </DateField.Root>
+      </div>
+      <div className="grid gap-2">
+        <span className="text-xs text-city-muted-foreground">Invalid</span>
+        <DateField.Root invalid>
+          <DateField.Label>Review date</DateField.Label>
+          <DateField.Input />
+          <DateField.Error>Check the release date.</DateField.Error>
+        </DateField.Root>
+      </div>
     </div>
   ),
 };

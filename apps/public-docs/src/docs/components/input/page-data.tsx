@@ -17,11 +17,6 @@ export const pageData = {
       defaultValue: "'md'",
       description: '입력과 그룹의 제어 높이입니다.',
     },
-    {
-      name: 'Field.Root invalid',
-      type: 'boolean',
-      description: 'Field.Control로 합성한 Input에 오류 문맥을 전달합니다.',
-    },
     { name: 'disabled', type: 'boolean', description: '값 편집을 막습니다.' },
     {
       name: 'render',

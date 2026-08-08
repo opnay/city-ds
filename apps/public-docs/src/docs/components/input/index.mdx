@@ -2,6 +2,12 @@ import { pageData } from './page-data';
 
 <ComponentReference data={pageData} />
 
+## Field 조합
+
+Input과 Textarea는 가장 가까운 `Field.Root` 문맥을 자동으로 인식합니다. Label, 설명,
+오류가 필요하면 `Field.Root` 안에 직접 배치하십시오. `Field.Control`로 다시 감싸지
+마십시오.
+
 ## 접근성
 
 placeholder는 label을 대신하지 않으므로 Field.Label 또는 aria-label을 제공하십시오.

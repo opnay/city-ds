@@ -6,14 +6,17 @@ export default function SearchFieldSizesExample() {
   return (
     <div className="city-docs-example-stack">
       {sizes.map((size) => (
-        <SearchField.Root defaultValue="city" key={size} size={size}>
-          <SearchField.Label>{size} 문서 검색</SearchField.Label>
-          <SearchField.Group>
-            <SearchField.Input />
-            <SearchField.Clear />
-            <SearchField.Submit aria-label={`${size} 검색`} />
-          </SearchField.Group>
-        </SearchField.Root>
+        <div className="city-docs-example-variant" key={size}>
+          <span className="city-docs-example-label">{size}</span>
+          <SearchField.Root defaultValue="city" size={size}>
+            <SearchField.Label>문서 검색</SearchField.Label>
+            <SearchField.Group>
+              <SearchField.Input />
+              <SearchField.Clear />
+              <SearchField.Submit aria-label="검색" />
+            </SearchField.Group>
+          </SearchField.Root>
+        </div>
       ))}
     </div>
   );

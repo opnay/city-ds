@@ -10,6 +10,7 @@ import type { ComponentPageData } from '../../types';
 
 export const pageData = {
   featuredExampleId: 'table-interactions',
+  widePreviewIds: ['table-presentation', 'table-states', 'table-overflow', 'table-interactions'],
   api: [
     {
       defaultValue: "'md'",

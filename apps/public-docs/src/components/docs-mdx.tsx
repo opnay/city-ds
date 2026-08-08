@@ -22,6 +22,7 @@ interface DocsMdxProviderProps {
 
 interface ExampleSetProps {
   examples: readonly DocExample[];
+  widePreviewIds?: readonly string[] | undefined;
 }
 
 interface ApiTableProps {
@@ -40,6 +41,7 @@ interface ComponentDocScopeProps {
 interface ExampleFrameProps {
   example: DocExample;
   featuredTitle?: string | undefined;
+  previewLayout?: 'center' | 'wide' | undefined;
 }
 
 interface CodeFilesProps {
@@ -62,7 +64,7 @@ function useComponentDocTitle() {
   return title;
 }
 
-function ExampleFrame({ example, featuredTitle }: ExampleFrameProps) {
+function ExampleFrame({ example, featuredTitle, previewLayout = 'center' }: ExampleFrameProps) {
   const isFeatured = featuredTitle !== undefined;
   const title = featuredTitle ?? example.title;
   const titleId = `example-${example.id}`;
@@ -96,7 +98,7 @@ function ExampleFrame({ example, featuredTitle }: ExampleFrameProps) {
         )}
       </header>
       <div className="city-docs-example-preview">
-        <div className="city-docs-example-preview-content">
+        <div className="city-docs-example-preview-content" data-city-docs-layout={previewLayout}>
           <Example />
         </div>
       </div>
@@ -122,11 +124,15 @@ function ExampleFrame({ example, featuredTitle }: ExampleFrameProps) {
   );
 }
 
-export function ExampleSet({ examples }: ExampleSetProps) {
+export function ExampleSet({ examples, widePreviewIds = [] }: ExampleSetProps) {
   return (
     <div className="city-docs-example-set">
       {examples.map((example) => (
-        <ExampleFrame example={example} key={example.id} />
+        <ExampleFrame
+          example={example}
+          key={example.id}
+          previewLayout={widePreviewIds.includes(example.id) ? 'wide' : 'center'}
+        />
       ))}
     </div>
   );
@@ -143,14 +149,18 @@ export function ComponentReference({ data }: ComponentReferenceProps) {
 
   return (
     <div className="city-docs-component-reference">
-      <ExampleFrame example={featuredExample} featuredTitle={componentTitle} />
+      <ExampleFrame
+        example={featuredExample}
+        featuredTitle={componentTitle}
+        previewLayout={data.widePreviewIds?.includes(featuredExample.id) ? 'wide' : 'center'}
+      />
       <ApiTable items={data.api} />
       {optionExamples.length > 0 ? (
         <section className="city-docs-component-reference-section">
           <h2 className="city-text-section-title" id="component-options">
             옵션과 사용법
           </h2>
-          <ExampleSet examples={optionExamples} />
+          <ExampleSet examples={optionExamples} widePreviewIds={data.widePreviewIds} />
         </section>
       ) : null}
     </div>

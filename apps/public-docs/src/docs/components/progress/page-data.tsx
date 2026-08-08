@@ -3,6 +3,7 @@ import ProgressStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 export const pageData = {
   featuredExampleId: 'progress-states',
+  widePreviewIds: ['progress-states'],
   api: [
     { name: 'value', type: 'number | null', description: 'null은 불확정 진행을 표시합니다.' },
     { name: 'max', type: 'number', defaultValue: '100', description: '진행률의 최대값입니다.' },

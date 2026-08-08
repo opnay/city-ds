@@ -8,6 +8,7 @@ import type { ComponentPageData } from '../../types';
 
 export const pageData = {
   featuredExampleId: 'callout-presentation',
+  widePreviewIds: ['callout-presentation', 'callout-variants'],
   api: [
     {
       name: 'tone',

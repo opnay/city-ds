@@ -6,6 +6,7 @@ import type { ComponentPageData } from '../../types';
 
 export const pageData = {
   featuredExampleId: 'toast-usage',
+  widePreviewIds: ['toast-presentation'],
   api: [
     {
       name: 'tone',

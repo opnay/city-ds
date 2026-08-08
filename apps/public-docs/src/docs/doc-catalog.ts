@@ -328,23 +328,11 @@ export const COMPONENT_DOCS = [
     importPath: '@opnay/city-ds-react/alert',
     keywords: ['알림', '경고', '피드백', '상태'],
     load: () => import('./components/alert/index.mdx'),
-    related: ['callout', 'toast'],
+    related: ['toast', 'empty-state'],
     selectionGuidance:
       '일시적으로 나타나고 사라지는 결과에는 Toast를, 복구하기 어려운 결정에는 AlertDialog를 사용하십시오.',
     slug: 'alert',
     title: 'Alert',
-  },
-  {
-    category: 'Feedback',
-    description: '문서와 작업 흐름에 맥락 정보를 제공하는 Alert의 의미상 별칭입니다.',
-    importPath: '@opnay/city-ds-react/callout',
-    keywords: ['콜아웃', '안내', '문맥', 'alert alias'],
-    load: () => import('./components/callout/index.mdx'),
-    related: ['alert', 'empty-state'],
-    selectionGuidance:
-      '새로 발생한 오류를 알리는 용도로만 사용하지 마십시오. 그 경우 Alert의 의미를 먼저 검토하십시오.',
-    slug: 'callout',
-    title: 'Callout',
   },
   {
     category: 'Feedback',

@@ -297,5 +297,3 @@ export const Alert = {
   Description: AlertDescription,
   Action: AlertAction,
 };
-
-export const Callout = Alert;

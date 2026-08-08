@@ -2,9 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowRight, BookOpen, Menu as MenuIcon, X } from 'lucide-react';
 import { Link, Outlet, useLocation, type ErrorComponentProps } from '@tanstack/react-router';
 import type { CityTheme } from '@opnay/city-ds-react';
+import { Alert } from '@opnay/city-ds-react/alert';
 import { Breadcrumbs } from '@opnay/city-ds-react/breadcrumbs';
 import { Button } from '@opnay/city-ds-react/button';
-import { Callout } from '@opnay/city-ds-react/callout';
 import { Drawer } from '@opnay/city-ds-react/drawer';
 import { SearchField } from '@opnay/city-ds-react/search-field';
 import { Select } from '@opnay/city-ds-react/select';
@@ -530,15 +530,15 @@ export function DocsError({ error, reset }: ErrorComponentProps) {
       eyebrow="Error"
       title="문서를 표시할 수 없습니다."
     >
-      <Callout.Root tone="destructive">
-        <Callout.Title>불러오기 오류</Callout.Title>
-        <Callout.Description>{error.message}</Callout.Description>
-        <Callout.Action>
+      <Alert.Root tone="destructive">
+        <Alert.Title>불러오기 오류</Alert.Title>
+        <Alert.Description>{error.message}</Alert.Description>
+        <Alert.Action>
           <Button onClick={reset} type="button" variant="outline">
             다시 시도
           </Button>
-        </Callout.Action>
-      </Callout.Root>
+        </Alert.Action>
+      </Alert.Root>
     </GuidePage>
   );
 }

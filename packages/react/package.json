@@ -42,10 +42,6 @@
       "types": "./dist/components/button/index.d.ts",
       "import": "./dist/components/button/index.js"
     },
-    "./callout": {
-      "types": "./dist/components/callout/index.d.ts",
-      "import": "./dist/components/callout/index.js"
-    },
     "./breadcrumbs": {
       "types": "./dist/components/breadcrumbs/index.d.ts",
       "import": "./dist/components/breadcrumbs/index.js"

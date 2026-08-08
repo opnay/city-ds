@@ -7,7 +7,6 @@ import { CATEGORY_LABELS, COMPONENT_DOCS } from './doc-catalog';
 const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   alert: 2,
   badge: 1,
-  callout: 2,
   'data-table-region': 2,
   'filter-bar': 1,
   progress: 1,

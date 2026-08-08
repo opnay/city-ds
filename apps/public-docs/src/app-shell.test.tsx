@@ -243,7 +243,7 @@ describe('catalog and local UI state', () => {
 
     await user.click(within(main).getAllByRole('button', { name: '필터 초기화' })[0]!);
     expect(search).toHaveValue('');
-    expect(within(main).getByText('컴포넌트 40개')).toBeVisible();
+    expect(within(main).getByText('컴포넌트 39개')).toBeVisible();
   });
 
   it('filters the catalog by category', async () => {
@@ -265,7 +265,7 @@ describe('catalog and local UI state', () => {
     expect(screen.getByRole('group', { name: '컴포넌트 필터' })).toHaveClass(
       'city-docs-catalog-filter',
     );
-    expect(screen.getByText('컴포넌트 40개')).toHaveClass('city-docs-results-count');
+    expect(screen.getByText('컴포넌트 39개')).toHaveClass('city-docs-results-count');
     const groupHeadings = container.querySelectorAll('.city-docs-component-groups h2');
     const descriptions = container.querySelectorAll(
       '.city-docs-component-grid .city-text-supporting',
@@ -275,7 +275,7 @@ describe('catalog and local UI state', () => {
     for (const heading of groupHeadings) {
       expect(heading).toHaveClass('city-text-section-title');
     }
-    expect(descriptions).toHaveLength(40);
+    expect(descriptions).toHaveLength(39);
   });
 
   it('restores only a valid stored theme and lets the user change it', async () => {

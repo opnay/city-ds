@@ -1,6 +1,6 @@
 import { Input } from '@opnay/city-ds-react/input';
 
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 export default function InputSizesExample() {
   return (

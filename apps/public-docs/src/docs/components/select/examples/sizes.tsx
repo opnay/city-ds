@@ -1,7 +1,7 @@
 import { Select } from '@opnay/city-ds-react/select';
 
 const items = { draft: '초안', review: '검토', done: '완료' } as const;
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 export default function SelectSizesExample() {
   return (

@@ -125,7 +125,7 @@ const meta = {
     },
   },
   argTypes: {
-    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    size: { control: 'inline-radio', options: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     variant: { control: 'inline-radio', options: ['line', 'surface'] },
   },
   render: (args) => <DataTable {...args} />,

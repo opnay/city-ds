@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { CITY_THEMES } from '../src/theme';
+import { CONTROL_SIZES } from '../src/types';
 
 const stylesCss = readFileSync(resolve(process.cwd(), 'src/styles/index.css'), 'utf8');
 const themeCss = readFileSync(resolve(process.cwd(), 'src/styles/theme.css'), 'utf8');
@@ -87,9 +88,11 @@ const radiusTokens = [
 ];
 
 const controlTokens = [
+  '--city-control-xsm',
   '--city-control-sm',
   '--city-control-md',
   '--city-control-lg',
+  '--city-control-xlg',
   '--city-hit-target-min',
 ];
 
@@ -112,6 +115,15 @@ const foundationTokens = [
 ];
 
 describe('theme contract', () => {
+  it('defines the five-step control size scale', () => {
+    expect(CONTROL_SIZES).toEqual(['xsm', 'sm', 'md', 'lg', 'xlg']);
+    expect(themeCss).toContain('--city-control-xsm: 1.5rem;');
+    expect(themeCss).toContain('--city-control-sm: 1.75rem;');
+    expect(themeCss).toContain('--city-control-md: 2rem;');
+    expect(themeCss).toContain('--city-control-lg: 2.25rem;');
+    expect(themeCss).toContain('--city-control-xlg: 2.5rem;');
+  });
+
   it('includes Tailwind Preflight in the app stylesheet only', () => {
     expect(stylesCss).toContain("@import 'tailwindcss';");
     expect(stylesCss).toContain("@import './theme.css';");

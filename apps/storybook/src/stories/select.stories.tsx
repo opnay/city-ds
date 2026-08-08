@@ -92,9 +92,9 @@ export const Disabled: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="grid gap-3">
-      <StatusSelect size="sm" />
-      <StatusSelect size="md" />
-      <StatusSelect size="lg" />
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
+        <StatusSelect key={size} size={size} />
+      ))}
     </div>
   ),
 };

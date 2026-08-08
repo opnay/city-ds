@@ -134,7 +134,7 @@ describe('all component document routes', () => {
     expect(container.querySelectorAll('.city-docs-example')).toHaveLength(3);
     expect(container.querySelectorAll("[data-city-docs-layout='center']")).toHaveLength(3);
     expect(container.querySelectorAll("[data-city-docs-layout='wide']")).toHaveLength(0);
-    expect(screen.getAllByRole('grid')).toHaveLength(9);
+    expect(screen.getAllByRole('grid')).toHaveLength(11);
     expect(screen.queryByRole('group', { name: '달력 크기' })).toBeNull();
     expect(screen.queryByRole('group', { name: '달력 상태' })).toBeNull();
   });

@@ -2,9 +2,15 @@ import { Combobox } from '@opnay/city-ds-react/combobox';
 import { Field } from '@opnay/city-ds-react/field';
 
 const projects = ['도시 포털', '교통 지도', '허가 추적기'];
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
-function ProjectCombobox({ multiple, size }: { multiple: boolean; size: 'sm' | 'md' | 'lg' }) {
+function ProjectCombobox({
+  multiple,
+  size,
+}: {
+  multiple: boolean;
+  size: 'xsm' | 'sm' | 'md' | 'lg' | 'xlg';
+}) {
   return (
     <div className="city-docs-example-variant">
       <span className="city-docs-example-label">

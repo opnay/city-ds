@@ -51,15 +51,19 @@ export interface RadioGroupItemProps<Value = unknown> extends Omit<
 }
 
 const radioSizeClasses: Record<ControlSize, string> = {
-  sm: 'size-3.5',
-  md: 'size-4',
-  lg: 'size-5',
+  xsm: 'size-2.5',
+  sm: 'size-3',
+  md: 'size-3.5',
+  lg: 'size-4',
+  xlg: 'size-5',
 };
 
 const radioIndicatorSizeClasses: Record<ControlSize, string> = {
+  xsm: 'size-1',
   sm: 'size-1.5',
-  md: 'size-2',
-  lg: 'size-2.5',
+  md: 'size-1.5',
+  lg: 'size-2',
+  xlg: 'size-2.5',
 };
 
 const RadioGroupItemBase = React.forwardRef(function RadioGroupItem(

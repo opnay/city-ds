@@ -77,9 +77,11 @@ export interface NumberFieldInputProps extends Omit<
 }
 
 const inputSizeClasses: Record<ControlSize, string> = {
-  sm: 'px-2.5 text-xs',
-  md: 'px-3 text-sm',
-  lg: 'px-3.5 text-sm',
+  xsm: 'px-1.5 text-xs',
+  sm: 'px-2 text-xs',
+  md: 'px-2.5 text-xs',
+  lg: 'px-3 text-sm',
+  xlg: 'px-3.5 text-sm',
 };
 
 export const NumberFieldInput = React.forwardRef<HTMLInputElement, NumberFieldInputProps>(

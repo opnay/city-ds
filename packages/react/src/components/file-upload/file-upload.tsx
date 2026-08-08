@@ -266,8 +266,8 @@ export const FileUploadTrigger = React.forwardRef<HTMLElement, FileUploadTrigger
         className={cn(
           'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:outline-city-ring inline-flex w-fit items-center justify-center border font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40',
           context.density === 'compact'
-            ? 'h-(--city-control-sm) px-2.5 text-xs'
-            : 'h-(--city-control-md) px-3 text-sm',
+            ? 'h-(--city-control-sm) px-2 text-xs'
+            : 'h-(--city-control-md) px-2.5 text-xs',
           className,
         )}
         data-city-density={context.density}

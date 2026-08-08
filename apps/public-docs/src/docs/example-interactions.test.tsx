@@ -94,7 +94,7 @@ describe('documented component interactions', () => {
       .sort();
 
     expect(rendered).toEqual(declared);
-    expect(screen.getAllByRole('progressbar')).toHaveLength(18);
+    expect(screen.getAllByRole('progressbar')).toHaveLength(30);
   });
 
   it('renders every declared Toast tone and appearance combination', async () => {

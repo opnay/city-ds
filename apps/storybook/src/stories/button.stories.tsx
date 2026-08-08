@@ -19,7 +19,7 @@ const meta = {
     },
     size: {
       control: 'inline-radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xsm', 'sm', 'md', 'lg', 'xlg'],
     },
     children: { control: 'text' },
   },
@@ -63,9 +63,11 @@ export const OnRaisedSurface: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-2">
-      <Button size="sm">Compact</Button>
-      <Button size="md">Default</Button>
-      <Button size="lg">Prominent</Button>
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
+        <Button key={size} size={size}>
+          {size.toUpperCase()}
+        </Button>
+      ))}
     </div>
   ),
 };
@@ -73,13 +75,19 @@ export const Sizes: Story = {
 export const IconOnly: Story = {
   render: () => (
     <div className="flex items-center gap-3">
+      <Button aria-label="Open settings" iconOnly size="xsm" variant="ghost">
+        <Settings aria-hidden="true" size={12} />
+      </Button>
       <Button aria-label="Open settings" iconOnly size="sm" variant="ghost">
-        <Settings aria-hidden="true" size={15} />
+        <Settings aria-hidden="true" size={14} />
       </Button>
       <Button aria-label="Open settings" iconOnly size="md" variant="outline">
-        <Settings aria-hidden="true" size={16} />
+        <Settings aria-hidden="true" size={15} />
       </Button>
       <Button aria-label="Open settings" iconOnly size="lg">
+        <Settings aria-hidden="true" size={16} />
+      </Button>
+      <Button aria-label="Open settings" iconOnly size="xlg">
         <Settings aria-hidden="true" size={18} />
       </Button>
     </div>

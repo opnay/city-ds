@@ -16,7 +16,7 @@ export const pageData = {
     },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '입력 그룹과 제어 크기를 정합니다.',
     },
@@ -32,26 +32,34 @@ export const pageData = {
       coverage: [
         {
           axis: 'size',
-          values: ['sm', 'md', 'lg'],
+          values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
           combinations: [
+            'size=xsm|multiple=false',
+            'size=xsm|multiple=true',
             'size=sm|multiple=false',
             'size=sm|multiple=true',
             'size=md|multiple=false',
             'size=md|multiple=true',
             'size=lg|multiple=false',
             'size=lg|multiple=true',
+            'size=xlg|multiple=false',
+            'size=xlg|multiple=true',
           ],
         },
         {
           axis: 'multiple',
           values: ['false', 'true'],
           combinations: [
+            'size=xsm|multiple=false',
+            'size=xsm|multiple=true',
             'size=sm|multiple=false',
             'size=sm|multiple=true',
             'size=md|multiple=false',
             'size=md|multiple=true',
             'size=lg|multiple=false',
             'size=lg|multiple=true',
+            'size=xlg|multiple=false',
+            'size=xlg|multiple=true',
           ],
         },
       ],
@@ -75,7 +83,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'multiple', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },

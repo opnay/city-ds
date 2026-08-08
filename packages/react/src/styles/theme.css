@@ -52,9 +52,11 @@
   --city-radius-lg: 0.5rem;
   --city-radius-full: 9999px;
 
-  --city-control-sm: 2rem;
-  --city-control-md: 2.25rem;
-  --city-control-lg: 2.5rem;
+  --city-control-xsm: 1.5rem;
+  --city-control-sm: 1.75rem;
+  --city-control-md: 2rem;
+  --city-control-lg: 2.25rem;
+  --city-control-xlg: 2.5rem;
   --city-hit-target-min: 2.75rem;
 
   --city-duration-fast: 100ms;

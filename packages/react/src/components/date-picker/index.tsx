@@ -239,9 +239,11 @@ DatePickerGroup.displayName = 'DatePicker.Group';
 export type DatePickerTriggerProps = PopoverTriggerProps;
 
 const triggerIconSizes: Record<ControlSize, number> = {
+  xsm: 12,
   sm: 14,
-  md: 16,
+  md: 14,
   lg: 16,
+  xlg: 16,
 };
 
 export const DatePickerTrigger = React.forwardRef<HTMLButtonElement, DatePickerTriggerProps>(

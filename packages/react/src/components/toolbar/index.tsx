@@ -77,9 +77,11 @@ const ToolbarContext = React.createContext<ToolbarContextValue>({
 });
 
 const toolbarSizeClasses: Record<ControlSize, string> = {
-  sm: 'gap-1 p-1',
-  md: 'gap-1.5 p-1.5',
-  lg: 'gap-2 p-2',
+  xsm: 'gap-0.5 p-0.5',
+  sm: 'gap-1 p-0.5',
+  md: 'gap-1 p-1',
+  lg: 'gap-1.5 p-1.5',
+  xlg: 'gap-2 p-2',
 };
 
 const toolbarAppearanceClasses: Record<SurfaceAppearance, string> = {
@@ -89,9 +91,11 @@ const toolbarAppearanceClasses: Record<SurfaceAppearance, string> = {
 };
 
 const itemSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-(--city-control-sm) gap-1.5 px-2.5',
-  md: 'h-(--city-control-md) gap-2 px-3',
-  lg: 'h-(--city-control-lg) gap-2 px-4',
+  xsm: 'h-(--city-control-xsm) gap-1 px-1.5',
+  sm: 'h-(--city-control-sm) gap-1.5 px-2',
+  md: 'h-(--city-control-md) gap-1.5 px-2.5',
+  lg: 'h-(--city-control-lg) gap-2 px-3',
+  xlg: 'h-(--city-control-xlg) gap-2 px-4',
 };
 
 const itemVariantClasses: Record<ButtonVariant, string> = {

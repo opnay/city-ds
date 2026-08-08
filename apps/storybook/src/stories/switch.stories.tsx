@@ -10,7 +10,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'inline-radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xsm', 'sm', 'md', 'lg', 'xlg'],
     },
     disabled: { control: 'boolean' },
   },
@@ -42,9 +42,9 @@ export const Default: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-4">
-      <Switch aria-label="Small switch" size="sm" />
-      <Switch aria-label="Medium switch" size="md" />
-      <Switch aria-label="Large switch" size="lg" />
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
+        <Switch aria-label={`${size} switch`} key={size} size={size} />
+      ))}
     </div>
   ),
 };

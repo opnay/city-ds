@@ -1,6 +1,6 @@
 import { DatePicker } from '@opnay/city-ds-react/date-picker';
 
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 export default function DatePickerSizesExample() {
   return (

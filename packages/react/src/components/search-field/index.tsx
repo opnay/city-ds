@@ -195,15 +195,19 @@ export const SearchFieldInput = React.forwardRef<HTMLElement, SearchFieldInputPr
 SearchFieldInput.displayName = 'SearchField.Input';
 
 const auxiliaryButtonSizeClasses: Record<ControlSize, string> = {
-  sm: 'size-7 p-0',
-  md: 'size-8 p-0',
-  lg: 'size-9 p-0',
+  xsm: 'size-5 p-0',
+  sm: 'size-6 p-0',
+  md: 'size-7 p-0',
+  lg: 'size-8 p-0',
+  xlg: 'size-9 p-0',
 };
 
 const iconSizes: Record<ControlSize, number> = {
+  xsm: 12,
   sm: 14,
-  md: 16,
+  md: 14,
   lg: 16,
+  xlg: 16,
 };
 
 export interface SearchFieldClearProps extends Omit<ButtonProps, 'children' | 'size' | 'variant'> {

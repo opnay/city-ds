@@ -21,7 +21,7 @@ export const pageData = {
     },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '트리거 높이입니다.',
     },
@@ -29,7 +29,7 @@ export const pageData = {
   examples: [
     {
       Component: SelectSizesExample,
-      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '트리거와 팝업 항목의 제어 크기를 맞춥니다.',
       id: 'select-sizes',
       filename: 'sizes.tsx',
@@ -50,7 +50,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'multiple', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'mode', values: ['controlled', 'uncontrolled'] },
   ],

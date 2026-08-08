@@ -128,16 +128,16 @@ Outline Frame은 atom·molecule의 Surface 축에서 폼 사용자가 **값을
 이 높이에 포함하며, 내부 input이나 segment가 프레임 높이를 다시 늘리지 않아야 합니다.
 
 외곽 높이는 공통 [Control Size](?path=/docs/디자인-패턴-size-control-size--docs) 계약인
-`sm/md/lg = 32/36/40px`를 사용합니다.
+`xsm/sm/md/lg/xlg = 24/28/32/36/40px`를 사용합니다.
 
 같은 `size`의 Input, SearchField, Select, Combobox, NumberField, DateField, DatePicker는 한
 줄에 배치했을 때 위아래 경계가 일치해야 합니다.
 
-단일 행 Outline Frame의 텍스트는 `sm/md/lg = 12/14/14px`, line-height는
-`16/20/20px`를 사용합니다. Surface나 focus·invalid 상태가 바뀌어도 Typography는
+단일 행 Outline Frame의 텍스트는 `xsm/sm/md/lg/xlg = 12/12/12/14/14px`, line-height는
+`16/16/16/20/20px`를 사용합니다. Surface나 focus·invalid 상태가 바뀌어도 Typography는
 달라지지 않습니다.
 
-Outline Frame의 `32/36/40px` 높이는 Shape 축의 regular rectangle 단계이므로 모두
+Outline Frame의 `24/28/32/36/40px` 높이는 Shape 축의 regular rectangle 단계이므로 모두
 `--city-radius-sm`을 사용합니다. 내부 padding이나 segment 수가 달라도 외곽 radius는 바뀌지
 않습니다.
 

@@ -1,4 +1,4 @@
-export const CONTROL_SIZES = ['sm', 'md', 'lg'] as const;
+export const CONTROL_SIZES = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 export const DENSITIES = ['comfortable', 'compact'] as const;
 export const FEEDBACK_TONES = ['neutral', 'info', 'success', 'warning', 'destructive'] as const;
 export const SURFACE_APPEARANCES = ['plain', 'band', 'outline'] as const;

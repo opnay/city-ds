@@ -69,7 +69,7 @@ export const Error: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="grid gap-4">
-      {(['sm', 'md', 'lg'] as const).map((size) => (
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
         <div className="grid gap-2" key={size}>
           <span className="text-xs text-city-muted-foreground">{size.toUpperCase()}</span>
           <SearchField.Root className="w-96" defaultValue={`${size} search`} size={size}>

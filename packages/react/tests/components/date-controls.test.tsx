@@ -191,12 +191,12 @@ describe('DateField', () => {
   it('uses exact Outline Frame height tokens at every size', () => {
     render(
       <>
-        {(['sm', 'md', 'lg'] as const).map((size) => (
+        {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
           <DateField.Root key={`field-${size}`} size={size}>
             <DateField.Input aria-label={`${size} date field`} />
           </DateField.Root>
         ))}
-        {(['sm', 'md', 'lg'] as const).map((size) => (
+        {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
           <DatePicker.Root key={`picker-${size}`} size={size}>
             <DatePicker.Group data-testid={`${size}-date-picker`}>
               <DatePicker.Input aria-label={`${size} date picker`} />
@@ -207,7 +207,7 @@ describe('DateField', () => {
       </>,
     );
 
-    for (const size of ['sm', 'md', 'lg'] as const) {
+    for (const size of ['xsm', 'sm', 'md', 'lg', 'xlg'] as const) {
       expect(screen.getByRole('textbox', { name: `${size} date field` })).toHaveClass(
         `h-(--city-control-${size})`,
       );
@@ -266,7 +266,7 @@ describe('Calendar', () => {
   it('uses matching day and navigation sizes and exposes invalid styling', () => {
     render(
       <>
-        {(['sm', 'md', 'lg'] as const).map((size) => (
+        {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
           <Calendar
             key={size}
             aria-label={`${size} calendar`}
@@ -279,7 +279,7 @@ describe('Calendar', () => {
       </>,
     );
 
-    for (const size of ['sm', 'md', 'lg'] as const) {
+    for (const size of ['xsm', 'sm', 'md', 'lg', 'xlg'] as const) {
       const calendar = screen.getByLabelText(`${size} calendar`);
       expect(
         within(calendar).getByRole('button', { name: /Wednesday, July 15th, 2026/ }),

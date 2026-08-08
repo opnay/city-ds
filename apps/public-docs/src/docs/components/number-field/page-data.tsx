@@ -15,7 +15,7 @@ export const pageData = {
     { name: 'min / max / step', type: 'number', description: '허용 범위와 증감 단위입니다.' },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '제어 크기입니다.',
     },
@@ -24,7 +24,7 @@ export const pageData = {
   examples: [
     {
       Component: NumberFieldSizesExample,
-      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '입력과 증감 버튼을 같은 제어 크기로 맞춥니다.',
       id: 'number-field-sizes',
       filename: 'sizes.tsx',
@@ -45,7 +45,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'mode', values: ['controlled', 'uncontrolled'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
   ],

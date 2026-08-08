@@ -25,9 +25,11 @@ export interface ButtonProps extends Omit<BaseButtonProps, 'className'> {
 }
 
 const buttonSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-(--city-control-sm) gap-1.5 px-2.5',
-  md: 'h-(--city-control-md) gap-2 px-3',
-  lg: 'h-(--city-control-lg) gap-2 px-4',
+  xsm: 'h-(--city-control-xsm) gap-1 px-1.5',
+  sm: 'h-(--city-control-sm) gap-1.5 px-2',
+  md: 'h-(--city-control-md) gap-1.5 px-2.5',
+  lg: 'h-(--city-control-lg) gap-2 px-3',
+  xlg: 'h-(--city-control-xlg) gap-2 px-4',
 };
 
 const buttonVariantClasses: Record<ButtonVariant, string> = {
@@ -43,9 +45,11 @@ const buttonVariantClasses: Record<ButtonVariant, string> = {
 };
 
 const iconOnlySizeClasses: Record<ControlSize, string> = {
+  xsm: 'w-(--city-control-xsm) gap-0 px-0',
   sm: 'w-(--city-control-sm) gap-0 px-0',
   md: 'w-(--city-control-md) gap-0 px-0',
   lg: 'w-(--city-control-lg) gap-0 px-0',
+  xlg: 'w-(--city-control-xlg) gap-0 px-0',
 };
 
 export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button(

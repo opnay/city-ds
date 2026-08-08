@@ -40,6 +40,7 @@ export function ComponentCatalog() {
         }
         appearance="band"
         aria-label="컴포넌트 필터"
+        className="city-docs-catalog-filter"
       >
         <SearchField.Root onValueChange={setQuery} size="sm" value={query}>
           <SearchField.Label className="city-docs-sr-only">컴포넌트 검색</SearchField.Label>
@@ -81,7 +82,7 @@ export function ComponentCatalog() {
       </p>
 
       {results.length === 0 ? (
-        <EmptyState.Root>
+        <EmptyState.Root className="city-docs-catalog-empty-state">
           <EmptyState.Icon>
             <PackageSearch />
           </EmptyState.Icon>

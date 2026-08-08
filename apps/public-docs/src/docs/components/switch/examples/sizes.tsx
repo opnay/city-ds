@@ -1,6 +1,6 @@
 import { Switch } from '@opnay/city-ds-react/switch';
 
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 export default function SwitchSizesExample() {
   return (

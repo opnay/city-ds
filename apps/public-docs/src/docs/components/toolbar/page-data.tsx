@@ -23,7 +23,7 @@ export const pageData = {
     },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '항목 크기입니다.',
     },
@@ -57,7 +57,7 @@ export const pageData = {
     },
     {
       Component: ToolbarSizesExample,
-      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '도구 모음 안의 모든 항목에 동일한 크기를 적용합니다.',
       id: 'toolbar-sizes',
       filename: 'sizes.tsx',
@@ -113,7 +113,7 @@ export const pageData = {
   ],
   optionAxes: [
     { name: 'appearance', defaultValue: 'outline', values: ['plain', 'band', 'outline'] },
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'orientation', defaultValue: 'horizontal', values: ['horizontal', 'vertical'] },
     {
       name: 'buttonVariant',

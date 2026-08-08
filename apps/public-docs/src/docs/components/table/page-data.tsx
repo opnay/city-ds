@@ -16,7 +16,7 @@ export const pageData = {
       defaultValue: "'md'",
       description: '셀 여백입니다.',
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
     },
     {
       defaultValue: "'line'",
@@ -52,14 +52,18 @@ export const pageData = {
         {
           axis: 'size',
           combinations: [
+            'size=xsm|variant=line',
             'size=sm|variant=line',
             'size=md|variant=line',
             'size=lg|variant=line',
+            'size=xlg|variant=line',
+            'size=xsm|variant=surface',
             'size=sm|variant=surface',
             'size=md|variant=surface',
             'size=lg|variant=surface',
+            'size=xlg|variant=surface',
           ],
-          values: ['sm', 'md', 'lg'],
+          values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
         },
         { axis: 'variant', values: ['line', 'surface'] },
       ],
@@ -104,7 +108,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { defaultValue: 'md', name: 'size', values: ['sm', 'md', 'lg'] },
+    { defaultValue: 'md', name: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { defaultValue: 'line', name: 'variant', values: ['line', 'surface'] },
     { name: 'state', values: ['empty', 'loading'] },
     { name: 'overflow', values: ['horizontal-scroll'] },

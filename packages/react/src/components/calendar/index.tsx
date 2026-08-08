@@ -54,21 +54,27 @@ export interface CalendarProps {
 }
 
 const cellSizeClasses: Record<ControlSize, string> = {
+  xsm: 'size-(--city-control-xsm)',
   sm: 'size-(--city-control-sm)',
   md: 'size-(--city-control-md)',
   lg: 'size-(--city-control-lg)',
+  xlg: 'size-(--city-control-xlg)',
 };
 
 const captionSizeClasses: Record<ControlSize, string> = {
+  xsm: 'h-(--city-control-xsm)',
   sm: 'h-(--city-control-sm)',
   md: 'h-(--city-control-md)',
   lg: 'h-(--city-control-lg)',
+  xlg: 'h-(--city-control-xlg)',
 };
 
 const textSizeClasses: Record<ControlSize, string> = {
+  xsm: 'text-xs',
   sm: 'text-xs',
-  md: 'text-sm',
+  md: 'text-xs',
   lg: 'text-sm',
+  xlg: 'text-sm',
 };
 
 function CalendarChevron({

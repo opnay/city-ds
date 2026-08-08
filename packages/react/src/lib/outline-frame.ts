@@ -9,45 +9,59 @@ export const outlineFrameBaseClasses = cn(
 );
 
 export const outlineFrameHeightClasses: Record<ControlSize, string> = {
+  xsm: 'h-(--city-control-xsm)',
   sm: 'h-(--city-control-sm)',
   md: 'h-(--city-control-md)',
   lg: 'h-(--city-control-lg)',
+  xlg: 'h-(--city-control-xlg)',
 };
 
 export const outlineFrameMinHeightClasses: Record<ControlSize, string> = {
+  xsm: 'min-h-(--city-control-xsm)',
   sm: 'min-h-(--city-control-sm)',
   md: 'min-h-(--city-control-md)',
   lg: 'min-h-(--city-control-lg)',
+  xlg: 'min-h-(--city-control-xlg)',
 };
 
 export const outlineFrameTextareaMinHeightClasses: Record<ControlSize, string> = {
+  xsm: 'has-[textarea]:min-h-(--city-control-xsm)',
   sm: 'has-[textarea]:min-h-(--city-control-sm)',
   md: 'has-[textarea]:min-h-(--city-control-md)',
   lg: 'has-[textarea]:min-h-(--city-control-lg)',
+  xlg: 'has-[textarea]:min-h-(--city-control-xlg)',
 };
 
 export const outlineFrameTextClasses = atomicControlTextClasses;
 
 export const outlineFrameValuePaddingClasses: Record<ControlSize, string> = {
-  sm: 'px-2.5',
-  md: 'px-3',
-  lg: 'px-3.5',
+  xsm: 'px-1.5',
+  sm: 'px-2',
+  md: 'px-2.5',
+  lg: 'px-3',
+  xlg: 'px-3.5',
 };
 
 export const outlineFrameLeadingTextPaddingClasses: Record<ControlSize, string> = {
-  sm: 'pl-2.5',
-  md: 'pl-3',
-  lg: 'pl-3.5',
+  xsm: 'pl-1.5',
+  sm: 'pl-2',
+  md: 'pl-2.5',
+  lg: 'pl-3',
+  xlg: 'pl-3.5',
 };
 
 export const outlineFrameTrailingIconPaddingClasses: Record<ControlSize, string> = {
-  sm: 'pr-2',
-  md: 'pr-2.5',
-  lg: 'pr-3',
+  xsm: 'pr-1',
+  sm: 'pr-1.5',
+  md: 'pr-2',
+  lg: 'pr-2.5',
+  xlg: 'pr-3',
 };
 
 export const outlineFrameSegmentWidthClasses: Record<ControlSize, string> = {
+  xsm: 'w-(--city-control-xsm)',
   sm: 'w-(--city-control-sm)',
   md: 'w-(--city-control-md)',
   lg: 'w-(--city-control-lg)',
+  xlg: 'w-(--city-control-xlg)',
 };

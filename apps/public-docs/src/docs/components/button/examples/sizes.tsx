@@ -1,7 +1,7 @@
 import { Plus } from 'lucide-react';
 import { Button } from '@opnay/city-ds-react/button';
 
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 export default function ButtonSizesExample() {
   return (

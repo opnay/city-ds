@@ -69,34 +69,44 @@ describe('form and display controls', () => {
     );
   });
 
-  it('uses shared control-height tokens for adjacent control sizes', () => {
+  it('uses the five-step shared control size scale', () => {
     render(
       <>
+        <Button size="xsm">Extra small button</Button>
         <Button size="sm">Small button</Button>
         <Toggle aria-label="Medium toggle" size="md" />
         <Input aria-label="Large input" size="lg" />
+        <Input aria-label="Extra large input" size="xlg" />
         <InputGroup.Root data-testid="small-input-group" size="sm">
           <Input aria-label="Grouped input" />
         </InputGroup.Root>
       </>,
     );
 
+    expect(screen.getByRole('button', { name: 'Extra small button' })).toHaveClass(
+      'h-(--city-control-xsm)',
+      'text-xs',
+    );
     expect(screen.getByRole('button', { name: 'Small button' })).toHaveClass(
       'h-(--city-control-sm)',
       'text-xs',
     );
     expect(screen.getByRole('button', { name: 'Medium toggle' })).toHaveClass(
       'h-(--city-control-md)',
-      'text-sm',
+      'text-xs',
     );
     expect(screen.getByRole('textbox', { name: 'Large input' })).toHaveClass(
       'h-(--city-control-lg)',
       'text-sm',
     );
+    expect(screen.getByRole('textbox', { name: 'Extra large input' })).toHaveClass(
+      'h-(--city-control-xlg)',
+      'text-sm',
+    );
     expect(screen.getByTestId('small-input-group')).toHaveClass('h-(--city-control-sm)');
     expect(screen.getByRole('textbox', { name: 'Grouped input' })).toHaveClass(
       'h-(--city-control-sm)',
-      'px-2.5',
+      'px-2',
       'text-xs',
     );
   });
@@ -182,7 +192,7 @@ describe('form and display controls', () => {
       'overflow-hidden',
       'data-[invalid]:border-city-destructive',
     );
-    expect(select).not.toHaveClass('bg-city-surface-raised', 'gap-2', 'px-2.5');
+    expect(select).not.toHaveClass('bg-city-surface-raised', 'gap-1.5', 'px-2');
     expect(select).toHaveClass('group');
     const selectIcon = select.querySelector('[data-city-select-icon]');
     expect(selectIcon).toHaveAttribute('data-city-size', 'sm');
@@ -196,16 +206,16 @@ describe('form and display controls', () => {
     );
     expect(selectIcon).not.toHaveAttribute('role', 'button');
     expect(selectIcon).not.toHaveAttribute('tabindex');
-    expect(selectIcon?.previousElementSibling).toHaveClass('px-2.5');
+    expect(selectIcon?.previousElementSibling).toHaveClass('px-2');
     expect(combobox).toHaveAttribute('data-city-size', 'lg');
-    expect(combobox).toHaveClass('self-stretch', 'px-3.5');
+    expect(combobox).toHaveClass('self-stretch', 'px-3');
     expect(comboboxGroup).toHaveAttribute('data-city-size', 'lg');
     expect(comboboxGroup).toHaveAttribute('data-invalid');
     expect(comboboxGroup).toHaveClass(
       'h-(--city-control-lg)',
       'data-[invalid]:border-city-destructive',
     );
-    expect(comboboxGroup).not.toHaveClass('px-3.5', 'gap-2');
+    expect(comboboxGroup).not.toHaveClass('px-3', 'gap-2');
     expect(comboboxTrigger).toHaveAttribute('data-city-size', 'lg');
     expect(comboboxTrigger).toHaveClass(
       'h-full',
@@ -419,11 +429,11 @@ describe('form and display controls', () => {
 
     expect(screen.getByText('https://')).toHaveAttribute('data-city-position', 'leading');
     expect(screen.getByText('https://')).toHaveAttribute('data-city-size', 'lg');
-    expect(screen.getByText('https://')).toHaveClass('pl-3.5');
+    expect(screen.getByText('https://')).toHaveClass('pl-3');
     expect(screen.getByText('https://')).not.toHaveClass('px-2');
     expect(screen.getByText('.dev')).toHaveAttribute('data-city-position', 'trailing');
     expect(screen.getByText('.dev')).toHaveAttribute('data-city-size', 'lg');
-    expect(screen.getByText('.dev')).toHaveClass('order-last', 'pr-3');
+    expect(screen.getByText('.dev')).toHaveClass('order-last', 'pr-2.5');
     expect(screen.getByText('.dev')).not.toHaveClass('px-2');
     expect(screen.getByTestId('affixed-input-group')).toHaveClass(
       'gap-1',
@@ -432,7 +442,7 @@ describe('form and display controls', () => {
     );
     expect(screen.getByRole('textbox', { name: 'Domain' })).toHaveClass(
       'h-(--city-control-lg)',
-      'px-3.5',
+      'px-3',
       'text-sm',
     );
     expect(screen.getByTestId('textarea-group')).toHaveClass(
@@ -626,10 +636,10 @@ describe('form and display controls', () => {
     const compact = screen.getByRole('radio', { name: 'Compact' });
 
     expect(comfortable).toHaveAttribute('data-city-size', 'lg');
-    expect(comfortable).toHaveClass('size-5');
-    expect(comfortable.querySelector('span')).toHaveClass('size-2.5');
+    expect(comfortable).toHaveClass('size-4');
+    expect(comfortable.querySelector('span')).toHaveClass('size-2');
     expect(compact).toHaveAttribute('data-city-size', 'sm');
-    expect(compact).toHaveClass('size-3.5');
+    expect(compact).toHaveClass('size-3');
   });
 
   it('groups CheckboxGroup items with shared label, value changes, keyboard, and form values', async () => {
@@ -705,8 +715,8 @@ describe('form and display controls', () => {
     expect(email).toHaveAttribute('data-disabled');
     expect(email).toHaveAttribute('data-invalid');
     expect(email).toHaveClass('data-[disabled]:opacity-100');
-    expect(email).toHaveClass('size-5');
-    expect(sms).toHaveClass('size-3.5');
+    expect(email).toHaveClass('size-4');
+    expect(sms).toHaveClass('size-3');
   });
 
   it('toggles Toggle pressed state with pointer and keyboard interaction', async () => {
@@ -978,7 +988,7 @@ describe('Combobox', () => {
     const chipBand = group.querySelector('[data-city-combobox-chip-band]');
 
     expect(group).toHaveClass('min-h-(--city-control-md)', 'flex-col', 'items-stretch');
-    expect(group).not.toHaveClass('h-(--city-control-md)', 'px-3', 'py-1.5');
+    expect(group).not.toHaveClass('h-(--city-control-md)', 'px-2.5', 'py-1');
     expect(chips).toHaveAttribute('role', 'toolbar');
     expect(chips).toContainElement(inputRow);
     expect(inputRow).toContainElement(multipleInput);
@@ -987,11 +997,11 @@ describe('Combobox', () => {
       'items-center',
       'shrink-0',
     );
-    expect(multipleInput).toHaveClass('px-3');
+    expect(multipleInput).toHaveClass('px-2.5');
     expect(multipleInput).not.toHaveClass('min-w-20');
     expect(screen.getByRole('button', { name: 'Clear all selections' })).toBeVisible();
     expect(trigger).toHaveClass('h-full', 'border-l', 'w-(--city-control-md)');
-    expect(chipBand).toHaveClass('border-t', 'px-3', 'py-1.5', 'empty:hidden');
+    expect(chipBand).toHaveClass('border-t', 'px-2.5', 'py-1', 'empty:hidden');
     expect(chipBand).toContainElement(
       screen.getByRole('button', { name: 'Remove Civic Portal' }).parentElement,
     );

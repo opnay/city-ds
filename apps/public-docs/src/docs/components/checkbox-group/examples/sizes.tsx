@@ -1,6 +1,6 @@
 import { CheckboxGroup } from '@opnay/city-ds-react/checkbox-group';
 
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 export default function CheckboxGroupSizesExample() {
   return (

@@ -21,7 +21,7 @@ export const pageData = {
     },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '날짜 셀과 캡션 크기를 정합니다.',
     },
@@ -40,7 +40,7 @@ export const pageData = {
   examples: [
     {
       Component: CalendarSizesExample,
-      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '날짜 셀과 달력 머리글의 제어 크기를 함께 맞춥니다.',
       id: 'calendar-sizes',
       filename: 'sizes.tsx',
@@ -72,7 +72,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'readOnly', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },

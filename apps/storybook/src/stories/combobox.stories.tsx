@@ -63,9 +63,9 @@ export const Disabled: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="grid gap-3">
-      <ProjectCombobox size="sm" />
-      <ProjectCombobox size="md" />
-      <ProjectCombobox size="lg" />
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
+        <ProjectCombobox key={size} size={size} />
+      ))}
     </div>
   ),
 };

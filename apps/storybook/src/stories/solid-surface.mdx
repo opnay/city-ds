@@ -93,14 +93,15 @@ border나 shadow를 겹쳐 형태를 보강하기보다 채움과 전경의 대�
 달라지지 않아야 합니다.
 
 외곽 높이는 공통 [Control Size](?path=/docs/디자인-패턴-size-control-size--docs) 계약인
-`sm/md/lg = 32/36/40px`를 사용합니다.
+`xsm/sm/md/lg/xlg = 24/28/32/36/40px`를 사용합니다.
 
 같은 `size`의 Button과 Toggle은 한 줄에 배치했을 때 위아래 경계와 텍스트 기준선이
 일치해야 합니다. Badge·Checkbox·RadioGroup·Switch는 상태 표시 역할에 맞는 별도 크기 비율을
 사용하되, Surface 변경 때문에 자체 크기 규칙이 달라져서는 안 됩니다.
 
-Typography는 Surface와 분리합니다. Button·Toggle은 `sm/md/lg = 12/14/14px`의 Control
-텍스트를, Badge는 `10/10/12px`의 Compact Status 텍스트를 사용하며 solid·outline·tone이
+Typography는 Surface와 분리합니다. Button·Toggle은
+`xsm/sm/md/lg/xlg = 12/12/12/14/14px`의 Control 텍스트를, Badge는 `10/10/12px`의
+Compact Status 텍스트를 사용하며 solid·outline·tone이
 바뀌어도 이 크기 관계를 유지합니다.
 
 Radius는 Solid가 아니라 Shape 축에서 결정합니다. 직사각형 원자 컴포넌트는 최종 외곽 높이가

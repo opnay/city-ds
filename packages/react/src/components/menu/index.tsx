@@ -118,8 +118,8 @@ export const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>
             ? cn(
                 'rounded-city-sm border-city-input bg-city-surface-raised text-city-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring inline-flex items-center justify-center border font-medium transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50',
                 density === 'compact'
-                  ? 'h-(--city-control-sm) gap-1.5 px-2.5 text-xs'
-                  : 'h-(--city-control-md) gap-2 px-3 text-sm',
+                  ? 'h-(--city-control-sm) gap-1.5 px-2 text-xs'
+                  : 'h-(--city-control-md) gap-1.5 px-2.5 text-xs',
               )
             : '',
         )}

@@ -15,7 +15,7 @@ export const pageData = {
     { name: 'defaultValue', type: 'Value', description: '비제어 초기 선택입니다.' },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '라디오 크기입니다.',
     },
@@ -24,7 +24,7 @@ export const pageData = {
   examples: [
     {
       Component: RadioGroupSizesExample,
-      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '그룹 안의 모든 라디오에 동일한 크기를 적용합니다.',
       id: 'radio-group-sizes',
       filename: 'sizes.tsx',
@@ -45,7 +45,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'mode', values: ['controlled', 'uncontrolled'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
   ],

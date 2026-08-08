@@ -25,7 +25,7 @@ export const pageData = {
     },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '제어 크기를 지정합니다.',
     },
@@ -46,7 +46,7 @@ export const pageData = {
     },
     {
       Component: CheckboxSizesExample,
-      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '주변 입력 제어와 체크박스 크기를 맞춥니다.',
       id: 'checkbox-sizes',
       filename: 'sizes.tsx',
@@ -58,6 +58,6 @@ export const pageData = {
     { name: 'checked', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'indeterminate', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
   ],
 } satisfies ComponentPageData;

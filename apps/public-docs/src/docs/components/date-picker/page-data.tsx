@@ -21,7 +21,7 @@ export const pageData = {
     },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '입력과 달력 제어 크기를 맞춥니다.',
     },
@@ -34,7 +34,7 @@ export const pageData = {
   examples: [
     {
       Component: DatePickerSizesExample,
-      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '입력 세그먼트와 달력 트리거의 제어 높이를 함께 맞춥니다.',
       id: 'date-picker-sizes',
       filename: 'sizes.tsx',
@@ -68,7 +68,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'open', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'readOnly', defaultValue: 'false', values: ['false', 'true'] },

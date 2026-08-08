@@ -18,7 +18,7 @@ const meta = {
     },
     size: {
       control: 'inline-radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xsm', 'sm', 'md', 'lg', 'xlg'],
     },
     children: { control: 'text' },
   },

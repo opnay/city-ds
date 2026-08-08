@@ -20,7 +20,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'inline-radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xsm', 'sm', 'md', 'lg', 'xlg'],
     },
   },
 } satisfies Meta<typeof Calendar>;
@@ -64,7 +64,7 @@ export const Controlled: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="flex flex-wrap items-start gap-8">
-      {(['sm', 'md', 'lg'] as const).map((size) => (
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
         <div key={size} className="grid gap-2">
           <span className="text-xs font-medium text-city-muted-foreground">
             {size.toUpperCase()}

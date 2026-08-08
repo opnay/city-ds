@@ -1,7 +1,7 @@
 import { DateField } from '@opnay/city-ds-react/date-field';
 
 const initial = new Date(2026, 6, 15);
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 export default function DateFieldSizesExample() {
   return (

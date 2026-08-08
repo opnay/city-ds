@@ -10,7 +10,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'inline-radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xsm', 'sm', 'md', 'lg', 'xlg'],
     },
     disabled: { control: 'boolean' },
   },
@@ -59,7 +59,7 @@ export const Default: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="grid gap-4">
-      {(['sm', 'md', 'lg'] as const).map((size) => (
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
         <CheckboxGroup
           aria-label={`${size} notification channels`}
           defaultValue={['email']}

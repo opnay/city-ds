@@ -15,9 +15,11 @@ export interface CheckboxProps extends Omit<BaseCheckbox.Root.Props, 'className'
 }
 
 const checkboxSizeClasses: Record<ControlSize, string> = {
-  sm: 'size-3.5',
-  md: 'size-4',
-  lg: 'size-5',
+  xsm: 'size-2.5',
+  sm: 'size-3',
+  md: 'size-3.5',
+  lg: 'size-4',
+  xlg: 'size-5',
 };
 
 export type CheckboxIndicatorProps = Omit<BaseCheckbox.Indicator.Props, 'className'> & {
@@ -41,12 +43,12 @@ export const CheckboxIndicator = React.forwardRef<HTMLSpanElement, CheckboxIndic
           <>
             <Check
               aria-hidden="true"
-              className="size-3 group-data-[indeterminate]:hidden"
+              className="size-3 max-h-full max-w-full group-data-[indeterminate]:hidden"
               strokeWidth={3}
             />
             <Minus
               aria-hidden="true"
-              className="hidden size-3 group-data-[indeterminate]:block"
+              className="hidden size-3 max-h-full max-w-full group-data-[indeterminate]:block"
               strokeWidth={3}
             />
           </>

@@ -10,7 +10,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'inline-radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xsm', 'sm', 'md', 'lg', 'xlg'],
     },
     disabled: { control: 'boolean' },
   },
@@ -39,14 +39,17 @@ export const Default: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="grid gap-4">
-      <RadioGroup aria-label="Small density" defaultValue="comfortable" size="sm">
-        <RadioGroup.Item value="compact">Compact</RadioGroup.Item>
-        <RadioGroup.Item value="comfortable">Comfortable</RadioGroup.Item>
-      </RadioGroup>
-      <RadioGroup aria-label="Large density" defaultValue="comfortable" size="lg">
-        <RadioGroup.Item value="compact">Compact</RadioGroup.Item>
-        <RadioGroup.Item value="comfortable">Comfortable</RadioGroup.Item>
-      </RadioGroup>
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
+        <RadioGroup
+          aria-label={`${size} density`}
+          defaultValue="comfortable"
+          key={size}
+          size={size}
+        >
+          <RadioGroup.Item value="compact">Compact</RadioGroup.Item>
+          <RadioGroup.Item value="comfortable">Comfortable</RadioGroup.Item>
+        </RadioGroup>
+      ))}
     </div>
   ),
 };

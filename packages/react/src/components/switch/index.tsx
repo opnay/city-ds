@@ -14,9 +14,11 @@ export interface SwitchProps extends Omit<BaseSwitch.Root.Props, 'className'> {
 }
 
 const switchSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-4 w-7 p-0.5',
-  md: 'h-5 w-9 p-0.5',
-  lg: 'h-6 w-11 p-0.5',
+  xsm: 'h-3 w-5 p-0.5',
+  sm: 'h-3.5 w-6 p-0.5',
+  md: 'h-4 w-7 p-0.5',
+  lg: 'h-5 w-9 p-0.5',
+  xlg: 'h-6 w-11 p-0.5',
 };
 
 export interface SwitchThumbProps extends Omit<BaseSwitch.Thumb.Props, 'className'> {
@@ -25,9 +27,11 @@ export interface SwitchThumbProps extends Omit<BaseSwitch.Thumb.Props, 'classNam
 }
 
 const switchThumbSizeClasses: Record<ControlSize, string> = {
-  sm: 'size-3 data-[checked]:translate-x-3',
-  md: 'size-4 data-[checked]:translate-x-4',
-  lg: 'size-5 data-[checked]:translate-x-5',
+  xsm: 'size-2 data-[checked]:translate-x-2',
+  sm: 'size-2.5 data-[checked]:translate-x-2.5',
+  md: 'size-3 data-[checked]:translate-x-3',
+  lg: 'size-4 data-[checked]:translate-x-4',
+  xlg: 'size-5 data-[checked]:translate-x-5',
 };
 
 export const SwitchThumb = React.forwardRef<HTMLSpanElement, SwitchThumbProps>(function SwitchThumb(

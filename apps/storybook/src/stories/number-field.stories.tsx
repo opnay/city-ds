@@ -38,7 +38,6 @@ function NumberFieldControl(props: NumberFieldRootPropsWithLabel) {
 
 type NumberFieldRootPropsWithLabel = ComponentProps<typeof NumberField.Root> & {
   label: string;
-  size?: 'sm' | 'md' | 'lg';
 };
 
 export const Default: Story = {

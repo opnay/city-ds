@@ -13,7 +13,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'inline-radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xsm', 'sm', 'md', 'lg', 'xlg'],
     },
     type: {
       control: 'select',
@@ -38,9 +38,14 @@ export const Default: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="grid w-80 gap-3">
-      <Input aria-label="Small project name" placeholder="Small" size="sm" />
-      <Input aria-label="Medium project name" placeholder="Medium" size="md" />
-      <Input aria-label="Large project name" placeholder="Large" size="lg" />
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
+        <Input
+          aria-label={`${size} project name`}
+          key={size}
+          placeholder={size.toUpperCase()}
+          size={size}
+        />
+      ))}
     </div>
   ),
 };
@@ -61,21 +66,13 @@ export const Group: Story = {
 export const GroupSizes: Story = {
   render: () => (
     <div className="grid w-80 gap-3">
-      <InputGroup.Root size="sm">
-        <InputGroup.Addon>https://</InputGroup.Addon>
-        <Input aria-label="Small deployment domain" placeholder="city" />
-        <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
-      </InputGroup.Root>
-      <InputGroup.Root size="md">
-        <InputGroup.Addon>https://</InputGroup.Addon>
-        <Input aria-label="Medium deployment domain" placeholder="city" />
-        <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
-      </InputGroup.Root>
-      <InputGroup.Root size="lg">
-        <InputGroup.Addon>https://</InputGroup.Addon>
-        <Input aria-label="Large deployment domain" placeholder="city" />
-        <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
-      </InputGroup.Root>
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
+        <InputGroup.Root key={size} size={size}>
+          <InputGroup.Addon>https://</InputGroup.Addon>
+          <Input aria-label={`${size} deployment domain`} placeholder="city" />
+          <InputGroup.Addon position="trailing">.dev</InputGroup.Addon>
+        </InputGroup.Root>
+      ))}
     </div>
   ),
 };

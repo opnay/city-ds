@@ -1,6 +1,6 @@
 import { ToggleGroup } from '@opnay/city-ds-react/toggle-group';
 
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 export default function ToggleGroupSizesExample() {
   return (

@@ -1,9 +1,15 @@
 import { Table } from '@opnay/city-ds-react/table';
 
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 const variants = ['line', 'surface'] as const;
 
-function Sample({ size, variant }: { size: 'sm' | 'md' | 'lg'; variant: 'line' | 'surface' }) {
+function Sample({
+  size,
+  variant,
+}: {
+  size: 'xsm' | 'sm' | 'md' | 'lg' | 'xlg';
+  variant: 'line' | 'surface';
+}) {
   return (
     <Table.Root aria-label={`${size} ${variant} 테이블`} size={size} variant={variant}>
       <Table.Header>

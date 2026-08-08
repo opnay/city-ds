@@ -1,6 +1,6 @@
 import { Toggle } from '@opnay/city-ds-react/toggle';
 
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 export default function ToggleSizesExample() {
   return (

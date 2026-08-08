@@ -19,7 +19,7 @@ export const pageData = {
     },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '그룹의 모든 항목 크기를 맞춥니다.',
     },
@@ -77,7 +77,7 @@ export const pageData = {
     },
     {
       Component: ToggleGroupSizesExample,
-      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '그룹 안의 모든 항목에 동일한 제어 높이를 적용합니다.',
       id: 'toggle-group-sizes',
       filename: 'sizes.tsx',
@@ -116,7 +116,7 @@ export const pageData = {
     { name: 'pressed', values: ['false', 'true'] },
     { name: 'multiple', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'orientation', defaultValue: 'horizontal', values: ['horizontal', 'vertical'] },
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
   ],

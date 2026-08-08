@@ -13,7 +13,7 @@ export const pageData = {
   api: [
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '입력과 그룹의 제어 높이입니다.',
     },
@@ -33,7 +33,7 @@ export const pageData = {
   examples: [
     {
       Component: InputSizesExample,
-      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '주변 제어와 입력 높이를 맞춥니다.',
       id: 'input-sizes',
       filename: 'sizes.tsx',
@@ -72,7 +72,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'addonPosition', defaultValue: 'leading', values: ['leading', 'trailing'] },

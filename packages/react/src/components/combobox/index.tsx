@@ -104,27 +104,35 @@ const ComboboxLayoutContext = React.createContext<ComboboxLayoutContextValue>({
 });
 
 const comboboxPaddingClasses: Record<ControlSize, string> = {
-  sm: 'px-2.5',
-  md: 'px-3',
-  lg: 'px-3.5',
+  xsm: 'px-1.5',
+  sm: 'px-2',
+  md: 'px-2.5',
+  lg: 'px-3',
+  xlg: 'px-3.5',
 };
 
 const comboboxInputRowHeightClasses: Record<ControlSize, string> = {
+  xsm: 'h-[calc(var(--city-control-xsm)-2px)]',
   sm: 'h-[calc(var(--city-control-sm)-2px)]',
   md: 'h-[calc(var(--city-control-md)-2px)]',
   lg: 'h-[calc(var(--city-control-lg)-2px)]',
+  xlg: 'h-[calc(var(--city-control-xlg)-2px)]',
 };
 
 const comboboxChipBandPaddingClasses: Record<ControlSize, string> = {
-  sm: 'px-2.5 py-1',
-  md: 'px-3 py-1.5',
-  lg: 'px-3.5 py-2',
+  xsm: 'px-1.5 py-0.5',
+  sm: 'px-2 py-0.5',
+  md: 'px-2.5 py-1',
+  lg: 'px-3 py-1.5',
+  xlg: 'px-3.5 py-2',
 };
 
 const comboboxAuxiliaryActionSizeClasses: Record<ControlSize, string> = {
-  sm: 'size-7',
-  md: 'size-8',
-  lg: 'size-9',
+  xsm: 'size-5',
+  sm: 'size-6',
+  md: 'size-7',
+  lg: 'size-8',
+  xlg: 'size-9',
 };
 
 export function ComboboxRoot<Value, Multiple extends boolean | undefined = false>({

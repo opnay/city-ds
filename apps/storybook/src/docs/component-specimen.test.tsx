@@ -75,10 +75,10 @@ describe('ComponentSpecimen', () => {
       expect(input).not.toBeNull();
       expect(getComputedStyle(badge!).fontSize).toBe('10px');
       expect(getComputedStyle(badge!).lineHeight).toBe('12px');
-      expect(getComputedStyle(button!).fontSize).toBe('14px');
-      expect(getComputedStyle(button!).lineHeight).toBe('20px');
-      expect(getComputedStyle(input!).fontSize).toBe('14px');
-      expect(getComputedStyle(input!).lineHeight).toBe('20px');
+      expect(getComputedStyle(button!).fontSize).toBe('12px');
+      expect(getComputedStyle(button!).lineHeight).toBe('16px');
+      expect(getComputedStyle(input!).fontSize).toBe('12px');
+      expect(getComputedStyle(input!).lineHeight).toBe('16px');
     } finally {
       host.remove();
       style.remove();

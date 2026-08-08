@@ -34,7 +34,7 @@ const meta = {
     },
   },
   argTypes: {
-    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    size: { control: 'inline-radio', options: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     value: { control: { min: 0, max: 100, step: 1 }, type: 'number' },
   },
   render: (args) => <LinearProgress {...args} />,

@@ -10,7 +10,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'inline-radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xsm', 'sm', 'md', 'lg', 'xlg'],
     },
     disabled: { control: 'boolean' },
     indeterminate: { control: 'boolean' },
@@ -52,9 +52,9 @@ export const Indeterminate: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="grid gap-3">
-      <Checkbox aria-label="Small checkbox" size="sm" />
-      <Checkbox aria-label="Medium checkbox" size="md" />
-      <Checkbox aria-label="Large checkbox" size="lg" />
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
+        <Checkbox aria-label={`${size} checkbox`} key={size} size={size} />
+      ))}
     </div>
   ),
 };

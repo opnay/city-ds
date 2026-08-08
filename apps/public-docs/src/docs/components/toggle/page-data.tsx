@@ -23,7 +23,7 @@ export const pageData = {
     { name: 'defaultPressed', type: 'boolean', description: '비제어 초기 상태입니다.' },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '제어 높이입니다.',
     },
@@ -64,7 +64,7 @@ export const pageData = {
     },
     {
       Component: ToggleSizesExample,
-      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '같은 도구 모음에서는 토글 높이를 일관되게 맞춥니다.',
       id: 'toggle-sizes',
       filename: 'sizes.tsx',
@@ -91,7 +91,7 @@ export const pageData = {
       values: ['primary', 'secondary', 'outline', 'ghost', 'destructive'],
     },
     { name: 'pressed', values: ['false', 'true'] },
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
   ],

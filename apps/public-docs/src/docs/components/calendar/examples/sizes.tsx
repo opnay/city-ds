@@ -1,6 +1,6 @@
 import { Calendar } from '@opnay/city-ds-react/calendar';
 
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 const today = new Date(2026, 6, 15);
 
 export default function CalendarSizesExample() {

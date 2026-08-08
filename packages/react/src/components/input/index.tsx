@@ -73,9 +73,11 @@ export interface TextareaProps
 }
 
 const textareaSizeClasses: Record<ControlSize, string> = {
-  sm: 'min-h-20 px-2.5 py-2 text-xs',
-  md: 'min-h-24 px-3 py-2 text-sm',
-  lg: 'min-h-28 px-3.5 py-2.5 text-sm',
+  xsm: 'min-h-16 px-1.5 py-1.5 text-xs',
+  sm: 'min-h-18 px-2 py-1.5 text-xs',
+  md: 'min-h-20 px-2.5 py-2 text-xs',
+  lg: 'min-h-24 px-3 py-2 text-sm',
+  xlg: 'min-h-28 px-3.5 py-2.5 text-sm',
 };
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(

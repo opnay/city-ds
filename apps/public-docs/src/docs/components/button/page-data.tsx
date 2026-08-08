@@ -19,7 +19,7 @@ export const pageData = {
       defaultValue: "'md'",
       description: '같은 액션 그룹에서는 동일한 제어 높이를 사용합니다.',
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
     },
     {
       defaultValue: 'false',
@@ -63,7 +63,7 @@ export const pageData = {
     {
       Component: ButtonSizesExample,
       coverage: [
-        { axis: 'size', values: ['sm', 'md', 'lg'] },
+        { axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
         { axis: 'iconOnly', values: ['false', 'true'] },
       ],
       description: '텍스트 버튼과 접근 가능한 이름이 있는 아이콘 버튼을 크기별로 비교합니다.',
@@ -91,7 +91,7 @@ export const pageData = {
       name: 'variant',
       values: ['primary', 'secondary', 'outline', 'ghost', 'destructive'],
     },
-    { defaultValue: 'md', name: 'size', values: ['sm', 'md', 'lg'] },
+    { defaultValue: 'md', name: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { defaultValue: 'false', name: 'iconOnly', values: ['false', 'true'] },
     { defaultValue: 'false', name: 'disabled', values: ['false', 'true'] },
   ],

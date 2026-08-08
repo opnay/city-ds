@@ -37,17 +37,23 @@ Surface, tone, hover, pressed 같은 시각·상태 축은 텍스트 크기나 �
       <p className="text-city-muted-foreground m-0 text-xs">읽기와 조작이 필요한 단일 행 컨트롤</p>
     </div>
     <div className="flex flex-wrap items-center gap-3">
+      <Button size="xsm">xsm · 저장</Button>
       <Button size="sm">sm · 저장</Button>
       <Button size="md">md · 저장</Button>
       <Button size="lg">lg · 저장</Button>
+      <Button size="xlg">xlg · 저장</Button>
+      <Toggle size="xsm">xsm · 고정</Toggle>
       <Toggle size="sm">sm · 고정</Toggle>
       <Toggle size="md">md · 고정</Toggle>
       <Toggle size="lg">lg · 고정</Toggle>
+      <Toggle size="xlg">xlg · 고정</Toggle>
     </div>
-    <div className="grid max-w-xl gap-3 sm:grid-cols-3">
+    <div className="grid max-w-4xl gap-3 sm:grid-cols-2 xl:grid-cols-5">
+      <Input aria-label="매우 작은 입력" defaultValue="xsm · 프로젝트" size="xsm" />
       <Input aria-label="작은 입력" defaultValue="sm · 프로젝트" size="sm" />
       <Input aria-label="중간 입력" defaultValue="md · 프로젝트" size="md" />
       <Input aria-label="큰 입력" defaultValue="lg · 프로젝트" size="lg" />
+      <Input aria-label="매우 큰 입력" defaultValue="xlg · 프로젝트" size="xlg" />
     </div>
   </section>
 </div>
@@ -67,6 +73,9 @@ Surface, tone, hover, pressed 같은 시각·상태 축은 텍스트 크기나 �
           <Table.Head>역할</Table.Head>
           <Table.Head>측정 항목</Table.Head>
           <Table.Head>
+            <code>xsm</code>
+          </Table.Head>
+          <Table.Head>
             <code>sm</code>
           </Table.Head>
           <Table.Head>
@@ -75,26 +84,35 @@ Surface, tone, hover, pressed 같은 시각·상태 축은 텍스트 크기나 �
           <Table.Head>
             <code>lg</code>
           </Table.Head>
+          <Table.Head>
+            <code>xlg</code>
+          </Table.Head>
         </Table.Row>
       </Table.Header>
       <Table.Body>
         <Table.Row>
           <Table.Head scope="row">Compact Status</Table.Head>
           <Table.Cell>외곽 높이</Table.Cell>
+          <Table.Cell>—</Table.Cell>
           <Table.Cell>20px</Table.Cell>
           <Table.Cell>24px</Table.Cell>
           <Table.Cell>28px</Table.Cell>
+          <Table.Cell>—</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Head scope="row">Compact Status</Table.Head>
           <Table.Cell>텍스트</Table.Cell>
+          <Table.Cell>—</Table.Cell>
           <Table.Cell>10 / 12px</Table.Cell>
           <Table.Cell>10 / 12px</Table.Cell>
           <Table.Cell>12 / 16px</Table.Cell>
+          <Table.Cell>—</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Head scope="row">Control</Table.Head>
           <Table.Cell>외곽 높이</Table.Cell>
+          <Table.Cell>24px</Table.Cell>
+          <Table.Cell>28px</Table.Cell>
           <Table.Cell>32px</Table.Cell>
           <Table.Cell>36px</Table.Cell>
           <Table.Cell>40px</Table.Cell>
@@ -102,6 +120,8 @@ Surface, tone, hover, pressed 같은 시각·상태 축은 텍스트 크기나 �
         <Table.Row>
           <Table.Head scope="row">Control</Table.Head>
           <Table.Cell>텍스트</Table.Cell>
+          <Table.Cell>12 / 16px</Table.Cell>
+          <Table.Cell>12 / 16px</Table.Cell>
           <Table.Cell>12 / 16px</Table.Cell>
           <Table.Cell>14 / 20px</Table.Cell>
           <Table.Cell>14 / 20px</Table.Cell>

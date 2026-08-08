@@ -2,7 +2,7 @@ import { Progress } from '@opnay/city-ds-react/progress';
 
 const shapes = ['linear', 'circular'] as const;
 const statuses = ['progressing', 'complete', 'indeterminate'] as const;
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 const statusValues = {
   progressing: 55,

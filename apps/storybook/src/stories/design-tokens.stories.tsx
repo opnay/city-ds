@@ -64,9 +64,11 @@ const durationTokens = [
 ] as const;
 const easingTokens = ['standard', 'enter', 'exit'] as const;
 const controlTokens = [
-  ['sm', '32px'],
-  ['md', '36px'],
-  ['lg', '40px'],
+  ['xsm', '24px'],
+  ['sm', '28px'],
+  ['md', '32px'],
+  ['lg', '36px'],
+  ['xlg', '40px'],
 ] as const;
 
 interface TokenStoryFrameProps {

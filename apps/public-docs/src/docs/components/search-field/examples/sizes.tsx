@@ -1,6 +1,6 @@
 import { SearchField } from '@opnay/city-ds-react/search-field';
 
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 export default function SearchFieldSizesExample() {
   return (

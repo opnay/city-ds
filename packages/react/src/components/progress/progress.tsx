@@ -64,15 +64,19 @@ function getStateAttributes(state: ProgressState): Record<string, string | undef
 const ProgressStyleContext = React.createContext<ControlSize>('md');
 
 const TRACK_HEIGHT: Record<ControlSize, string> = {
-  sm: 'h-1.5',
-  md: 'h-2',
-  lg: 'h-3',
+  xsm: 'h-0.5',
+  sm: 'h-1',
+  md: 'h-1.5',
+  lg: 'h-2',
+  xlg: 'h-3',
 };
 
 const CIRCULAR_SIZE: Record<ControlSize, string> = {
-  sm: 'size-5',
-  md: 'size-7',
-  lg: 'size-9',
+  xsm: 'size-3',
+  sm: 'size-4',
+  md: 'size-5',
+  lg: 'size-7',
+  xlg: 'size-9',
 };
 
 type BaseProgressRootProps = React.ComponentPropsWithoutRef<typeof BaseProgress.Root>;

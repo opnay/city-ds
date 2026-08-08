@@ -28,9 +28,11 @@ export interface ToggleProps<Value extends string = string> extends Omit<
 }
 
 const toggleSizeClasses: Record<ControlSize, string> = {
-  sm: 'h-(--city-control-sm) gap-1.5 px-2.5',
-  md: 'h-(--city-control-md) gap-2 px-3',
-  lg: 'h-(--city-control-lg) gap-2 px-4',
+  xsm: 'h-(--city-control-xsm) gap-1 px-1.5',
+  sm: 'h-(--city-control-sm) gap-1.5 px-2',
+  md: 'h-(--city-control-md) gap-1.5 px-2.5',
+  lg: 'h-(--city-control-lg) gap-2 px-3',
+  xlg: 'h-(--city-control-xlg) gap-2 px-4',
 };
 
 const toggleVariantClasses: Record<ToggleVariant, string> = {

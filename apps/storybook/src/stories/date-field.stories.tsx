@@ -19,7 +19,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'inline-radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xsm', 'sm', 'md', 'lg', 'xlg'],
     },
   },
 } satisfies Meta<typeof DateField.Root>;
@@ -64,7 +64,7 @@ export const Controlled: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="grid w-80 gap-3">
-      {(['sm', 'md', 'lg'] as const).map((size) => (
+      {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
         <div className="grid gap-2" key={size}>
           <span className="text-xs text-city-muted-foreground">{size.toUpperCase()}</span>
           <DateField.Root defaultValue={new Date(2026, 6, 15)} size={size}>

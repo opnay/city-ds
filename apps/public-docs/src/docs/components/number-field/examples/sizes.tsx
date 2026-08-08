@@ -1,7 +1,7 @@
 import { Field } from '@opnay/city-ds-react/field';
 import { NumberField } from '@opnay/city-ds-react/number-field';
 
-const sizes = ['sm', 'md', 'lg'] as const;
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
 export default function NumberFieldSizesExample() {
   return (

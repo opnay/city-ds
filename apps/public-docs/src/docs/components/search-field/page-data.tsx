@@ -21,7 +21,7 @@ export const pageData = {
     { name: 'invalid / disabled', type: 'boolean', description: '오류와 비활성 상태입니다.' },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      type: "'xsm' | 'sm' | 'md' | 'lg' | 'xlg'",
       defaultValue: "'md'",
       description: '입력 높이입니다.',
     },
@@ -44,7 +44,7 @@ export const pageData = {
     },
     {
       Component: SearchFieldSizesExample,
-      coverage: [{ axis: 'size', values: ['sm', 'md', 'lg'] }],
+      coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '입력과 내부 버튼의 제어 높이를 함께 맞춥니다.',
       id: 'search-field-sizes',
       filename: 'sizes.tsx',
@@ -75,7 +75,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'loading', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },

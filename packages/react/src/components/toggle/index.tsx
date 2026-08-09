@@ -37,15 +37,15 @@ const toggleSizeClasses: Record<ControlSize, string> = {
 
 const toggleVariantClasses: Record<ToggleVariant, string> = {
   primary:
-    'bg-city-primary text-city-primary-foreground hover:bg-city-primary/90 active:bg-city-primary/80 data-[pressed]:bg-city-primary/80',
+    'bg-city-primary text-city-primary-foreground hover:bg-city-primary-hover active:bg-city-primary-active data-[pressed]:bg-city-primary-active',
   secondary:
-    'bg-city-accent text-city-accent-foreground hover:bg-city-accent-hover active:bg-city-accent-active data-[pressed]:bg-city-foreground data-[pressed]:text-city-background',
+    'bg-city-accent text-city-accent-foreground hover:bg-city-accent-hover active:bg-city-accent-active data-[pressed]:bg-city-inverse data-[pressed]:text-city-inverse-foreground',
   outline:
-    'border border-city-border bg-city-background text-city-foreground hover:bg-city-accent active:bg-city-accent-active data-[pressed]:bg-city-foreground data-[pressed]:text-city-background',
+    'border border-city-border bg-city-background text-city-foreground hover:bg-city-accent active:bg-city-accent-active data-[pressed]:bg-city-inverse data-[pressed]:text-city-inverse-foreground',
   ghost:
     'text-city-foreground hover:bg-city-accent active:bg-city-accent-active data-[pressed]:bg-city-accent data-[pressed]:text-city-accent-foreground',
   destructive:
-    'bg-city-destructive text-city-destructive-foreground hover:bg-city-destructive/90 active:bg-city-destructive/80 data-[pressed]:bg-city-destructive/80',
+    'bg-city-destructive text-city-destructive-foreground hover:bg-city-destructive-hover active:bg-city-destructive-active data-[pressed]:bg-city-destructive-active',
 };
 
 export const Toggle = React.forwardRef<HTMLButtonElement, ToggleProps>(function Toggle(

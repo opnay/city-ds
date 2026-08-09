@@ -443,7 +443,7 @@ export const PaginationPage = React.forwardRef<HTMLElement, PaginationPageProps>
         defaultAriaLabel={context.labels.page(target)}
         className={cn(
           isCurrent &&
-            'border-city-border bg-city-primary text-city-primary-foreground hover:bg-city-primary',
+            'border-city-border bg-city-primary text-city-primary-foreground hover:bg-city-primary-hover',
           props.className,
         )}
         ref={ref}

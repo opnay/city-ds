@@ -141,13 +141,13 @@ function getCalendarClassNames(size: ControlSize): Partial<ClassNames> {
       textSize,
     ),
     [DayFlag.today]:
-      '[&>button]:ring-city-ring/40 [&>button]:font-semibold [&>button]:ring-1 [&>button]:ring-inset',
+      '[&>button]:ring-city-ring [&>button]:font-semibold [&>button]:ring-1 [&>button]:ring-inset',
     [DayFlag.outside]: '[&>button]:text-city-muted-foreground',
     [DayFlag.disabled]:
       '[&>button]:pointer-events-none [&>button]:cursor-not-allowed [&>button]:opacity-35',
     [DayFlag.hidden]: 'invisible',
     [SelectionState.selected]:
-      '[&>button]:bg-city-primary [&>button]:text-city-primary-foreground [&>button]:hover:bg-city-primary/90 [&>button]:ring-0',
+      '[&>button]:bg-city-primary [&>button]:text-city-primary-foreground [&>button]:hover:bg-city-primary-hover [&>button]:ring-0',
   };
 }
 
@@ -242,7 +242,7 @@ export function Calendar({
     captionLayout,
     className: cn(
       'text-city-foreground',
-      invalid && 'ring-city-destructive/30 rounded-city-md ring-2',
+      invalid && 'ring-city-destructive rounded-city-md ring-2',
       className,
     ),
     classNames: getCalendarClassNames(size),

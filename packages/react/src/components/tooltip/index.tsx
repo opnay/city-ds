@@ -62,7 +62,7 @@ export const TooltipPopup = React.forwardRef<HTMLDivElement, TooltipPopupProps>(
       role={role ?? 'tooltip'}
       className={classes(
         className,
-        'rounded-city-sm bg-city-foreground text-city-background shadow-city-popup max-w-64 px-2.5 py-1.5 text-xs leading-4',
+        'rounded-city-sm bg-city-inverse text-city-inverse-foreground shadow-city-popup max-w-64 px-2.5 py-1.5 text-xs leading-4',
       )}
     />
   ),
@@ -79,7 +79,7 @@ export const TooltipArrow = React.forwardRef<HTMLDivElement, TooltipArrowProps>(
     <BaseTooltip.Arrow
       {...props}
       ref={ref}
-      className={classes(className, 'bg-city-foreground size-2 rotate-45')}
+      className={classes(className, 'bg-city-inverse size-2 rotate-45')}
     />
   ),
 );

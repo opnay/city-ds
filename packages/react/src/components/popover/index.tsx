@@ -90,7 +90,7 @@ export const PopoverBackdrop = React.forwardRef<HTMLDivElement, PopoverBackdropP
     <BasePopover.Backdrop
       {...props}
       ref={ref}
-      className={classes(className, 'fixed inset-0 z-40 bg-black/20')}
+      className={classes(className, 'bg-city-backdrop-subtle fixed inset-0 z-40')}
     />
   ),
 );

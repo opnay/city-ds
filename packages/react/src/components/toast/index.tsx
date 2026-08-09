@@ -20,6 +20,7 @@ import type {
 } from '@base-ui/react/toast';
 import { X } from 'lucide-react';
 import { cn } from '../../lib/cn';
+import { feedbackToneStyles } from '../../lib/feedback-tone-styles';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { FeedbackTone } from '../../types';
 
@@ -73,29 +74,6 @@ export const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps
   ),
 );
 
-const toastAppearanceClasses: Record<FeedbackTone, Record<ToastAppearance, string>> = {
-  neutral: {
-    outline: 'border-city-border bg-city-surface-raised',
-    subtle: 'border-city-border bg-city-muted',
-  },
-  info: {
-    outline: 'border-city-info/40 bg-city-surface-raised',
-    subtle: 'border-city-info/30 bg-city-info/10',
-  },
-  success: {
-    outline: 'border-city-success/40 bg-city-surface-raised',
-    subtle: 'border-city-success/30 bg-city-success/10',
-  },
-  warning: {
-    outline: 'border-city-warning/40 bg-city-surface-raised',
-    subtle: 'border-city-warning/30 bg-city-warning/10',
-  },
-  destructive: {
-    outline: 'border-city-destructive/40 bg-city-surface-raised',
-    subtle: 'border-city-destructive/30 bg-city-destructive/10',
-  },
-};
-
 function getToastTone(type: string | undefined): FeedbackTone {
   if (type === 'error' || type === 'destructive') {
     return 'destructive';
@@ -111,6 +89,7 @@ function getToastTone(type: string | undefined): FeedbackTone {
 export const ToastRoot = React.forwardRef<HTMLDivElement, ToastRootProps>(
   ({ appearance = 'outline', className, toast, tone: toneProp, ...props }, ref) => {
     const tone = toneProp ?? getToastTone(toast.type);
+    const toneStyles = feedbackToneStyles[tone];
 
     return (
       <BaseToast.Root
@@ -124,7 +103,8 @@ export const ToastRoot = React.forwardRef<HTMLDivElement, ToastRootProps>(
           className,
           cn(
             'rounded-city-md text-city-foreground shadow-city-popup w-full border data-[limited]:hidden',
-            toastAppearanceClasses[tone][appearance],
+            toneStyles.border,
+            appearance === 'subtle' ? toneStyles.surface : 'bg-city-surface-raised',
           ),
         )}
       />

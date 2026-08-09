@@ -336,7 +336,7 @@ export const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
         ...props,
         children,
         className: cn(
-          'align-middle transition-colors hover:bg-city-muted/70',
+          'align-middle transition-colors hover:bg-city-muted',
           state.variant === 'surface' && 'border-b border-city-border last:border-b-0',
           className,
         ),

@@ -32,7 +32,7 @@ export interface InputProps extends Omit<BaseInputProps, 'className' | 'size'> {
 
 const inputClasses = cn(
   atomicRectShapeClasses.control,
-  'flex w-full min-w-0 border border-city-input bg-city-background text-city-foreground outline-none transition-colors placeholder:text-city-muted-foreground focus-visible:border-city-ring focus-visible:ring-2 focus-visible:ring-city-ring/30 disabled:cursor-not-allowed disabled:opacity-50 data-[invalid]:border-city-destructive data-[invalid]:focus-visible:ring-city-destructive/30',
+  'flex w-full min-w-0 border border-city-input bg-city-background text-city-foreground outline-none transition-colors placeholder:text-city-muted-foreground focus-visible:border-city-ring focus-visible:ring-2 focus-visible:ring-city-ring disabled:cursor-not-allowed disabled:opacity-50 data-[invalid]:border-city-destructive data-[invalid]:focus-visible:ring-city-destructive',
 );
 
 export const Input = React.forwardRef<HTMLElement, InputProps>(function Input(

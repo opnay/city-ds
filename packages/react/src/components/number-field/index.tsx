@@ -114,7 +114,7 @@ type StepperProps = Omit<BaseNumberField.Increment.Props, 'className'> & {
 };
 
 const stepperClasses =
-  'border-city-border text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring/30 inline-flex h-full shrink-0 self-stretch items-center justify-center transition-colors focus-visible:z-10 focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50';
+  'border-city-border text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring inline-flex h-full shrink-0 self-stretch items-center justify-center transition-colors focus-visible:z-10 focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50';
 
 export const NumberFieldIncrement = React.forwardRef<HTMLButtonElement, StepperProps>(
   function NumberFieldIncrement({ children, className, size: sizeProp, ...props }, ref) {

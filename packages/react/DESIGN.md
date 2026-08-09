@@ -220,7 +220,24 @@ CTA는 결과를 예측할 수 있게 쓰십시오. `확인`, `예`보다 `변�
 
 부모와 자식에 같은 테두리, radius, 그림자를 반복하지 마십시오. 내부 그룹은 먼저 간격, 정렬, 제목, divider로 구분하십시오. 카드나 패널은 독립된 정보, 액션, 상태를 소유할 때만 추가하십시오.
 
-색상, 간격, 글꼴, radius, 그림자, 모션은 `--city-*` 토큰을 사용하십시오. 브랜드 색을 추가하더라도 action, status, destructive 의미와 충돌시키지 마십시오. 라이트, 다크, 시스템 테마에서 같은 의미와 대비를 유지하고 상태를 색상 하나에만 맡기지 마십시오.
+### 색상 체계
+
+색상은 `원시 팔레트 → 의미 토큰 → 컴포넌트 tone·appearance → 상태` 순서로 적용하십시오.
+
+- `--city-palette-*`는 제품별 의미 토큰을 정의하는 재료입니다. 재사용 컴포넌트에 직접 적용하지 마십시오.
+- `--city-color-*`는 background, surface, interaction, action, feedback, effect 역할을 정의합니다. city-ds 컴포넌트와 소비 화면은 먼저 의미 토큰을 사용하십시오.
+- `tone`은 `neutral | info | success | warning | destructive` 의미이고, `appearance`는 `solid | subtle | outline` 표현 강도입니다. 같은 tone은 컴포넌트가 달라도 같은 의미를 유지해야 합니다.
+- `solid`는 주요·위험 액션과 짧은 Badge에 사용하십시오. 넓은 Alert·Toast는 subtle 또는 outline을 사용해 화면의 색 무게와 본문 대비를 유지하십시오.
+- primary·destructive의 hover·active, feedback의 foreground·surface·border는 공개 토큰을 사용하십시오. `/10`, `/40`, `/90`처럼 임의 투명도로 상태색을 만들지 마십시오.
+- Tooltip은 inverse, Dialog·Drawer·Popover 배경은 backdrop, Skeleton highlight는 shimmer 역할을 사용하십시오.
+
+한 액션 그룹에는 원칙적으로 하나의 primary만 두십시오. `warning`은 확인 후 진행할 수 있는 상태, `destructive`는 실패나 손실 위험에 사용하십시오. 브랜드 색을 추가하더라도 action, status, destructive 의미와 충돌시키지 마십시오.
+
+상태를 색상 하나에 맡기지 말고 아이콘, 제목, 레이블, 위치 또는 ARIA 상태를 함께 제공하십시오. 일반 텍스트는 4.5:1, 큰 텍스트·아이콘·focus 표시는 3:1 이상의 대비를 유지하고 라이트, 다크, 시스템 테마에서 default, hover, active, selected, invalid, focus, disabled를 확인하십시오. disabled는 컴포넌트 전체 opacity를 낮추는 예외입니다.
+
+색상 토큰 목록과 Light·Dark 비교는 Storybook의 `기초/디자인 토큰/색상`, 컴포넌트 선택 규칙은 `디자인 패턴/Color`를 참고하십시오.
+
+색상 외 간격, 글꼴, radius, 그림자와 모션도 `--city-*` 토큰을 사용하십시오.
 
 제목 수준은 문서 구조를 따르십시오. 글자 크기로 heading 순서를 흉내 내지 마십시오. 보조 텍스트는 낮은 대비를 사용할 수 있지만 읽을 수 있어야 하며, 오류나 필수 지침을 보조 장식처럼 약하게 만들지 마십시오.
 

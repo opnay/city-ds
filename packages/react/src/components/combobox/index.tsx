@@ -256,7 +256,7 @@ export const ComboboxTrigger = React.forwardRef<HTMLButtonElement, ComboboxTrigg
         className={classes(
           className,
           cn(
-            'text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring/30 z-0 flex shrink-0 items-center justify-center transition-colors outline-none focus-visible:z-10 focus-visible:ring-2 disabled:pointer-events-none [&>svg]:transition-transform data-[popup-open]:[&>svg]:rotate-180',
+            'text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring z-0 flex shrink-0 items-center justify-center transition-colors outline-none focus-visible:z-10 focus-visible:ring-2 disabled:pointer-events-none [&>svg]:transition-transform data-[popup-open]:[&>svg]:rotate-180',
             'border-city-border h-full self-stretch rounded-none border-l',
             outlineFrameSegmentWidthClasses[size],
           ),
@@ -294,7 +294,7 @@ export const ComboboxClear = React.forwardRef<HTMLButtonElement, ComboboxClearPr
         className={classes(
           className,
           cn(
-            'text-city-muted-foreground hover:bg-city-accent hover:text-city-foreground active:bg-city-accent-active focus-visible:ring-city-ring/30 rounded-city-xs relative hidden shrink-0 items-center justify-center transition-colors outline-none focus-visible:z-10 focus-visible:ring-2 disabled:pointer-events-none data-[visible]:flex',
+            'text-city-muted-foreground hover:bg-city-accent hover:text-city-foreground active:bg-city-accent-active focus-visible:ring-city-ring rounded-city-xs relative hidden shrink-0 items-center justify-center transition-colors outline-none focus-visible:z-10 focus-visible:ring-2 disabled:pointer-events-none data-[visible]:flex',
             comboboxAuxiliaryActionSizeClasses[size],
           ),
         )}

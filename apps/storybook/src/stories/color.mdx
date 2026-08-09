@@ -1,0 +1,140 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Alert, Badge, Button } from '@opnay/city-ds-react';
+import { ComponentSpecimen } from '../docs/component-specimen';
+
+<Meta title="디자인 패턴/Color" />
+
+# Color
+
+Color는 장식용 팔레트가 아니라 **정보 의미, 액션 우선순위와 상태를 테마 전체에서 유지하는
+계약**입니다. 색상은 다음 순서로 적용하십시오.
+
+`원시 팔레트 → 의미 토큰 → 컴포넌트 tone·appearance → 상호작용 상태`
+
+## 토큰 계층
+
+| 계층        | 이름                             | 사용 기준                                                             |
+| ----------- | -------------------------------- | --------------------------------------------------------------------- |
+| 원시 팔레트 | `--city-palette-*`               | 제품별 의미 토큰을 정의하는 재료로만 사용하십시오.                    |
+| 의미 토큰   | `--city-color-*`                 | 배경, 콘텐츠, 액션, 피드백처럼 역할에 따라 선택하십시오.              |
+| 컴포넌트    | `tone`, `appearance`, `variant`  | 컴포넌트가 제공하는 API로 의미와 표현 강도를 선택하십시오.            |
+| 상태        | hover, active, selected, invalid | 컴포넌트가 소유한 상태 토큰을 사용하고 임의 투명도를 만들지 마십시오. |
+
+city-ds 컴포넌트 안에서는 원시 팔레트를 직접 사용하지 않습니다. 소비 제품에서 새로운 의미가
+필요한 경우 먼저 제품 토큰을 정의하십시오.
+
+```css
+:root {
+  --product-color-brand: var(--city-palette-blue-600);
+}
+
+[data-theme='dark'] {
+  --product-color-brand: var(--city-palette-blue-400);
+}
+```
+
+## 의미 역할
+
+| 역할        | 토큰                                                                    | 기준                                                            |
+| ----------- | ----------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Canvas      | `background`, `foreground`                                              | 페이지와 기본 콘텐츠의 대비를 정합니다.                         |
+| Surface     | `surface`, `surface-raised`, `muted`, `border`, `input`                 | 구획, 떠 있는 면, 보조 면과 경계를 구분합니다.                  |
+| Interaction | `accent`, `accent-hover`, `accent-active`, `ring`                       | hover·active·focus를 geometry 변경 없이 표시합니다.             |
+| Action      | `primary`, `destructive`와 각 foreground·hover·active                   | 대표 액션과 손실 위험 액션을 구분합니다.                        |
+| Feedback    | `info`, `success`, `warning`, `destructive`의 foreground·surface·border | 상태 의미와 표현 강도를 테마별로 유지합니다.                    |
+| Effect      | `inverse`, `backdrop`, `shimmer`                                        | Tooltip, overlay, loading 효과처럼 별도 표면 관계를 표현합니다. |
+
+`foreground`는 기본 텍스트, `*-foreground`는 해당 solid fill 위 콘텐츠입니다. 예를 들어
+`--city-color-warning`을 본문 글자색으로 임의 사용하지 말고, warning Badge의 본문은
+`--city-color-warning-foreground`를 사용하십시오.
+
+## Tone과 Appearance
+
+Tone은 의미이고 Appearance는 면의 강도입니다. 같은 tone은 컴포넌트가 달라도 같은 의미를
+유지해야 합니다.
+
+| Tone          | 의미                                      | 대표 사용              |
+| ------------- | ----------------------------------------- | ---------------------- |
+| `neutral`     | 일반 상태, 아직 의미가 확정되지 않은 정보 | 대기, 예약, 기본 안내  |
+| `info`        | 판단을 돕는 정보, 진행 중 상태            | 동기화 중, 새 데이터   |
+| `success`     | 완료되었거나 정상인 상태                  | 저장 완료, 정상 운영   |
+| `warning`     | 확인 후 계속 진행할 수 있는 상태          | 검토 필요, 임계치 접근 |
+| `destructive` | 실패, 손실 위험, 복구가 필요한 상태       | 삭제, 가져오기 실패    |
+
+| Appearance | 색상 사용                              | 적용 범위                      |
+| ---------- | -------------------------------------- | ------------------------------ |
+| `solid`    | 강한 fill과 전용 foreground            | 주요·위험 액션, 짧은 Badge     |
+| `subtle`   | tone surface와 tone border             | 넓은 Alert·Toast, 보조 Badge   |
+| `outline`  | 기본 surface와 tone border             | 낮은 강조의 상태와 지속 메시지 |
+| `ghost`    | 기본 면 없이 hover·active에서만 accent | 낮은 우선순위 액션             |
+
+<ComponentSpecimen>
+  <div className="my-6 grid gap-6">
+    <section className="grid gap-3">
+      <h2 className="city-text-subsection-title">Action</h2>
+      <div className="flex flex-wrap gap-2">
+        <Button>변경 저장</Button>
+        <Button variant="secondary">미리보기</Button>
+        <Button variant="outline">취소</Button>
+        <Button variant="destructive">프로젝트 삭제</Button>
+      </div>
+    </section>
+
+    <section className="grid gap-3">
+      <h2 className="city-text-subsection-title">Compact status</h2>
+      <div className="flex flex-wrap gap-2">
+        <Badge appearance="solid" tone="info">동기화 중</Badge>
+        <Badge appearance="solid" tone="success">운영 중</Badge>
+        <Badge appearance="solid" tone="warning">검토 필요</Badge>
+        <Badge appearance="solid" tone="destructive">중단됨</Badge>
+      </div>
+    </section>
+
+    <section className="grid gap-3">
+      <h2 className="city-text-subsection-title">Persistent feedback</h2>
+      <Alert.Root tone="warning">
+        <Alert.Title>검토가 필요합니다</Alert.Title>
+        <Alert.Description>배포 전에 누락된 환경 변수 두 개를 확인하십시오.</Alert.Description>
+      </Alert.Root>
+    </section>
+
+  </div>
+</ComponentSpecimen>
+
+## 컴포넌트 매핑
+
+- Button·Toggle·Toolbar의 `primary`와 `destructive`는 action fill, foreground, hover, active
+  토큰을 함께 사용합니다.
+- Checkbox·RadioGroup·Switch·Progress의 선택·진행 표시는 `primary`를 사용합니다.
+- Badge는 `tone × solid|subtle|outline`을 모두 지원합니다. solid는 짧은 상태에만 사용하십시오.
+- Alert·Toast는 넓은 메시지 면이므로 기본적으로 subtle 또는 outline을 사용합니다.
+- Field·Input의 invalid와 Menu의 위험 항목은 `destructive`를 사용하되 원인과 복구 문구를 함께
+  제공하십시오.
+- Tooltip은 inverse, Dialog·Drawer·Popover의 배경 차단은 backdrop 토큰을 사용합니다.
+
+## 상태와 접근성
+
+- 한 액션 그룹에는 원칙적으로 하나의 primary만 두십시오.
+- `warning`은 확인 후 진행할 수 있는 상태, `destructive`는 실패나 손실 위험에 사용하십시오.
+- 상태를 색상 하나로 전달하지 말고 아이콘, 제목, 레이블, 위치 또는 ARIA 상태를 함께
+  제공하십시오.
+- 일반 텍스트는 4.5:1, 큰 텍스트·아이콘·focus 표시는 3:1 이상의 대비를 유지하십시오.
+- disabled는 전체 컴포넌트 opacity를 낮추는 예외입니다. disabled 상태의 색을 별도 의미처럼
+  사용하지 마십시오.
+- Light·Dark·System에서 default, hover, active, selected, invalid, focus, disabled를 모두
+  확인하십시오.
+
+## 피해야 할 사용
+
+- 재사용 컴포넌트에 `bg-city-palette-red-500`처럼 원시 팔레트를 직접 적용하지 마십시오.
+- 상태 surface를 `bg-city-success/10`처럼 임의 투명도로 합성하지 마십시오.
+- 선택 상태에 success, 단순 강조에 warning, 브랜드 강조에 destructive를 사용하지 마십시오.
+- 넓은 Alert 전체를 강한 solid 상태색으로 채워 본문 가독성과 화면 위계를 약화하지 마십시오.
+
+## 검토 기준
+
+1. 팔레트가 아니라 의미 역할로 색상을 선택했습니까?
+2. 같은 tone의 fill·foreground·surface·border가 컴포넌트 사이에서 일치합니까?
+3. 주요 액션, 위험 액션, 선택과 피드백이 서로 다른 의미로 보입니까?
+4. 색상을 제거해도 아이콘·문구·상태 속성으로 의미를 이해할 수 있습니까?
+5. Light·Dark·System에서 텍스트, 아이콘, 경계와 focus가 충분히 보입니까?

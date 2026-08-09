@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { CITY_THEMES } from '../src/theme';
@@ -13,6 +13,17 @@ const consumerCss = readFileSync(
 const packageJson = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), 'utf8')) as {
   exports: Record<string, string>;
 };
+
+function readSourceTree(relativeDirectory: string) {
+  const directory = resolve(process.cwd(), relativeDirectory);
+
+  return readdirSync(directory, { encoding: 'utf8', recursive: true })
+    .filter((path) => /\.(?:ts|tsx)$/.test(path))
+    .map((path) => readFileSync(resolve(directory, path), 'utf8'))
+    .join('\n');
+}
+
+const componentSource = [readSourceTree('src/components'), readSourceTree('src/lib')].join('\n');
 
 const colorTokens = [
   '--city-color-background',
@@ -29,12 +40,42 @@ const colorTokens = [
   '--city-color-input',
   '--city-color-ring',
   '--city-color-primary',
+  '--city-color-primary-hover',
+  '--city-color-primary-active',
   '--city-color-primary-foreground',
+  '--city-color-inverse',
+  '--city-color-inverse-foreground',
   '--city-color-destructive',
+  '--city-color-destructive-hover',
+  '--city-color-destructive-active',
   '--city-color-destructive-foreground',
+  '--city-color-destructive-surface',
+  '--city-color-destructive-border',
   '--city-color-warning',
+  '--city-color-warning-foreground',
+  '--city-color-warning-surface',
+  '--city-color-warning-border',
   '--city-color-success',
+  '--city-color-success-foreground',
+  '--city-color-success-surface',
+  '--city-color-success-border',
   '--city-color-info',
+  '--city-color-info-foreground',
+  '--city-color-info-surface',
+  '--city-color-info-border',
+  '--city-color-backdrop',
+  '--city-color-backdrop-subtle',
+  '--city-color-shimmer',
+];
+
+const paletteFamilies = ['neutral', 'blue', 'green', 'amber', 'red'] as const;
+const paletteSteps = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'];
+const paletteTokens = [
+  '--city-palette-white',
+  '--city-palette-black',
+  ...paletteFamilies.flatMap((family) =>
+    paletteSteps.map((step) => `--city-palette-${family}-${step}`),
+  ),
 ];
 
 const shadowTokens = ['--city-shadow-sm', '--city-shadow-panel', '--city-shadow-popup'];
@@ -151,6 +192,13 @@ describe('theme contract', () => {
     );
   });
 
+  it('derives the Skeleton shimmer from the semantic color token', () => {
+    expect(stylesCss).toContain(
+      'background: linear-gradient(90deg, transparent, var(--city-color-shimmer), transparent);',
+    );
+    expect(stylesCss).not.toMatch(/\.city-skeleton::after[\s\S]*?rgb\(/);
+  });
+
   it('derives text Skeleton height from hidden typography content', () => {
     expect(stylesCss).toMatch(
       /\.city-skeleton\[data-variant='text']::before \{\s*content: '\\00a0';\s*visibility: hidden;\s*}/,
@@ -168,6 +216,11 @@ describe('theme contract', () => {
     expect(themeCss).toContain(token);
   });
 
+  it.each(paletteTokens)('publishes pinned palette token %s once', (token) => {
+    expect(themeCss.match(new RegExp(`${token}:`, 'g'))).toHaveLength(1);
+    expect(themeCss).toMatch(new RegExp(`${token}: oklch\\(`));
+  });
+
   it.each([...colorTokens, ...shadowTokens])(
     'defines theme-dependent token %s for light, dark, and system',
     (token) => {
@@ -183,6 +236,11 @@ describe('theme contract', () => {
     for (const token of colorTokens) {
       const name = token.replace('--city-color-', '');
       expect(themeCss).toContain(`--color-city-${name}: var(${token});`);
+    }
+
+    for (const token of paletteTokens) {
+      const name = token.replace('--city-palette-', '');
+      expect(themeCss).toContain(`--color-city-palette-${name}: var(${token});`);
     }
 
     for (const token of spacingTokens) {
@@ -217,6 +275,88 @@ describe('theme contract', () => {
     expect(themeCss).toContain('--ease-city-standard: var(--city-easing-standard);');
     expect(themeCss).toContain('--ease-city-enter: var(--city-easing-enter);');
     expect(themeCss).toContain('--ease-city-exit: var(--city-easing-exit);');
+  });
+
+  it('derives semantic colors from the pinned palette', () => {
+    for (const token of colorTokens) {
+      const definitions = [...themeCss.matchAll(new RegExp(`${token}:\\s*([^;]+);`, 'g'))].map(
+        (match) => match[1]?.trim(),
+      );
+
+      expect(definitions).toHaveLength(3);
+      for (const value of definitions) {
+        expect(value).toMatch(/^(?:var\(--city-palette-|color-mix\()/);
+      }
+    }
+  });
+
+  it('maps neutral semantic roles to the contracted palette steps', () => {
+    const lightTheme = themeCss.match(/:root,\n\[data-theme='light'] \{([\s\S]*?)\n}/)?.[1];
+    const darkTheme = themeCss.match(/\[data-theme='dark'] \{([\s\S]*?)\n}/)?.[1];
+    const systemTheme = themeCss.match(/:root:not\(\[data-theme]\) \{([\s\S]*?)\n  }\n}/)?.[1];
+    const lightMappings = [
+      ['background', 'white'],
+      ['foreground', 'neutral-900'],
+      ['surface', 'neutral-50'],
+      ['muted', 'neutral-100'],
+      ['accent', 'neutral-100'],
+      ['accent-hover', 'neutral-200'],
+      ['accent-active', 'neutral-300'],
+      ['border', 'neutral-200'],
+      ['input', 'neutral-300'],
+      ['ring', 'neutral-600'],
+    ] as const;
+    const darkMappings = [
+      ['background', 'neutral-950'],
+      ['foreground', 'neutral-50'],
+      ['surface', 'neutral-900'],
+      ['muted', 'neutral-800'],
+      ['muted-foreground', 'neutral-400'],
+      ['accent', 'neutral-800'],
+      ['accent-hover', 'neutral-700'],
+      ['accent-active', 'neutral-600'],
+      ['border', 'neutral-700'],
+      ['input', 'neutral-600'],
+      ['ring', 'neutral-400'],
+    ] as const;
+
+    for (const [token, palette] of lightMappings) {
+      expect(lightTheme).toContain(`--city-color-${token}: var(--city-palette-${palette});`);
+    }
+
+    for (const theme of [darkTheme, systemTheme]) {
+      for (const [token, palette] of darkMappings) {
+        expect(theme).toContain(`--city-color-${token}: var(--city-palette-${palette});`);
+      }
+    }
+  });
+
+  it('maps strong feedback fills and foregrounds for both themes', () => {
+    const mappings = [
+      ['info', 'blue-600', 'neutral-50'],
+      ['info', 'blue-500', 'neutral-900'],
+      ['success', 'green-700', 'neutral-50'],
+      ['success', 'green-500', 'neutral-900'],
+      ['warning', 'amber-600', 'neutral-900'],
+      ['warning', 'amber-500', 'neutral-900'],
+      ['destructive', 'red-700', 'neutral-50'],
+      ['destructive', 'red-400', 'neutral-900'],
+    ] as const;
+
+    for (const [tone, fill, foreground] of mappings) {
+      expect(themeCss).toContain(`--city-color-${tone}: var(--city-palette-${fill});`);
+      expect(themeCss).toContain(
+        `--city-color-${tone}-foreground: var(--city-palette-${foreground});`,
+      );
+    }
+  });
+
+  it('keeps component colors on semantic tokens without opacity shortcuts', () => {
+    expect(componentSource).not.toMatch(/--city-palette-/);
+    expect(componentSource).not.toMatch(/(?:bg|border|ring|text)-(?:black|white)(?:\/[0-9]+)?/);
+    expect(componentSource).not.toMatch(
+      /city-(?:primary|destructive|info|success|warning|ring|muted)\/[0-9]+/,
+    );
   });
 
   it('publishes content text roles without coupling color or layout margins', () => {

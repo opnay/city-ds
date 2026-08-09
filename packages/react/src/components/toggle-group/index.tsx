@@ -56,7 +56,7 @@ const ToggleGroupRootBase = React.forwardRef(function ToggleGroupRoot<
         orientation={orientation}
         className={(state) =>
           cn(
-            'rounded-city-md bg-city-muted/50 inline-flex gap-1 p-1 data-[disabled]:cursor-not-allowed',
+            'rounded-city-md bg-city-muted inline-flex gap-1 p-1 data-[disabled]:cursor-not-allowed',
             orientation === 'vertical' && 'flex-col',
             resolveClassName(className, state),
           )

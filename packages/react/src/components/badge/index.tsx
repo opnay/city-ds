@@ -6,6 +6,7 @@ import { useRender } from '@base-ui/react/use-render';
 import { atomicRectShapeClasses, atomicRoundShapeClass } from '../../lib/atomic-shape';
 import { compactStatusTextClasses } from '../../lib/atomic-typography';
 import { cn } from '../../lib/cn';
+import { feedbackToneStyles } from '../../lib/feedback-tone-styles';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { FeedbackTone } from '../../types';
 
@@ -33,13 +34,6 @@ export interface BadgeProps extends Omit<
   variant?: BadgeVariant;
 }
 
-const badgeVariantClasses: Record<BadgeVariant, string> = {
-  solid: 'bg-city-primary text-city-primary-foreground',
-  subtle: 'bg-city-muted text-city-foreground',
-  outline: 'border border-city-border bg-transparent text-city-foreground',
-  destructive: 'bg-city-destructive/10 text-city-destructive',
-};
-
 const legacyBadgePresentation: Record<
   BadgeVariant,
   { appearance: BadgeAppearance; tone: FeedbackTone }
@@ -48,42 +42,6 @@ const legacyBadgePresentation: Record<
   subtle: { appearance: 'subtle', tone: 'neutral' },
   outline: { appearance: 'outline', tone: 'neutral' },
   destructive: { appearance: 'subtle', tone: 'destructive' },
-};
-
-const badgePresentationClasses: Record<FeedbackTone, Record<BadgeAppearance, string>> = {
-  neutral: {
-    solid: 'bg-city-primary text-city-primary-foreground',
-    subtle: 'bg-city-muted text-city-foreground',
-    outline: 'border border-city-border bg-transparent text-city-foreground',
-  },
-  info: {
-    solid: 'bg-city-info/20 text-city-foreground',
-    subtle: 'bg-city-info/10 text-city-foreground',
-    outline: 'border border-city-info/40 bg-transparent text-city-foreground',
-  },
-  success: {
-    solid: 'bg-city-success/20 text-city-foreground',
-    subtle: 'bg-city-success/10 text-city-foreground',
-    outline: 'border border-city-success/40 bg-transparent text-city-foreground',
-  },
-  warning: {
-    solid: 'bg-city-warning/20 text-city-foreground',
-    subtle: 'bg-city-warning/10 text-city-foreground',
-    outline: 'border border-city-warning/40 bg-transparent text-city-foreground',
-  },
-  destructive: {
-    solid: 'bg-city-destructive text-city-destructive-foreground',
-    subtle: 'bg-city-destructive/10 text-city-destructive',
-    outline: 'border border-city-destructive/40 bg-transparent text-city-destructive',
-  },
-};
-
-const badgeDotToneClasses: Record<FeedbackTone, string> = {
-  neutral: 'bg-city-primary',
-  info: 'bg-city-info',
-  success: 'bg-city-success',
-  warning: 'bg-city-warning',
-  destructive: 'bg-city-destructive',
 };
 
 const badgeSizeClasses: Record<BadgeSize, string> = {
@@ -130,7 +88,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badg
   const legacyPresentation = legacyBadgePresentation[variant];
   const appearance = appearanceProp ?? legacyPresentation.appearance;
   const tone = toneProp ?? legacyPresentation.tone;
-  const usesLegacyVariant = appearanceProp === undefined && toneProp === undefined;
+  const toneStyles = feedbackToneStyles[tone];
   const hasAccessibleName = props['aria-label'] != null || props['aria-labelledby'] != null;
   const role =
     mode === 'dot' && hasAccessibleName && render === undefined
@@ -164,13 +122,13 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badg
             badgeCountSizeClasses[size],
           ),
         mode === 'dot' && cn(atomicRoundShapeClass, 'p-0', badgeDotSizeClasses[size]),
-        mode === 'dot'
-          ? usesLegacyVariant
-            ? badgeVariantClasses[variant]
-            : badgeDotToneClasses[tone]
-          : usesLegacyVariant
-            ? badgeVariantClasses[variant]
-            : badgePresentationClasses[tone][appearance],
+        mode === 'dot' && toneStyles.fill,
+        mode !== 'dot' && appearance === 'solid' && toneStyles.fill,
+        mode !== 'dot' && appearance === 'solid' && toneStyles.fillForeground,
+        mode !== 'dot' && appearance === 'subtle' && toneStyles.surface,
+        mode !== 'dot' && appearance !== 'solid' && 'text-city-foreground',
+        mode !== 'dot' && appearance === 'outline' && 'border bg-transparent',
+        mode !== 'dot' && appearance === 'outline' && toneStyles.border,
         resolveClassName(className, state),
       ),
     },

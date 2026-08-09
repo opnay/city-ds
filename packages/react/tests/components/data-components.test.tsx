@@ -31,7 +31,7 @@ describe('Alert', () => {
     expect(status).toHaveAttribute('data-tone', 'info');
     expect(status).toHaveAttribute('data-variant', 'info');
     expect(status).toHaveAccessibleDescription('Records are ready.');
-    expect(status).toHaveClass('border-city-info/30', 'bg-city-info/10');
+    expect(status).toHaveClass('border-city-info-border', 'bg-city-info-surface');
     expect(status.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-info');
   });
 
@@ -50,9 +50,9 @@ describe('Alert', () => {
     const success = screen.getByRole('status', { name: 'Sync complete' });
     const warning = screen.getByRole('status', { name: 'SLA at risk' });
 
-    expect(success).toHaveClass('border-city-success/30', 'bg-city-success/10');
+    expect(success).toHaveClass('border-city-success-border', 'bg-city-success-surface');
     expect(success.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-success');
-    expect(warning).toHaveClass('border-city-warning/30', 'bg-city-warning/10');
+    expect(warning).toHaveClass('border-city-warning-border', 'bg-city-warning-surface');
     expect(warning.querySelector('span[aria-hidden="true"]')).toHaveClass('text-city-warning');
   });
 
@@ -101,7 +101,7 @@ describe('Alert', () => {
     expect(destructive).toHaveAttribute('data-tone', 'destructive');
     expect(destructive).toHaveAttribute('data-appearance', 'outline');
     expect(destructive).toHaveAttribute('data-variant', 'error');
-    expect(destructive).toHaveClass('border-city-destructive/40', 'bg-city-surface-raised');
+    expect(destructive).toHaveClass('border-city-destructive-border', 'bg-city-surface-raised');
     expect(neutral).toHaveAttribute('data-tone', 'neutral');
     expect(neutral).toHaveAttribute('data-variant', 'info');
   });

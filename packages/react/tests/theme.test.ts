@@ -332,22 +332,39 @@ describe('theme contract', () => {
   });
 
   it('maps strong feedback fills and foregrounds for both themes', () => {
-    const mappings = [
+    const lightTheme = themeCss.match(/:root,\n\[data-theme='light'] \{([\s\S]*?)\n}/)?.[1];
+    const darkTheme = themeCss.match(/\[data-theme='dark'] \{([\s\S]*?)\n}/)?.[1];
+    const systemTheme = themeCss.match(/:root:not\(\[data-theme]\) \{([\s\S]*?)\n  }\n}/)?.[1];
+    const lightMappings = [
       ['info', 'blue-600', 'neutral-50'],
-      ['info', 'blue-500', 'neutral-900'],
       ['success', 'green-700', 'neutral-50'],
-      ['success', 'green-500', 'neutral-900'],
       ['warning', 'amber-600', 'neutral-900'],
-      ['warning', 'amber-500', 'neutral-900'],
       ['destructive', 'red-700', 'neutral-50'],
-      ['destructive', 'red-400', 'neutral-900'],
+    ] as const;
+    const darkMappings = [
+      ['info', 'blue-600', 'neutral-50'],
+      ['success', 'green-700', 'neutral-50'],
+      ['warning', 'amber-700', 'neutral-50'],
+      ['destructive', 'red-600', 'neutral-50'],
     ] as const;
 
-    for (const [tone, fill, foreground] of mappings) {
-      expect(themeCss).toContain(`--city-color-${tone}: var(--city-palette-${fill});`);
-      expect(themeCss).toContain(
+    for (const [tone, fill, foreground] of lightMappings) {
+      expect(lightTheme).toContain(`--city-color-${tone}: var(--city-palette-${fill});`);
+      expect(lightTheme).toContain(
         `--city-color-${tone}-foreground: var(--city-palette-${foreground});`,
       );
+    }
+
+    for (const theme of [darkTheme, systemTheme]) {
+      for (const [tone, fill, foreground] of darkMappings) {
+        expect(theme).toContain(`--city-color-${tone}: var(--city-palette-${fill});`);
+        expect(theme).toContain(
+          `--city-color-${tone}-foreground: var(--city-palette-${foreground});`,
+        );
+      }
+
+      expect(theme).toContain('--city-color-destructive-hover: var(--city-palette-red-700);');
+      expect(theme).toContain('--city-color-destructive-active: var(--city-palette-red-800);');
     }
   });
 

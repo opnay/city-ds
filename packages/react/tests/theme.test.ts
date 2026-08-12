@@ -78,6 +78,41 @@ const paletteTokens = [
   ),
 ];
 
+type Oklch = readonly [lightness: number, chroma: number, hue: number];
+
+function readPaletteOklch(token: string): Oklch {
+  const value = themeCss.match(new RegExp(`--city-palette-${token}:\\s*oklch\\(([^)]+)\\);`))?.[1];
+  const channels = value?.trim().split(/\s+/).map(Number);
+
+  if (!channels || channels.length !== 3 || channels.some((channel) => !Number.isFinite(channel))) {
+    throw new Error(`Invalid OKLCH palette token: ${token}`);
+  }
+
+  return channels as [number, number, number];
+}
+
+function relativeLuminance([lightness, chroma, hue]: Oklch) {
+  const hueRadians = (hue * Math.PI) / 180;
+  const a = chroma * Math.cos(hueRadians);
+  const b = chroma * Math.sin(hueRadians);
+  const l = (lightness + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const m = (lightness - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const s = (lightness - 0.0894841775 * a - 1.291485548 * b) ** 3;
+  const clamp = (channel: number) => Math.min(1, Math.max(0, channel));
+  const red = clamp(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s);
+  const green = clamp(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s);
+  const blue = clamp(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s);
+
+  return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+}
+
+function contrastRatio(first: Oklch, second: Oklch) {
+  const lighter = Math.max(relativeLuminance(first), relativeLuminance(second));
+  const darker = Math.min(relativeLuminance(first), relativeLuminance(second));
+
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
 const shadowTokens = ['--city-shadow-sm', '--city-shadow-panel', '--city-shadow-popup'];
 
 const spacingTokens = [
@@ -338,7 +373,7 @@ describe('theme contract', () => {
     const lightMappings = [
       ['info', 'blue-600', 'neutral-50'],
       ['success', 'green-700', 'neutral-50'],
-      ['warning', 'amber-600', 'neutral-900'],
+      ['warning', 'amber-700', 'neutral-50'],
       ['destructive', 'red-700', 'neutral-50'],
     ] as const;
     const darkMappings = [
@@ -365,6 +400,22 @@ describe('theme contract', () => {
 
       expect(theme).toContain('--city-color-destructive-hover: var(--city-palette-red-700);');
       expect(theme).toContain('--city-color-destructive-active: var(--city-palette-red-800);');
+    }
+
+    const lightForeground = readPaletteOklch('neutral-50');
+    const chromaticSolidFills = [
+      ...lightMappings.map(([tone, fill]) => [`light ${tone}`, fill] as const),
+      ['light destructive hover', 'red-800'],
+      ['light destructive active', 'red-900'],
+      ...darkMappings.map(([tone, fill]) => [`dark ${tone}`, fill] as const),
+      ['dark destructive hover', 'red-700'],
+      ['dark destructive active', 'red-800'],
+    ] as const;
+
+    for (const [role, fill] of chromaticSolidFills) {
+      expect(contrastRatio(readPaletteOklch(fill), lightForeground), role).toBeGreaterThanOrEqual(
+        4.5,
+      );
     }
   });
 

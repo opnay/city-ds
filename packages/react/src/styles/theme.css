@@ -161,8 +161,8 @@
   --city-color-destructive-foreground: var(--city-palette-neutral-50);
   --city-color-destructive-surface: var(--city-palette-red-50);
   --city-color-destructive-border: var(--city-palette-red-200);
-  --city-color-warning: var(--city-palette-amber-600);
-  --city-color-warning-foreground: var(--city-palette-neutral-900);
+  --city-color-warning: var(--city-palette-amber-700);
+  --city-color-warning-foreground: var(--city-palette-neutral-50);
   --city-color-warning-surface: var(--city-palette-amber-50);
   --city-color-warning-border: var(--city-palette-amber-200);
   --city-color-success: var(--city-palette-green-700);

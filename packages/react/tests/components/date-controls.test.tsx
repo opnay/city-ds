@@ -289,7 +289,7 @@ describe('Calendar', () => {
       ).toHaveClass(`size-(--city-control-${size})`);
     }
 
-    expect(screen.getByLabelText('lg calendar')).toHaveClass('ring-city-destructive/30', 'ring-2');
+    expect(screen.getByLabelText('lg calendar')).toHaveClass('ring-city-destructive', 'ring-2');
   });
 });
 
@@ -443,7 +443,7 @@ describe('DatePicker', () => {
 
     await user.click(screen.getByRole('button', { name: 'Open required calendar' }));
     expect(await screen.findByLabelText('Required calendar')).toHaveClass(
-      'ring-city-destructive/30',
+      'ring-city-destructive',
       'ring-2',
     );
   });

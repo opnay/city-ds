@@ -159,8 +159,9 @@ describe('ComponentSpecimen', () => {
     }
   });
 
-  it('uses city-ds Table for the size and typography contract documents', () => {
+  it('uses city-ds Table for contract documents instead of unsupported Markdown tables', () => {
     for (const path of [
+      '../stories/color.mdx',
       '../stories/content-typography.mdx',
       '../stories/control-size.mdx',
       '../stories/control-typography.mdx',
@@ -169,6 +170,7 @@ describe('ComponentSpecimen', () => {
 
       expect(source).toContain('<Table.Root');
       expect(source).not.toMatch(/<table(?:\s|>)/);
+      expect(source).not.toMatch(/^\|/m);
     }
   });
 

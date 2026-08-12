@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccessibilityRouteImport } from './routes/accessibility'
+import { Route as ColorRouteImport } from './routes/color'
 import { Route as ComponentsRouteImport } from './routes/components'
 import { Route as FoundationsRouteImport } from './routes/foundations'
 import { Route as GettingStartedRouteImport } from './routes/getting-started'
@@ -26,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const AccessibilityRoute = AccessibilityRouteImport.update({
   id: '/accessibility',
   path: '/accessibility',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ColorRoute = ColorRouteImport.update({
+  id: '/color',
+  path: '/color',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComponentsRoute = ComponentsRouteImport.update({
@@ -62,6 +68,7 @@ const ComponentsSlugRoute = ComponentsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accessibility': typeof AccessibilityRoute
+  '/color': typeof ColorRoute
   '/components': typeof ComponentsRouteWithChildren
   '/foundations': typeof FoundationsRoute
   '/getting-started': typeof GettingStartedRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accessibility': typeof AccessibilityRoute
+  '/color': typeof ColorRoute
   '/foundations': typeof FoundationsRoute
   '/getting-started': typeof GettingStartedRoute
   '/patterns': typeof PatternsRoute
@@ -82,6 +90,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accessibility': typeof AccessibilityRoute
+  '/color': typeof ColorRoute
   '/components': typeof ComponentsRouteWithChildren
   '/foundations': typeof FoundationsRoute
   '/getting-started': typeof GettingStartedRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/accessibility'
+    | '/color'
     | '/components'
     | '/foundations'
     | '/getting-started'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/accessibility'
+    | '/color'
     | '/foundations'
     | '/getting-started'
     | '/patterns'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/accessibility'
+    | '/color'
     | '/components'
     | '/foundations'
     | '/getting-started'
@@ -124,6 +136,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccessibilityRoute: typeof AccessibilityRoute
+  ColorRoute: typeof ColorRoute
   ComponentsRoute: typeof ComponentsRouteWithChildren
   FoundationsRoute: typeof FoundationsRoute
   GettingStartedRoute: typeof GettingStartedRoute
@@ -144,6 +157,13 @@ declare module '@tanstack/react-router' {
       path: '/accessibility'
       fullPath: '/accessibility'
       preLoaderRoute: typeof AccessibilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color': {
+      id: '/color'
+      path: '/color'
+      fullPath: '/color'
+      preLoaderRoute: typeof ColorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/components': {
@@ -208,6 +228,7 @@ const ComponentsRouteWithChildren = ComponentsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccessibilityRoute: AccessibilityRoute,
+  ColorRoute: ColorRoute,
   ComponentsRoute: ComponentsRouteWithChildren,
   FoundationsRoute: FoundationsRoute,
   GettingStartedRoute: GettingStartedRoute,

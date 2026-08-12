@@ -8,6 +8,7 @@ describe('public docs routes and shell', () => {
   it.each([
     ['/getting-started', '시작하기'],
     ['/foundations', '기초'],
+    ['/color', '색상'],
     ['/patterns', '패턴'],
     ['/accessibility', '접근성'],
     ['/components', '컴포넌트'],
@@ -103,6 +104,25 @@ describe('public docs routes and shell', () => {
     );
     expect(container.querySelector('.city-docs-page-description')).toHaveClass('city-text-lead');
     expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
+  });
+
+  it('documents color roles and compares light and dark specimens', async () => {
+    const { container } = await renderDocs(['/color']);
+
+    expect(screen.getByRole('heading', { level: 2, name: '원시 팔레트' })).toBeVisible();
+    expect(screen.getByRole('heading', { level: 2, name: 'Tone과 Appearance' })).toBeVisible();
+    expect(screen.getByRole('region', { name: 'Light와 Dark 의미 색상 비교' })).toBeVisible();
+    expect(screen.getByRole('region', { name: 'Feedback tone과 appearance 비교' })).toBeVisible();
+
+    const themePanels = container.querySelectorAll('.city-docs-color-theme-panel');
+    expect(themePanels).toHaveLength(2);
+    expect([...themePanels].map((panel) => panel.getAttribute('data-theme'))).toEqual([
+      'light',
+      'dark',
+    ]);
+    for (const panel of themePanels) {
+      expect(panel.querySelectorAll('[data-city-badge][data-appearance="solid"]')).toHaveLength(4);
+    }
   });
 
   it('renders the accessibility checklist with interactive city-ds controls', async () => {

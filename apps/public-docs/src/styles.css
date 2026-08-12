@@ -602,6 +602,180 @@
     margin-inline: auto;
   }
 
+  .city-docs-color-palette,
+  .city-docs-color-theme-grid,
+  .city-docs-color-matrix-region {
+    width: 100%;
+    margin-block: var(--city-space-2);
+  }
+
+  .city-docs-color-palette,
+  .city-docs-color-family {
+    display: grid;
+    min-width: 0;
+    gap: var(--city-space-3);
+  }
+
+  .city-docs-color-palette {
+    gap: var(--city-space-6);
+  }
+
+  .city-docs-color-family > h3,
+  .city-docs-color-theme-heading > h3 {
+    margin: 0;
+  }
+
+  .city-docs-color-scale-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--city-color-border);
+    border-radius: var(--city-radius-md);
+    scrollbar-width: thin;
+  }
+
+  .city-docs-color-scale,
+  .city-docs-color-absolute-scale {
+    display: grid;
+    width: max-content;
+    min-width: 100%;
+    grid-template-columns: repeat(11, minmax(3.5rem, 1fr));
+  }
+
+  .city-docs-color-absolute-scale {
+    width: min(100%, 10rem);
+    overflow: hidden;
+    border: 1px solid var(--city-color-border);
+    border-radius: var(--city-radius-md);
+    grid-template-columns: repeat(2, minmax(4rem, 1fr));
+  }
+
+  .city-docs-color-palette-item {
+    display: grid;
+    min-width: 0;
+    background: var(--city-color-surface-raised);
+  }
+
+  .city-docs-color-palette-item + .city-docs-color-palette-item {
+    border-left: 1px solid var(--city-color-border);
+  }
+
+  .city-docs-color-palette-swatch {
+    display: block;
+    min-height: 3.5rem;
+    border-bottom: 1px solid var(--city-color-border);
+  }
+
+  .city-docs-color-palette-item code {
+    padding: var(--city-space-2);
+    overflow: hidden;
+    color: var(--city-color-muted-foreground);
+    font-size: var(--city-font-size-2xs);
+    line-height: var(--city-line-height-2xs);
+    text-align: center;
+    text-overflow: ellipsis;
+  }
+
+  .city-docs-color-theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: var(--city-space-4);
+  }
+
+  .city-docs-color-theme-panel {
+    display: grid;
+    min-width: 0;
+    padding: var(--city-space-4);
+    border: 1px solid var(--city-color-border);
+    border-radius: var(--city-radius-md);
+    background: var(--city-color-background);
+    color: var(--city-color-foreground);
+    gap: var(--city-space-4);
+  }
+
+  .city-docs-color-theme-heading {
+    display: flex;
+    min-width: 0;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--city-space-3);
+  }
+
+  .city-docs-color-theme-heading > code {
+    overflow-wrap: anywhere;
+    color: var(--city-color-muted-foreground);
+    font-size: var(--city-font-size-xs);
+  }
+
+  .city-docs-color-token-grid {
+    display: grid;
+    border-top: 1px solid var(--city-color-border);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .city-docs-color-token-item {
+    display: grid;
+    min-width: 0;
+    padding: var(--city-space-3) 0;
+    border-bottom: 1px solid var(--city-color-border);
+    align-items: center;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--city-space-2);
+  }
+
+  .city-docs-color-token-item:nth-child(odd) {
+    padding-right: var(--city-space-3);
+  }
+
+  .city-docs-color-token-item:nth-child(even) {
+    padding-left: var(--city-space-3);
+    border-left: 1px solid var(--city-color-border);
+  }
+
+  .city-docs-color-token-swatch {
+    width: var(--city-control-md);
+    height: var(--city-control-md);
+    border: 1px solid var(--city-color-border);
+    border-radius: var(--city-radius-sm);
+  }
+
+  .city-docs-color-token-item > span:last-child {
+    display: grid;
+    min-width: 0;
+    gap: var(--city-space-0-5);
+  }
+
+  .city-docs-color-token-item strong,
+  .city-docs-color-solid-group h4 {
+    margin: 0;
+    font-size: var(--city-font-size-xs);
+    line-height: var(--city-line-height-xs);
+    font-weight: var(--city-font-weight-medium);
+  }
+
+  .city-docs-color-token-item code {
+    overflow: hidden;
+    color: var(--city-color-muted-foreground);
+    font-size: var(--city-font-size-2xs);
+    line-height: var(--city-line-height-2xs);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .city-docs-color-solid-group {
+    display: grid;
+    gap: var(--city-space-2);
+  }
+
+  .city-docs-color-solid-group > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--city-space-2);
+  }
+
+  .city-docs-color-matrix-region td {
+    white-space: nowrap;
+  }
+
   .city-docs-code-header,
   .city-docs-example-title-row {
     display: flex;

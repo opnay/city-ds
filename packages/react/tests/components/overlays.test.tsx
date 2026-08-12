@@ -39,6 +39,7 @@ describe('overlay and selection controls', () => {
     await user.click(trigger);
 
     expect(await screen.findByRole('dialog', { name: 'Delete project' })).toBeVisible();
+    expect(document.querySelector('.bg-city-backdrop')).toBeInTheDocument();
     expect(screen.getByText('This action cannot be undone.')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Cancel' })).toHaveClass('bg-city-accent');
 
@@ -120,6 +121,7 @@ describe('overlay and selection controls', () => {
     await user.click(trigger);
 
     expect(await screen.findByRole('dialog', { name: 'Navigation' })).toBeVisible();
+    expect(document.querySelector('.bg-city-backdrop')).toBeInTheDocument();
     expect(screen.getByText('Move between product areas.')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Done' })).toHaveClass('hover:bg-city-accent');
 
@@ -235,6 +237,8 @@ describe('overlay and selection controls', () => {
     expect(cancel).not.toHaveClass('bg-city-background');
     expect(screen.getByRole('button', { name: 'Delete' })).toHaveClass(
       'bg-city-destructive',
+      'hover:bg-city-destructive-hover',
+      'active:bg-city-destructive-active',
       'text-xs',
     );
     await waitFor(() => expect(cancel).toHaveFocus());
@@ -299,6 +303,7 @@ describe('overlay and selection controls', () => {
       <Popover.Root>
         <Popover.Trigger render={<Button variant="outline" />}>Open filters</Popover.Trigger>
         <Popover.Portal>
+          <Popover.Backdrop />
           <Popover.Positioner sideOffset={8}>
             <Popover.Popup>
               <Popover.Title>Filters</Popover.Title>
@@ -316,6 +321,7 @@ describe('overlay and selection controls', () => {
     await user.click(trigger);
 
     expect(await screen.findByRole('dialog', { name: 'Filters' })).toBeVisible();
+    expect(document.querySelector('.bg-city-backdrop-subtle')).toBeInTheDocument();
     expect(screen.getByText('Refine the deployments list.')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Done' })).toHaveClass('text-xs');
 
@@ -621,7 +627,10 @@ describe('overlay and selection controls', () => {
 
     await user.hover(trigger);
 
-    expect(await screen.findByRole('tooltip')).toHaveTextContent('Helpful context');
+    expect(await screen.findByRole('tooltip')).toHaveClass(
+      'bg-city-inverse',
+      'text-city-inverse-foreground',
+    );
   });
 
   it('adds and dismisses a toast through the Base UI toast manager', async () => {
@@ -640,7 +649,7 @@ describe('overlay and selection controls', () => {
     expect(notification).toHaveAttribute('data-city-toast-root');
     expect(notification).toHaveAttribute('data-tone', 'success');
     expect(notification).toHaveAttribute('data-appearance', 'outline');
-    expect(notification).toHaveClass('border-city-success/40');
+    expect(notification).toHaveClass('border-city-success-border');
     await user.hover(notification);
     await user.click(screen.getByRole('button', { name: 'Close notification' }));
 

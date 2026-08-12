@@ -261,7 +261,7 @@ export const DatePickerTrigger = React.forwardRef<HTMLButtonElement, DatePickerT
         aria-label={ariaLabel}
         className={(state) =>
           cn(
-            'border-city-border text-city-muted-foreground hover:bg-city-accent hover:text-city-foreground active:bg-city-accent-active focus-visible:ring-city-ring/30 inline-flex h-full shrink-0 items-center justify-center self-stretch border-l transition-colors outline-none focus-visible:z-10 focus-visible:ring-2 disabled:pointer-events-none',
+            'border-city-border text-city-muted-foreground hover:bg-city-accent hover:text-city-foreground active:bg-city-accent-active focus-visible:ring-city-ring inline-flex h-full shrink-0 items-center justify-center self-stretch border-l transition-colors outline-none focus-visible:z-10 focus-visible:ring-2 disabled:pointer-events-none',
             outlineFrameSegmentWidthClasses[size],
             resolveClassName(className, state),
           )

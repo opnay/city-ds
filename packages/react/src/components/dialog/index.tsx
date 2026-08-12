@@ -93,7 +93,7 @@ export const DialogBackdrop = React.forwardRef<HTMLDivElement, DialogBackdropPro
     <BaseDialog.Backdrop
       {...props}
       ref={ref}
-      className={classes(className, 'fixed inset-0 z-50 bg-black/45')}
+      className={classes(className, 'bg-city-backdrop fixed inset-0 z-50')}
     />
   ),
 );

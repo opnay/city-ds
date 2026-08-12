@@ -95,8 +95,8 @@ export const AlertDialogAction = React.forwardRef<HTMLButtonElement, AlertDialog
           ? cn(
               'rounded-city-sm focus-visible:ring-city-ring focus-visible:ring-offset-city-background inline-flex h-(--city-control-sm) items-center justify-center px-2 text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
               destructive
-                ? 'bg-city-destructive text-city-destructive-foreground hover:bg-city-destructive/90 active:bg-city-destructive/80'
-                : 'bg-city-primary text-city-primary-foreground hover:bg-city-primary/90 active:bg-city-primary/80',
+                ? 'bg-city-destructive text-city-destructive-foreground hover:bg-city-destructive-hover active:bg-city-destructive-active'
+                : 'bg-city-primary text-city-primary-foreground hover:bg-city-primary-hover active:bg-city-primary-active',
             )
           : '',
       )}

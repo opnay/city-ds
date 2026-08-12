@@ -5,6 +5,7 @@ import { CircleAlert, CircleCheck, Info, TriangleAlert } from 'lucide-react';
 import { useRender } from '@base-ui/react/use-render';
 
 import { cn } from '../../lib/cn';
+import { feedbackToneStyles } from '../../lib/feedback-tone-styles';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { FeedbackTone } from '../../types';
 
@@ -38,37 +39,6 @@ function useAlertContext(componentName: string): AlertContextValue {
 
   return context;
 }
-
-const toneAppearanceClasses: Record<FeedbackTone, Record<AlertAppearance, string>> = {
-  neutral: {
-    subtle: 'border-city-border bg-city-muted text-city-foreground',
-    outline: 'border-city-border bg-city-surface-raised text-city-foreground',
-  },
-  info: {
-    subtle: 'border-city-info/30 bg-city-info/10 text-city-foreground',
-    outline: 'border-city-info/40 bg-city-surface-raised text-city-foreground',
-  },
-  success: {
-    subtle: 'border-city-success/30 bg-city-success/10 text-city-foreground',
-    outline: 'border-city-success/40 bg-city-surface-raised text-city-foreground',
-  },
-  warning: {
-    subtle: 'border-city-warning/30 bg-city-warning/10 text-city-foreground',
-    outline: 'border-city-warning/40 bg-city-surface-raised text-city-foreground',
-  },
-  destructive: {
-    subtle: 'border-city-destructive/30 bg-city-destructive/10 text-city-foreground',
-    outline: 'border-city-destructive/40 bg-city-surface-raised text-city-foreground',
-  },
-};
-
-const iconClasses: Record<FeedbackTone, string> = {
-  neutral: 'text-city-muted-foreground',
-  info: 'text-city-info',
-  success: 'text-city-success',
-  warning: 'text-city-warning',
-  destructive: 'text-city-destructive',
-};
 
 const defaultLiveByTone: Record<FeedbackTone, React.AriaAttributes['aria-live']> = {
   neutral: 'polite',
@@ -144,6 +114,7 @@ export const AlertRoot = React.forwardRef<HTMLDivElement, AlertRootProps>(functi
   const tone = toneProp ?? variantTones[variantProp ?? 'info'];
   const variant = variantProp ?? toneVariants[tone];
   const state: AlertState = { appearance, tone, variant };
+  const toneStyles = feedbackToneStyles[tone];
   const DefaultIcon = defaultIcons[tone];
 
   return (
@@ -164,16 +135,17 @@ export const AlertRoot = React.forwardRef<HTMLDivElement, AlertRootProps>(functi
           'data-variant': variant,
           role: role ?? defaultRoleByTone[tone],
           className: cn(
-            'grid w-full grid-cols-[auto_1fr] gap-x-3 gap-y-1 rounded-city-md border p-4 text-sm',
+            'text-city-foreground grid w-full grid-cols-[auto_1fr] gap-x-3 gap-y-1 rounded-city-md border p-4 text-sm',
             !showIcon && 'grid-cols-1',
-            toneAppearanceClasses[tone][appearance],
+            toneStyles.border,
+            appearance === 'subtle' ? toneStyles.surface : 'bg-city-surface-raised',
             resolveClassName(className, state),
           ),
           children: (
             <>
               {showIcon && (
                 <span
-                  className={cn('mt-0.5 inline-flex size-5 shrink-0', iconClasses[tone])}
+                  className={cn('mt-0.5 inline-flex size-5 shrink-0', toneStyles.indicator)}
                   aria-hidden
                 >
                   {icon ?? <DefaultIcon className="size-5" />}

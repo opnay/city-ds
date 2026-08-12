@@ -5,7 +5,7 @@ import { cn } from './cn';
 
 export const outlineFrameBaseClasses = cn(
   atomicRectShapeClasses.control,
-  'border-city-input bg-city-background text-city-foreground focus-within:border-city-ring focus-within:ring-city-ring/30 data-[invalid]:border-city-destructive data-[invalid]:focus-within:ring-city-destructive/30 flex w-full items-center overflow-hidden border transition-colors focus-within:ring-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
+  'border-city-input bg-city-background text-city-foreground focus-within:border-city-ring focus-within:ring-city-ring data-[invalid]:border-city-destructive data-[invalid]:focus-within:ring-city-destructive flex w-full items-center overflow-hidden border transition-colors focus-within:ring-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
 );
 
 export const outlineFrameHeightClasses: Record<ControlSize, string> = {

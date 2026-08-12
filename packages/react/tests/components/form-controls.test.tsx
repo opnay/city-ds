@@ -44,6 +44,8 @@ describe('form and display controls', () => {
     expect(onClick).toHaveBeenCalledTimes(1);
     expect(screen.getByRole('button', { name: 'Save' })).toHaveClass(
       'bg-city-primary',
+      'hover:bg-city-primary-hover',
+      'active:bg-city-primary-active',
       'focus-visible:ring-2',
       'focus-visible:ring-offset-2',
     );
@@ -238,6 +240,9 @@ describe('form and display controls', () => {
           Attention
         </Badge>
         <Badge aria-label="Healthy" data-testid="success-dot" dot tone="success" />
+        <Badge appearance="solid" data-testid="success-solid" tone="success">
+          Healthy
+        </Badge>
       </>,
     );
 
@@ -254,9 +259,13 @@ describe('form and display controls', () => {
     expect(screen.getByTestId('status-dot')).not.toHaveClass('rounded-city-xs');
     expect(screen.getByText('Attention')).toHaveAttribute('data-appearance', 'outline');
     expect(screen.getByText('Attention')).toHaveAttribute('data-tone', 'warning');
-    expect(screen.getByText('Attention')).toHaveClass('border-city-warning/40');
+    expect(screen.getByText('Attention')).toHaveClass('border-city-warning-border');
     expect(screen.getByTestId('success-dot')).toHaveAttribute('data-tone', 'success');
     expect(screen.getByTestId('success-dot')).toHaveClass('bg-city-success');
+    expect(screen.getByTestId('success-solid')).toHaveClass(
+      'bg-city-success',
+      'text-city-success-foreground',
+    );
     expect(screen.getByRole('img', { name: 'Healthy' })).toBe(screen.getByTestId('success-dot'));
   });
 

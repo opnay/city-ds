@@ -136,7 +136,7 @@ export const SearchFieldGroup = React.forwardRef<HTMLDivElement, SearchFieldGrou
         ref={ref}
         className={(state) =>
           cn(
-            'data-[invalid]:border-city-destructive data-[invalid]:focus-within:ring-city-destructive/30 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 [&>button:disabled]:opacity-100 [&>input:disabled]:opacity-100',
+            'data-[invalid]:border-city-destructive data-[invalid]:focus-within:ring-city-destructive data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 [&>button:disabled]:opacity-100 [&>input:disabled]:opacity-100',
             resolveClassName(className, state),
           )
         }
@@ -279,7 +279,7 @@ export const SearchFieldSubmit = React.forwardRef<HTMLElement, SearchFieldSubmit
         aria-label={props['aria-label'] ?? (typeof children === 'string' ? children : 'Search')}
         className={(state) =>
           cn(
-            'border-city-border text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring/30 z-0 h-full shrink-0 self-stretch rounded-none border-l focus-visible:z-10 focus-visible:ring-offset-0',
+            'border-city-border text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring z-0 h-full shrink-0 self-stretch rounded-none border-l focus-visible:z-10 focus-visible:ring-offset-0',
             children == null && cn(outlineFrameSegmentWidthClasses[resolvedSize], 'px-0'),
             resolveClassName(className, state),
           )

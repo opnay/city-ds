@@ -1,0 +1,107 @@
+import { ColorPalette, ColorThemeComparison, FeedbackAppearanceMatrix } from './color-specimens';
+
+## 색상은 역할로 선택하십시오
+
+색상은 `원시 팔레트 → 의미 토큰 → 컴포넌트 tone·appearance → 상태` 순서로 적용하십시오.
+city-ds 컴포넌트는 의미 토큰만 사용하며, 소비 제품도 먼저 역할을 정한 뒤 색을 선택해야
+Light·Dark·System에서 의미와 위계가 유지됩니다.
+
+| 계층        | 계약                            | 사용 기준                                                |
+| ----------- | ------------------------------- | -------------------------------------------------------- |
+| 원시 팔레트 | `--city-palette-*`              | 제품 의미 토큰을 정의하는 재료로만 사용하십시오.         |
+| 의미 토큰   | `--city-color-*`                | 배경, 콘텐츠, 액션, 피드백처럼 역할에 따라 선택하십시오. |
+| 컴포넌트    | `tone`, `appearance`, `variant` | 공개 API로 의미와 표현 강도를 선택하십시오.              |
+| 상태        | hover, active, focus, invalid   | 전용 상태 토큰을 사용하고 임의 투명도를 피하십시오.      |
+
+## 원시 팔레트
+
+팔레트는 Tailwind v4 OKLCH 값으로 고정되어 있습니다. `bg-city-palette-blue-600` 같은
+유틸리티도 제공하지만, 재사용 컴포넌트나 제품 화면에서 원시 팔레트를 직접 의미처럼 사용하지
+마십시오.
+
+<ColorPalette />
+
+## 의미 토큰은 테마를 연결합니다
+
+| 역할        | 대표 토큰                                                       | 기준                                       |
+| ----------- | --------------------------------------------------------------- | ------------------------------------------ |
+| Canvas      | `background`, `foreground`                                      | 페이지와 기본 콘텐츠의 대비                |
+| Surface     | `surface`, `surface-raised`, `muted`, `border`, `input`         | 구획, 떠 있는 면, 보조 면과 경계           |
+| Interaction | `accent`, `accent-hover`, `accent-active`, `ring`               | hover·active·focus 상태                    |
+| Action      | `primary`, `destructive`와 각 foreground·hover·active           | 대표 액션과 손실 위험 액션                 |
+| Feedback    | `info`, `success`, `warning`, `destructive`의 surface·border 등 | 상태 의미와 표현 강도                      |
+| Effect      | `inverse`, `backdrop`, `shimmer`                                | Tooltip, overlay, loading의 별도 표면 관계 |
+
+<ColorThemeComparison />
+
+white·neutral 계열을 제외한 유색 solid는 모든 테마에서 전경을 `neutral-50`으로 고정하고,
+일반 텍스트 대비 4.5:1 이상을 만족하는 어두운 tone fill만 사용합니다. 밝은 유색 면이 필요하면
+전경을 어둡게 바꾸지 말고 subtle 또는 outline을 사용하십시오.
+
+## Tone과 Appearance
+
+Tone은 의미이고 appearance는 면의 강도입니다. 같은 tone은 컴포넌트가 달라도 같은 의미를
+유지해야 합니다.
+
+| Tone          | 의미                                      | 대표 사용              |
+| ------------- | ----------------------------------------- | ---------------------- |
+| `neutral`     | 일반 상태, 아직 의미가 확정되지 않은 정보 | 대기, 예약, 기본 안내  |
+| `info`        | 판단을 돕는 정보, 진행 중 상태            | 동기화 중, 새 데이터   |
+| `success`     | 완료되었거나 정상인 상태                  | 저장 완료, 정상 운영   |
+| `warning`     | 확인 후 계속 진행할 수 있는 상태          | 검토 필요, 임계치 접근 |
+| `destructive` | 실패, 손실 위험, 복구가 필요한 상태       | 삭제, 처리 실패        |
+
+<FeedbackAppearanceMatrix />
+
+- `solid`: 강한 fill과 전용 foreground를 사용합니다. 주요·위험 액션과 짧은 Badge에
+  사용하십시오.
+- `subtle`: tone surface와 border를 사용합니다. Alert·Toast와 보조 Badge에 적합합니다.
+- `outline`: 기본 surface와 tone border로 지속 메시지를 낮게 강조합니다.
+- Badge는 tone과 appearance를 모두 지원합니다. Alert·Toast는 넓은 본문을 위해 subtle 또는
+  outline을 기본으로 사용하십시오.
+
+## 상태와 의미를 분리하십시오
+
+- 선택은 primary, 오류·위험은 destructive, focus는 ring을 사용하십시오.
+- `warning`은 확인 후 진행할 수 있는 상태에, `destructive`는 실패나 손실 위험에 사용하십시오.
+- Button·Toggle·Toolbar의 hover·active는 전용 토큰을 사용하고 `/80`, `/90` 투명도를 만들지
+  마십시오.
+- Tooltip은 inverse, Dialog·Drawer·Popover의 차단 면은 backdrop, Skeleton highlight는
+  shimmer를 사용하십시오.
+- disabled의 전체 요소 opacity는 예외입니다. 별도 disabled 색을 새로운 의미처럼 만들지
+  마십시오.
+
+> 선택에 success, 단순 강조에 warning, 브랜드 강조에 destructive를 사용하지 마십시오.
+> 넓은 feedback 면을 강한 solid로 채우면 본문 가독성과 화면 위계가 약해집니다.
+
+## 제품 테마를 재정의하십시오
+
+앱 CSS를 city-ds CSS 뒤에 로드하고 의미 토큰을 테마 단위로 재정의하십시오. 원시 팔레트를
+추가할 수 있지만 city-ds 컴포넌트가 소비하는 값은 의미 토큰이어야 합니다.
+
+```css
+:root {
+  --product-palette-brand-600: oklch(0.55 0.2 260);
+}
+
+[data-theme='light'] {
+  --city-color-primary: var(--product-palette-brand-600);
+  --city-color-primary-foreground: var(--city-palette-neutral-50);
+}
+
+[data-theme='dark'] {
+  --city-color-primary: var(--city-palette-blue-600);
+  --city-color-primary-foreground: var(--city-palette-neutral-50);
+}
+```
+
+fill만 바꾸지 말고 foreground, hover, active와 focus ring의 대비를 함께 확인하십시오. 한
+컴포넌트의 예외를 해결하기 위해 전역 토큰을 변경하지 마십시오.
+
+## 접근성과 검토
+
+- [ ] light, dark, system에서 일반 텍스트 대비가 4.5:1 이상입니다.
+- [ ] 큰 텍스트, 아이콘, focus 표시가 3:1 이상입니다.
+- [ ] 상태를 아이콘, 레이블, 문구 또는 ARIA 상태와 함께 전달합니다.
+- [ ] default, hover, active, selected, invalid, focus, disabled를 확인했습니다.
+- [ ] 색상을 제거해도 액션과 상태의 의미를 이해할 수 있습니다.

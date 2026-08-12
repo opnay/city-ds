@@ -32,6 +32,7 @@ export type StaticDocSection = 'components' | 'guides' | 'start';
 export type StaticDocPath =
   | '/'
   | '/accessibility'
+  | '/color'
   | '/components'
   | '/foundations'
   | '/getting-started'

@@ -123,21 +123,11 @@
 
 .city-skeleton::after {
   animation: city-skeleton-shimmer 1.4s ease-in-out infinite;
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
+  background: linear-gradient(90deg, transparent, var(--city-color-shimmer), transparent);
   content: '';
   inset: 0;
   position: absolute;
   transform: translateX(-100%);
-}
-
-[data-theme='dark'] .city-skeleton::after {
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.12), transparent);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .city-skeleton::after {
-    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.12), transparent);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

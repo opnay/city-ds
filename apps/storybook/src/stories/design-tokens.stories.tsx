@@ -1,28 +1,5 @@
-import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-
-const colorTokens = [
-  ['--city-color-background', '페이지 배경'],
-  ['--city-color-foreground', '기본 텍스트와 아이콘'],
-  ['--city-color-surface', '구획과 카드 배경'],
-  ['--city-color-surface-raised', '떠 있는 표면'],
-  ['--city-color-muted', '보조 배경'],
-  ['--city-color-muted-foreground', '보조 텍스트'],
-  ['--city-color-accent', '상호작용 배경'],
-  ['--city-color-accent-hover', '상호작용 hover'],
-  ['--city-color-accent-active', '상호작용 active'],
-  ['--city-color-accent-foreground', '상호작용 배경 위 콘텐츠'],
-  ['--city-color-border', '일반 경계선'],
-  ['--city-color-input', '입력 경계선'],
-  ['--city-color-ring', '포커스 표시'],
-  ['--city-color-primary', '주요 액션'],
-  ['--city-color-primary-foreground', '주요 액션 위 콘텐츠'],
-  ['--city-color-destructive', '위험 액션과 오류'],
-  ['--city-color-destructive-foreground', '위험 액션 위 콘텐츠'],
-  ['--city-color-warning', '주의 상태'],
-  ['--city-color-success', '성공 상태'],
-  ['--city-color-info', '정보 상태'],
-] as const;
+import { TokenStoryFrame } from '../docs/token-story-frame';
 
 const spacingTokens = [
   ['--city-space-0', '0px'],
@@ -71,24 +48,6 @@ const controlTokens = [
   ['xlg', '40px'],
 ] as const;
 
-interface TokenStoryFrameProps {
-  children: ReactNode;
-  description: string;
-  title: string;
-}
-
-function TokenStoryFrame({ children, description, title }: TokenStoryFrameProps) {
-  return (
-    <section className="city-token-story">
-      <header className="city-token-story-header">
-        <h1>{title}</h1>
-        <p>{description}</p>
-      </header>
-      {children}
-    </section>
-  );
-}
-
 const meta = {
   title: '기초/디자인 토큰',
   parameters: {
@@ -101,31 +60,6 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-export const Colors: Story = {
-  name: '색상',
-  render: () => (
-    <TokenStoryFrame
-      description="용도 중심의 의미 토큰입니다. 테마를 바꾸면 모든 색상 미리보기가 함께 바뀝니다."
-      title="색상"
-    >
-      <div className="city-token-color-grid">
-        {colorTokens.map(([name, description]) => (
-          <div className="city-token-color-card" key={name}>
-            <div
-              aria-label={`${description} 색상 미리보기`}
-              className="city-token-color-swatch"
-              role="img"
-              style={{ background: `var(${name})` }}
-            />
-            <code>{name}</code>
-            <span>{description}</span>
-          </div>
-        ))}
-      </div>
-    </TokenStoryFrame>
-  ),
-};
 
 export const Spacing: Story = {
   name: '간격',

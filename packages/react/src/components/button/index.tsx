@@ -34,14 +34,14 @@ const buttonSizeClasses: Record<ControlSize, string> = {
 
 const buttonVariantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-city-primary text-city-primary-foreground hover:bg-city-primary/90 active:bg-city-primary/80',
+    'bg-city-primary text-city-primary-foreground hover:bg-city-primary-hover active:bg-city-primary-active',
   secondary:
     'bg-city-accent text-city-accent-foreground hover:bg-city-accent-hover active:bg-city-accent-active',
   outline:
     'border border-city-border bg-city-background text-city-foreground hover:bg-city-accent active:bg-city-accent-active',
   ghost: 'text-city-foreground hover:bg-city-accent active:bg-city-accent-active',
   destructive:
-    'bg-city-destructive text-city-destructive-foreground hover:bg-city-destructive/90 active:bg-city-destructive/80',
+    'bg-city-destructive text-city-destructive-foreground hover:bg-city-destructive-hover active:bg-city-destructive-active',
 };
 
 const iconOnlySizeClasses: Record<ControlSize, string> = {

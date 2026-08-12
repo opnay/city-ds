@@ -104,7 +104,7 @@ export const FieldControl = React.forwardRef<HTMLElement, FieldControlProps>(fun
       ref={ref}
       className={(state) =>
         cn(
-          'rounded-city-sm border-city-input bg-city-background text-city-foreground placeholder:text-city-muted-foreground focus-visible:border-city-ring focus-visible:ring-city-ring/30 data-[invalid]:border-city-destructive data-[invalid]:focus-visible:ring-city-destructive/30 flex w-full border px-3 py-2 text-sm transition-colors outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50',
+          'rounded-city-sm border-city-input bg-city-background text-city-foreground placeholder:text-city-muted-foreground focus-visible:border-city-ring focus-visible:ring-city-ring data-[invalid]:border-city-destructive data-[invalid]:focus-visible:ring-city-destructive flex w-full border px-3 py-2 text-sm transition-colors outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50',
           resolveClassName(className, state),
         )
       }

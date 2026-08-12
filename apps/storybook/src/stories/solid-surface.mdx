@@ -123,6 +123,14 @@ Solid는 Surface 방식이고 tone은 의미입니다. 현재 Button의 `primary
 합친 preset이며, Badge는 `appearance="solid"`와 `tone`을 분리합니다. API 형태가 달라도 같은
 tone의 fill과 foreground 관계는 일관되어야 합니다.
 
+## 색상 대비 규칙
+
+- white·neutral 계열 Solid는 fill 밝기에 따라 밝거나 어두운 전경을 사용할 수 있습니다.
+- 그 외 유색 Solid는 전경을 `neutral-50`으로 고정하고, 일반 텍스트 대비 4.5:1 이상을
+  만족하는 어두운 fill 단계만 사용하십시오.
+- 더 밝은 유색 배경이 필요하면 Solid의 전경을 어둡게 바꾸지 말고 Subtle 또는 Outline
+  Surface를 사용하십시오.
+
 ## 상호작용 위임 규칙
 
 Solid는 상태 소유자에 따라 두 방식으로 구분합니다.
@@ -166,7 +174,7 @@ Solid가 아니라 elevation 축으로 구분합니다.
 1. 기본 상태부터 채워져야 하는 Persistent Surface와 선택 상태에서만 채워지는 State-driven
    Surface가 구분됩니까?
 2. 같은 `size`의 Solid Control 외곽 높이·padding·radius가 다른 Surface와 일치합니까?
-3. 같은 tone의 fill과 foreground가 컴포넌트 사이에서 일관됩니까?
+3. 유색 Solid가 `neutral-50` 전경과 4.5:1 이상 대비를 이루며 컴포넌트 사이에서 일관됩니까?
 4. 채움만으로 형태가 보이며 불필요한 border·shadow가 중복되지 않습니까?
 5. Persistent Surface의 전체 면이 하나의 hit target과 상태 소유자로 동작합니까?
 6. State-driven Surface의 root와 label이 중복 동작이나 중복 Surface를 만들지 않습니까?

@@ -61,6 +61,15 @@ export const GUIDE_DOCS = [
     title: '기초',
   },
   {
+    description: '팔레트, 의미 토큰, tone과 appearance를 테마별로 일관되게 적용합니다.',
+    englishTitle: 'Color',
+    keywords: ['색상', '팔레트', '토큰', 'tone', 'appearance', 'light', 'dark'],
+    label: '색상',
+    path: '/color',
+    section: 'guides',
+    title: '색상',
+  },
+  {
     description: '폼, 데이터 목록, 피드백과 오버레이를 사용자 작업 단위로 조합합니다.',
     englishTitle: 'Patterns',
     keywords: ['폼', '데이터 목록', '피드백', '오버레이', '조합'],

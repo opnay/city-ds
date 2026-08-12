@@ -51,9 +51,9 @@ describe('document page search', () => {
       result.kind === 'static' ? result.entry.path : `/components/${result.entry.slug}`,
     );
 
-    expect(STATIC_DOCS).toHaveLength(6);
-    expect(paths).toHaveLength(45);
-    expect(new Set(paths).size).toBe(45);
+    expect(STATIC_DOCS).toHaveLength(7);
+    expect(paths).toHaveLength(46);
+    expect(new Set(paths).size).toBe(46);
   });
 
   it('searches page titles, descriptions, paths, categories and keywords', () => {
@@ -69,6 +69,14 @@ describe('document page search', () => {
       expect.arrayContaining([
         expect.objectContaining({
           entry: expect.objectContaining({ path: '/getting-started' }),
+          kind: 'static',
+        }),
+      ]),
+    );
+    expect(filterDocumentPages('색상')).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          entry: expect.objectContaining({ path: '/color' }),
           kind: 'static',
         }),
       ]),

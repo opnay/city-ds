@@ -108,6 +108,37 @@ describe('Alert', () => {
 });
 
 describe('Table', () => {
+  it.each(['xsm', 'sm', 'md', 'lg', 'xlg'] as const)(
+    'keeps a 16px region gutter at the %s table edges',
+    (size) => {
+      render(
+        <Table.Root aria-label={`${size} table`} size={size}>
+          <Table.Header>
+            <Table.Row>
+              <Table.Head>First heading</Table.Head>
+              <Table.Head>Last heading</Table.Head>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>First value</Table.Cell>
+              <Table.Cell>Last value</Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table.Root>,
+      );
+
+      for (const cell of [
+        screen.getByRole('columnheader', { name: 'First heading' }),
+        screen.getByRole('columnheader', { name: 'Last heading' }),
+        screen.getByRole('cell', { name: 'First value' }),
+        screen.getByRole('cell', { name: 'Last value' }),
+      ]) {
+        expect(cell).toHaveClass('first:ps-4', 'last:pe-4');
+      }
+    },
+  );
+
   it('keeps native table semantics and applies size and variant state', () => {
     render(
       <Table.Root size="sm" variant="surface">

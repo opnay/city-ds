@@ -63,9 +63,9 @@ export function WorkOrderTable({
         <Table.Header>
           <Table.Row>
             <Table.Head className="city-ops-col-risk">위험도</Table.Head>
-            <Table.Head className="city-ops-col-order">작업</Table.Head>
-            <Table.Head>자치구</Table.Head>
-            <Table.Head>담당팀</Table.Head>
+            <Table.Head>작업</Table.Head>
+            <Table.Head className="city-ops-col-district">자치구</Table.Head>
+            <Table.Head className="city-ops-col-crew">담당팀</Table.Head>
             <Table.Head
               aria-sort={
                 sortDirection === 'asc'
@@ -74,12 +74,13 @@ export function WorkOrderTable({
                     ? 'descending'
                     : 'none'
               }
+              className="city-ops-col-sla"
             >
               <Table.SortButton direction={sortDirection} onDirectionChange={onSortDirectionChange}>
                 SLA
               </Table.SortButton>
             </Table.Head>
-            <Table.Head>상태</Table.Head>
+            <Table.Head className="city-ops-col-status">상태</Table.Head>
             <Table.Head className="city-ops-col-updated">최근 변경</Table.Head>
           </Table.Row>
         </Table.Header>

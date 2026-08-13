@@ -77,6 +77,12 @@ describe('Vite design-system consumer page', () => {
     expect(screen.getByRole('group', { name: '현장 작업 필터' })).toBeVisible();
     expect(screen.getByRole('region', { name: '현장 작업 표 가로 스크롤 영역' })).toBeVisible();
     expect(screen.getByRole('table', { name: '현장 작업 목록' })).toBeVisible();
+    expect(screen.getByRole('columnheader', { name: '자치구' })).toHaveClass(
+      'city-ops-col-district',
+    );
+    expect(screen.getByRole('columnheader', { name: '담당팀' })).toHaveClass('city-ops-col-crew');
+    expect(screen.getByRole('columnheader', { name: 'SLA' })).toHaveClass('city-ops-col-sla');
+    expect(screen.getByRole('columnheader', { name: '상태' })).toHaveClass('city-ops-col-status');
     expect(screen.getByRole('navigation', { name: '현장 작업 페이지' })).toBeVisible();
   });
 

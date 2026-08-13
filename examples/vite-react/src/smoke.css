@@ -807,8 +807,20 @@
     width: 5.5rem;
   }
 
-  .city-ops-col-order {
-    width: 25rem;
+  .city-ops-col-district {
+    width: 6rem;
+  }
+
+  .city-ops-col-crew {
+    width: 8rem;
+  }
+
+  .city-ops-col-sla {
+    width: 8.5rem;
+  }
+
+  .city-ops-col-status {
+    width: 6rem;
   }
 
   .city-ops-col-updated {

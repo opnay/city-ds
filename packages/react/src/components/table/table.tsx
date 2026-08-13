@@ -199,13 +199,7 @@ const CELL_PADDING: Record<ControlSize, string> = {
   xlg: 'px-4 py-3',
 };
 
-const CELL_EDGE_PADDING: Record<ControlSize, string> = {
-  xsm: 'first:ps-2 last:pe-2',
-  sm: 'first:ps-2.5 last:pe-2.5',
-  md: 'first:ps-3 last:pe-3',
-  lg: 'first:ps-4 last:pe-4',
-  xlg: 'first:ps-6 last:pe-6',
-};
+const CELL_EDGE_PADDING = 'first:ps-4 last:pe-4';
 
 export interface TableRootProps extends Omit<React.ComponentPropsWithoutRef<'table'>, 'className'> {
   className?: string;
@@ -375,7 +369,7 @@ export const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(
         scope,
         className: cn(
           CELL_PADDING[state.size],
-          CELL_EDGE_PADDING[state.size],
+          CELL_EDGE_PADDING,
           'h-9 font-medium text-city-muted-foreground',
           className,
         ),
@@ -405,7 +399,7 @@ export const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
         children,
         className: cn(
           CELL_PADDING[state.size],
-          CELL_EDGE_PADDING[state.size],
+          CELL_EDGE_PADDING,
           state.variant === 'surface' && 'bg-city-surface',
           className,
         ),

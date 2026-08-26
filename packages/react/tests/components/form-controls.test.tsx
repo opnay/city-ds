@@ -879,6 +879,17 @@ describe('form and display controls', () => {
 
     const switchControl = screen.getByRole('switch', { name: 'Notifications' });
     const disabledSwitch = screen.getByRole('switch', { name: 'Locked notifications' });
+    const switchThumb = switchControl.querySelector('span');
+
+    expect(switchControl).toHaveClass(
+      'bg-city-background',
+      'before:border-city-input',
+      'data-[checked]:bg-city-primary',
+      'data-[checked]:before:border-city-primary',
+    );
+    expect(switchControl).not.toHaveClass('bg-city-muted');
+    expect(switchThumb).toHaveClass('bg-city-input', 'data-[checked]:bg-city-background');
+
     await user.click(switchControl);
     await user.click(disabledSwitch);
 

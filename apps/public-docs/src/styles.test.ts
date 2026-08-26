@@ -86,6 +86,18 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(/\.city-showcase-orders-table\s*{[^}]*min-width:\s*39rem;/s);
   });
 
+  it('keeps desktop showcase cards contained without changing the mobile crop', () => {
+    expect(styles).toMatch(/\.city-showcase-card-header > div > div\s*{\s*min-width:\s*0;/);
+    expect(styles).toMatch(
+      /\.city-showcase-schedule-grid\s*{[^}]*grid-template-columns:\s*minmax\(11\.5rem, 1\.1fr\) minmax\(10rem, 0\.9fr\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-showcase-toolbar > span\s*{[^}]*flex:\s*none;[^}]*white-space:\s*nowrap;/s,
+    );
+    expect(styles).toMatch(/\.city-showcase-setting-copy\s*{[^}]*flex:\s*1;/s);
+    expect(styles).not.toMatch(/\.city-showcase-settings-list > div > span\s*{/);
+  });
+
   it('keeps API table columns readable and scrollable on narrow screens', () => {
     expect(styles).toMatch(/\.city-docs-api-table table\s*{\s*min-width:\s*40rem;/);
     expect(styles).toMatch(/\.city-docs-api-table :where\(th, td\)\s*{\s*min-width:\s*160px;/);

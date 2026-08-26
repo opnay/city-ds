@@ -1970,6 +1970,10 @@
     gap: var(--city-space-2);
   }
 
+  .city-showcase-card-header > div > div {
+    min-width: 0;
+  }
+
   .city-showcase-card-icon,
   .city-showcase-session-icon {
     display: inline-flex;
@@ -2031,6 +2035,11 @@
 
   .city-showcase-toolbar [data-city-select-trigger] {
     min-width: 8.5rem;
+  }
+
+  .city-showcase-toolbar > span {
+    flex: none;
+    white-space: nowrap;
   }
 
   .city-showcase-orders-table {
@@ -2172,7 +2181,7 @@
     min-width: 0;
     align-items: start;
     gap: var(--city-space-3);
-    grid-template-columns: minmax(13.5rem, 1.1fr) minmax(11rem, 0.9fr);
+    grid-template-columns: minmax(11.5rem, 1.1fr) minmax(10rem, 0.9fr);
   }
 
   .city-showcase-schedule-grid > div {
@@ -2311,7 +2320,7 @@
     border-top: 0;
   }
 
-  .city-showcase-settings-list > div > span {
+  .city-showcase-setting-copy {
     display: grid;
     min-width: 0;
     gap: 1px;

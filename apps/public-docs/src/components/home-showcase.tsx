@@ -737,7 +737,7 @@ function NotificationsCard() {
       <div className="city-showcase-settings-list">
         {items.map(([key, title, description]) => (
           <div key={key}>
-            <span>
+            <span className="city-showcase-setting-copy">
               <strong>{title}</strong>
               <small>{description}</small>
             </span>

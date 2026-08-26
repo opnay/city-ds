@@ -45,7 +45,7 @@ export const SwitchThumb = React.forwardRef<HTMLSpanElement, SwitchThumbProps>(f
       className={(state) =>
         cn(
           atomicRoundShapeClass,
-          'bg-city-background pointer-events-none block shadow-sm transition-transform',
+          'bg-city-input data-[checked]:bg-city-background pointer-events-none block shadow-sm transition-colors transition-transform',
           switchThumbSizeClasses[size],
           resolveClassName(className, state),
         )
@@ -67,7 +67,7 @@ const SwitchRoot = React.forwardRef<HTMLElement, SwitchProps>(function Switch(
       className={(state) =>
         cn(
           atomicRoundShapeClass,
-          'bg-city-muted focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:bg-city-primary inline-flex shrink-0 items-center transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
+          'bg-city-background focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:bg-city-primary relative inline-flex shrink-0 items-center transition-colors outline-none before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-city-input before:transition-colors before:content-[""] focus-visible:ring-2 focus-visible:ring-offset-2 data-[checked]:before:border-city-primary data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
           switchSizeClasses[size],
           resolveClassName(className, state),
         )

@@ -214,12 +214,14 @@ function DocsNavigation({ onNavigate, query, setQuery }: DocsNavigationProps) {
             </section>
 
             <section className="city-docs-nav-section city-docs-nav-components">
-              <h2>컴포넌트</h2>
-              <ul>
-                <li>
-                  <StaticNavigationLink entry={COMPONENT_INDEX_DOC} onNavigate={handleNavigate} />
-                </li>
-              </ul>
+              <div className="city-docs-nav-section-primary">
+                <h2>컴포넌트</h2>
+                <ul>
+                  <li>
+                    <StaticNavigationLink entry={COMPONENT_INDEX_DOC} onNavigate={handleNavigate} />
+                  </li>
+                </ul>
+              </div>
               <div className="city-docs-nav-categories">
                 {COMPONENT_CATEGORIES.map((category) => {
                   const entries = COMPONENT_DOCS.filter((entry) => entry.category === category);

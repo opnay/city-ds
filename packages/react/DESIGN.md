@@ -126,6 +126,18 @@ CTA는 결과를 예측할 수 있게 쓰십시오. `확인`, `예`보다 `변�
 
 `DensityProvider`는 `FilterBar`, `Menu`, `Pagination`, `Tabs`, `FileUpload`에 적용됩니다. `Table`은 `size`, `EmptyState`는 `default | compact` density로 조절하십시오. 작은 화면이라는 이유만으로 무조건 compact를 사용하지 마십시오. 터치 정확도와 읽기 용이성이 더 중요할 수 있습니다.
 
+### 간격 계약
+
+간격은 `Component Spacing`과 `Layout Spacing`으로 구분하십시오. Component Spacing은 카드, 필드 그룹, 툴바, 리스트 안의 padding과 gap을 소유하며 `comfortable | compact` density에 반응합니다. Layout Spacing은 page gutter, section gap, grid gutter를 소유하며 viewport와 정보 구조에 반응합니다.
+
+- 부모가 자식 사이의 `gap`과 자신의 `padding`을 소유하고 자식은 외부 margin을 만들지 마십시오.
+- 같은 surface의 header·body·footer는 동일한 inline gutter를 사용하십시오.
+- Page > Section > Region > Component 경계마다 spacing 소유자를 하나만 두십시오.
+- 부모와 자식이 같은 경계의 padding이나 margin을 동시에 더하지 마십시오.
+- breakpoint는 Layout Spacing만 바꾸며 Control Size와 Component Spacing을 암묵적으로 바꾸지 않습니다.
+
+세부 계약과 비교 표본은 Storybook의 `디자인 패턴/Density/Component Spacing`, `디자인 패턴/Layout/Layout Spacing`을 참고하십시오.
+
 ## 컴포넌트 선택
 
 ### 액션과 선택

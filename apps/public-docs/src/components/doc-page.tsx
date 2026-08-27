@@ -23,9 +23,11 @@ export function GuidePage({ children, description, eyebrow, title }: GuidePagePr
   return (
     <article className="city-docs-article">
       <header className="city-docs-page-heading">
-        <p className="city-docs-page-eyebrow city-text-caption">{eyebrow}</p>
-        <h1 className="city-text-page-title">{title}</h1>
-        <p className="city-docs-page-description city-text-lead">{description}</p>
+        <div className="city-docs-page-heading-copy">
+          <p className="city-docs-page-eyebrow city-text-caption">{eyebrow}</p>
+          <h1 className="city-text-page-title">{title}</h1>
+          <p className="city-docs-page-description city-text-lead">{description}</p>
+        </div>
       </header>
       <div className="city-docs-prose city-prose">{children}</div>
     </article>
@@ -41,11 +43,13 @@ export function ComponentDocPage({ Content, entry }: ComponentDocPageProps) {
   return (
     <article className="city-docs-article">
       <header className="city-docs-page-heading">
-        <p className="city-docs-page-eyebrow city-text-caption">
-          컴포넌트 · {CATEGORY_LABELS[entry.category]}
-        </p>
-        <h1 className="city-text-page-title">{entry.title}</h1>
-        <p className="city-docs-page-description city-text-lead">{entry.description}</p>
+        <div className="city-docs-page-heading-copy">
+          <p className="city-docs-page-eyebrow city-text-caption">
+            컴포넌트 · {CATEGORY_LABELS[entry.category]}
+          </p>
+          <h1 className="city-text-page-title">{entry.title}</h1>
+          <p className="city-docs-page-description city-text-lead">{entry.description}</p>
+        </div>
         <div
           aria-label={`${entry.title} 가져오기`}
           className="city-docs-import-block"

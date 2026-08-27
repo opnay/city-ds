@@ -2,13 +2,14 @@ import { Meta } from '@storybook/addon-docs/blocks';
 import { Button, Input, Table } from '@opnay/city-ds-react';
 import { ComponentSpecimen } from '../docs/component-specimen';
 
-<Meta title="디자인 패턴/Size/Control Size" />
+<Meta title="디자인 패턴/Density/Control Size" />
 
 # Control Size
 
-Control Size는 atom·molecule에서 사용자가 읽고 조작하는 **단일 행 Control의 외곽
-border-box 높이**를 정의하는 Size 축입니다. 컴포넌트 타입이나 Surface가 달라도 같은 `size`는
-같은 높이를 사용합니다.
+Control Size는 [Density](?path=/docs/디자인-패턴-density-overview--docs)에서 사용자가 읽고
+조작하는 **단일 행 Control의 외곽 border-box 높이**를 정의하는 축입니다. 컴포넌트 타입이나
+Surface가 달라도 같은 `size`는 같은 높이를 사용합니다. 카드·필드 그룹의 padding과 gap은
+[Component Spacing](?path=/docs/디자인-패턴-density-component-spacing--docs)이 책임집니다.
 
 ## 크기 계약
 
@@ -166,4 +167,5 @@ DatePicker 같은 단일 행 Outline Frame에 적용합니다. Badge·Checkbox·
 1. 같은 `size`의 단일 행 Control 외곽 높이가 Surface와 컴포넌트 타입에 관계없이 일치합니까?
 2. border·padding·내부 segment가 외곽 높이를 추가로 늘리지 않습니까?
 3. 내용 확장형 Control이 같은 크기를 최소 높이로 유지합니까?
-4. Typography·Shape·hit target을 Size와 혼합하지 않고 각각의 계약으로 적용합니까?
+4. Typography·Shape·Component Spacing·hit target을 Control Size와 혼합하지 않고 각각의
+   계약으로 적용합니까?

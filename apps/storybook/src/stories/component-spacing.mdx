@@ -1,0 +1,121 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Table } from '@opnay/city-ds-react';
+import { ComponentSpecimen } from '../docs/component-specimen';
+
+<Meta title="디자인 패턴/Density/Component Spacing" />
+
+# Component Spacing
+
+Component Spacing은 카드, 필드 그룹, 툴바, 리스트처럼 하나의 컴포넌트나 작업 그룹 안에서
+요소의 관계를 표현하는 padding과 gap 계약입니다. 값 자체는 기존 `--city-space-*` scale을
+사용하고, 새로운 spacing scale을 만들지 않습니다.
+
+페이지 gutter와 섹션 간격은 [Layout Spacing](?path=/docs/디자인-패턴-layout-layout-spacing--docs),
+Control 외곽 크기와 내부 padding은
+[Control Size](?path=/docs/디자인-패턴-density-control-size--docs)를 따릅니다.
+
+## 역할 단계
+
+<ComponentSpecimen>
+  <Table.ScrollArea
+    appearance="outline"
+    aria-label="Component Spacing 역할 단계 가로 스크롤 영역"
+    className="my-6 max-w-3xl"
+  >
+    <Table.Root aria-label="Component Spacing 역할 단계" size="sm">
+      <Table.Header>
+        <Table.Row>
+          <Table.Head>관계</Table.Head>
+          <Table.Head>Comfortable</Table.Head>
+          <Table.Head>Compact</Table.Head>
+          <Table.Head>대표 용도</Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Head scope="row">Item</Table.Head>
+          <Table.Cell>12px</Table.Cell>
+          <Table.Cell>8px</Table.Cell>
+          <Table.Cell>필드, 반복 행, 관련 요소</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">Group</Table.Head>
+          <Table.Cell>16px</Table.Cell>
+          <Table.Cell>12px</Table.Cell>
+          <Table.Cell>필드 묶음, 툴바, 카드 구간</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">Container</Table.Head>
+          <Table.Cell>16px</Table.Cell>
+          <Table.Cell>12px</Table.Cell>
+          <Table.Cell>카드·패널의 기본 padding</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Head scope="row">Spacious Container</Table.Head>
+          <Table.Cell>24px</Table.Cell>
+          <Table.Cell>-</Table.Cell>
+          <Table.Cell>저밀도 단일 작업과 안내</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table.Root>
+  </Table.ScrollArea>
+</ComponentSpecimen>
+
+2·4·6·10·14px는 indicator, title–meta, Control 내부 정렬 같은 미세 조정에만 사용하십시오.
+Container와 영역 배치에는 8·12·16·24px 단계를 우선합니다.
+
+## Density 비교
+
+<ComponentSpecimen>
+  <div className="my-6 grid max-w-3xl gap-6 md:grid-cols-2">
+    <section className="grid gap-4 rounded-city-md border border-city-border bg-city-surface p-4">
+      <header className="grid gap-1">
+        <strong className="text-sm">Comfortable card</strong>
+        <span className="text-xs text-city-muted-foreground">padding 16px · group 16px</span>
+      </header>
+      <div className="grid gap-3">
+        <div className="rounded-city-sm bg-city-muted p-3 text-sm">첫 번째 항목</div>
+        <div className="rounded-city-sm bg-city-muted p-3 text-sm">두 번째 항목</div>
+      </div>
+    </section>
+
+    <section className="grid gap-3 rounded-city-md border border-city-border bg-city-surface p-3">
+      <header className="grid gap-1">
+        <strong className="text-sm">Compact card</strong>
+        <span className="text-xs text-city-muted-foreground">padding 12px · group 12px</span>
+      </header>
+      <div className="grid gap-2">
+        <div className="rounded-city-sm bg-city-muted p-2 text-xs">첫 번째 항목</div>
+        <div className="rounded-city-sm bg-city-muted p-2 text-xs">두 번째 항목</div>
+      </div>
+    </section>
+
+  </div>
+</ComponentSpecimen>
+
+## 소유권 규칙
+
+- 부모 container가 자식 사이의 `gap`과 자신의 `padding`을 소유합니다.
+- 자식은 일반적으로 외부 margin을 만들지 않습니다.
+- 같은 surface의 header·body·footer는 동일한 inline gutter를 사용합니다.
+- 리스트가 row padding과 divider를 소유하고 row 자식은 별도 외부 간격을 만들지 않습니다.
+- 빈 상태의 배치는 container가 정렬하며 임의 margin으로 위치를 맞추지 않습니다.
+- `margin-top: auto`는 동일 높이 카드의 action처럼 명시적인 끝 정렬에만 사용합니다.
+
+Typography의 문단 흐름은 [Content Text](?path=/docs/디자인-패턴-typography-content-text--docs)가
+소유합니다. Component Spacing으로 heading이나 문단의 기본 margin을 다시 정의하지 마십시오.
+
+## 반응형 규칙
+
+Component Spacing은 viewport가 아니라 density에 반응합니다. 모바일이라는 이유만으로 카드와
+필드의 내부 간격을 줄이지 마십시오. page gutter와 section gap만 Layout Spacing에서 viewport에
+맞게 변경합니다.
+
+## 검토 기준
+
+1. 같은 역할과 density의 container가 같은 padding과 gap을 사용합니까?
+2. 부모와 자식이 같은 경계의 간격을 중복해서 만들지 않습니까?
+3. 같은 surface의 header·body·footer inline 축이 일치합니까?
+4. 미세 조정 값을 page·section·container layout에 사용하지 않았습니까?
+5. compact에서도 정보 구분과 조작 정확도가 유지됩니까?
+6. viewport와 density가 독립적으로 적용됩니까?

@@ -22,6 +22,9 @@ describe('FilterBar', () => {
 
     const filterBar = screen.getByRole('group', { name: 'Project filters' });
     expect(filterBar).toHaveAttribute('data-appearance', 'band');
+    expect(filterBar).toHaveClass('gap-4', 'p-4');
+    expect(filterBar.querySelector('[data-city-filter-bar-content]')).toHaveClass('gap-3');
+    expect(filterBar.querySelector('[data-city-filter-bar-actions]')).toHaveClass('gap-3');
     expect(screen.queryByRole('toolbar')).not.toBeInTheDocument();
 
     await user.tab();
@@ -47,10 +50,8 @@ describe('FilterBar', () => {
       'data-city-density',
       'compact',
     );
-    expect(screen.getByRole('group', { name: 'Compact filters' })).toHaveClass(
-      'rounded-city-md',
-      'border',
-      'py-2',
-    );
+    const filterBar = screen.getByRole('group', { name: 'Compact filters' });
+    expect(filterBar).toHaveClass('rounded-city-md', 'border', 'gap-3', 'p-3');
+    expect(filterBar.querySelector('[data-city-filter-bar-content]')).toHaveClass('gap-2');
   });
 });

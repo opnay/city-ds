@@ -31,8 +31,8 @@ const appearanceClasses: Record<SurfaceAppearance, string> = {
 };
 
 const densityClasses: Record<Density, string> = {
-  comfortable: 'gap-3 px-4 py-3',
-  compact: 'gap-2 px-4 py-2',
+  comfortable: 'gap-4 p-4',
+  compact: 'gap-3 p-3',
 };
 
 const contentDensityClasses: Record<Density, string> = {

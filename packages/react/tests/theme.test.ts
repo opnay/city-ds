@@ -176,6 +176,7 @@ const motionTokens = [
   '--city-duration-fast',
   '--city-duration-normal',
   '--city-duration-slow',
+  '--city-duration-xslow',
   '--city-easing-standard',
   '--city-easing-enter',
   '--city-easing-exit',
@@ -219,6 +220,14 @@ describe('theme contract', () => {
     expect(themeCss).toContain("[data-theme='light']");
     expect(themeCss).toContain("[data-theme='dark']");
     expect(themeCss).toContain('(prefers-color-scheme: dark)');
+  });
+
+  it('defines the four-step motion duration scale and the default easing', () => {
+    expect(themeCss).toContain('--city-duration-fast: 80ms;');
+    expect(themeCss).toContain('--city-duration-normal: 120ms;');
+    expect(themeCss).toContain('--city-duration-slow: 160ms;');
+    expect(themeCss).toContain('--city-duration-xslow: 240ms;');
+    expect(themeCss).toContain('--city-easing-standard: ease-in-out;');
   });
 
   it('disables the Skeleton shimmer when reduced motion is requested', () => {
@@ -310,6 +319,10 @@ describe('theme contract', () => {
     expect(themeCss).toContain('--ease-city-standard: var(--city-easing-standard);');
     expect(themeCss).toContain('--ease-city-enter: var(--city-easing-enter);');
     expect(themeCss).toContain('--ease-city-exit: var(--city-easing-exit);');
+    expect(themeCss).toContain('--default-transition-duration: var(--city-duration-normal);');
+    expect(themeCss).toContain(
+      '--default-transition-timing-function: var(--city-easing-standard);',
+    );
   });
 
   it('derives semantic colors from the pinned palette', () => {

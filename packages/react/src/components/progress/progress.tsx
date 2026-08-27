@@ -160,7 +160,7 @@ export const ProgressIndicator = React.forwardRef<HTMLDivElement, ProgressIndica
       {...props}
       className={(state) =>
         cn(
-          'bg-city-primary transition-[width] duration-200 ease-out data-[indeterminate]:w-2/5 data-[indeterminate]:animate-pulse',
+          'bg-city-primary transition-[width] duration-(--city-duration-normal) ease-city-standard data-[indeterminate]:w-2/5 data-[indeterminate]:animate-pulse',
           resolveClassName(className, state),
         )
       }
@@ -279,7 +279,7 @@ export const ProgressCircular = React.forwardRef<SVGSVGElement, ProgressCircular
             />
             <circle
               className={cn(
-                'stroke-city-primary origin-center -rotate-90 transition-[stroke-dashoffset] duration-200 ease-out',
+                'stroke-city-primary origin-center -rotate-90 transition-[stroke-dashoffset] duration-(--city-duration-normal) ease-city-standard',
                 state.status === 'indeterminate' && 'animate-spin',
               )}
               cx="16"

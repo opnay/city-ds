@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { Accordion } from '@opnay/city-ds-react';
 
 const meta = {
@@ -14,6 +15,22 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Single: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const profilePanel = canvas.getByRole('region', { name: 'Profile settings' });
+    const panelStyle = getComputedStyle(profilePanel);
+
+    await expect(panelStyle.transitionProperty).toContain('grid-template-rows');
+    await expect(panelStyle.transitionDuration).toBe('0.16s');
+    await expect(panelStyle.transitionTimingFunction).toBe('ease-in-out');
+    await expect(getComputedStyle(profilePanel.firstElementChild as Element).minHeight).toBe('0px');
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Billing' }));
+    await expect(canvas.getByRole('button', { name: 'Billing' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+  },
   render: () => (
     <Accordion.Root className="w-96" defaultValue={['profile']}>
       <Accordion.Item value="profile">

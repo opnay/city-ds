@@ -24,6 +24,16 @@ function Example(props: React.ComponentProps<typeof Accordion.Root>) {
   );
 }
 
+function getPanelByText(text: string): HTMLElement {
+  const panel = screen.getByText(text).closest<HTMLElement>('[role="region"]');
+
+  if (panel == null) {
+    throw new Error(`Accordion panel not found for: ${text}`);
+  }
+
+  return panel;
+}
+
 describe('Accordion', () => {
   it('uses content feedback without separating trigger and panel surfaces', () => {
     render(<Example defaultValue={['profile']} />);
@@ -43,12 +53,31 @@ describe('Accordion', () => {
 
     const heading = screen.getByRole('heading', { level: 3, name: 'Profile' });
     const trigger = screen.getByRole('button', { name: 'Profile' });
-    const panel = screen.getByText('Profile details');
+    const panel = getPanelByText('Profile details');
 
     expect(heading).toContainElement(trigger);
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
     expect(trigger).toHaveAttribute('aria-controls', panel.id);
     expect(panel).toHaveAttribute('role', 'region');
+  });
+
+  it('animates intrinsic panel height with an interruptible grid track transition', () => {
+    render(<Example defaultValue={['profile']} />);
+
+    const panel = getPanelByText('Profile details');
+    const content = panel.querySelector('[data-city-accordion-panel-content]');
+
+    expect(panel).toHaveClass(
+      'grid',
+      'grid-rows-[1fr]',
+      'transition-[grid-template-rows,padding-bottom]',
+      'duration-(--city-duration-slow)',
+      'ease-city-standard',
+      'data-[starting-style]:grid-rows-[0fr]',
+      'data-[ending-style]:grid-rows-[0fr]',
+    );
+    expect(panel).not.toHaveClass('transition-[height]');
+    expect(content).toHaveClass('min-h-0', 'overflow-hidden');
   });
 
   it('toggles a single open item by default', async () => {

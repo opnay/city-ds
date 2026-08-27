@@ -226,7 +226,9 @@ describe('organism mosaic interactions', () => {
 
     const command = within(main).getByRole('heading', { name: 'Quick command' }).closest('article');
     if (!command) throw new Error('Quick command card was not rendered.');
-    await user.type(within(command).getByRole('searchbox', { name: 'Search commands' }), 'access');
+    const commandSearch = within(command).getByRole('searchbox', { name: 'Search commands' });
+    expect(commandSearch.previousElementSibling).toHaveAttribute('data-city-position', 'leading');
+    await user.type(commandSearch, 'access');
     expect(within(command).getByRole('link', { name: /Accessibility guide/ })).toBeVisible();
     expect(within(command).queryByRole('link', { name: /Open orders/ })).not.toBeInTheDocument();
 

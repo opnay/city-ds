@@ -87,7 +87,12 @@ describe('public docs layout styles', () => {
   });
 
   it('keeps desktop showcase cards contained without changing the mobile crop', () => {
+    expect(styles).not.toMatch(/\.city-docs-home\s*{[^}]*padding-bottom:/s);
     expect(styles).toMatch(/\.city-showcase-card-header > div > div\s*{\s*min-width:\s*0;/);
+    expect(styles).toMatch(
+      /\.city-showcase-card-body\s*{[^}]*padding:\s*var\(--city-space-3\);[^}]*gap:\s*var\(--city-space-3\);/s,
+    );
+    expect(styles).toMatch(/\.city-showcase-card-action\s*{\s*margin-top:\s*auto;/);
     expect(styles).toMatch(
       /\.city-showcase-schedule-grid\s*{[^}]*grid-template-columns:\s*minmax\(11\.5rem, 1\.1fr\) minmax\(10rem, 0\.9fr\);/s,
     );
@@ -95,6 +100,9 @@ describe('public docs layout styles', () => {
       /\.city-showcase-toolbar > span\s*{[^}]*flex:\s*none;[^}]*white-space:\s*nowrap;/s,
     );
     expect(styles).toMatch(/\.city-showcase-setting-copy\s*{[^}]*flex:\s*1;/s);
+    expect(styles).toMatch(
+      /\.city-showcase-upload \[data-city-file-upload-root\]\[data-file-count='0'\]\s*{\s*margin-block:\s*auto;/,
+    );
     expect(styles).not.toMatch(/\.city-showcase-settings-list > div > span\s*{/);
   });
 

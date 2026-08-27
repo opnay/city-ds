@@ -23,7 +23,7 @@ import { Calendar } from '@opnay/city-ds-react/calendar';
 import { Checkbox } from '@opnay/city-ds-react/checkbox';
 import { Field } from '@opnay/city-ds-react/field';
 import { FileUpload } from '@opnay/city-ds-react/file-upload';
-import { Input } from '@opnay/city-ds-react/input';
+import { Input, InputGroup } from '@opnay/city-ds-react/input';
 import { SearchField } from '@opnay/city-ds-react/search-field';
 import { Select } from '@opnay/city-ds-react/select';
 import { Switch } from '@opnay/city-ds-react/switch';
@@ -572,7 +572,9 @@ function QuickCommandCard() {
       <SearchField.Root onValueChange={setQuery} size="sm" value={query}>
         <SearchField.Label className="city-docs-sr-only">Search commands</SearchField.Label>
         <SearchField.Group>
-          <Search aria-hidden="true" size={15} />
+          <InputGroup.Addon>
+            <Search aria-hidden="true" size={15} />
+          </InputGroup.Addon>
           <SearchField.Input placeholder="Type a command or search…" />
           <SearchField.Clear aria-label="Clear command search" />
         </SearchField.Group>

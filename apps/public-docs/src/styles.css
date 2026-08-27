@@ -981,7 +981,6 @@
   .city-docs-home {
     display: grid;
     min-width: 0;
-    padding-bottom: var(--city-space-8);
     gap: var(--city-space-16);
     overflow-wrap: anywhere;
     word-break: keep-all;
@@ -1872,7 +1871,6 @@
   .city-docs-home {
     display: grid;
     min-width: 0;
-    padding-bottom: var(--city-space-8);
     overflow: visible;
     gap: var(--city-space-10);
     word-break: keep-all;
@@ -2012,10 +2010,10 @@
     display: flex;
     min-width: 0;
     min-height: 0;
-    padding: var(--city-space-2-5);
+    padding: var(--city-space-3);
     flex: 1;
     flex-direction: column;
-    gap: var(--city-space-2-5);
+    gap: var(--city-space-3);
   }
 
   .city-showcase-card-body > button:last-child {
@@ -2031,6 +2029,10 @@
     justify-content: space-between;
     gap: var(--city-space-2);
     font-size: var(--city-font-size-2xs);
+  }
+
+  .city-showcase-card-action {
+    margin-top: auto;
   }
 
   .city-showcase-toolbar [data-city-select-trigger] {
@@ -2300,6 +2302,10 @@
 
   .city-showcase-upload-drop strong {
     font-size: var(--city-font-size-xs);
+  }
+
+  .city-showcase-upload [data-city-file-upload-root][data-file-count='0'] {
+    margin-block: auto;
   }
 
   .city-showcase-settings-list {

@@ -162,15 +162,37 @@ describe('ComponentSpecimen', () => {
   it('uses city-ds Table for contract documents instead of unsupported Markdown tables', () => {
     for (const path of [
       '../stories/color.mdx',
+      '../stories/component-spacing.mdx',
       '../stories/content-typography.mdx',
       '../stories/control-size.mdx',
       '../stories/control-typography.mdx',
+      '../stories/density-overview.mdx',
+      '../stories/layout-spacing.mdx',
     ]) {
       const source = storybookDocs[path];
 
       expect(source).toContain('<Table.Root');
       expect(source).not.toMatch(/<table(?:\s|>)/);
       expect(source).not.toMatch(/^\|/m);
+    }
+  });
+
+  it('keeps Density and Layout pattern routes distinct and current', () => {
+    expect(storybookDocs['../stories/density-overview.mdx']).toContain(
+      '<Meta title="디자인 패턴/Density/Overview" />',
+    );
+    expect(storybookDocs['../stories/control-size.mdx']).toContain(
+      '<Meta title="디자인 패턴/Density/Control Size" />',
+    );
+    expect(storybookDocs['../stories/component-spacing.mdx']).toContain(
+      '<Meta title="디자인 패턴/Density/Component Spacing" />',
+    );
+    expect(storybookDocs['../stories/layout-spacing.mdx']).toContain(
+      '<Meta title="디자인 패턴/Layout/Layout Spacing" />',
+    );
+
+    for (const source of Object.values(storybookDocs)) {
+      expect(source).not.toContain('디자인-패턴-size-control-size--docs');
     }
   });
 

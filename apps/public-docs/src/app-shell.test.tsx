@@ -103,7 +103,28 @@ describe('public docs routes and shell', () => {
       'city-text-body',
     );
     expect(container.querySelector('.city-docs-page-description')).toHaveClass('city-text-lead');
+    expect(container.querySelector('.city-docs-page-heading-copy')).not.toBeNull();
     expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
+  });
+
+  it('documents component and layout spacing roles for consumers', async () => {
+    await renderDocs(['/patterns']);
+    const main = screen.getByRole('main');
+
+    expect(
+      within(main).getByRole('heading', { level: 2, name: '간격은 역할에 따라 나누십시오' }),
+    ).toBeVisible();
+    expect(
+      within(main).getByRole('heading', { level: 3, name: 'Component Spacing' }),
+    ).toBeVisible();
+    expect(within(main).getByRole('heading', { level: 3, name: 'Layout Spacing' })).toBeVisible();
+    expect(within(main).getByText('Spacious Container')).toBeVisible();
+    expect(within(main).getByText('Page gutter')).toBeVisible();
+    expect(within(main).getByText(/spacing 소유자를 하나만 둡니다/)).toBeVisible();
+    expect(within(main).getByRole('link', { name: '기초 문서' })).toHaveAttribute(
+      'href',
+      '/foundations',
+    );
   });
 
   it('documents color roles and compares light and dark specimens', async () => {

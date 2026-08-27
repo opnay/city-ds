@@ -43,6 +43,7 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(
       /\.city-docs-import-block\s*{[^}]*max-width:\s*var\(--city-docs-reading-max\);[^}]*margin-inline:\s*auto;/s,
     );
+    expect(styles).not.toMatch(/\.city-docs-import-block\s*{[^}]*margin-top:/s);
     expect(styles).toMatch(
       /\.city-docs-prose-table-wrap\s*{[^}]*width:\s*min\(100%, var\(--city-docs-reading-max\)\);[^}]*margin-inline:\s*auto;/s,
     );
@@ -58,6 +59,36 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(
       /\.city-docs-results-count\s*{[^}]*margin-block:\s*0;[^}]*color:\s*var\(--city-color-muted-foreground\);/s,
     );
+  });
+
+  it('assigns section, region, and home gaps by role and viewport', () => {
+    expect(styles).toMatch(/\.city-docs-article\s*{[^}]*gap:\s*var\(--city-space-12\);/s);
+    expect(styles).toMatch(
+      /\.city-docs-component-reference\s*{[^}]*gap:\s*var\(--city-space-8\);/s,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 64rem\)[\s\S]*?\.city-docs-article\s*{[^}]*gap:\s*var\(--city-space-10\);/,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 52rem\)[\s\S]*?\.city-docs-article\s*{[^}]*gap:\s*var\(--city-space-8\);[\s\S]*?\.city-docs-component-reference\s*{[^}]*gap:\s*var\(--city-space-6\);/,
+    );
+    expect(styles).toMatch(
+      /\/\* Organism mosaic landing \*\/[\s\S]*?\.city-docs-home\s*{[^}]*gap:\s*var\(--city-space-12\);/,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 64rem\)[\s\S]*?\.city-docs-home\s*{[^}]*gap:\s*var\(--city-space-10\);/,
+    );
+  });
+
+  it('keeps spacing ownership on parent containers and uses scale tokens', () => {
+    expect(styles).toMatch(
+      /\.city-docs-page-heading-copy\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-3\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-nav-section-primary\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-1\);/s,
+    );
+    expect(styles).not.toMatch(/\.city-docs-nav-categories\s*{[^}]*margin-top:/s);
+    expect(styles).not.toMatch(/(?:gap|margin-top):\s*1px;/);
   });
 
   it('presents task lists as one divided checklist surface', () => {
@@ -88,7 +119,9 @@ describe('public docs layout styles', () => {
 
   it('keeps desktop showcase cards contained without changing the mobile crop', () => {
     expect(styles).not.toMatch(/\.city-docs-home\s*{[^}]*padding-bottom:/s);
-    expect(styles).toMatch(/\.city-showcase-card-header > div > div\s*{\s*min-width:\s*0;/);
+    expect(styles).toMatch(
+      /\.city-showcase-card-header > div > div\s*{[^}]*display:\s*grid;[^}]*min-width:\s*0;[^}]*gap:\s*var\(--city-space-0-5\);/s,
+    );
     expect(styles).toMatch(
       /\.city-showcase-card-body\s*{[^}]*padding:\s*var\(--city-space-3\);[^}]*gap:\s*var\(--city-space-3\);/s,
     );
@@ -101,7 +134,10 @@ describe('public docs layout styles', () => {
     );
     expect(styles).toMatch(/\.city-showcase-setting-copy\s*{[^}]*flex:\s*1;/s);
     expect(styles).toMatch(
-      /\.city-showcase-upload \[data-city-file-upload-root\]\[data-file-count='0'\]\s*{\s*margin-block:\s*auto;/,
+      /\.city-showcase-upload\s+\.city-showcase-card-body:has\(\[data-city-file-upload-root\]\[data-file-count='0'\]\)\s*{\s*justify-content:\s*center;/,
+    );
+    expect(styles).not.toMatch(
+      /\.city-showcase-upload \[data-city-file-upload-root\]\[data-file-count='0'\]\s*{\s*margin-block:/,
     );
     expect(styles).not.toMatch(/\.city-showcase-settings-list > div > span\s*{/);
   });

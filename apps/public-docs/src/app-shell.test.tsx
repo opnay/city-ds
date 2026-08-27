@@ -114,7 +114,11 @@ describe('public docs routes and shell', () => {
     expect(
       within(main).getByRole('heading', { level: 2, name: '프로젝트 패턴 계층을 구축하십시오' }),
     ).toBeVisible();
-    expect(within(main).getByText('컴포넌트 구성 > 레이아웃 구성 > 페이지 구현')).toBeVisible();
+    expect(
+      within(main).getByText(
+        '사용자 목표 > 프로젝트 패턴 선택·정의 > 컴포넌트 구성 > 레이아웃 구성 > 페이지 구현',
+      ),
+    ).toBeVisible();
     expect(
       within(main).getByText(/여러 프로젝트에서 같은 의미와 변경 이유로 반복될/),
     ).toBeVisible();

@@ -122,10 +122,10 @@
   --city-control-xlg: 2.5rem;
   --city-hit-target-min: 2.75rem;
 
-  --city-duration-xfast: 80ms;
-  --city-duration-fast: 120ms;
-  --city-duration-normal: 160ms;
-  --city-duration-slow: 240ms;
+  --city-duration-fast: 80ms;
+  --city-duration-normal: 120ms;
+  --city-duration-slow: 160ms;
+  --city-duration-xslow: 240ms;
   --city-easing-standard: ease-in-out;
   --city-easing-enter: cubic-bezier(0, 0, 0.2, 1);
   --city-easing-exit: cubic-bezier(0.4, 0, 1, 1);

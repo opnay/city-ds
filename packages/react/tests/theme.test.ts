@@ -173,10 +173,10 @@ const controlTokens = [
 ];
 
 const motionTokens = [
-  '--city-duration-xfast',
   '--city-duration-fast',
   '--city-duration-normal',
   '--city-duration-slow',
+  '--city-duration-xslow',
   '--city-easing-standard',
   '--city-easing-enter',
   '--city-easing-exit',
@@ -223,10 +223,10 @@ describe('theme contract', () => {
   });
 
   it('defines the four-step motion duration scale and the default easing', () => {
-    expect(themeCss).toContain('--city-duration-xfast: 80ms;');
-    expect(themeCss).toContain('--city-duration-fast: 120ms;');
-    expect(themeCss).toContain('--city-duration-normal: 160ms;');
-    expect(themeCss).toContain('--city-duration-slow: 240ms;');
+    expect(themeCss).toContain('--city-duration-fast: 80ms;');
+    expect(themeCss).toContain('--city-duration-normal: 120ms;');
+    expect(themeCss).toContain('--city-duration-slow: 160ms;');
+    expect(themeCss).toContain('--city-duration-xslow: 240ms;');
     expect(themeCss).toContain('--city-easing-standard: ease-in-out;');
   });
 

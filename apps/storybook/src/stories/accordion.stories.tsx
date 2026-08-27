@@ -21,7 +21,7 @@ export const Single: Story = {
     const panelStyle = getComputedStyle(profilePanel);
 
     await expect(panelStyle.transitionProperty).toContain('grid-template-rows');
-    await expect(panelStyle.transitionDuration).toBe('0.24s');
+    await expect(panelStyle.transitionDuration).toBe('0.16s');
     await expect(panelStyle.transitionTimingFunction).toBe('ease-in-out');
     await expect(getComputedStyle(profilePanel.firstElementChild as Element).minHeight).toBe('0px');
 

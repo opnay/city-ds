@@ -35,10 +35,10 @@ const typeTokens = [
 const radiusTokens = ['xs', 'sm', 'md', 'lg', 'full'] as const;
 const shadowTokens = ['sm', 'panel', 'popup'] as const;
 const durationTokens = [
-  ['xfast', '80ms'],
-  ['fast', '120ms'],
-  ['normal', '160ms'],
-  ['slow', '240ms'],
+  ['fast', '80ms'],
+  ['normal', '120ms'],
+  ['slow', '160ms'],
+  ['xslow', '240ms'],
 ] as const;
 const easingTokens = ['standard', 'enter', 'exit'] as const;
 const controlTokens = [

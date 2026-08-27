@@ -286,7 +286,7 @@ CTA는 결과를 예측할 수 있게 쓰십시오. `확인`, `예`보다 `변�
 
 ### 모션 체계
 
-모션은 장식보다 상태 변화와 공간 관계를 설명해야 합니다. duration은 `xfast 80ms | fast 120ms | normal 160ms | slow 240ms` 네 단계를 사용하고, 기본 transition은 `normal`과 `ease-in-out`을 조합하십시오. 즉각적인 indicator 반응은 xfast·fast, 일반적인 Control 상태 변화는 normal, 콘텐츠 크기나 큰 레이어 변화는 slow를 사용하십시오. Density나 Control Size만으로 duration을 바꾸지 마십시오.
+모션은 장식보다 상태 변화와 공간 관계를 설명해야 합니다. duration은 `fast 80ms | normal 120ms | slow 160ms | xslow 240ms` 네 단계를 사용하고, 기본 transition은 `normal`과 `ease-in-out`을 조합하십시오. 즉각적인 indicator 반응은 fast, 일반적인 Control 상태 변화는 normal, 콘텐츠 크기 변화는 slow, 큰 레이어 변화는 xslow를 사용하십시오. Density나 Control Size만으로 duration을 바꾸지 마십시오.
 
 왕복하거나 중간에 취소할 수 있는 상태 변화에는 진행값이 역방향으로 움직이지 않는 easing을 사용하십시오. bounce·spring은 공통 토큰으로 제공하지 않으며, 되돌아가지 않는 일회성 완료 피드백을 프로젝트 패턴으로 별도 정의할 때만 검토하십시오. 열기·닫기, 선택·해제, 이동 방향이 바뀌는 전환에는 사용하지 마십시오.
 

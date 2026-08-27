@@ -32,8 +32,8 @@ function useEmptyStateContext(componentName: string): EmptyStateContextValue {
 }
 
 const rootDensityClasses: Record<EmptyStateDensity, string> = {
-  default: 'gap-4 p-8',
-  compact: 'gap-3 p-4',
+  default: 'gap-4 p-6',
+  compact: 'gap-3 p-3',
 };
 
 const iconDensityClasses: Record<EmptyStateDensity, string> = {
@@ -209,8 +209,8 @@ export const EmptyStateActions = React.forwardRef<HTMLDivElement, EmptyStateActi
       props: {
         ...props,
         className: cn(
-          'flex flex-wrap items-center justify-center gap-2',
-          context.density === 'default' && 'pt-1',
+          'flex flex-wrap items-center justify-center',
+          context.density === 'compact' ? 'gap-2' : 'gap-3',
           resolveClassName(className, state),
         ),
       },

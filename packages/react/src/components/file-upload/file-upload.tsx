@@ -229,7 +229,7 @@ export const FileUploadRoot = React.forwardRef<HTMLDivElement, FileUploadRootPro
       props: {
         ...props,
         children: content,
-        className: cn('grid gap-2', className),
+        className: cn('grid', density === 'compact' ? 'gap-2' : 'gap-3', className),
         'data-city-file-upload-root': '',
         'data-city-density': density,
         'data-disabled': disabled ? '' : undefined,

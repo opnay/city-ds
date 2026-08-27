@@ -471,6 +471,7 @@ describe('FileUpload', () => {
     const remove = screen.getByRole('button', { name: 'Remove report.txt' });
 
     expect(root).toHaveAttribute('data-city-density', 'compact');
+    expect(root).toHaveClass('gap-2');
     expect(trigger).toHaveAttribute('data-city-density', 'compact');
     expect(trigger).toHaveClass('h-(--city-control-sm)', 'text-xs');
     expect(screen.getByText('report.txt').parentElement).toHaveClass('py-1', 'text-xs');
@@ -488,11 +489,15 @@ describe('FileUpload', () => {
       </FileUpload.Root>,
     );
     const input = container.querySelector('input[type="file"]');
+    const root = screen
+      .getByRole('button', { name: 'Choose report' })
+      .closest('[data-city-file-upload-root]');
 
     expect(input).toHaveAttribute('accept', 'text/plain');
     expect(input).toHaveAttribute('name', 'reports');
     expect(input).toHaveAttribute('multiple');
     expect(input).toHaveAccessibleName('File upload');
+    expect(root).toHaveClass('gap-3');
 
     await user.upload(input as HTMLInputElement, file);
     await user.upload(input as HTMLInputElement, file);
@@ -583,6 +588,7 @@ describe('EmptyState', () => {
     });
 
     expect(region).toHaveAttribute('data-density', 'compact');
+    expect(region).toHaveClass('gap-3', 'p-3');
     expect(region).toHaveAccessibleDescription('Create an invoice to get started.');
     expect(screen.getByRole('heading', { level: 3, name: 'No invoices' })).toBeInTheDocument();
   });
@@ -604,6 +610,13 @@ describe('EmptyState', () => {
         </EmptyState.Actions>
       </EmptyState.Root>,
     );
+
+    const region = screen.getByRole('region', { name: 'No reports' });
+    const actions = screen.getByRole('button', { name: 'Generate report' }).parentElement;
+
+    expect(region).toHaveClass('gap-4', 'p-6');
+    expect(actions).toHaveClass('gap-3');
+    expect(actions).not.toHaveClass('pt-1');
 
     await user.tab();
     expect(screen.getByRole('button', { name: 'Generate report' })).toHaveFocus();

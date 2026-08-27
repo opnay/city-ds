@@ -284,7 +284,15 @@ CTA는 결과를 예측할 수 있게 쓰십시오. `확인`, `예`보다 `변�
 
 색상 토큰 목록과 Light·Dark 비교는 Storybook의 `기초/디자인 토큰/색상`, 컴포넌트 선택 규칙은 `디자인 패턴/Color`를 참고하십시오.
 
-색상 외 간격, 글꼴, radius, 그림자와 모션도 `--city-*` 토큰을 사용하십시오.
+### 모션 체계
+
+모션은 장식보다 상태 변화와 공간 관계를 설명해야 합니다. duration은 `xfast 80ms | fast 120ms | normal 160ms | slow 240ms` 네 단계를 사용하고, 기본 transition은 `normal`과 `ease-in-out`을 조합하십시오. 즉각적인 indicator 반응은 xfast·fast, 일반적인 Control 상태 변화는 normal, 콘텐츠 크기나 큰 레이어 변화는 slow를 사용하십시오. Density나 Control Size만으로 duration을 바꾸지 마십시오.
+
+왕복하거나 중간에 취소할 수 있는 상태 변화에는 진행값이 역방향으로 움직이지 않는 easing을 사용하십시오. bounce·spring은 공통 토큰으로 제공하지 않으며, 되돌아가지 않는 일회성 완료 피드백을 프로젝트 패턴으로 별도 정의할 때만 검토하십시오. 열기·닫기, 선택·해제, 이동 방향이 바뀌는 전환에는 사용하지 마십시오.
+
+콘텐츠 고유 높이를 펼치고 접을 때 임의의 `max-height`를 추정하지 마십시오. Grid container의 `grid-template-rows`를 `0fr`과 `1fr` 사이에서 전환하고, 직접 자식에 `min-height: 0`과 필요한 overflow 처리를 적용하십시오. 사용자가 reduced motion을 요청하면 이동, 크기 변화와 반복 애니메이션을 제거하되 최종 상태는 즉시 구분되어야 합니다.
+
+색상 외 간격, 글꼴, radius, 그림자와 모션도 `--city-*` 토큰을 사용하십시오. 세부 역할과 예시는 Storybook의 `디자인 패턴/Motion/Overview`를 참고하십시오.
 
 제목 수준은 문서 구조를 따르십시오. 글자 크기로 heading 순서를 흉내 내지 마십시오. 보조 텍스트는 낮은 대비를 사용할 수 있지만 읽을 수 있어야 하며, 오류나 필수 지침을 보조 장식처럼 약하게 만들지 마십시오.
 

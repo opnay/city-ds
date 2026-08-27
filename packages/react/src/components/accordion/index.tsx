@@ -90,7 +90,7 @@ export const AccordionTrigger = React.forwardRef<HTMLElement, AccordionTriggerPr
       </span>
       <ChevronDown
         aria-hidden="true"
-        className="shrink-0 text-city-muted-foreground transition-[color,transform] duration-200 group-hover/city-accordion-trigger:text-city-foreground motion-reduce:transition-none [[data-panel-open]_&]:rotate-180"
+        className="shrink-0 text-city-muted-foreground transition-[color,transform] duration-(--city-duration-normal) ease-city-standard group-hover/city-accordion-trigger:text-city-foreground motion-reduce:transition-none [[data-panel-open]_&]:rotate-180"
         size={16}
         strokeWidth={1.8}
       />
@@ -99,15 +99,19 @@ export const AccordionTrigger = React.forwardRef<HTMLElement, AccordionTriggerPr
 );
 
 export const AccordionPanel = React.forwardRef<HTMLDivElement, AccordionPanelProps>(
-  ({ className, ...props }, ref) => (
+  ({ children, className, ...props }, ref) => (
     <BaseAccordion.Panel
       {...props}
       ref={ref}
       className={classes(
         className,
-        'text-city-muted-foreground overflow-hidden px-4 pb-4 text-sm leading-6 transition-[height] duration-200 motion-reduce:transition-none',
+        'text-city-muted-foreground grid grid-rows-[1fr] overflow-hidden px-4 pb-4 text-sm leading-6 transition-[grid-template-rows,padding-bottom] duration-(--city-duration-slow) ease-city-standard data-[starting-style]:grid-rows-[0fr] data-[starting-style]:pb-0 data-[ending-style]:grid-rows-[0fr] data-[ending-style]:pb-0 motion-reduce:transition-none',
       )}
-    />
+    >
+      <div className="min-h-0 overflow-hidden" data-city-accordion-panel-content="">
+        {children}
+      </div>
+    </BaseAccordion.Panel>
   ),
 );
 

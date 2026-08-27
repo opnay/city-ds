@@ -122,10 +122,11 @@
   --city-control-xlg: 2.5rem;
   --city-hit-target-min: 2.75rem;
 
-  --city-duration-fast: 100ms;
-  --city-duration-normal: 150ms;
-  --city-duration-slow: 250ms;
-  --city-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --city-duration-xfast: 80ms;
+  --city-duration-fast: 120ms;
+  --city-duration-normal: 160ms;
+  --city-duration-slow: 240ms;
+  --city-easing-standard: ease-in-out;
   --city-easing-enter: cubic-bezier(0, 0, 0.2, 1);
   --city-easing-exit: cubic-bezier(0.4, 0, 1, 1);
 }
@@ -444,4 +445,6 @@
   --ease-city-standard: var(--city-easing-standard);
   --ease-city-enter: var(--city-easing-enter);
   --ease-city-exit: var(--city-easing-exit);
+  --default-transition-duration: var(--city-duration-normal);
+  --default-transition-timing-function: var(--city-easing-standard);
 }

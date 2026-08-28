@@ -111,7 +111,7 @@ describe('ComponentSpecimen', () => {
       expect(getComputedStyle(sectionTitle!).lineHeight).toBe('32px');
       expect(getComputedStyle(sectionTitle!).fontWeight).toBe('600');
       expect(getComputedStyle(body!).fontSize).toBe('16px');
-      expect(getComputedStyle(body!).lineHeight).toBe('24px');
+      expect(getComputedStyle(body!).lineHeight).toBe('28px');
       expect(getComputedStyle(body!).fontWeight).toBe('400');
       expect(getComputedStyle(caption!).fontSize).toBe('12px');
       expect(getComputedStyle(caption!).lineHeight).toBe('16px');

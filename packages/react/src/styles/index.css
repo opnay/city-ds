@@ -73,7 +73,7 @@
 
   .city-text-body {
     font-size: var(--city-font-size-md);
-    line-height: var(--city-line-height-md);
+    line-height: var(--city-line-height-lg);
     font-weight: var(--city-font-weight-regular);
     text-wrap: pretty;
   }

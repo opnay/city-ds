@@ -454,6 +454,9 @@ describe('theme contract', () => {
     expect(stylesCss).toContain(
       'font-size: clamp(var(--city-font-size-3xl), 3vw, var(--city-font-size-4xl));',
     );
+    expect(stylesCss).toMatch(
+      /\.city-text-body \{[\s\S]*?line-height: var\(--city-line-height-lg\);[\s\S]*?\n  \}/,
+    );
   });
 
   it('keeps prose flow separate from descendant typography roles', () => {

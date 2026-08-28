@@ -22,6 +22,7 @@ export * from './components/filter-bar';
 export * from './components/input';
 export * from './components/menu';
 export * from './components/number-field';
+export * from './components/panel';
 export * from './components/pagination';
 export * from './components/popover';
 export * from './components/progress';

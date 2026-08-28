@@ -34,6 +34,8 @@ describe('document syntax highlighting', () => {
 
     guide.unmount();
     await renderDocs(['/components/button']);
+    const featuredExample = screen.getByRole('region', { name: 'Button' });
+    await user.click(within(featuredExample).getByRole('button', { name: '코드 보기' }));
     const exampleCode = screen.getByLabelText('액션 위계 예제 소스 코드');
     const importCode = screen.getByLabelText('Button 가져오기 코드');
 

@@ -15,6 +15,7 @@ import {
 import { Check, Clipboard, X } from 'lucide-react';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
+import { Panel } from '@opnay/city-ds-react/panel';
 import { Tabs } from '@opnay/city-ds-react/tabs';
 import { createHighlighterCoreSync, type ThemedTokenWithVariants } from 'shiki/core';
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
@@ -148,36 +149,38 @@ function CodeHeader({ copyState, file, fileNavigation, onCopy }: CodeHeaderProps
   const copySubject = file.filename ? `${file.filename} 코드` : '코드';
 
   return (
-    <header className="city-docs-code-header">
-      <div className="city-docs-code-context">
-        {fileNavigation ??
-          (file.filename ? (
-            <span className="city-docs-code-filename">{file.filename}</span>
-          ) : (
-            languageBadge
-          ))}
-      </div>
-      <div className="city-docs-code-actions">
-        {file.filename ? languageBadge : null}
-        <Button onClick={onCopy} size="sm" type="button" variant="ghost">
-          {copyState === 'success' ? (
-            <Check aria-hidden="true" size={15} />
-          ) : copyState === 'error' ? (
-            <X aria-hidden="true" size={15} />
-          ) : (
-            <Clipboard aria-hidden="true" size={15} />
-          )}
-          {copyState === 'success' ? '복사됨' : copyState === 'error' ? '복사 실패' : '코드 복사'}
-        </Button>
-        <span aria-live="polite" className="city-docs-sr-only">
-          {copyState === 'success'
-            ? `${copySubject}를 복사했습니다.`
-            : copyState === 'error'
-              ? `${copySubject}를 복사할 수 없습니다. 코드를 직접 선택하십시오.`
-              : ''}
-        </span>
-      </div>
-    </header>
+    <Panel.Header
+      actions={
+        <>
+          {file.filename ? languageBadge : null}
+          <Button onClick={onCopy} size="sm" type="button" variant="ghost">
+            {copyState === 'success' ? (
+              <Check aria-hidden="true" size={15} />
+            ) : copyState === 'error' ? (
+              <X aria-hidden="true" size={15} />
+            ) : (
+              <Clipboard aria-hidden="true" size={15} />
+            )}
+            {copyState === 'success' ? '복사됨' : copyState === 'error' ? '복사 실패' : '코드 복사'}
+          </Button>
+          <span aria-live="polite" className="city-docs-sr-only">
+            {copyState === 'success'
+              ? `${copySubject}를 복사했습니다.`
+              : copyState === 'error'
+                ? `${copySubject}를 복사할 수 없습니다. 코드를 직접 선택하십시오.`
+                : ''}
+          </span>
+        </>
+      }
+      className="city-docs-code-header"
+    >
+      {fileNavigation ??
+        (file.filename ? (
+          <span className="city-docs-code-filename">{file.filename}</span>
+        ) : (
+          languageBadge
+        ))}
+    </Panel.Header>
   );
 }
 
@@ -252,10 +255,12 @@ export function CodeBlock(props: CodeBlockProps) {
 
   if (files.length === 1) {
     return (
-      <div className="city-docs-code-frame">
+      <Panel.Root className="city-docs-code-frame">
         <CodeHeader copyState={copyState} file={activeFile} onCopy={() => void copySource()} />
-        <HighlightedCode className={className} file={activeFile} preProps={preProps} />
-      </div>
+        <Panel.Body>
+          <HighlightedCode className={className} file={activeFile} preProps={preProps} />
+        </Panel.Body>
+      </Panel.Root>
     );
   }
 
@@ -279,29 +284,28 @@ export function CodeBlock(props: CodeBlockProps) {
   );
 
   return (
-    <Tabs.Root
-      className="city-docs-code-frame"
-      density="compact"
-      onValueChange={selectFile}
-      value={String(activeIndex)}
-    >
-      <CodeHeader
-        copyState={copyState}
-        file={activeFile}
-        fileNavigation={fileNavigation}
-        onCopy={() => void copySource()}
-      />
-      {files.map((file, index) => (
-        <Tabs.Panel
-          className="city-docs-code-panel"
-          key={`${file.filename}-${index}`}
-          value={String(index)}
-        >
-          {index === activeIndex ? (
-            <HighlightedCode className={className} file={file} preProps={preProps} />
-          ) : null}
-        </Tabs.Panel>
-      ))}
+    <Tabs.Root density="compact" onValueChange={selectFile} value={String(activeIndex)}>
+      <Panel.Root className="city-docs-code-frame">
+        <CodeHeader
+          copyState={copyState}
+          file={activeFile}
+          fileNavigation={fileNavigation}
+          onCopy={() => void copySource()}
+        />
+        <Panel.Body>
+          {files.map((file, index) => (
+            <Tabs.Panel
+              className="city-docs-code-panel"
+              key={`${file.filename}-${index}`}
+              value={String(index)}
+            >
+              {index === activeIndex ? (
+                <HighlightedCode className={className} file={file} preProps={preProps} />
+              ) : null}
+            </Tabs.Panel>
+          ))}
+        </Panel.Body>
+      </Panel.Root>
     </Tabs.Root>
   );
 }

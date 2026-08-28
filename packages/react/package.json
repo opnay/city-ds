@@ -114,6 +114,10 @@
       "types": "./dist/components/pagination/index.d.ts",
       "import": "./dist/components/pagination/index.js"
     },
+    "./panel": {
+      "types": "./dist/components/panel/index.d.ts",
+      "import": "./dist/components/panel/index.js"
+    },
     "./progress": {
       "types": "./dist/components/progress/index.d.ts",
       "import": "./dist/components/progress/index.js"

@@ -55,17 +55,31 @@ describe('all component document routes', () => {
     expect(featuredExample?.querySelector('.city-docs-example-description')).toBeNull();
     expect(featuredExample?.querySelector('.city-docs-coverage-list')).toBeNull();
     const exampleTitles = container.querySelectorAll('.city-docs-example-title');
+    const exampleFrames = container.querySelectorAll('.city-docs-example');
     const exampleTitleRows = container.querySelectorAll('.city-docs-example-title-row');
+    const exampleHeaders = container.querySelectorAll('.city-docs-example-heading');
     const previewContents = container.querySelectorAll('.city-docs-example-preview-content');
 
     expect(exampleTitles.length).toBeGreaterThan(0);
+    expect(exampleFrames).toHaveLength(exampleTitles.length);
     expect(exampleTitleRows).toHaveLength(exampleTitles.length);
+    expect(exampleHeaders).toHaveLength(exampleTitles.length);
     expect(previewContents).toHaveLength(exampleTitles.length);
     expect(container.querySelectorAll("[data-city-docs-layout='wide']")).toHaveLength(
       WIDE_PREVIEW_COUNTS[entry.slug] ?? 0,
     );
     for (const previewContent of previewContents) {
       expect(previewContent.getAttribute('data-city-docs-layout')).toMatch(/^(center|wide)$/);
+    }
+    for (const frame of exampleFrames) {
+      const body = frame.querySelector(':scope > [data-city-panel-body]');
+
+      expect(frame).toHaveAttribute('data-city-panel');
+      expect(frame.querySelector(':scope > [data-city-panel-header]')).not.toBeNull();
+      expect(body).toHaveClass('city-docs-example-body', 'min-w-0');
+      expect(body).not.toHaveClass('bg-city-background', 'bg-city-muted');
+      expect(body?.querySelector('.city-docs-example-preview')).not.toBeNull();
+      expect(body?.querySelector('.city-docs-example-code')).not.toBeNull();
     }
     const optionHeading = screen.queryByRole('heading', { level: 2, name: '옵션과 사용법' });
     const optionSection = optionHeading?.closest('.city-docs-component-reference-section');
@@ -92,9 +106,9 @@ describe('all component document routes', () => {
       expect(description).toBeVisible();
       expect(description).not.toHaveClass('city-docs-sr-only');
     }
-    for (const titleRow of exampleTitleRows) {
+    for (const header of exampleHeaders) {
       expect(
-        within(titleRow as HTMLElement).getByRole('button', { name: '미리보기 설정' }),
+        within(header as HTMLElement).getByRole('button', { name: '미리보기 설정' }),
       ).toBeVisible();
     }
     expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');

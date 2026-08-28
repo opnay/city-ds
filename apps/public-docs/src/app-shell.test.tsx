@@ -362,6 +362,8 @@ describe('catalog and local UI state', () => {
     await waitFor(() => expect(window.localStorage.getItem('city-docs-theme')).toBe('system'));
     expect(document.documentElement).not.toHaveAttribute('data-theme');
     const themeGroup = screen.getByRole('group', { name: '화면 테마' });
+    expect(themeGroup).toHaveAttribute('data-city-variant', 'secondary');
+    expect(themeGroup).toHaveAttribute('data-city-size', 'sm');
     const darkTheme = within(themeGroup).getByRole('button', { name: '다크 테마' });
     const lightTheme = within(themeGroup).getByRole('button', { name: '라이트 테마' });
     expect(darkTheme).toHaveAttribute('aria-pressed', 'false');
@@ -381,6 +383,10 @@ describe('catalog and local UI state', () => {
     expect(window.localStorage.getItem('city-docs-theme')).toBe('light');
     expect(darkTheme).toHaveAttribute('aria-pressed', 'false');
     expect(lightTheme).toHaveAttribute('aria-pressed', 'true');
+
+    await user.click(lightTheme);
+    expect(lightTheme).toHaveAttribute('aria-pressed', 'true');
+    expect(window.localStorage.getItem('city-docs-theme')).toBe('light');
   });
 
   it('restores a valid explicit theme', async () => {

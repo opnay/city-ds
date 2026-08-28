@@ -8,6 +8,7 @@ import { Button } from '@opnay/city-ds-react/button';
 import { Drawer } from '@opnay/city-ds-react/drawer';
 import { SearchField } from '@opnay/city-ds-react/search-field';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
+import { ToggleGroup } from '@opnay/city-ds-react/toggle-group';
 
 import {
   CATEGORY_LABELS,
@@ -270,32 +271,34 @@ function ThemeButtons({
   value: ResolvedTheme;
 }) {
   return (
-    <div aria-label="화면 테마" className="city-docs-theme-controls" role="group">
-      <Button
+    <ToggleGroup
+      aria-label="화면 테마"
+      className="city-docs-theme-controls"
+      onValueChange={(nextValue) => {
+        const nextTheme = nextValue[0];
+        if (nextTheme === 'dark' || nextTheme === 'light') onChange(nextTheme);
+      }}
+      size="sm"
+      value={[value]}
+      variant="secondary"
+    >
+      <ToggleGroup.Item
         aria-label="다크 테마"
-        aria-pressed={value === 'dark'}
-        iconOnly
-        onClick={() => onChange('dark')}
-        size="sm"
+        className="w-(--city-control-sm) px-0"
         title="다크 테마"
-        type="button"
-        variant={value === 'dark' ? 'secondary' : 'outline'}
+        value="dark"
       >
         <Moon aria-hidden="true" size={16} />
-      </Button>
-      <Button
+      </ToggleGroup.Item>
+      <ToggleGroup.Item
         aria-label="라이트 테마"
-        aria-pressed={value === 'light'}
-        iconOnly
-        onClick={() => onChange('light')}
-        size="sm"
+        className="w-(--city-control-sm) px-0"
         title="라이트 테마"
-        type="button"
-        variant={value === 'light' ? 'secondary' : 'outline'}
+        value="light"
       >
         <Sun aria-hidden="true" size={16} />
-      </Button>
-    </div>
+      </ToggleGroup.Item>
+    </ToggleGroup>
   );
 }
 

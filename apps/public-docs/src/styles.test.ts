@@ -236,4 +236,13 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(/max-height:\s*var\(--city-docs-code-max-height\);/);
     expect(styles).toMatch(/line-height:\s*1\.65;/);
   });
+
+  it('keeps code bodies closer to the page background than muted surfaces', () => {
+    expect(styles).toMatch(
+      /\.city-docs-prose-code,[\s\S]*?\.city-docs-example-code pre\s*{[^}]*background:\s*var\(--city-color-surface\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-code-frame\s*{[^}]*background:\s*var\(--city-color-surface\);/s,
+    );
+  });
 });

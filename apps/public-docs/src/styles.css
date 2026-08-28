@@ -594,7 +594,7 @@
     overflow: auto;
     border: 1px solid var(--city-color-border);
     border-radius: var(--city-radius-md);
-    background: var(--city-color-muted);
+    background: var(--city-color-surface);
     color: var(--city-color-foreground);
     font-size: var(--city-font-size-xs);
     line-height: 1.65;
@@ -605,7 +605,7 @@
     overflow: hidden;
     border: 1px solid var(--city-color-border);
     border-radius: var(--city-radius-md);
-    background: var(--city-color-muted);
+    background: var(--city-color-surface);
   }
 
   .city-docs-prose > .city-docs-prose-code-wrap {

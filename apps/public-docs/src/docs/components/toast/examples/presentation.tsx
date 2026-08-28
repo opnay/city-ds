@@ -18,7 +18,7 @@ function ToastPresentationGrid() {
     tones.forEach((tone) => {
       manager.add({
         data: { tone },
-        description: `${tone} 의미의 연한 배경과 원색 텍스트입니다.`,
+        description: `${tone} 의미의 연한 배경, 원색 border와 텍스트입니다.`,
         id: `toast-${tone}`,
         timeout: 0,
         title: tone,

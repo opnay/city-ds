@@ -36,7 +36,7 @@ export const pageData = {
           ],
         },
       ],
-      description: '연한 배경과 원색 텍스트로 표현한 각 의미를 상호작용 없이 비교합니다.',
+      description: '연한 배경, 원색 border와 텍스트로 표현한 각 의미를 비교합니다.',
       id: 'toast-presentation',
       filename: 'presentation.tsx',
       source: presentationSource,

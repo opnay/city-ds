@@ -98,7 +98,8 @@ export const ToastRoot = React.forwardRef<HTMLDivElement, ToastRootProps>(
         className={classes(
           className,
           cn(
-            'rounded-city-md shadow-city-popup w-full data-[limited]:hidden',
+            'rounded-city-md shadow-city-popup w-full border data-[limited]:hidden',
+            toneStyles.border,
             toneStyles.surface,
             toneStyles.indicator,
           ),
@@ -178,7 +179,7 @@ export const ToastArrow = React.forwardRef<HTMLDivElement, ToastArrowProps>(
     <BaseToast.Arrow
       {...props}
       ref={ref}
-      className={classes(className, 'bg-inherit size-2 rotate-45')}
+      className={classes(className, 'border-current bg-inherit size-2 rotate-45 border-t border-l')}
     />
   ),
 );

@@ -9,7 +9,8 @@ import {
   Pagination,
   SearchField,
   Select,
-  Toast,
+  Toaster,
+  toast,
   type CityTheme,
   type TableSortDirection,
 } from '@opnay/city-ds-react';
@@ -57,7 +58,7 @@ export function App() {
   }, [route?.label]);
 
   return (
-    <Toast.Provider limit={3} timeout={5000}>
+    <>
       <AppShell navigate={navigate} onThemeChange={setTheme} pathname={pathname} theme={theme}>
         {pathname === '/work-orders' ? (
           <OperationsPage />
@@ -65,12 +66,12 @@ export function App() {
           <DashboardPage navigate={navigate} pathname={pathname} />
         )}
       </AppShell>
-    </Toast.Provider>
+      <Toaster />
+    </>
   );
 }
 
 function OperationsPage() {
-  const toastManager = Toast.useToastManager();
   const refreshTimerRef = useRef<number | null>(null);
   const [orders, setOrders] = useState<WorkOrder[]>(() => [...INITIAL_WORK_ORDERS]);
   const [queryDraft, setQueryDraft] = useState('');
@@ -138,20 +139,16 @@ function OperationsPage() {
       setLastUpdated('10:07');
       setIsRefreshing(false);
       refreshTimerRef.current = null;
-      toastManager.add({
+      toast.success('작업 목록을 갱신했습니다.', {
         description: '표시 중인 작업과 필터는 그대로 유지했습니다.',
-        title: '작업 목록을 갱신했습니다.',
-        type: 'success',
       });
     }, 650);
   };
 
   const assignSelectedCrew = (workOrderId: string, crew: Crew) => {
     setOrders((currentOrders) => assignCrew(currentOrders, workOrderId, crew));
-    toastManager.add({
+    toast.success('담당팀 배정 완료', {
       description: `${workOrderId} 작업을 ${crew}에 배정했습니다.`,
-      title: '담당팀 배정 완료',
-      type: 'success',
     });
   };
 
@@ -193,13 +190,11 @@ function OperationsPage() {
       ),
     );
 
-    toastManager.add({
+    toast.success(nextStatus === '진행 중' ? '현장 작업 시작' : '작업 완료', {
       description:
         nextStatus === '진행 중'
           ? `${workOrderId} 작업을 진행 상태로 변경했습니다.`
           : `${workOrderId} 작업을 완료 처리했습니다.`,
-      title: nextStatus === '진행 중' ? '현장 작업 시작' : '작업 완료',
-      type: 'success',
     });
   };
 
@@ -431,22 +426,6 @@ function OperationsPage() {
             />
           </Suspense>
         ) : null}
-
-        <Toast.Portal>
-          <Toast.Viewport>
-            {toastManager.toasts.map((toast) => (
-              <Toast.Root key={toast.id} toast={toast}>
-                <Toast.Content>
-                  <div>
-                    <Toast.Title />
-                    <Toast.Description />
-                  </div>
-                  <Toast.Close aria-label="알림 닫기" />
-                </Toast.Content>
-              </Toast.Root>
-            ))}
-          </Toast.Viewport>
-        </Toast.Portal>
       </div>
     </Drawer.Root>
   );

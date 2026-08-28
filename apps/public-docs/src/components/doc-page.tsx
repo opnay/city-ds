@@ -57,7 +57,7 @@ export function ComponentDocPage({ Content, entry }: ComponentDocPageProps) {
         >
           <CodeBlock
             aria-label={`${entry.title} 가져오기 코드`}
-            code={`import { ${entry.title} } from '${entry.importPath}';`}
+            code={`import { ${(entry.importNames ?? [entry.title]).join(', ')} } from '${entry.importPath}';`}
             language="tsx"
             tabIndex={0}
           />

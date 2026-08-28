@@ -1,10 +1,15 @@
-import { screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 
 import { renderDocs } from '../test/render-docs';
 import { pageData as progressPageData } from './components/progress/page-data';
 import { pageData as toastPageData } from './components/toast/page-data';
+import { toast } from '@opnay/city-ds-react/toast';
+
+afterEach(() => {
+  toast.dismiss();
+});
 
 describe('documented component interactions', () => {
   it('opens and closes an overlay example', async () => {
@@ -40,48 +45,50 @@ describe('documented component interactions', () => {
     expect(within(form).getByText('Button')).toBeVisible();
   });
 
-  it('adds transient feedback through the documented toast manager', async () => {
+  it('adds transient feedback through the documented Sonner API', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/toast']);
 
     await user.click(screen.getByRole('button', { name: '저장' }));
 
     const savedTitle = await screen.findByText('저장되었습니다.');
-    const savedToast = savedTitle.closest<HTMLElement>('[data-city-toast-root]');
+    const savedToast = savedTitle.closest<HTMLElement>('[data-sonner-toast]');
     expect(savedToast).not.toBeNull();
-    expect(savedToast).toHaveAttribute('data-tone', 'success');
-    expect(savedToast?.querySelector('[data-city-toast-icon]')).not.toBeNull();
+    expect(savedToast).toHaveAttribute('data-type', 'success');
+    expect(savedToast?.querySelector('[data-icon] [data-city-toast-default-icon]')).not.toBeNull();
     expect(screen.getByText('변경 사항을 반영했습니다.')).toBeVisible();
 
     const savedClose = savedToast?.querySelector<HTMLButtonElement>(
       'button[aria-label="Close notification"]',
     );
     expect(savedClose).not.toBeNull();
-    await user.click(savedClose!);
+    fireEvent.click(savedClose!);
     await waitFor(() => expect(screen.queryByText('저장되었습니다.')).not.toBeInTheDocument());
 
     await user.click(screen.getByRole('button', { name: '새로고침' }));
 
     const refreshedTitle = await screen.findByText('새로고침했습니다.');
-    const refreshedToast = refreshedTitle.closest<HTMLElement>('[data-city-toast-root]');
-    expect(refreshedToast).toHaveAttribute('data-tone', 'info');
-    expect(refreshedToast?.querySelector('[data-city-toast-icon]')).not.toBeNull();
+    const refreshedToast = refreshedTitle.closest<HTMLElement>('[data-sonner-toast]');
+    expect(refreshedToast).toHaveAttribute('data-type', 'info');
+    expect(
+      refreshedToast?.querySelector('[data-icon] [data-city-toast-default-icon]'),
+    ).not.toBeNull();
 
     const refreshedClose = refreshedToast?.querySelector<HTMLButtonElement>(
       'button[aria-label="Close notification"]',
     );
     expect(refreshedClose).not.toBeNull();
-    await user.click(refreshedClose!);
+    fireEvent.click(refreshedClose!);
     await waitFor(() => expect(screen.queryByText('새로고침했습니다.')).not.toBeInTheDocument());
 
     await user.click(screen.getByRole('button', { name: '상태 확인' }));
 
     const errorTitle = await screen.findByText('상태를 확인하지 못했습니다.');
-    const errorToast = errorTitle.closest<HTMLElement>('[data-city-toast-root]');
-    expect(errorToast).toHaveAttribute('data-tone', 'destructive');
-    expect(errorToast?.querySelector('[data-city-toast-icon]')).not.toBeNull();
+    const errorToast = errorTitle.closest<HTMLElement>('[data-sonner-toast]');
+    expect(errorToast).toHaveAttribute('data-type', 'error');
+    expect(errorToast?.querySelector('[data-icon] [data-city-toast-default-icon]')).not.toBeNull();
     expect(within(errorToast!).getByRole('button', { name: '다시 확인' })).toHaveAttribute(
-      'data-city-toast-action',
+      'data-action',
     );
   });
 
@@ -133,6 +140,7 @@ describe('documented component interactions', () => {
   });
 
   it('renders every declared Toast tone', async () => {
+    const user = userEvent.setup();
     await renderDocs(['/components/toast']);
 
     const declared = toastPageData.examples
@@ -144,16 +152,19 @@ describe('documented component interactions', () => {
       )
       .sort((a, b) => a.localeCompare(b));
 
+    for (const tone of ['neutral', 'info', 'success', 'warning', 'destructive']) {
+      await user.click(screen.getByRole('button', { name: tone }));
+    }
+
     await waitFor(() =>
-      expect(document.querySelectorAll('[data-city-toast-root]')).toHaveLength(declared.length),
+      expect(document.querySelectorAll('[data-sonner-toast]')).toHaveLength(declared.length),
     );
 
-    const matrix = screen.getByLabelText('토스트 의미 행렬');
-    expect(within(matrix).queryByRole('dialog')).not.toBeInTheDocument();
-    expect(within(matrix).queryByRole('button')).not.toBeInTheDocument();
-
-    const rendered = [...document.querySelectorAll<HTMLElement>('[data-city-toast-root]')]
-      .map((element) => `tone=${element.dataset.tone}`)
+    const rendered = [...document.querySelectorAll<HTMLElement>('[data-sonner-toast]')]
+      .map((element) => {
+        const type = element.dataset.type;
+        return `tone=${type === 'error' ? 'destructive' : (type ?? 'neutral')}`;
+      })
       .sort();
 
     expect(rendered).toEqual(declared);

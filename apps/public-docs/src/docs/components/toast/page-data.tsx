@@ -9,15 +9,24 @@ export const pageData = {
   widePreviewIds: ['toast-presentation'],
   api: [
     {
-      name: 'tone',
-      type: "'neutral' | 'info' | 'success' | 'warning' | 'destructive'",
-      description: 'Root의 시각적·의미적 상태를 정합니다. 생략하면 toast.type에서 유도합니다.',
+      name: 'Toaster',
+      type: 'component',
+      description: '토스트의 위치, 수명, 표시 개수와 공통 스타일을 관리합니다.',
     },
-    { name: 'Toast.Provider', type: 'component', description: '토스트 수명과 제한을 관리합니다.' },
     {
-      name: 'Toast.useToastManager',
-      type: 'hook',
-      description: '토스트를 추가하고 목록을 읽습니다.',
+      name: 'toast',
+      type: 'function',
+      description: 'neutral 토스트를 표시합니다. 앱 어디서든 호출할 수 있습니다.',
+    },
+    {
+      name: 'toast.{info|success|warning|error}',
+      type: 'function',
+      description: '의미에 맞는 tone과 기본 아이콘을 적용해 토스트를 표시합니다.',
+    },
+    {
+      name: 'toast.promise',
+      type: 'function',
+      description: '비동기 작업의 loading·success·error 상태를 같은 토스트에서 갱신합니다.',
     },
   ],
   examples: [
@@ -36,7 +45,7 @@ export const pageData = {
           ],
         },
       ],
-      description: 'background 92%·tone 8% 배경과 원색 border·텍스트를 비교합니다.',
+      description: '버튼을 눌러 background 92%·tone 8% 배경과 원색 border·텍스트를 비교합니다.',
       id: 'toast-presentation',
       filename: 'presentation.tsx',
       source: presentationSource,

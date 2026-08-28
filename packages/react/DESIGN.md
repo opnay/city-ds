@@ -310,7 +310,7 @@ CTA는 결과를 예측할 수 있게 쓰십시오. `확인`, `예`보다 `변�
 
 ## 접근성과 상태 점검
 
-Base UI가 제공하는 키보드, 포커스, ARIA, 상태 동작을 재구현하지 마십시오. 합성 API는 `render`를 사용하십시오.
+Base UI가 제공하는 키보드, 포커스, ARIA, 상태 동작을 재구현하지 마십시오. 합성 API는 `render`를 사용하십시오. Toast의 queue·수명·swipe·live region은 Sonner를 사용하고, `Toaster`와 `toast()` 위에 city-ds의 tone·아이콘·모션 규칙만 적용하십시오.
 
 - 모든 폼 제어, 아이콘 버튼, ToggleGroup, Toolbar, table region에 접근 가능한 이름이 있습니까?
 - heading 순서와 landmark가 시각 배치와 같은 문서 구조를 표현합니까?

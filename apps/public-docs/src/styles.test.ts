@@ -18,6 +18,9 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(/\.city-docs-prose > ul,[^}]*list-style-type:\s*disc;/s);
     expect(styles).toMatch(/\.city-docs-prose > ol,[^}]*list-style-type:\s*decimal;/s);
     expect(styles).toMatch(
+      /\.city-docs-prose > :where\(ul, ol\),[^}]*gap:\s*var\(--city-space-1\);/s,
+    );
+    expect(styles).toMatch(
       /\.city-docs-prose > :where\(h2, h3, p\) > code,[^}]*margin-inline:\s*4px;[^}]*font-size:\s*var\(--city-font-size-sm\);[^}]*line-height:\s*1\.25;[^}]*vertical-align:\s*0\.05em;/s,
     );
   });
@@ -91,6 +94,18 @@ describe('public docs layout styles', () => {
     expect(styles).not.toMatch(/(?:gap|margin-top):\s*1px;/);
   });
 
+  it('keeps catalog filter fields aligned and lets them stack on narrow screens', () => {
+    expect(styles).toMatch(
+      /\.city-docs-catalog-search\s*{[^}]*min-width:\s*16rem;[^}]*flex:\s*1 1 16rem;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-catalog-category\s*{[^}]*width:\s*11rem;[^}]*flex:\s*0 0 11rem;/s,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 40rem\)[\s\S]*?\.city-docs-catalog-search,\s*\.city-docs-catalog-category\s*{[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*flex:\s*1 1 auto;/,
+    );
+  });
+
   it('presents task lists as one divided checklist surface', () => {
     expect(styles).toMatch(
       /\.city-docs-prose > ul\.city-docs-checklist\s*{[^}]*border:\s*1px solid var\(--city-color-border\);[^}]*list-style:\s*none;/s,
@@ -150,6 +165,18 @@ describe('public docs layout styles', () => {
     );
     expect(styles).toMatch(
       /\.city-docs-api-table :where\(th, td\):first-child\s*{\s*white-space:\s*nowrap;/,
+    );
+  });
+
+  it('uses one smaller type step for document tables and their inline code', () => {
+    expect(styles).toMatch(
+      /\.city-docs-api-table table,\s*\.city-docs-prose-table-wrap table\s*{[^}]*font-size:\s*var\(--city-font-size-sm\);[^}]*line-height:\s*var\(--city-line-height-sm\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-api-table code,\s*\.city-docs-prose-table-wrap code\s*{[^}]*font-size:\s*var\(--city-font-size-xs\);[^}]*line-height:\s*var\(--city-line-height-xs\);/s,
+    );
+    expect(styles).not.toMatch(
+      /\.city-docs-prose-table-wrap th\s*{[^}]*font-size:\s*var\(--city-font-size-xs\);/s,
     );
   });
 

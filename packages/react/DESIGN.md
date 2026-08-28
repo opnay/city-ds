@@ -90,11 +90,13 @@ city-ds를 사용하는 프로젝트는 개별 컴포넌트를 페이지에서 �
 | `city-text-section-title`    | 24px / 2rem(32px), semibold    | 섹션 제목         |
 | `city-text-subsection-title` | 20px / 1.75rem(28px), semibold | 하위 섹션 제목    |
 | `city-text-lead`             | 18px / 1.75rem(28px), regular  | 도입 문단         |
-| `city-text-body`             | 16px / 1.5rem(24px), regular   | 기본 문장과 문단  |
+| `city-text-body`             | 16px / 1.75rem(28px), regular  | 기본 문장과 문단  |
 | `city-text-supporting`       | 14px / 1.25rem(20px), regular  | 보조 설명         |
 | `city-text-caption`          | 12px / 1rem(16px), regular     | 캡션과 메타데이터 |
 
-여러 문단에는 `city-prose`를 사용하십시오. 이 클래스는 68ch 읽기 폭, 16px 흐름 간격, 제목 전 추가 간격, 목록 들여쓰기와 긴 문자열 줄바꿈만 제공하며 하위 요소의 텍스트 역할은 자동으로 정하지 않습니다.
+`city-text-body`의 1.75rem 행간은 한글과 영문에 동일하게 적용하십시오. 언어에 따라 별도 행간을 만들지 마십시오.
+
+여러 문단에는 `city-prose`를 사용하십시오. 이 클래스는 68ch 읽기 폭, 20px 흐름 간격, `h1`–`h6` 앞 24px 추가 간격, 목록 들여쓰기와 긴 문자열 줄바꿈만 제공하며 하위 요소의 텍스트 역할은 자동으로 정하지 않습니다.
 
 ```tsx
 <article className="city-prose">

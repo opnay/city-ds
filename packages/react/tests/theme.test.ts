@@ -454,20 +454,22 @@ describe('theme contract', () => {
     expect(stylesCss).toContain(
       'font-size: clamp(var(--city-font-size-3xl), 3vw, var(--city-font-size-4xl));',
     );
+    expect(stylesCss).toMatch(
+      /\.city-text-body \{[\s\S]*?line-height: var\(--city-line-height-lg\);[\s\S]*?\n  \}/,
+    );
   });
 
   it('keeps prose flow separate from descendant typography roles', () => {
     const proseRule = stylesCss.match(/\.city-prose \{([\s\S]*?)\n  \}/)?.[1];
 
     expect(proseRule).toContain('max-inline-size: 68ch;');
-    expect(proseRule).toContain('gap: var(--city-space-4);');
+    expect(proseRule).toContain('gap: var(--city-space-5);');
     expect(proseRule).toContain('overflow-wrap: anywhere;');
     expect(proseRule).toContain('word-break: keep-all;');
     expect(proseRule).not.toContain('font-size');
     expect(stylesCss).toContain('.city-prose > :where(ol, ul)');
-    expect(stylesCss).toContain(
-      '> :where(.city-text-section-title, .city-text-subsection-title):not(:first-child)',
-    );
+    expect(stylesCss).toContain('.city-prose > :where(h1, h2, h3, h4, h5, h6):not(:first-child)');
+    expect(stylesCss).toContain('margin-block-start: var(--city-space-6);');
   });
 
   it('keeps the dark interaction surface distinct from the raised surface', () => {

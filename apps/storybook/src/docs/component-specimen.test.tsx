@@ -91,6 +91,7 @@ describe('ComponentSpecimen', () => {
     host.innerHTML = renderToStaticMarkup(
       <ComponentSpecimen>
         <article className="city-prose">
+          <p className="city-text-body">앞 문단입니다.</p>
           <h2 className="city-text-section-title">운행 상태</h2>
           <p className="city-text-body">일반적인 본문입니다.</p>
           <footer className="city-text-caption">14:30 갱신</footer>
@@ -107,11 +108,13 @@ describe('ComponentSpecimen', () => {
 
       expect(getComputedStyle(prose!).maxInlineSize).not.toBe('none');
       expect(getComputedStyle(prose!).wordBreak).toBe('keep-all');
+      expect(getComputedStyle(prose!).gap).toBe('20px');
       expect(getComputedStyle(sectionTitle!).fontSize).toBe('24px');
       expect(getComputedStyle(sectionTitle!).lineHeight).toBe('32px');
       expect(getComputedStyle(sectionTitle!).fontWeight).toBe('600');
+      expect(getComputedStyle(sectionTitle!).marginBlockStart).toBe('24px');
       expect(getComputedStyle(body!).fontSize).toBe('16px');
-      expect(getComputedStyle(body!).lineHeight).toBe('24px');
+      expect(getComputedStyle(body!).lineHeight).toBe('28px');
       expect(getComputedStyle(body!).fontWeight).toBe('400');
       expect(getComputedStyle(caption!).fontSize).toBe('12px');
       expect(getComputedStyle(caption!).lineHeight).toBe('16px');

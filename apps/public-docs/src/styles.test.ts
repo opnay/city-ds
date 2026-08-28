@@ -156,6 +156,18 @@ describe('public docs layout styles', () => {
     );
   });
 
+  it('uses one smaller type step for document tables and their inline code', () => {
+    expect(styles).toMatch(
+      /\.city-docs-api-table table,\s*\.city-docs-prose-table-wrap table\s*{[^}]*font-size:\s*var\(--city-font-size-sm\);[^}]*line-height:\s*var\(--city-line-height-sm\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-api-table code,\s*\.city-docs-prose-table-wrap code\s*{[^}]*font-size:\s*var\(--city-font-size-xs\);[^}]*line-height:\s*var\(--city-line-height-xs\);/s,
+    );
+    expect(styles).not.toMatch(
+      /\.city-docs-prose-table-wrap th\s*{[^}]*font-size:\s*var\(--city-font-size-xs\);/s,
+    );
+  });
+
   it('places schedule and invite before the orders area', () => {
     const mosaic = styles.slice(
       styles.indexOf('.city-showcase-grid {', styles.indexOf('/* Organism mosaic landing */')),

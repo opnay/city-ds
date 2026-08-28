@@ -581,6 +581,12 @@
     vertical-align: 0.05em;
   }
 
+  .city-docs-api-table code,
+  .city-docs-prose-table-wrap code {
+    font-size: var(--city-font-size-xs);
+    line-height: var(--city-line-height-xs);
+  }
+
   .city-docs-prose-code,
   .city-docs-import-block pre,
   .city-docs-example-code pre {
@@ -896,6 +902,12 @@
     min-width: 40rem;
   }
 
+  .city-docs-api-table table,
+  .city-docs-prose-table-wrap table {
+    font-size: var(--city-font-size-sm);
+    line-height: var(--city-line-height-sm);
+  }
+
   .city-docs-api-table :where(th, td) {
     min-width: 160px;
   }
@@ -942,7 +954,6 @@
   .city-docs-prose-table-wrap th {
     background: var(--city-color-muted);
     color: var(--city-color-muted-foreground);
-    font-size: var(--city-font-size-xs);
   }
 
   .city-docs-prose-table-wrap tr:last-child td {

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, BookOpen, Menu as MenuIcon, X } from 'lucide-react';
+import { ArrowRight, BookOpen, Menu as MenuIcon, Moon, Sun, X } from 'lucide-react';
 import { Link, Outlet, useLocation, type ErrorComponentProps } from '@tanstack/react-router';
 import type { CityTheme } from '@opnay/city-ds-react';
 import { Alert } from '@opnay/city-ds-react/alert';
@@ -7,7 +7,6 @@ import { Breadcrumbs } from '@opnay/city-ds-react/breadcrumbs';
 import { Button } from '@opnay/city-ds-react/button';
 import { Drawer } from '@opnay/city-ds-react/drawer';
 import { SearchField } from '@opnay/city-ds-react/search-field';
-import { Select } from '@opnay/city-ds-react/select';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
 
 import {
@@ -26,11 +25,7 @@ import { GuidePage } from './doc-page';
 
 const THEME_STORAGE_KEY = 'city-docs-theme';
 const THEMES: readonly CityTheme[] = ['system', 'light', 'dark'];
-const THEME_ITEMS: Record<CityTheme, string> = {
-  dark: '다크 테마',
-  light: '라이트 테마',
-  system: '시스템 테마',
-};
+type ResolvedTheme = Exclude<CityTheme, 'system'>;
 
 const STATIC_SECTION_LABELS = {
   components: '컴포넌트',
@@ -49,6 +44,25 @@ function readStoredTheme(): CityTheme {
   } catch {
     return 'system';
   }
+}
+
+function readSystemTheme(): ResolvedTheme {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function useSystemTheme(): ResolvedTheme {
+  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(readSystemTheme);
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const updateSystemTheme = () => setSystemTheme(media.matches ? 'dark' : 'light');
+
+    updateSystemTheme();
+    media.addEventListener('change', updateSystemTheme);
+    return () => media.removeEventListener('change', updateSystemTheme);
+  }, []);
+
+  return systemTheme;
 }
 
 function resolvePage(pathname: string) {
@@ -248,40 +262,40 @@ function DocsNavigation({ onNavigate, query, setQuery }: DocsNavigationProps) {
   );
 }
 
-function ThemeSelect({
+function ThemeButtons({
   onChange,
   value,
 }: {
-  onChange: (theme: CityTheme) => void;
-  value: CityTheme;
+  onChange: (theme: ResolvedTheme) => void;
+  value: ResolvedTheme;
 }) {
   return (
-    <Select.Root
-      items={THEME_ITEMS}
-      onValueChange={(nextValue) => onChange(isCityTheme(nextValue) ? nextValue : 'system')}
-      size="sm"
-      value={value}
-    >
-      <Select.Label className="city-docs-sr-only">화면 테마</Select.Label>
-      <Select.Trigger className="city-docs-theme-trigger">
-        <Select.Value />
-        <Select.Icon />
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Positioner sideOffset={6}>
-          <Select.Popup>
-            <Select.List>
-              {Object.entries(THEME_ITEMS).map(([theme, label]) => (
-                <Select.Item key={theme} value={theme}>
-                  <Select.ItemIndicator />
-                  <Select.ItemText>{label}</Select.ItemText>
-                </Select.Item>
-              ))}
-            </Select.List>
-          </Select.Popup>
-        </Select.Positioner>
-      </Select.Portal>
-    </Select.Root>
+    <div aria-label="화면 테마" className="city-docs-theme-controls" role="group">
+      <Button
+        aria-label="다크 테마"
+        aria-pressed={value === 'dark'}
+        iconOnly
+        onClick={() => onChange('dark')}
+        size="sm"
+        title="다크 테마"
+        type="button"
+        variant={value === 'dark' ? 'secondary' : 'outline'}
+      >
+        <Moon aria-hidden="true" size={16} />
+      </Button>
+      <Button
+        aria-label="라이트 테마"
+        aria-pressed={value === 'light'}
+        iconOnly
+        onClick={() => onChange('light')}
+        size="sm"
+        title="라이트 테마"
+        type="button"
+        variant={value === 'light' ? 'secondary' : 'outline'}
+      >
+        <Sun aria-hidden="true" size={16} />
+      </Button>
+    </div>
   );
 }
 
@@ -307,10 +321,10 @@ function Brand({
 
 function ProductHeader({
   onThemeChange,
-  theme,
+  resolvedTheme,
 }: {
   onThemeChange: (theme: CityTheme) => void;
-  theme: CityTheme;
+  resolvedTheme: ResolvedTheme;
 }) {
   return (
     <header className="city-docs-product-header">
@@ -322,7 +336,7 @@ function ProductHeader({
           <Link to="/components">컴포넌트</Link>
         </nav>
         <div className="city-docs-product-actions">
-          <ThemeSelect onChange={onThemeChange} value={theme} />
+          <ThemeButtons onChange={onThemeChange} value={resolvedTheme} />
           <Button
             nativeButton={false}
             render={<Link to="/getting-started" />}
@@ -389,6 +403,8 @@ export function DocsShell() {
   const [mobileNavigationOpen, setMobileNavigationOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [theme, setTheme] = useState<CityTheme>(readStoredTheme);
+  const systemTheme = useSystemTheme();
+  const resolvedTheme = theme === 'system' ? systemTheme : theme;
 
   useEffect(() => {
     document.title = pathname === '/' ? 'city-ds · React 디자인 시스템' : `${page.title} · city-ds`;
@@ -418,7 +434,7 @@ export function DocsShell() {
         <a className="city-docs-skip-link" href="#main-content">
           본문으로 건너뛰기
         </a>
-        <ProductHeader onThemeChange={setTheme} theme={theme} />
+        <ProductHeader onThemeChange={setTheme} resolvedTheme={resolvedTheme} />
         <main className="city-docs-product-main" id="main-content" ref={mainRef} tabIndex={-1}>
           <Outlet />
         </main>
@@ -489,7 +505,7 @@ export function DocsShell() {
             <strong>{page.title}</strong>
           </div>
           <div className="city-docs-topbar-actions">
-            <ThemeSelect onChange={setTheme} value={theme} />
+            <ThemeButtons onChange={setTheme} value={resolvedTheme} />
           </div>
         </header>
         <main className="city-docs-main" id="main-content" ref={mainRef} tabIndex={-1}>

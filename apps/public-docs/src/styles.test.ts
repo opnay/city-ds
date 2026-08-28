@@ -94,6 +94,31 @@ describe('public docs layout styles', () => {
     expect(styles).not.toMatch(/(?:gap|margin-top):\s*1px;/);
   });
 
+  it('separates sidebar category and document text hierarchy', () => {
+    expect(styles).toMatch(
+      /\.city-docs-nav-section h2,\s*\.city-docs-nav-subsection h3\s*{[^}]*color:\s*var\(--city-color-foreground\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-nav-section a\s*{[^}]*color:\s*var\(--city-color-muted-foreground\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-theme-controls\s*{[^}]*display:\s*inline-flex;[^}]*gap:\s*var\(--city-space-1\);/s,
+    );
+    expect(styles).not.toContain('.city-docs-theme-trigger');
+    expect(styles).toMatch(
+      /\.city-docs-article\s*{[^}]*--city-docs-heading-text:\s*var\(--city-palette-black\);[^}]*--city-docs-body-text:\s*color-mix\([\s\S]*?var\(--city-palette-black\) 84%,[\s\S]*?transparent[\s\S]*?\);/,
+    );
+    expect(styles).toMatch(
+      /\[data-theme='dark'\] \.city-docs-article\s*{[^}]*--city-docs-heading-text:\s*var\(--city-palette-white\);[^}]*var\(--city-palette-white\) 84%/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-page-heading h1,[\s\S]*?\.city-docs-example-title\s*{[^}]*color:\s*var\(--city-docs-heading-text\);/,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-page-description,[\s\S]*?\.city-docs-selection-guidance > p:not\(\.city-docs-selection-guidance-label\)\s*{[^}]*color:\s*var\(--city-docs-body-text\);/,
+    );
+  });
+
   it('keeps catalog filter fields aligned and lets them stack on narrow screens', () => {
     expect(styles).toMatch(
       /\.city-docs-catalog-search\s*{[^}]*min-width:\s*16rem;[^}]*flex:\s*1 1 16rem;/s,
@@ -244,7 +269,7 @@ describe('public docs layout styles', () => {
       /\.city-docs-example-heading\[data-has-coverage]\s*{[^}]*align-items:\s*flex-start;/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-example-description\s*{[^}]*color:\s*var\(--city-color-muted-foreground\);[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s,
+      /\.city-docs-example-description\s*{[^}]*color:\s*var\(--city-docs-body-text\);[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s,
     );
     expect(styles).toMatch(
       /\.city-docs-coverage-list\s*{[^}]*overflow-x:\s*auto;[^}]*flex-wrap:\s*nowrap;[^}]*scrollbar-width:\s*thin;/s,

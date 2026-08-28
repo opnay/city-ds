@@ -354,31 +354,47 @@ describe('catalog and local UI state', () => {
     expect(descriptions).toHaveLength(40);
   });
 
-  it('restores only a valid stored theme and lets the user change it', async () => {
+  it('uses the system theme initially and lets the user choose light or dark', async () => {
     window.localStorage.setItem('city-docs-theme', 'invalid');
     const user = userEvent.setup();
     await renderDocs(['/']);
 
     await waitFor(() => expect(window.localStorage.getItem('city-docs-theme')).toBe('system'));
     expect(document.documentElement).not.toHaveAttribute('data-theme');
+    const themeGroup = screen.getByRole('group', { name: '화면 테마' });
+    const darkTheme = within(themeGroup).getByRole('button', { name: '다크 테마' });
+    const lightTheme = within(themeGroup).getByRole('button', { name: '라이트 테마' });
+    expect(darkTheme).toHaveAttribute('aria-pressed', 'false');
+    expect(lightTheme).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByRole('combobox', { name: '화면 테마' })).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole('combobox', { name: '화면 테마' }));
-    await user.click(await screen.findByRole('option', { name: '라이트 테마' }));
-
-    await waitFor(() => expect(document.documentElement).toHaveAttribute('data-theme', 'light'));
-    expect(window.localStorage.getItem('city-docs-theme')).toBe('light');
-
-    await user.click(screen.getByRole('combobox', { name: '화면 테마' }));
-    await user.click(await screen.findByRole('option', { name: '시스템 테마' }));
-
-    await waitFor(() => expect(document.documentElement).not.toHaveAttribute('data-theme'));
-    expect(window.localStorage.getItem('city-docs-theme')).toBe('system');
-
-    await user.click(screen.getByRole('combobox', { name: '화면 테마' }));
-    await user.click(await screen.findByRole('option', { name: '다크 테마' }));
+    await user.click(darkTheme);
 
     await waitFor(() => expect(document.documentElement).toHaveAttribute('data-theme', 'dark'));
     expect(window.localStorage.getItem('city-docs-theme')).toBe('dark');
+    expect(darkTheme).toHaveAttribute('aria-pressed', 'true');
+    expect(lightTheme).toHaveAttribute('aria-pressed', 'false');
+
+    await user.click(lightTheme);
+
+    await waitFor(() => expect(document.documentElement).toHaveAttribute('data-theme', 'light'));
+    expect(window.localStorage.getItem('city-docs-theme')).toBe('light');
+    expect(darkTheme).toHaveAttribute('aria-pressed', 'false');
+    expect(lightTheme).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('restores a valid explicit theme', async () => {
+    window.localStorage.setItem('city-docs-theme', 'dark');
+    await renderDocs(['/components/button']);
+
+    const themeGroup = screen.getByRole('group', { name: '화면 테마' });
+
+    await waitFor(() => expect(document.documentElement).toHaveAttribute('data-theme', 'dark'));
+    expect(window.localStorage.getItem('city-docs-theme')).toBe('dark');
+    expect(within(themeGroup).getByRole('button', { name: '다크 테마' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
   });
 
   it('applies one persisted preview grid option across document pages', async () => {

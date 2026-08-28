@@ -42,39 +42,43 @@ export function ComponentCatalog() {
         aria-label="컴포넌트 필터"
         className="city-docs-catalog-filter"
       >
-        <SearchField.Root onValueChange={setQuery} size="sm" value={query}>
-          <SearchField.Label className="city-docs-sr-only">컴포넌트 검색</SearchField.Label>
-          <SearchField.Group>
-            <SearchField.Input placeholder="Button, 버튼, 폼…" />
-            <SearchField.Clear aria-label="검색어 지우기" />
-          </SearchField.Group>
-        </SearchField.Root>
-        <Select.Root
-          items={CATEGORY_ITEMS}
-          onValueChange={(value) => setCategory((value as ComponentCategory | null) ?? 'all')}
-          size="sm"
-          value={category}
-        >
-          <Select.Label className="city-docs-sr-only">컴포넌트 범주</Select.Label>
-          <Select.Trigger>
-            <Select.Value />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner sideOffset={6}>
-              <Select.Popup>
-                <Select.List>
-                  {Object.entries(CATEGORY_ITEMS).map(([value, label]) => (
-                    <Select.Item key={value} value={value}>
-                      <Select.ItemIndicator />
-                      <Select.ItemText>{label}</Select.ItemText>
-                    </Select.Item>
-                  ))}
-                </Select.List>
-              </Select.Popup>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select.Root>
+        <div className="city-docs-catalog-search w-full sm:min-w-64 sm:flex-1">
+          <SearchField.Root className="w-full" onValueChange={setQuery} size="sm" value={query}>
+            <SearchField.Label className="city-docs-sr-only">컴포넌트 검색</SearchField.Label>
+            <SearchField.Group>
+              <SearchField.Input placeholder="Button, 버튼, 폼…" />
+              <SearchField.Clear aria-label="검색어 지우기" />
+            </SearchField.Group>
+          </SearchField.Root>
+        </div>
+        <div className="city-docs-catalog-category w-full sm:w-44 sm:flex-none">
+          <Select.Root
+            items={CATEGORY_ITEMS}
+            onValueChange={(value) => setCategory((value as ComponentCategory | null) ?? 'all')}
+            size="sm"
+            value={category}
+          >
+            <Select.Label className="city-docs-sr-only">컴포넌트 범주</Select.Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Icon />
+            </Select.Trigger>
+            <Select.Portal>
+              <Select.Positioner sideOffset={6}>
+                <Select.Popup>
+                  <Select.List>
+                    {Object.entries(CATEGORY_ITEMS).map(([value, label]) => (
+                      <Select.Item key={value} value={value}>
+                        <Select.ItemIndicator />
+                        <Select.ItemText>{label}</Select.ItemText>
+                      </Select.Item>
+                    ))}
+                  </Select.List>
+                </Select.Popup>
+              </Select.Positioner>
+            </Select.Portal>
+          </Select.Root>
+        </div>
       </FilterBar>
 
       <p className="city-docs-results-count city-text-supporting" aria-live="polite">

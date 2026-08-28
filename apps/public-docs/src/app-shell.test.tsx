@@ -332,9 +332,18 @@ describe('catalog and local UI state', () => {
 
   it('uses content roles for every catalog group and description', async () => {
     const { container } = await renderDocs(['/components']);
+    const filter = screen.getByRole('group', { name: '컴포넌트 필터' });
 
-    expect(screen.getByRole('group', { name: '컴포넌트 필터' })).toHaveClass(
-      'city-docs-catalog-filter',
+    expect(filter).toHaveClass('city-docs-catalog-filter');
+    expect(filter.querySelector('.city-docs-catalog-search')).toHaveClass(
+      'w-full',
+      'sm:min-w-64',
+      'sm:flex-1',
+    );
+    expect(filter.querySelector('.city-docs-catalog-category')).toHaveClass(
+      'w-full',
+      'sm:w-44',
+      'sm:flex-none',
     );
     expect(screen.getByText('컴포넌트 40개')).toHaveClass('city-docs-results-count');
     const groupHeadings = container.querySelectorAll('.city-docs-component-groups h2');

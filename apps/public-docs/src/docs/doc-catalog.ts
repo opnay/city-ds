@@ -534,6 +534,18 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Layout',
+    description: '문맥·액션 Header와 임의의 Body 콘텐츠를 하나의 구조로 연결합니다.',
+    importPath: '@opnay/city-ds-react/panel',
+    keywords: ['패널', '헤더', '본문', '액션', '레이아웃'],
+    load: () => import('./components/panel/index.mdx'),
+    related: ['accordion', 'filter-bar'],
+    selectionGuidance:
+      'Panel은 배경, padding, border와 overflow를 정하지 않습니다. 콘텐츠 목적에 맞는 surface가 필요하면 소비자 패턴에서 적용하십시오.',
+    slug: 'panel',
+    title: 'Panel',
+  },
+  {
+    category: 'Layout',
     description: '검색·필터·초기화 액션을 반응형 작업 띠로 구성합니다.',
     importPath: '@opnay/city-ds-react/filter-bar',
     keywords: ['필터 바', '검색', '필터', '레이아웃'],

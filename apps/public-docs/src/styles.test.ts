@@ -212,6 +212,10 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(
       /\.city-docs-example-heading-copy\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-1\);/s,
     );
+    expect(styles).toMatch(/\.city-docs-example-heading\s*{[^}]*align-items:\s*center;/s);
+    expect(styles).toMatch(
+      /\.city-docs-example-heading\[data-has-coverage]\s*{[^}]*align-items:\s*flex-start;/s,
+    );
     expect(styles).toMatch(
       /\.city-docs-example-description\s*{[^}]*color:\s*var\(--city-color-muted-foreground\);[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s,
     );
@@ -231,5 +235,14 @@ describe('public docs layout styles', () => {
     );
     expect(styles).toMatch(/max-height:\s*var\(--city-docs-code-max-height\);/);
     expect(styles).toMatch(/line-height:\s*1\.65;/);
+  });
+
+  it('keeps code bodies closer to the page background than muted surfaces', () => {
+    expect(styles).toMatch(
+      /\.city-docs-prose-code,[\s\S]*?\.city-docs-example-code pre\s*{[^}]*background:\s*var\(--city-color-surface\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-code-frame\s*{[^}]*background:\s*var\(--city-color-surface\);/s,
+    );
   });
 });

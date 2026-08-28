@@ -7,8 +7,10 @@ import {
   type ReactNode,
   useContext,
 } from 'react';
+import { Accordion } from '@opnay/city-ds-react/accordion';
 import { Checkbox } from '@opnay/city-ds-react/checkbox';
 import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
+import { Panel } from '@opnay/city-ds-react/panel';
 import { Table } from '@opnay/city-ds-react/table';
 import type { MDXComponents } from 'mdx/types.js';
 
@@ -70,57 +72,73 @@ function ExampleFrame({ example, featuredTitle, previewLayout = 'center' }: Exam
   const titleId = `example-${example.id}`;
   const Example = example.Component;
   const Heading = isFeatured ? 'h2' : 'h3';
+  const CodeHeading = isFeatured ? 'h3' : 'h4';
 
   return (
-    <section aria-labelledby={titleId} className="city-docs-example">
-      <header className="city-docs-example-heading">
-        <div className="city-docs-example-title-row">
-          <div className="city-docs-example-heading-copy">
-            <Heading className="city-docs-example-title" id={titleId}>
-              {title}
-            </Heading>
-            {isFeatured ? null : (
-              <p className="city-docs-example-description">{example.description}</p>
-            )}
+    <Panel.Root aria-labelledby={titleId} className="city-docs-example" render={<section />}>
+      <Panel.Header
+        actions={<PreviewSettingsButton />}
+        className="city-docs-example-heading"
+        data-has-coverage={isFeatured ? undefined : ''}
+      >
+        <div className="city-docs-example-heading-content">
+          <div className="city-docs-example-title-row">
+            <div className="city-docs-example-heading-copy">
+              <Heading className="city-docs-example-title" id={titleId}>
+                {title}
+              </Heading>
+              {isFeatured ? null : (
+                <p className="city-docs-example-description">{example.description}</p>
+              )}
+            </div>
           </div>
-          <PreviewSettingsButton />
+          {isFeatured ? null : (
+            <div aria-label="이 예제가 다루는 옵션" className="city-docs-coverage-list">
+              {example.coverage.flatMap((item) =>
+                item.values.map((value) => (
+                  <span key={`${item.axis}-${value}`}>
+                    {item.axis}: {value}
+                  </span>
+                )),
+              )}
+            </div>
+          )}
         </div>
-        {isFeatured ? null : (
-          <div aria-label="이 예제가 다루는 옵션" className="city-docs-coverage-list">
-            {example.coverage.flatMap((item) =>
-              item.values.map((value) => (
-                <span key={`${item.axis}-${value}`}>
-                  {item.axis}: {value}
-                </span>
-              )),
-            )}
+      </Panel.Header>
+      <Panel.Body className="city-docs-example-body">
+        <div className="city-docs-example-preview">
+          <div className="city-docs-example-preview-content" data-city-docs-layout={previewLayout}>
+            <Example />
           </div>
-        )}
-      </header>
-      <div className="city-docs-example-preview">
-        <div className="city-docs-example-preview-content" data-city-docs-layout={previewLayout}>
-          <Example />
         </div>
-      </div>
-      <details className="city-docs-example-code">
-        <summary>코드 보기</summary>
-        {example.files ? (
-          <CodeBlock
-            aria-label={`${example.title} 예제 소스 코드`}
-            files={example.files}
-            tabIndex={0}
-          />
-        ) : (
-          <CodeBlock
-            aria-label={`${example.title} 예제 소스 코드`}
-            code={example.source}
-            filename={example.filename}
-            language="tsx"
-            tabIndex={0}
-          />
-        )}
-      </details>
-    </section>
+        <Accordion.Root className="city-docs-example-code divide-y-0 rounded-none border-0 bg-transparent">
+          <Accordion.Item value="code">
+            <Accordion.Header render={<CodeHeading />}>
+              <Accordion.Trigger className="city-docs-example-code-trigger">
+                코드 보기
+              </Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Panel className="city-docs-example-code-panel px-0 pb-0">
+              {example.files ? (
+                <CodeBlock
+                  aria-label={`${example.title} 예제 소스 코드`}
+                  files={example.files}
+                  tabIndex={0}
+                />
+              ) : (
+                <CodeBlock
+                  aria-label={`${example.title} 예제 소스 코드`}
+                  code={example.source}
+                  filename={example.filename}
+                  language="tsx"
+                  tabIndex={0}
+                />
+              )}
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion.Root>
+      </Panel.Body>
+    </Panel.Root>
   );
 }
 

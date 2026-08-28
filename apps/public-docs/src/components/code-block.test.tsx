@@ -96,6 +96,12 @@ describe('CodeBlock', () => {
     expect(screen.getByText('tabs.tsx')).toBeVisible();
     expect(screen.getByText('TypeScript JSX')).toBeVisible();
     expect(screen.queryByRole('tab')).not.toBeInTheDocument();
+    expect(document.querySelector('[data-city-panel]')).toHaveClass('city-docs-code-frame');
+    expect(document.querySelector('[data-city-panel-header]')).toHaveClass('city-docs-code-header');
+    expect(document.querySelector('[data-city-panel-body]')).not.toHaveClass(
+      'bg-city-background',
+      'bg-city-muted',
+    );
 
     await user.click(screen.getByRole('button', { name: '코드 복사' }));
 
@@ -129,6 +135,7 @@ describe('CodeBlock', () => {
     );
 
     const mainTab = screen.getByRole('tab', { name: 'src/main.tsx' });
+    expect(mainTab.closest('[data-city-panel-header-content]')).not.toBeNull();
     mainTab.focus();
     await user.keyboard('{ArrowRight}{Enter}');
 

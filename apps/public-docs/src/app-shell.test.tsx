@@ -314,7 +314,7 @@ describe('catalog and local UI state', () => {
 
     await user.click(within(main).getAllByRole('button', { name: '필터 초기화' })[0]!);
     expect(search).toHaveValue('');
-    expect(within(main).getByText('컴포넌트 39개')).toBeVisible();
+    expect(within(main).getByText('컴포넌트 40개')).toBeVisible();
   });
 
   it('filters the catalog by category', async () => {
@@ -336,7 +336,7 @@ describe('catalog and local UI state', () => {
     expect(screen.getByRole('group', { name: '컴포넌트 필터' })).toHaveClass(
       'city-docs-catalog-filter',
     );
-    expect(screen.getByText('컴포넌트 39개')).toHaveClass('city-docs-results-count');
+    expect(screen.getByText('컴포넌트 40개')).toHaveClass('city-docs-results-count');
     const groupHeadings = container.querySelectorAll('.city-docs-component-groups h2');
     const descriptions = container.querySelectorAll(
       '.city-docs-component-grid .city-text-supporting',
@@ -346,7 +346,7 @@ describe('catalog and local UI state', () => {
     for (const heading of groupHeadings) {
       expect(heading).toHaveClass('city-text-section-title');
     }
-    expect(descriptions).toHaveLength(39);
+    expect(descriptions).toHaveLength(40);
   });
 
   it('restores only a valid stored theme and lets the user change it', async () => {
@@ -410,16 +410,22 @@ describe('catalog and local UI state', () => {
     const clipboard = vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(new Error('no'));
     await renderDocs(['/components/button']);
 
-    const details = screen.getAllByText('코드 보기')[0]!.closest('details');
-    if (!details) throw new Error('코드 예제 details를 찾을 수 없습니다.');
-    await user.click(within(details).getByText('코드 보기'));
-    await user.click(within(details).getByRole('button', { name: '코드 복사' }));
+    const codeTrigger = screen.getAllByRole('button', { name: '코드 보기' })[0];
+    if (!(codeTrigger instanceof HTMLElement)) {
+      throw new Error('코드 보기 Trigger를 찾을 수 없습니다.');
+    }
+    const disclosure = codeTrigger.closest('.city-docs-example-code');
+    if (!(disclosure instanceof HTMLElement)) {
+      throw new Error('코드 예제 Accordion을 찾을 수 없습니다.');
+    }
+    await user.click(codeTrigger);
+    await user.click(within(disclosure).getByRole('button', { name: '코드 복사' }));
 
-    expect(within(details).getByRole('button', { name: '복사 실패' })).toBeVisible();
+    expect(within(disclosure).getByRole('button', { name: '복사 실패' })).toBeVisible();
     expect(
-      within(details).getByText(/variants\.tsx 코드를 복사할 수 없습니다/),
+      within(disclosure).getByText(/variants\.tsx 코드를 복사할 수 없습니다/),
     ).toBeInTheDocument();
-    expect(within(details).getByRole('code')).not.toBeEmptyDOMElement();
+    expect(within(disclosure).getByRole('code')).not.toBeEmptyDOMElement();
 
     clipboard.mockRestore();
   });

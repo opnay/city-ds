@@ -97,24 +97,28 @@ describe('documented component interactions', () => {
     expect(screen.getAllByRole('progressbar')).toHaveLength(30);
   });
 
-  it('renders every declared Toast tone and appearance combination', async () => {
+  it('renders every declared Toast tone', async () => {
     await renderDocs(['/components/toast']);
 
     const declared = toastPageData.examples
       .flatMap((example) => example.coverage)
-      .flatMap((coverage) => coverage.combinations ?? [])
-      .sort();
+      .flatMap((coverage) =>
+        'combinations' in coverage && Array.isArray(coverage.combinations)
+          ? coverage.combinations.filter((value): value is string => typeof value === 'string')
+          : [],
+      )
+      .sort((a, b) => a.localeCompare(b));
 
     await waitFor(() =>
       expect(document.querySelectorAll('[data-city-toast-root]')).toHaveLength(declared.length),
     );
 
-    const matrix = screen.getByLabelText('토스트 옵션 행렬');
+    const matrix = screen.getByLabelText('토스트 의미 행렬');
     expect(within(matrix).queryByRole('dialog')).not.toBeInTheDocument();
     expect(within(matrix).queryByRole('button')).not.toBeInTheDocument();
 
     const rendered = [...document.querySelectorAll<HTMLElement>('[data-city-toast-root]')]
-      .map((element) => `tone=${element.dataset.tone}|appearance=${element.dataset.appearance}`)
+      .map((element) => `tone=${element.dataset.tone}`)
       .sort();
 
     expect(rendered).toEqual(declared);

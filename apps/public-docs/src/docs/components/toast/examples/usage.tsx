@@ -20,7 +20,7 @@ function InteractiveToast() {
       <Toast.Portal>
         <Toast.Viewport>
           {manager.toasts.map((toast) => (
-            <Toast.Root appearance="outline" key={toast.id} toast={toast}>
+            <Toast.Root key={toast.id} toast={toast}>
               <Toast.Content>
                 <div>
                   <Toast.Title />

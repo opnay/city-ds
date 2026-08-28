@@ -648,9 +648,9 @@ describe('overlay and selection controls', () => {
     const notification = screen.getByRole('dialog', { name: 'Changes saved' });
     expect(notification).toHaveAttribute('data-city-toast-root');
     expect(notification).toHaveAttribute('data-tone', 'success');
-    expect(notification).toHaveAttribute('data-appearance', 'outline');
-    expect(notification).toHaveClass('border-city-success-border', 'bg-city-background');
-    expect(notification).not.toHaveClass('bg-city-surface-raised');
+    expect(notification).not.toHaveAttribute('data-appearance');
+    expect(notification).toHaveClass('bg-city-success-surface', 'text-city-success');
+    expect(notification).not.toHaveClass('border', 'text-city-foreground');
     await user.hover(notification);
     await user.click(screen.getByRole('button', { name: 'Close notification' }));
 

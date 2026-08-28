@@ -30,10 +30,7 @@ function classes<State>(className: StateClassName<State> | undefined, defaults: 
 
 export type ToastProviderProps = BaseToastProviderProps;
 export type ToastViewportProps = BaseToastViewportProps;
-export const TOAST_APPEARANCES = ['outline', 'subtle'] as const;
-export type ToastAppearance = (typeof TOAST_APPEARANCES)[number];
 export type ToastRootProps = Omit<BaseToastRootProps, 'className'> & {
-  appearance?: ToastAppearance;
   className?: BaseToastRootProps['className'];
   tone?: FeedbackTone;
 };
@@ -87,7 +84,7 @@ function getToastTone(type: string | undefined): FeedbackTone {
 }
 
 export const ToastRoot = React.forwardRef<HTMLDivElement, ToastRootProps>(
-  ({ appearance = 'outline', className, toast, tone: toneProp, ...props }, ref) => {
+  ({ className, toast, tone: toneProp, ...props }, ref) => {
     const tone = toneProp ?? getToastTone(toast.type);
     const toneStyles = feedbackToneStyles[tone];
 
@@ -96,15 +93,14 @@ export const ToastRoot = React.forwardRef<HTMLDivElement, ToastRootProps>(
         {...props}
         ref={ref}
         toast={toast}
-        data-appearance={appearance}
         data-city-toast-root=""
         data-tone={tone}
         className={classes(
           className,
           cn(
-            'rounded-city-md text-city-foreground shadow-city-popup w-full border data-[limited]:hidden',
-            toneStyles.border,
-            appearance === 'subtle' ? toneStyles.surface : 'bg-city-background',
+            'rounded-city-md shadow-city-popup w-full data-[limited]:hidden',
+            toneStyles.surface,
+            toneStyles.indicator,
           ),
         )}
       />
@@ -137,7 +133,7 @@ export const ToastDescription = React.forwardRef<HTMLParagraphElement, ToastDesc
     <BaseToast.Description
       {...props}
       ref={ref}
-      className={classes(className, 'text-city-muted-foreground mt-0.5 text-sm leading-5')}
+      className={classes(className, 'mt-0.5 text-sm leading-5')}
     />
   ),
 );
@@ -149,7 +145,7 @@ export const ToastAction = React.forwardRef<HTMLButtonElement, ToastActionProps>
       ref={ref}
       className={classes(
         className,
-        'rounded-city-xs text-city-foreground hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring shrink-0 px-2 py-1 text-sm font-medium underline underline-offset-2 outline-none focus-visible:ring-2',
+        'rounded-city-xs hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring shrink-0 px-2 py-1 text-sm font-medium underline underline-offset-2 outline-none focus-visible:ring-2',
       )}
     />
   ),
@@ -163,7 +159,7 @@ export const ToastClose = React.forwardRef<HTMLButtonElement, ToastCloseProps>(
       aria-label={ariaLabel ?? 'Close notification'}
       className={classes(
         className,
-        'rounded-city-xs text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring ml-auto inline-flex size-7 shrink-0 items-center justify-center outline-none focus-visible:ring-2',
+        'rounded-city-xs hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring ml-auto inline-flex size-7 shrink-0 items-center justify-center outline-none focus-visible:ring-2',
       )}
     >
       {children ?? <X aria-hidden="true" size={16} strokeWidth={1.8} />}
@@ -182,10 +178,7 @@ export const ToastArrow = React.forwardRef<HTMLDivElement, ToastArrowProps>(
     <BaseToast.Arrow
       {...props}
       ref={ref}
-      className={classes(
-        className,
-        'border-city-border bg-city-surface-raised size-2 rotate-45 border-t border-l',
-      )}
+      className={classes(className, 'bg-inherit size-2 rotate-45')}
     />
   ),
 );

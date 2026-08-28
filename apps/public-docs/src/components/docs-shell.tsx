@@ -17,7 +17,6 @@ import {
   COMPONENT_DOCS,
   COMPONENT_INDEX_DOC,
   GUIDE_DOCS,
-  START_DOCS,
   filterDocumentPages,
   getComponentDoc,
   getStaticDoc,
@@ -38,7 +37,7 @@ const NAVIGATION_MODE_ITEMS: Record<NavigationMode, string> = {
 const STATIC_SECTION_LABELS = {
   components: '컴포넌트',
   guides: '가이드',
-  start: '가이드',
+  start: '홈',
 };
 
 function isCityTheme(value: string | null): value is CityTheme {
@@ -263,9 +262,8 @@ function DocsNavigation({ mode, onModeChange, onNavigate, query, setQuery }: Doc
           </section>
         ) : mode === 'guides' ? (
           <section className="city-docs-nav-section">
-            <h2>가이드</h2>
             <ul>
-              {[...START_DOCS, ...GUIDE_DOCS].map((entry) => (
+              {GUIDE_DOCS.map((entry) => (
                 <li key={entry.path}>
                   <StaticNavigationLink entry={entry} onNavigate={handleNavigate} />
                 </li>
@@ -365,6 +363,24 @@ function Brand({
   );
 }
 
+function DocsHomeLink({ onNavigate }: { onNavigate?: () => void }) {
+  return (
+    <Button
+      aria-label="city-ds 홈"
+      className="city-docs-home-link"
+      nativeButton={false}
+      render={<Link onClick={onNavigate} to="/" />}
+      role="link"
+      size="sm"
+      title="홈으로"
+      variant="ghost"
+    >
+      <BookOpen aria-hidden="true" size={16} strokeWidth={1.8} />
+      city-ds
+    </Button>
+  );
+}
+
 function ProductHeader({
   onThemeChange,
   resolvedTheme,
@@ -410,12 +426,12 @@ function CurrentBreadcrumbs({ pathname }: { pathname: string }) {
       <Breadcrumbs.List>
         {isHome ? (
           <Breadcrumbs.Item>
-            <Breadcrumbs.Page>소개</Breadcrumbs.Page>
+            <Breadcrumbs.Page>홈</Breadcrumbs.Page>
           </Breadcrumbs.Item>
         ) : (
           <>
             <Breadcrumbs.Item>
-              <Breadcrumbs.Link render={<Link to="/" />}>소개</Breadcrumbs.Link>
+              <Breadcrumbs.Link render={<Link to="/" />}>홈</Breadcrumbs.Link>
               <Breadcrumbs.Separator />
             </Breadcrumbs.Item>
             {isComponent ? (
@@ -502,7 +518,7 @@ export function DocsShell() {
         본문으로 건너뛰기
       </a>
       <aside className="city-docs-sidebar">
-        <Brand />
+        <DocsHomeLink />
         <DocsNavigation
           mode={navigationMode}
           onModeChange={setNavigationMode}
@@ -525,7 +541,7 @@ export function DocsShell() {
                 <MenuIcon aria-hidden="true" size={16} />
                 메뉴
               </Drawer.Trigger>
-              <Brand />
+              <DocsHomeLink onNavigate={() => setMobileNavigationOpen(false)} />
             </div>
             <Drawer.Portal>
               <Drawer.Backdrop />

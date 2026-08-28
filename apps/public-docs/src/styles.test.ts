@@ -108,6 +108,10 @@ describe('public docs layout styles', () => {
       /\.city-docs-nav-controls\s*{[^}]*display:\s*grid;[^}]*padding-inline:\s*var\(--city-space-1\);[^}]*gap:\s*var\(--city-space-2\);/s,
     );
     expect(styles).toMatch(/\.city-docs-nav-mode-trigger\s*{[^}]*width:\s*100%;/s);
+    expect(styles).toMatch(
+      /\.city-docs-home-link\s*{[^}]*width:\s*fit-content;[^}]*justify-content:\s*flex-start;/s,
+    );
+    expect(styles).not.toContain('.city-docs-mobile-brand .city-docs-brand');
     expect(styles).not.toContain('.city-docs-theme-trigger');
     expect(styles).toMatch(
       /\.city-docs-article\s*{[^}]*--city-docs-heading-text:\s*var\(--city-palette-black\);[^}]*--city-docs-body-text:\s*color-mix\([\s\S]*?var\(--city-palette-black\) 84%,[\s\S]*?transparent[\s\S]*?\);/,

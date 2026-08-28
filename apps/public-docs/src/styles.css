@@ -1927,6 +1927,10 @@
       display: none;
     }
 
+    .city-docs-mobile-brand .city-docs-home-link small {
+      display: none;
+    }
+
     .city-docs-product-header-inner {
       flex-wrap: wrap;
       gap: var(--city-space-2);

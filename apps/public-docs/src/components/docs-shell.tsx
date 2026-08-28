@@ -367,16 +367,21 @@ function DocsHomeLink({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <Button
       aria-label="city-ds 홈"
-      className="city-docs-home-link"
+      className="city-docs-brand city-docs-home-link"
       nativeButton={false}
       render={<Link onClick={onNavigate} to="/" />}
       role="link"
-      size="sm"
+      size="md"
       title="홈으로"
       variant="ghost"
     >
-      <BookOpen aria-hidden="true" size={16} strokeWidth={1.8} />
-      city-ds
+      <span aria-hidden="true">
+        <BookOpen size={18} strokeWidth={1.8} />
+      </span>
+      <span>
+        <strong>city-ds</strong>
+        <small>소비자 문서</small>
+      </span>
     </Button>
   );
 }

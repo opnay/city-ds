@@ -193,9 +193,15 @@ describe('public docs routes and shell', () => {
     const mode = within(navigation).getByRole('combobox', { name: '문서 영역' });
 
     expect(within(sidebar).getByRole('link', { name: 'city-ds 홈' })).toHaveClass(
+      'city-docs-brand',
       'city-docs-home-link',
       'hover:bg-city-accent',
     );
+    expect(within(sidebar).getByRole('link', { name: 'city-ds 홈' })).toHaveAttribute(
+      'data-city-size',
+      'md',
+    );
+    expect(within(sidebar).getByText('소비자 문서')).toBeVisible();
     expect(mode).toHaveTextContent('Components');
     expect(within(navigation).queryByRole('heading', { level: 2 })).not.toBeInTheDocument();
     expect(within(navigation).getByRole('link', { name: '전체 보기' })).toBeVisible();

@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest';
 import reactPackage from '../../../../packages/react/package.json';
 import {
   COMPONENT_DOCS,
+  GUIDE_DOCS,
+  HOME_DOC,
   STATIC_DOCS,
   filterComponentDocs,
   filterDocumentPages,
@@ -50,6 +52,18 @@ describe('component document catalog', () => {
 });
 
 describe('document page search', () => {
+  it('keeps Home separate from the ordered Guides menu', () => {
+    expect(HOME_DOC).toMatchObject({ label: '홈', path: '/', section: 'start' });
+    expect(GUIDE_DOCS.map((entry) => entry.label)).toEqual([
+      '시작하기',
+      '기초',
+      '색상',
+      '패턴',
+      '접근성',
+    ]);
+    expect(GUIDE_DOCS.every((entry) => entry.section === 'guides')).toBe(true);
+  });
+
   it('indexes every static and component document path exactly once', () => {
     const paths = filterDocumentPages('').map((result) =>
       result.kind === 'static' ? result.entry.path : `/components/${result.entry.slug}`,

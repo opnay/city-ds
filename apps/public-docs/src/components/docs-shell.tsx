@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, BookOpen, Menu as MenuIcon, X } from 'lucide-react';
+import { ArrowRight, BookOpen, Menu as MenuIcon, Moon, Sun, X } from 'lucide-react';
 import { Link, Outlet, useLocation, type ErrorComponentProps } from '@tanstack/react-router';
 import type { CityTheme } from '@opnay/city-ds-react';
 import { Alert } from '@opnay/city-ds-react/alert';
@@ -9,6 +9,7 @@ import { Drawer } from '@opnay/city-ds-react/drawer';
 import { SearchField } from '@opnay/city-ds-react/search-field';
 import { Select } from '@opnay/city-ds-react/select';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
+import { ToggleGroup } from '@opnay/city-ds-react/toggle-group';
 
 import {
   CATEGORY_LABELS,
@@ -16,7 +17,6 @@ import {
   COMPONENT_DOCS,
   COMPONENT_INDEX_DOC,
   GUIDE_DOCS,
-  START_DOCS,
   filterDocumentPages,
   getComponentDoc,
   getStaticDoc,
@@ -26,16 +26,18 @@ import { GuidePage } from './doc-page';
 
 const THEME_STORAGE_KEY = 'city-docs-theme';
 const THEMES: readonly CityTheme[] = ['system', 'light', 'dark'];
-const THEME_ITEMS: Record<CityTheme, string> = {
-  dark: '다크 테마',
-  light: '라이트 테마',
-  system: '시스템 테마',
+type ResolvedTheme = Exclude<CityTheme, 'system'>;
+type NavigationMode = 'guides' | 'components';
+
+const NAVIGATION_MODE_ITEMS: Record<NavigationMode, string> = {
+  guides: 'Guides',
+  components: 'Components',
 };
 
 const STATIC_SECTION_LABELS = {
   components: '컴포넌트',
   guides: '가이드',
-  start: '시작',
+  start: '홈',
 };
 
 function isCityTheme(value: string | null): value is CityTheme {
@@ -51,6 +53,25 @@ function readStoredTheme(): CityTheme {
   }
 }
 
+function readSystemTheme(): ResolvedTheme {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function useSystemTheme(): ResolvedTheme {
+  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(readSystemTheme);
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const updateSystemTheme = () => setSystemTheme(media.matches ? 'dark' : 'light');
+
+    updateSystemTheme();
+    media.addEventListener('change', updateSystemTheme);
+    return () => media.removeEventListener('change', updateSystemTheme);
+  }, []);
+
+  return systemTheme;
+}
+
 function resolvePage(pathname: string) {
   const componentMatch = /^\/components\/([^/]+)$/.exec(pathname);
   if (componentMatch?.[1]) {
@@ -61,7 +82,15 @@ function resolvePage(pathname: string) {
   return { component: undefined, title: getStaticDoc(pathname)?.title ?? '페이지 없음' };
 }
 
+function resolveNavigationMode(pathname: string): NavigationMode {
+  return pathname === '/components' || pathname.startsWith('/components/')
+    ? 'components'
+    : 'guides';
+}
+
 interface DocsNavigationProps {
+  mode: NavigationMode;
+  onModeChange: (mode: NavigationMode) => void;
   onNavigate?: () => void;
   query: string;
   setQuery: (query: string) => void;
@@ -137,7 +166,46 @@ function SearchResultLink({
   );
 }
 
-function DocsNavigation({ onNavigate, query, setQuery }: DocsNavigationProps) {
+function NavigationModeSelect({
+  onChange,
+  value,
+}: {
+  onChange: (mode: NavigationMode) => void;
+  value: NavigationMode;
+}) {
+  return (
+    <Select.Root
+      items={NAVIGATION_MODE_ITEMS}
+      onValueChange={(nextValue) => {
+        if (nextValue === 'guides' || nextValue === 'components') onChange(nextValue);
+      }}
+      size="sm"
+      value={value}
+    >
+      <Select.Label className="city-docs-sr-only">문서 영역</Select.Label>
+      <Select.Trigger className="city-docs-nav-mode-trigger">
+        <Select.Value />
+        <Select.Icon />
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Positioner sideOffset={6}>
+          <Select.Popup>
+            <Select.List>
+              {Object.entries(NAVIGATION_MODE_ITEMS).map(([mode, label]) => (
+                <Select.Item key={mode} value={mode}>
+                  <Select.ItemIndicator />
+                  <Select.ItemText>{label}</Select.ItemText>
+                </Select.Item>
+              ))}
+            </Select.List>
+          </Select.Popup>
+        </Select.Positioner>
+      </Select.Portal>
+    </Select.Root>
+  );
+}
+
+function DocsNavigation({ mode, onModeChange, onNavigate, query, setQuery }: DocsNavigationProps) {
   const isSearching = query.trim().length > 0;
   const searchResults = useMemo(
     () => (isSearching ? filterDocumentPages(query) : []),
@@ -150,18 +218,21 @@ function DocsNavigation({ onNavigate, query, setQuery }: DocsNavigationProps) {
 
   return (
     <nav aria-label="문서 탐색" className="city-docs-navigation">
-      <SearchField.Root
-        className="city-docs-nav-search"
-        onValueChange={setQuery}
-        size="sm"
-        value={query}
-      >
-        <SearchField.Label className="city-docs-sr-only">문서 검색</SearchField.Label>
-        <SearchField.Group>
-          <SearchField.Input placeholder="문서 검색" />
-          <SearchField.Clear aria-label="검색어 지우기" />
-        </SearchField.Group>
-      </SearchField.Root>
+      <div className="city-docs-nav-controls">
+        <SearchField.Root
+          className="city-docs-nav-search"
+          onValueChange={setQuery}
+          size="sm"
+          value={query}
+        >
+          <SearchField.Label className="city-docs-sr-only">문서 검색</SearchField.Label>
+          <SearchField.Group>
+            <SearchField.Input placeholder="문서 검색" />
+            <SearchField.Clear aria-label="검색어 지우기" />
+          </SearchField.Group>
+        </SearchField.Root>
+        <NavigationModeSelect onChange={onModeChange} value={mode} />
+      </div>
 
       <div className="city-docs-nav-scroll">
         {isSearching ? (
@@ -189,99 +260,86 @@ function DocsNavigation({ onNavigate, query, setQuery }: DocsNavigationProps) {
               </ul>
             )}
           </section>
+        ) : mode === 'guides' ? (
+          <section className="city-docs-nav-section">
+            <ul>
+              {GUIDE_DOCS.map((entry) => (
+                <li key={entry.path}>
+                  <StaticNavigationLink entry={entry} onNavigate={handleNavigate} />
+                </li>
+              ))}
+            </ul>
+          </section>
         ) : (
-          <>
-            <section className="city-docs-nav-section">
-              <h2>시작</h2>
+          <section className="city-docs-nav-section city-docs-nav-components">
+            <div className="city-docs-nav-section-primary">
               <ul>
-                {START_DOCS.map((entry) => (
-                  <li key={entry.path}>
-                    <StaticNavigationLink entry={entry} onNavigate={handleNavigate} />
-                  </li>
-                ))}
+                <li>
+                  <StaticNavigationLink entry={COMPONENT_INDEX_DOC} onNavigate={handleNavigate} />
+                </li>
               </ul>
-            </section>
+            </div>
+            <div className="city-docs-nav-categories">
+              {COMPONENT_CATEGORIES.map((category) => {
+                const entries = COMPONENT_DOCS.filter((entry) => entry.category === category);
 
-            <section className="city-docs-nav-section">
-              <h2>가이드</h2>
-              <ul>
-                {GUIDE_DOCS.map((entry) => (
-                  <li key={entry.path}>
-                    <StaticNavigationLink entry={entry} onNavigate={handleNavigate} />
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            <section className="city-docs-nav-section city-docs-nav-components">
-              <div className="city-docs-nav-section-primary">
-                <h2>컴포넌트</h2>
-                <ul>
-                  <li>
-                    <StaticNavigationLink entry={COMPONENT_INDEX_DOC} onNavigate={handleNavigate} />
-                  </li>
-                </ul>
-              </div>
-              <div className="city-docs-nav-categories">
-                {COMPONENT_CATEGORIES.map((category) => {
-                  const entries = COMPONENT_DOCS.filter((entry) => entry.category === category);
-
-                  return (
-                    <section className="city-docs-nav-subsection" key={category}>
-                      <h3>{CATEGORY_LABELS[category]}</h3>
-                      <ul>
-                        {entries.map((entry) => (
-                          <li key={entry.slug}>
-                            <ComponentNavigationLink entry={entry} onNavigate={handleNavigate} />
-                          </li>
-                        ))}
-                      </ul>
-                    </section>
-                  );
-                })}
-              </div>
-            </section>
-          </>
+                return (
+                  <section className="city-docs-nav-subsection" key={category}>
+                    <h3>{CATEGORY_LABELS[category]}</h3>
+                    <ul>
+                      {entries.map((entry) => (
+                        <li key={entry.slug}>
+                          <ComponentNavigationLink entry={entry} onNavigate={handleNavigate} />
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                );
+              })}
+            </div>
+          </section>
         )}
       </div>
     </nav>
   );
 }
 
-function ThemeSelect({
+function ThemeButtons({
   onChange,
   value,
 }: {
-  onChange: (theme: CityTheme) => void;
-  value: CityTheme;
+  onChange: (theme: ResolvedTheme) => void;
+  value: ResolvedTheme;
 }) {
   return (
-    <Select.Root
-      items={THEME_ITEMS}
-      onValueChange={(nextValue) => onChange(isCityTheme(nextValue) ? nextValue : 'system')}
+    <ToggleGroup
+      aria-label="화면 테마"
+      className="city-docs-theme-controls"
+      onValueChange={(nextValue) => {
+        const nextTheme = nextValue[0];
+        if (nextTheme === 'dark' || nextTheme === 'light') onChange(nextTheme);
+      }}
       size="sm"
-      value={value}
+      value={[value]}
+      variant="secondary"
     >
-      <Select.Label className="city-docs-sr-only">화면 테마</Select.Label>
-      <Select.Trigger className="city-docs-theme-trigger">
-        <Select.Value />
-        <Select.Icon />
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Positioner sideOffset={6}>
-          <Select.Popup>
-            <Select.List>
-              {Object.entries(THEME_ITEMS).map(([theme, label]) => (
-                <Select.Item key={theme} value={theme}>
-                  <Select.ItemIndicator />
-                  <Select.ItemText>{label}</Select.ItemText>
-                </Select.Item>
-              ))}
-            </Select.List>
-          </Select.Popup>
-        </Select.Positioner>
-      </Select.Portal>
-    </Select.Root>
+      <ToggleGroup.Item
+        aria-label="다크 테마"
+        className="w-(--city-control-sm) px-0"
+        title="다크 테마"
+        value="dark"
+      >
+        <Moon aria-hidden="true" size={16} />
+      </ToggleGroup.Item>
+      <ToggleGroup.Item
+        aria-label="라이트 테마"
+        className="w-(--city-control-sm) px-0"
+        title="라이트 테마"
+        value="light"
+      >
+        <Sun aria-hidden="true" size={16} />
+      </ToggleGroup.Item>
+    </ToggleGroup>
   );
 }
 
@@ -305,12 +363,35 @@ function Brand({
   );
 }
 
+function DocsHomeLink({ onNavigate }: { onNavigate?: () => void }) {
+  return (
+    <Button
+      aria-label="city-ds 홈"
+      className="city-docs-brand city-docs-home-link"
+      nativeButton={false}
+      render={<Link onClick={onNavigate} to="/" />}
+      role="link"
+      size="md"
+      title="홈으로"
+      variant="ghost"
+    >
+      <span aria-hidden="true">
+        <BookOpen size={18} strokeWidth={1.8} />
+      </span>
+      <span>
+        <strong>city-ds</strong>
+        <small>소비자 문서</small>
+      </span>
+    </Button>
+  );
+}
+
 function ProductHeader({
   onThemeChange,
-  theme,
+  resolvedTheme,
 }: {
   onThemeChange: (theme: CityTheme) => void;
-  theme: CityTheme;
+  resolvedTheme: ResolvedTheme;
 }) {
   return (
     <header className="city-docs-product-header">
@@ -322,7 +403,7 @@ function ProductHeader({
           <Link to="/components">컴포넌트</Link>
         </nav>
         <div className="city-docs-product-actions">
-          <ThemeSelect onChange={onThemeChange} value={theme} />
+          <ThemeButtons onChange={onThemeChange} value={resolvedTheme} />
           <Button
             nativeButton={false}
             render={<Link to="/getting-started" />}
@@ -350,12 +431,12 @@ function CurrentBreadcrumbs({ pathname }: { pathname: string }) {
       <Breadcrumbs.List>
         {isHome ? (
           <Breadcrumbs.Item>
-            <Breadcrumbs.Page>소개</Breadcrumbs.Page>
+            <Breadcrumbs.Page>홈</Breadcrumbs.Page>
           </Breadcrumbs.Item>
         ) : (
           <>
             <Breadcrumbs.Item>
-              <Breadcrumbs.Link render={<Link to="/" />}>소개</Breadcrumbs.Link>
+              <Breadcrumbs.Link render={<Link to="/" />}>홈</Breadcrumbs.Link>
               <Breadcrumbs.Separator />
             </Breadcrumbs.Item>
             {isComponent ? (
@@ -387,8 +468,13 @@ export function DocsShell() {
   const mainRef = useRef<HTMLElement>(null);
   const previousPathRef = useRef(pathname);
   const [mobileNavigationOpen, setMobileNavigationOpen] = useState(false);
+  const [navigationMode, setNavigationMode] = useState<NavigationMode>(() =>
+    resolveNavigationMode(pathname),
+  );
   const [query, setQuery] = useState('');
   const [theme, setTheme] = useState<CityTheme>(readStoredTheme);
+  const systemTheme = useSystemTheme();
+  const resolvedTheme = theme === 'system' ? systemTheme : theme;
 
   useEffect(() => {
     document.title = pathname === '/' ? 'city-ds · React 디자인 시스템' : `${page.title} · city-ds`;
@@ -408,6 +494,7 @@ export function DocsShell() {
   useEffect(() => {
     if (previousPathRef.current === pathname) return;
     previousPathRef.current = pathname;
+    setNavigationMode(resolveNavigationMode(pathname));
     setMobileNavigationOpen(false);
     mainRef.current?.focus({ preventScroll: true });
   }, [pathname]);
@@ -418,7 +505,7 @@ export function DocsShell() {
         <a className="city-docs-skip-link" href="#main-content">
           본문으로 건너뛰기
         </a>
-        <ProductHeader onThemeChange={setTheme} theme={theme} />
+        <ProductHeader onThemeChange={setTheme} resolvedTheme={resolvedTheme} />
         <main className="city-docs-product-main" id="main-content" ref={mainRef} tabIndex={-1}>
           <Outlet />
         </main>
@@ -436,8 +523,13 @@ export function DocsShell() {
         본문으로 건너뛰기
       </a>
       <aside className="city-docs-sidebar">
-        <Brand />
-        <DocsNavigation query={query} setQuery={setQuery} />
+        <DocsHomeLink />
+        <DocsNavigation
+          mode={navigationMode}
+          onModeChange={setNavigationMode}
+          query={query}
+          setQuery={setQuery}
+        />
         <p className="city-docs-sidebar-note">React 18·19 · Vite · Next.js</p>
       </aside>
       <div className="city-docs-workspace">
@@ -454,7 +546,7 @@ export function DocsShell() {
                 <MenuIcon aria-hidden="true" size={16} />
                 메뉴
               </Drawer.Trigger>
-              <Brand />
+              <DocsHomeLink onNavigate={() => setMobileNavigationOpen(false)} />
             </div>
             <Drawer.Portal>
               <Drawer.Backdrop />
@@ -475,6 +567,8 @@ export function DocsShell() {
                   </Drawer.Header>
                   <Drawer.Body className="city-docs-mobile-nav-body">
                     <DocsNavigation
+                      mode={navigationMode}
+                      onModeChange={setNavigationMode}
                       onNavigate={() => setMobileNavigationOpen(false)}
                       query={query}
                       setQuery={setQuery}
@@ -489,7 +583,7 @@ export function DocsShell() {
             <strong>{page.title}</strong>
           </div>
           <div className="city-docs-topbar-actions">
-            <ThemeSelect onChange={setTheme} value={theme} />
+            <ThemeButtons onChange={setTheme} value={resolvedTheme} />
           </div>
         </header>
         <main className="city-docs-main" id="main-content" ref={mainRef} tabIndex={-1}>

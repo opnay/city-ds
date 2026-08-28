@@ -29,28 +29,26 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   Overlays: '오버레이',
 };
 
-export const START_DOCS = [
-  {
-    description: 'city-ds의 목적과 지원 환경, 설계 원칙을 소개합니다.',
-    englishTitle: 'Overview',
-    keywords: ['디자인 시스템', 'react', 'base ui', 'overview'],
-    label: '소개',
-    path: '/',
-    section: 'start',
-    title: '운영 제품을 위한 React 디자인 시스템',
-  },
+export const HOME_DOC = {
+  description: 'city-ds의 목적과 지원 환경, 설계 원칙을 소개합니다.',
+  englishTitle: 'Home',
+  keywords: ['디자인 시스템', 'react', 'base ui', 'overview', '소개'],
+  label: '홈',
+  path: '/',
+  section: 'start',
+  title: '운영 제품을 위한 React 디자인 시스템',
+} as const satisfies StaticDocEntry;
+
+export const GUIDE_DOCS = [
   {
     description: '패키지를 연결하고 CSS·테마를 애플리케이션 진입점에 적용합니다.',
     englishTitle: 'Getting started',
     keywords: ['설치', 'pnpm', 'css', '테마', 'vite', 'next.js'],
     label: '시작하기',
     path: '/getting-started',
-    section: 'start',
+    section: 'guides',
     title: '시작하기',
   },
-] as const satisfies readonly StaticDocEntry[];
-
-export const GUIDE_DOCS = [
   {
     description: '토큰, 크기, 밀도, 표면과 테마를 같은 시각 언어로 적용합니다.',
     englishTitle: 'Foundations',
@@ -100,7 +98,7 @@ export const COMPONENT_INDEX_DOC = {
 } as const satisfies StaticDocEntry;
 
 export const STATIC_DOCS: readonly StaticDocEntry[] = [
-  ...START_DOCS,
+  HOME_DOC,
   ...GUIDE_DOCS,
   COMPONENT_INDEX_DOC,
 ];

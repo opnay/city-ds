@@ -185,14 +185,37 @@ describe('public docs routes and shell', () => {
 
   it('groups the full navigation and searches every document page', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components']);
+    const { container } = await renderDocs(['/components']);
+    const sidebar = container.querySelector<HTMLElement>('.city-docs-sidebar');
+    if (!sidebar) throw new Error('문서 사이드바를 찾을 수 없습니다.');
     const navigation = screen.getByRole('navigation', { name: '문서 탐색' });
     const search = within(navigation).getByRole('searchbox', { name: '문서 검색' });
+    const mode = within(navigation).getByRole('combobox', { name: '문서 영역' });
 
-    expect(within(navigation).getByRole('heading', { level: 2, name: '시작' })).toBeVisible();
-    expect(within(navigation).getByRole('heading', { level: 2, name: '가이드' })).toBeVisible();
-    expect(within(navigation).getByRole('heading', { level: 2, name: '컴포넌트' })).toBeVisible();
+    expect(within(sidebar).getByRole('link', { name: 'city-ds 홈' })).toHaveClass(
+      'city-docs-brand',
+      'city-docs-home-link',
+      'hover:bg-city-accent',
+    );
+    expect(within(sidebar).getByRole('link', { name: 'city-ds 홈' })).toHaveAttribute(
+      'data-city-size',
+      'md',
+    );
+    expect(within(sidebar).getByText('소비자 문서')).toBeVisible();
+    expect(mode).toHaveTextContent('Components');
+    expect(within(navigation).queryByRole('heading', { level: 2 })).not.toBeInTheDocument();
+    expect(within(navigation).getByRole('link', { name: '전체 보기' })).toBeVisible();
     expect(within(navigation).getByRole('heading', { level: 3, name: '폼' })).toBeVisible();
+
+    await user.click(mode);
+    await user.click(await screen.findByRole('option', { name: 'Guides' }));
+
+    expect(mode).toHaveTextContent('Guides');
+    expect(within(navigation).queryByRole('heading')).not.toBeInTheDocument();
+    expect(
+      [...navigation.querySelectorAll('.city-docs-nav-scroll a')].map((link) => link.textContent),
+    ).toEqual(['시작하기', '기초', '색상', '패턴', '접근성']);
+    expect(within(navigation).queryByRole('link', { name: '전체 보기' })).not.toBeInTheDocument();
 
     await user.type(search, '설치');
     expect(within(navigation).getByText('1개')).toBeVisible();
@@ -354,31 +377,53 @@ describe('catalog and local UI state', () => {
     expect(descriptions).toHaveLength(40);
   });
 
-  it('restores only a valid stored theme and lets the user change it', async () => {
+  it('uses the system theme initially and lets the user choose light or dark', async () => {
     window.localStorage.setItem('city-docs-theme', 'invalid');
     const user = userEvent.setup();
     await renderDocs(['/']);
 
     await waitFor(() => expect(window.localStorage.getItem('city-docs-theme')).toBe('system'));
     expect(document.documentElement).not.toHaveAttribute('data-theme');
+    const themeGroup = screen.getByRole('group', { name: '화면 테마' });
+    expect(themeGroup).toHaveAttribute('data-city-variant', 'secondary');
+    expect(themeGroup).toHaveAttribute('data-city-size', 'sm');
+    const darkTheme = within(themeGroup).getByRole('button', { name: '다크 테마' });
+    const lightTheme = within(themeGroup).getByRole('button', { name: '라이트 테마' });
+    expect(darkTheme).toHaveAttribute('aria-pressed', 'false');
+    expect(lightTheme).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByRole('combobox', { name: '화면 테마' })).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole('combobox', { name: '화면 테마' }));
-    await user.click(await screen.findByRole('option', { name: '라이트 테마' }));
-
-    await waitFor(() => expect(document.documentElement).toHaveAttribute('data-theme', 'light'));
-    expect(window.localStorage.getItem('city-docs-theme')).toBe('light');
-
-    await user.click(screen.getByRole('combobox', { name: '화면 테마' }));
-    await user.click(await screen.findByRole('option', { name: '시스템 테마' }));
-
-    await waitFor(() => expect(document.documentElement).not.toHaveAttribute('data-theme'));
-    expect(window.localStorage.getItem('city-docs-theme')).toBe('system');
-
-    await user.click(screen.getByRole('combobox', { name: '화면 테마' }));
-    await user.click(await screen.findByRole('option', { name: '다크 테마' }));
+    await user.click(darkTheme);
 
     await waitFor(() => expect(document.documentElement).toHaveAttribute('data-theme', 'dark'));
     expect(window.localStorage.getItem('city-docs-theme')).toBe('dark');
+    expect(darkTheme).toHaveAttribute('aria-pressed', 'true');
+    expect(lightTheme).toHaveAttribute('aria-pressed', 'false');
+
+    await user.click(lightTheme);
+
+    await waitFor(() => expect(document.documentElement).toHaveAttribute('data-theme', 'light'));
+    expect(window.localStorage.getItem('city-docs-theme')).toBe('light');
+    expect(darkTheme).toHaveAttribute('aria-pressed', 'false');
+    expect(lightTheme).toHaveAttribute('aria-pressed', 'true');
+
+    await user.click(lightTheme);
+    expect(lightTheme).toHaveAttribute('aria-pressed', 'true');
+    expect(window.localStorage.getItem('city-docs-theme')).toBe('light');
+  });
+
+  it('restores a valid explicit theme', async () => {
+    window.localStorage.setItem('city-docs-theme', 'dark');
+    await renderDocs(['/components/button']);
+
+    const themeGroup = screen.getByRole('group', { name: '화면 테마' });
+
+    await waitFor(() => expect(document.documentElement).toHaveAttribute('data-theme', 'dark'));
+    expect(window.localStorage.getItem('city-docs-theme')).toBe('dark');
+    expect(within(themeGroup).getByRole('button', { name: '다크 테마' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
   });
 
   it('applies one persisted preview grid option across document pages', async () => {

@@ -18,6 +18,7 @@ export interface DocModule {
 export interface ComponentDocEntry {
   category: ComponentCategory;
   description: string;
+  importNames?: readonly string[];
   importPath: `@opnay/city-ds-react/${string}`;
   keywords: readonly string[];
   load: () => Promise<DocModule>;

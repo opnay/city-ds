@@ -379,6 +379,7 @@ export const COMPONENT_DOCS = [
   {
     category: 'Feedback',
     description: '작업 결과를 일시적으로 알리고 필요하면 후속 액션을 제공합니다.',
+    importNames: ['Toaster', 'toast'],
     importPath: '@opnay/city-ds-react/toast',
     keywords: ['토스트', '알림', '성공', '오류'],
     load: () => import('./components/toast/index.mdx'),

@@ -43,6 +43,10 @@ describe('component document catalog', () => {
     expect(filterComponentDocs('', 'Overlays')).toHaveLength(5);
     expect(filterComponentDocs('존재하지 않는 검색어')).toEqual([]);
   });
+
+  it('documents the Sonner-based Toast imports', () => {
+    expect(getComponentDoc('toast')?.importNames).toEqual(['Toaster', 'toast']);
+  });
 });
 
 describe('document page search', () => {

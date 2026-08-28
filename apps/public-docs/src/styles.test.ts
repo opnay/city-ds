@@ -94,6 +94,18 @@ describe('public docs layout styles', () => {
     expect(styles).not.toMatch(/(?:gap|margin-top):\s*1px;/);
   });
 
+  it('keeps catalog filter fields aligned and lets them stack on narrow screens', () => {
+    expect(styles).toMatch(
+      /\.city-docs-catalog-search\s*{[^}]*min-width:\s*16rem;[^}]*flex:\s*1 1 16rem;/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-catalog-category\s*{[^}]*width:\s*11rem;[^}]*flex:\s*0 0 11rem;/s,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 40rem\)[\s\S]*?\.city-docs-catalog-search,\s*\.city-docs-catalog-category\s*{[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*flex:\s*1 1 auto;/,
+    );
+  });
+
   it('presents task lists as one divided checklist surface', () => {
     expect(styles).toMatch(
       /\.city-docs-prose > ul\.city-docs-checklist\s*{[^}]*border:\s*1px solid var\(--city-color-border\);[^}]*list-style:\s*none;/s,

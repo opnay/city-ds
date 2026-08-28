@@ -42,8 +42,13 @@ export function ComponentCatalog() {
         aria-label="컴포넌트 필터"
         className="city-docs-catalog-filter"
       >
-        <div className="city-docs-catalog-search w-full sm:min-w-64 sm:flex-1">
-          <SearchField.Root className="w-full" onValueChange={setQuery} size="sm" value={query}>
+        <div className="city-docs-catalog-search">
+          <SearchField.Root
+            className="city-docs-catalog-search-field"
+            onValueChange={setQuery}
+            size="sm"
+            value={query}
+          >
             <SearchField.Label className="city-docs-sr-only">컴포넌트 검색</SearchField.Label>
             <SearchField.Group>
               <SearchField.Input placeholder="Button, 버튼, 폼…" />
@@ -51,7 +56,7 @@ export function ComponentCatalog() {
             </SearchField.Group>
           </SearchField.Root>
         </div>
-        <div className="city-docs-catalog-category w-full sm:w-44 sm:flex-none">
+        <div className="city-docs-catalog-category">
           <Select.Root
             items={CATEGORY_ITEMS}
             onValueChange={(value) => setCategory((value as ComponentCategory | null) ?? 'all')}

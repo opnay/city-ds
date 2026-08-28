@@ -649,7 +649,8 @@ describe('overlay and selection controls', () => {
     expect(notification).toHaveAttribute('data-city-toast-root');
     expect(notification).toHaveAttribute('data-tone', 'success');
     expect(notification).toHaveAttribute('data-appearance', 'outline');
-    expect(notification).toHaveClass('border-city-success-border');
+    expect(notification).toHaveClass('border-city-success-border', 'bg-city-background');
+    expect(notification).not.toHaveClass('bg-city-surface-raised');
     await user.hover(notification);
     await user.click(screen.getByRole('button', { name: 'Close notification' }));
 

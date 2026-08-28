@@ -101,7 +101,8 @@ describe('Alert', () => {
     expect(destructive).toHaveAttribute('data-tone', 'destructive');
     expect(destructive).toHaveAttribute('data-appearance', 'outline');
     expect(destructive).toHaveAttribute('data-variant', 'error');
-    expect(destructive).toHaveClass('border-city-destructive-border', 'bg-city-surface-raised');
+    expect(destructive).toHaveClass('border-city-destructive-border', 'bg-city-background');
+    expect(destructive).not.toHaveClass('bg-city-surface-raised');
     expect(neutral).toHaveAttribute('data-tone', 'neutral');
     expect(neutral).toHaveAttribute('data-variant', 'info');
   });

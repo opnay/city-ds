@@ -104,7 +104,7 @@ export const ToastRoot = React.forwardRef<HTMLDivElement, ToastRootProps>(
           cn(
             'rounded-city-md text-city-foreground shadow-city-popup w-full border data-[limited]:hidden',
             toneStyles.border,
-            appearance === 'subtle' ? toneStyles.surface : 'bg-city-surface-raised',
+            appearance === 'subtle' ? toneStyles.surface : 'bg-city-background',
           ),
         )}
       />

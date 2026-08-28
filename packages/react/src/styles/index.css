@@ -110,6 +110,14 @@
   .city-prose > :where(h1, h2, h3, h4, h5, h6):not(:first-child) {
     margin-block-start: var(--city-space-6);
   }
+
+  .city-toast-surface {
+    background-color: color-mix(in oklch, currentColor 8%, var(--city-color-background));
+  }
+
+  [data-city-toast-content]:has([data-city-toast-action]) > [data-city-toast-icon] {
+    display: none;
+  }
 }
 
 .city-skeleton {

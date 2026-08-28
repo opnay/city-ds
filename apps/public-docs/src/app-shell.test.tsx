@@ -188,11 +188,25 @@ describe('public docs routes and shell', () => {
     await renderDocs(['/components']);
     const navigation = screen.getByRole('navigation', { name: '문서 탐색' });
     const search = within(navigation).getByRole('searchbox', { name: '문서 검색' });
+    const mode = within(navigation).getByRole('combobox', { name: '문서 영역' });
 
-    expect(within(navigation).getByRole('heading', { level: 2, name: '시작' })).toBeVisible();
-    expect(within(navigation).getByRole('heading', { level: 2, name: '가이드' })).toBeVisible();
-    expect(within(navigation).getByRole('heading', { level: 2, name: '컴포넌트' })).toBeVisible();
+    expect(mode).toHaveTextContent('Components');
+    expect(within(navigation).queryByRole('heading', { level: 2 })).not.toBeInTheDocument();
+    expect(within(navigation).getByRole('link', { name: '전체 보기' })).toBeVisible();
     expect(within(navigation).getByRole('heading', { level: 3, name: '폼' })).toBeVisible();
+
+    await user.click(mode);
+    await user.click(await screen.findByRole('option', { name: 'Guides' }));
+
+    expect(mode).toHaveTextContent('Guides');
+    expect(within(navigation).getByRole('heading', { level: 2, name: '가이드' })).toBeVisible();
+    expect(
+      within(navigation).queryByRole('heading', { level: 2, name: '시작' }),
+    ).not.toBeInTheDocument();
+    expect(within(navigation).getByRole('link', { name: '소개' })).toBeVisible();
+    expect(within(navigation).getByRole('link', { name: '시작하기' })).toBeVisible();
+    expect(within(navigation).queryByRole('link', { name: '전체 보기' })).not.toBeInTheDocument();
+    expect(within(navigation).queryByRole('heading', { level: 3 })).not.toBeInTheDocument();
 
     await user.type(search, '설치');
     expect(within(navigation).getByText('1개')).toBeVisible();

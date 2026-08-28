@@ -234,6 +234,13 @@
     gap: var(--city-space-3);
   }
 
+  .city-docs-nav-controls {
+    display: grid;
+    padding-inline: var(--city-space-1);
+    flex: none;
+    gap: var(--city-space-2);
+  }
+
   .city-docs-nav-section {
     display: grid;
     gap: var(--city-space-1);
@@ -283,8 +290,12 @@
   }
 
   .city-docs-nav-search {
-    padding-inline: var(--city-space-1);
+    padding-inline: 0;
     flex: none;
+  }
+
+  .city-docs-nav-mode-trigger {
+    width: 100%;
   }
 
   .city-docs-nav-scroll {

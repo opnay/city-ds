@@ -104,6 +104,10 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(
       /\.city-docs-theme-controls\s*{[^}]*display:\s*inline-flex;[^}]*gap:\s*var\(--city-space-1\);/s,
     );
+    expect(styles).toMatch(
+      /\.city-docs-nav-controls\s*{[^}]*display:\s*grid;[^}]*padding-inline:\s*var\(--city-space-1\);[^}]*gap:\s*var\(--city-space-2\);/s,
+    );
+    expect(styles).toMatch(/\.city-docs-nav-mode-trigger\s*{[^}]*width:\s*100%;/s);
     expect(styles).not.toContain('.city-docs-theme-trigger');
     expect(styles).toMatch(
       /\.city-docs-article\s*{[^}]*--city-docs-heading-text:\s*var\(--city-palette-black\);[^}]*--city-docs-body-text:\s*color-mix\([\s\S]*?var\(--city-palette-black\) 84%,[\s\S]*?transparent[\s\S]*?\);/,

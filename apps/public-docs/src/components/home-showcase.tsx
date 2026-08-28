@@ -29,7 +29,7 @@ import { Select } from '@opnay/city-ds-react/select';
 import { Switch } from '@opnay/city-ds-react/switch';
 import { Table, type TableSortDirection } from '@opnay/city-ds-react/table';
 import { Tabs } from '@opnay/city-ds-react/tabs';
-import { Toast } from '@opnay/city-ds-react/toast';
+import { toast } from '@opnay/city-ds-react/toast';
 
 interface ShowcaseCardProps {
   className?: string;
@@ -342,14 +342,11 @@ function IssueTriageCard() {
 
 function CheckoutCard() {
   const [complete, setComplete] = useState(false);
-  const manager = Toast.useToastManager();
 
   const placeOrder = () => {
     setComplete(true);
-    manager.add({
+    toast.success('Order placed', {
       description: 'Confirmation AC-20984 is ready.',
-      title: 'Order placed',
-      type: 'success',
     });
   };
 
@@ -715,7 +712,6 @@ function UploadDocumentsCard() {
 }
 
 function NotificationsCard() {
-  const manager = Toast.useToastManager();
   const [settings, setSettings] = useState({
     email: true,
     marketing: false,
@@ -756,10 +752,8 @@ function NotificationsCard() {
       </div>
       <Button
         onClick={() =>
-          manager.add({
-            title: 'Preferences saved',
+          toast.success('Preferences saved', {
             description: 'Notification settings were updated.',
-            type: 'success',
           })
         }
         size="sm"
@@ -812,36 +806,17 @@ const SHOWCASE_ITEMS = [
 ] as const;
 
 export function HomeShowcase() {
-  const manager = Toast.useToastManager();
-
   return (
-    <>
-      <section
-        aria-label="Interactive product examples"
-        className="city-showcase-grid"
-        id="product-contexts"
-      >
-        {SHOWCASE_ITEMS.map(({ Component, id }) => (
-          <div className="city-showcase-item" data-organism={id} key={id}>
-            <Component />
-          </div>
-        ))}
-      </section>
-      <Toast.Portal>
-        <Toast.Viewport>
-          {manager.toasts.map((toast) => (
-            <Toast.Root key={toast.id} toast={toast}>
-              <Toast.Content>
-                <div>
-                  <Toast.Title />
-                  <Toast.Description />
-                </div>
-                <Toast.Close />
-              </Toast.Content>
-            </Toast.Root>
-          ))}
-        </Toast.Viewport>
-      </Toast.Portal>
-    </>
+    <section
+      aria-label="Interactive product examples"
+      className="city-showcase-grid"
+      id="product-contexts"
+    >
+      {SHOWCASE_ITEMS.map(({ Component, id }) => (
+        <div className="city-showcase-item" data-organism={id} key={id}>
+          <Component />
+        </div>
+      ))}
+    </section>
   );
 }

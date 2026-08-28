@@ -112,11 +112,39 @@
   }
 
   .city-toast-surface {
-    background-color: color-mix(in oklch, currentColor 8%, var(--city-color-background));
+    background-color: color-mix(in oklab, currentColor 8%, var(--city-color-background));
   }
 
-  [data-city-toast-content]:has([data-city-toast-action]) > [data-city-toast-icon] {
+  [data-sonner-toaster].city-toast-viewport {
+    font-family: inherit;
+    transition-duration: var(--city-duration-normal);
+    transition-timing-function: var(--city-easing-standard);
+  }
+
+  [data-sonner-toast].city-toast-root,
+  [data-sonner-toast].city-toast-root > * {
+    transition-duration: var(--city-duration-normal);
+    transition-timing-function: var(--city-easing-standard);
+  }
+
+  [data-sonner-toast].city-toast-root:focus-visible {
+    box-shadow:
+      var(--city-shadow-popup),
+      0 0 0 2px var(--city-color-ring);
+  }
+
+  .city-toast-icon {
+    display: inline-flex;
+  }
+
+  [data-sonner-toast].city-toast-root:has([data-action])
+    [data-icon]:has([data-city-toast-default-icon]) {
     display: none;
+  }
+
+  [data-sonner-toast].city-toast-root[data-swipe-out='true'] {
+    animation-duration: var(--city-duration-normal);
+    animation-timing-function: var(--city-easing-standard);
   }
 }
 

@@ -472,15 +472,17 @@ describe('theme contract', () => {
     expect(stylesCss).toContain('margin-block-start: var(--city-space-6);');
   });
 
-  it('mixes toast surfaces toward the page background', () => {
+  it('keeps Sonner toast surfaces, motion and default icons on city contracts', () => {
     expect(stylesCss).toMatch(
-      /\.city-toast-surface \{[\s\S]*?background-color: color-mix\(in oklch, currentColor 8%, var\(--city-color-background\)\);[\s\S]*?\n  \}/,
+      /\.city-toast-surface \{[\s\S]*?background-color: color-mix\(in oklab, currentColor 8%, var\(--city-color-background\)\);[\s\S]*?\n  \}/,
     );
-    expect(stylesCss).toContain(
-      '[data-city-toast-content]:has([data-city-toast-action]) > [data-city-toast-icon]',
-    );
+    expect(stylesCss).toContain('[data-sonner-toaster].city-toast-viewport');
+    expect(stylesCss).toContain('transition-duration: var(--city-duration-normal);');
+    expect(stylesCss).toContain('transition-timing-function: var(--city-easing-standard);');
+    expect(stylesCss).toContain('[data-sonner-toast].city-toast-root:has([data-action])');
+    expect(stylesCss).toContain('[data-icon]:has([data-city-toast-default-icon])');
     expect(stylesCss).toMatch(
-      /\[data-city-toast-content\]:has\(\[data-city-toast-action\]\) > \[data-city-toast-icon\] \{[\s\S]*?display: none;[\s\S]*?\n  \}/,
+      /\[data-sonner-toast\]\.city-toast-root:has\(\[data-action\]\)[\s\S]*?\[data-icon\]:has\(\[data-city-toast-default-icon\]\) \{[\s\S]*?display: none;[\s\S]*?\n  \}/,
     );
   });
 

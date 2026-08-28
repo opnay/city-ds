@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AlertDialog } from '../../src/components/alert-dialog';
 import { Button } from '../../src/components/button';
 import { Dialog } from '../../src/components/dialog';
@@ -11,7 +11,11 @@ import { Popover } from '../../src/components/popover';
 import { Select } from '../../src/components/select';
 import { Tabs } from '../../src/components/tabs';
 import { Tooltip } from '../../src/components/tooltip';
-import { Toast } from '../../src/components/toast';
+import { Toaster, toast } from '../../src/components/toast';
+
+afterEach(() => {
+  toast.dismiss();
+});
 
 describe('overlay and selection controls', () => {
   it('opens a dialog, restores trigger focus, and exposes a labelled dialog', async () => {
@@ -633,23 +637,21 @@ describe('overlay and selection controls', () => {
     );
   });
 
-  it('adds and dismisses a toast through the Base UI toast manager', async () => {
+  it('adds and dismisses a toast through Sonner', async () => {
     const user = userEvent.setup();
 
-    render(
-      <Toast.Provider timeout={0}>
-        <ToastExample />
-      </Toast.Provider>,
-    );
+    render(<ToastExample />);
 
     await user.click(screen.getByRole('button', { name: 'Show notification' }));
 
-    expect(await screen.findByText('Changes saved')).toBeVisible();
-    const notification = screen.getByRole('dialog', { name: 'Changes saved' });
-    expect(notification).toHaveAttribute('data-city-toast-root');
-    expect(notification).toHaveAttribute('data-tone', 'success');
+    const title = await screen.findByText('Changes saved');
+    expect(title).toBeVisible();
+    const notification = title.closest<HTMLElement>('[data-sonner-toast]');
+    expect(notification).not.toBeNull();
+    expect(notification).toHaveAttribute('data-type', 'success');
     expect(notification).not.toHaveAttribute('data-appearance');
     expect(notification).toHaveClass(
+      'city-toast-root',
       'city-toast-surface',
       'border',
       'border-current',
@@ -660,9 +662,10 @@ describe('overlay and selection controls', () => {
       'bg-city-success-surface',
       'text-city-foreground',
     );
-    expect(notification.querySelector('[data-city-toast-icon]')).not.toBeNull();
-    await user.hover(notification);
-    await user.click(screen.getByRole('button', { name: 'Close notification' }));
+    expect(
+      notification?.querySelector('[data-icon] [data-city-toast-default-icon]'),
+    ).not.toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Close notification' }));
 
     await waitFor(() => expect(screen.queryByText('Changes saved')).not.toBeInTheDocument());
   });
@@ -670,38 +673,57 @@ describe('overlay and selection controls', () => {
   it('omits the default toast icon when an action is present', async () => {
     const user = userEvent.setup();
 
-    render(
-      <Toast.Provider timeout={0}>
-        <ToastExample />
-      </Toast.Provider>,
-    );
+    render(<ToastExample />);
 
     await user.click(screen.getByRole('button', { name: 'Show actionable notification' }));
 
-    const notification = screen.getByRole('dialog', { name: 'Review required' });
-    expect(notification.querySelector('[data-city-toast-icon]')).not.toBeNull();
-    expect(screen.getByRole('button', { name: 'Review' })).toHaveAttribute(
-      'data-city-toast-action',
+    const title = await screen.findByText('Review required');
+    const notification = title.closest<HTMLElement>('[data-sonner-toast]');
+    expect(notification).toHaveAttribute('data-type', 'warning');
+    expect(
+      notification?.querySelector('[data-icon] [data-city-toast-default-icon]'),
+    ).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'Review' })).toHaveAttribute('data-action');
+  });
+
+  it('keeps a custom toast icon when a custom action is present', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <>
+        <button
+          type="button"
+          onClick={() =>
+            toast.warning('Custom notification', {
+              action: <button type="button">Open details</button>,
+              icon: <span data-custom-toast-icon="" />,
+            })
+          }
+        >
+          Show custom notification
+        </button>
+        <Toaster duration={Infinity} />
+      </>,
     );
+
+    await user.click(screen.getByRole('button', { name: 'Show custom notification' }));
+
+    const title = await screen.findByText('Custom notification');
+    const notification = title.closest<HTMLElement>('[data-sonner-toast]');
+    expect(notification?.querySelector('[data-icon] [data-custom-toast-icon]')).not.toBeNull();
+    expect(notification?.querySelector('[data-city-toast-default-icon]')).toBeNull();
+    expect(screen.getByRole('button', { name: 'Open details' })).toHaveAttribute('data-action');
   });
 });
 
-type ToastExampleData = {
-  actionLabel?: string;
-};
-
 function ToastExample() {
-  const manager = Toast.useToastManager<ToastExampleData>();
-
   return (
     <>
       <button
         type="button"
         onClick={() =>
-          manager.add({
-            title: 'Changes saved',
+          toast.success('Changes saved', {
             description: 'Your project is up to date.',
-            type: 'success',
           })
         }
       >
@@ -710,34 +732,18 @@ function ToastExample() {
       <button
         type="button"
         onClick={() =>
-          manager.add({
-            data: { actionLabel: 'Review' },
-            title: 'Review required',
+          toast.warning('Review required', {
+            action: {
+              label: 'Review',
+              onClick: () => undefined,
+            },
             description: 'Check the deployment status.',
-            type: 'warning',
           })
         }
       >
         Show actionable notification
       </button>
-      <Toast.Portal>
-        <Toast.Viewport>
-          {manager.toasts.map((toast) => (
-            <Toast.Root key={toast.id} toast={toast}>
-              <Toast.Content>
-                <div>
-                  <Toast.Title />
-                  <Toast.Description />
-                </div>
-                {toast.data?.actionLabel ? (
-                  <Toast.Action>{toast.data.actionLabel}</Toast.Action>
-                ) : null}
-                <Toast.Close />
-              </Toast.Content>
-            </Toast.Root>
-          ))}
-        </Toast.Viewport>
-      </Toast.Portal>
+      <Toaster duration={Infinity} />
     </>
   );
 }

@@ -204,6 +204,7 @@
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "lucide-react": "catalog:",
+    "sonner": "catalog:",
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {

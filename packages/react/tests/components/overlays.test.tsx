@@ -650,21 +650,48 @@ describe('overlay and selection controls', () => {
     expect(notification).toHaveAttribute('data-tone', 'success');
     expect(notification).not.toHaveAttribute('data-appearance');
     expect(notification).toHaveClass(
+      'city-toast-surface',
       'border',
-      'border-city-success-border',
-      'bg-city-success-surface',
+      'border-current',
       'text-city-success',
     );
-    expect(notification).not.toHaveClass('text-city-foreground');
+    expect(notification).not.toHaveClass(
+      'border-city-success-border',
+      'bg-city-success-surface',
+      'text-city-foreground',
+    );
+    expect(notification.querySelector('[data-city-toast-icon]')).not.toBeNull();
     await user.hover(notification);
     await user.click(screen.getByRole('button', { name: 'Close notification' }));
 
     await waitFor(() => expect(screen.queryByText('Changes saved')).not.toBeInTheDocument());
   });
+
+  it('omits the default toast icon when an action is present', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Toast.Provider timeout={0}>
+        <ToastExample />
+      </Toast.Provider>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Show actionable notification' }));
+
+    const notification = screen.getByRole('dialog', { name: 'Review required' });
+    expect(notification.querySelector('[data-city-toast-icon]')).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'Review' })).toHaveAttribute(
+      'data-city-toast-action',
+    );
+  });
 });
 
+type ToastExampleData = {
+  actionLabel?: string;
+};
+
 function ToastExample() {
-  const manager = Toast.useToastManager();
+  const manager = Toast.useToastManager<ToastExampleData>();
 
   return (
     <>
@@ -680,6 +707,19 @@ function ToastExample() {
       >
         Show notification
       </button>
+      <button
+        type="button"
+        onClick={() =>
+          manager.add({
+            data: { actionLabel: 'Review' },
+            title: 'Review required',
+            description: 'Check the deployment status.',
+            type: 'warning',
+          })
+        }
+      >
+        Show actionable notification
+      </button>
       <Toast.Portal>
         <Toast.Viewport>
           {manager.toasts.map((toast) => (
@@ -689,6 +729,9 @@ function ToastExample() {
                   <Toast.Title />
                   <Toast.Description />
                 </div>
+                {toast.data?.actionLabel ? (
+                  <Toast.Action>{toast.data.actionLabel}</Toast.Action>
+                ) : null}
                 <Toast.Close />
               </Toast.Content>
             </Toast.Root>

@@ -472,6 +472,18 @@ describe('theme contract', () => {
     expect(stylesCss).toContain('margin-block-start: var(--city-space-6);');
   });
 
+  it('mixes toast surfaces toward the page background', () => {
+    expect(stylesCss).toMatch(
+      /\.city-toast-surface \{[\s\S]*?background-color: color-mix\(in oklch, currentColor 8%, var\(--city-color-background\)\);[\s\S]*?\n  \}/,
+    );
+    expect(stylesCss).toContain(
+      '[data-city-toast-content]:has([data-city-toast-action]) > [data-city-toast-icon]',
+    );
+    expect(stylesCss).toMatch(
+      /\[data-city-toast-content\]:has\(\[data-city-toast-action\]\) > \[data-city-toast-icon\] \{[\s\S]*?display: none;[\s\S]*?\n  \}/,
+    );
+  });
+
   it('keeps the dark interaction surface distinct from the raised surface', () => {
     const darkTheme = themeCss.match(/\[data-theme='dark'] \{([\s\S]*?)\n}/)?.[1];
     const readToken = (token: string) => darkTheme?.match(new RegExp(`${token}:\\s*([^;]+);`))?.[1];

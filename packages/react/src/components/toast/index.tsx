@@ -18,7 +18,7 @@ import type {
   ToastViewportProps as BaseToastViewportProps,
   UseToastManagerReturnValue as BaseUseToastManagerReturnValue,
 } from '@base-ui/react/toast';
-import { X } from 'lucide-react';
+import { CircleAlert, CircleCheck, Info, TriangleAlert, X } from 'lucide-react';
 import { cn } from '../../lib/cn';
 import { feedbackToneStyles } from '../../lib/feedback-tone-styles';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
@@ -27,6 +27,16 @@ import type { FeedbackTone } from '../../types';
 function classes<State>(className: StateClassName<State> | undefined, defaults: string) {
   return (state: State) => cn(defaults, resolveClassName(className, state));
 }
+
+const ToastToneContext = React.createContext<FeedbackTone>('neutral');
+
+const defaultIcons: Record<FeedbackTone, React.ComponentType<{ className?: string }>> = {
+  neutral: Info,
+  info: Info,
+  success: CircleCheck,
+  warning: TriangleAlert,
+  destructive: CircleAlert,
+};
 
 export type ToastProviderProps = BaseToastProviderProps;
 export type ToastViewportProps = BaseToastViewportProps;
@@ -89,34 +99,45 @@ export const ToastRoot = React.forwardRef<HTMLDivElement, ToastRootProps>(
     const toneStyles = feedbackToneStyles[tone];
 
     return (
-      <BaseToast.Root
-        {...props}
-        ref={ref}
-        toast={toast}
-        data-city-toast-root=""
-        data-tone={tone}
-        className={classes(
-          className,
-          cn(
-            'rounded-city-md shadow-city-popup w-full border data-[limited]:hidden',
-            toneStyles.border,
-            toneStyles.surface,
-            toneStyles.indicator,
-          ),
-        )}
-      />
+      <ToastToneContext.Provider value={tone}>
+        <BaseToast.Root
+          {...props}
+          ref={ref}
+          toast={toast}
+          data-city-toast-root=""
+          data-tone={tone}
+          className={classes(
+            className,
+            cn(
+              'city-toast-surface rounded-city-md shadow-city-popup w-full border border-current data-[limited]:hidden',
+              toneStyles.indicator,
+            ),
+          )}
+        />
+      </ToastToneContext.Provider>
     );
   },
 );
 
 export const ToastContent = React.forwardRef<HTMLDivElement, ToastContentProps>(
-  ({ className, ...props }, ref) => (
-    <BaseToast.Content
-      {...props}
-      ref={ref}
-      className={classes(className, 'flex items-start gap-3 p-3')}
-    />
-  ),
+  ({ children, className, ...props }, ref) => {
+    const tone = React.useContext(ToastToneContext);
+    const DefaultIcon = defaultIcons[tone];
+
+    return (
+      <BaseToast.Content
+        {...props}
+        ref={ref}
+        data-city-toast-content=""
+        className={classes(className, 'flex items-start gap-3 p-3')}
+      >
+        <span aria-hidden className="mt-0.5 inline-flex size-5 shrink-0" data-city-toast-icon="">
+          <DefaultIcon className="size-5" />
+        </span>
+        {children}
+      </BaseToast.Content>
+    );
+  },
 );
 
 export const ToastTitle = React.forwardRef<HTMLHeadingElement, ToastTitleProps>(
@@ -144,6 +165,7 @@ export const ToastAction = React.forwardRef<HTMLButtonElement, ToastActionProps>
     <BaseToast.Action
       {...props}
       ref={ref}
+      data-city-toast-action=""
       className={classes(
         className,
         'rounded-city-xs hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring shrink-0 px-2 py-1 text-sm font-medium underline underline-offset-2 outline-none focus-visible:ring-2',

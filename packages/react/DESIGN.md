@@ -276,7 +276,7 @@ CTA는 결과를 예측할 수 있게 쓰십시오. `확인`, `예`보다 `변�
 - `--city-palette-*`는 제품별 의미 토큰을 정의하는 재료입니다. 재사용 컴포넌트에 직접 적용하지 마십시오.
 - `--city-color-*`는 background, surface, interaction, action, feedback, effect 역할을 정의합니다. city-ds 컴포넌트와 소비 화면은 먼저 의미 토큰을 사용하십시오.
 - `tone`은 `neutral | info | success | warning | destructive` 의미이고, 이를 지원하는 컴포넌트의 `appearance`는 `solid | subtle | outline` 표현 강도입니다. 같은 tone은 컴포넌트가 달라도 같은 의미를 유지해야 합니다.
-- `solid`는 주요·위험 액션과 짧은 Badge에 사용하십시오. 넓은 Alert는 subtle 또는 outline을 사용하고, Toast는 appearance 없이 연한 tone surface와 tone 원색 border·텍스트를 사용하십시오.
+- `solid`는 주요·위험 액션과 짧은 Badge에 사용하십시오. 넓은 Alert는 subtle 또는 outline을 사용하고, Toast는 appearance 없이 background 92%와 tone 원색 8%를 혼합한 배경, tone 원색 border·텍스트를 사용하십시오.
 - white·neutral 계열을 제외한 유색 solid는 모든 테마에서 `neutral-50` 전경과 일반 텍스트 4.5:1 이상 대비를 이루는 어두운 fill만 사용하십시오. 밝은 유색 면이 필요하면 전경을 어둡게 바꾸지 말고 subtle 또는 outline을 사용하십시오.
 - primary·destructive의 hover·active, feedback의 foreground·surface·border는 공개 토큰을 사용하십시오. `/10`, `/40`, `/90`처럼 임의 투명도로 상태색을 만들지 마십시오.
 - Tooltip은 inverse, Dialog·Drawer·Popover 배경은 backdrop, Skeleton highlight는 shimmer 역할을 사용하십시오.

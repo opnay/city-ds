@@ -1406,6 +1406,10 @@
     overflow: hidden;
     border-bottom: 1px solid var(--city-color-border);
     background: var(--city-color-surface-raised);
+    align-items: center;
+  }
+
+  .city-docs-example-heading[data-has-coverage] {
     align-items: flex-start;
   }
 

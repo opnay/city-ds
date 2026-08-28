@@ -46,6 +46,9 @@ describe('all component document routes', () => {
     const featuredExample = componentReference?.querySelector(':scope > .city-docs-example');
     expect(componentReference).not.toBeNull();
     expect(featuredExample).not.toBeNull();
+    expect(featuredExample?.querySelector('.city-docs-example-heading')).not.toHaveAttribute(
+      'data-has-coverage',
+    );
     expect(
       within(featuredExample as HTMLElement).getByRole('heading', {
         level: 2,
@@ -100,6 +103,7 @@ describe('all component document routes', () => {
       expect(title.tagName).toBe('H3');
       expect(title.parentElement).toHaveClass('city-docs-example-heading-copy');
       expect(title.parentElement?.parentElement).toHaveClass('city-docs-example-title-row');
+      expect(title.closest('.city-docs-example-heading')).toHaveAttribute('data-has-coverage');
     }
     for (const description of optionDescriptions) {
       expect(description).not.toBeEmptyDOMElement();

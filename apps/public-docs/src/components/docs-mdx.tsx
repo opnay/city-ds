@@ -76,7 +76,11 @@ function ExampleFrame({ example, featuredTitle, previewLayout = 'center' }: Exam
 
   return (
     <Panel.Root aria-labelledby={titleId} className="city-docs-example" render={<section />}>
-      <Panel.Header actions={<PreviewSettingsButton />} className="city-docs-example-heading">
+      <Panel.Header
+        actions={<PreviewSettingsButton />}
+        className="city-docs-example-heading"
+        data-has-coverage={isFeatured ? undefined : ''}
+      >
         <div className="city-docs-example-heading-content">
           <div className="city-docs-example-title-row">
             <div className="city-docs-example-heading-copy">

@@ -212,6 +212,10 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(
       /\.city-docs-example-heading-copy\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-1\);/s,
     );
+    expect(styles).toMatch(/\.city-docs-example-heading\s*{[^}]*align-items:\s*center;/s);
+    expect(styles).toMatch(
+      /\.city-docs-example-heading\[data-has-coverage]\s*{[^}]*align-items:\s*flex-start;/s,
+    );
     expect(styles).toMatch(
       /\.city-docs-example-description\s*{[^}]*color:\s*var\(--city-color-muted-foreground\);[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s,
     );

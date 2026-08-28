@@ -42,7 +42,7 @@ const baseClassNames: ToastClassNames = {
     'rounded-city-xs hover:bg-city-accent active:bg-city-accent-active focus-visible:ring-city-ring order-2 shrink-0 px-2 py-1 text-sm font-medium outline-none focus-visible:ring-2',
   closeButton:
     'rounded-city-xs hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring order-3 ml-auto inline-flex size-7 shrink-0 items-center justify-center outline-none focus-visible:ring-2',
-  content: 'order-1 min-w-0 flex-1',
+  content: 'order-1 min-w-0 flex-1 pt-0.5',
   default: 'text-city-muted-foreground',
   description: 'mt-0.5 text-sm leading-5',
   error: 'text-city-destructive',

@@ -665,6 +665,7 @@ describe('overlay and selection controls', () => {
     expect(
       notification?.querySelector('[data-icon] [data-city-toast-default-icon]'),
     ).not.toBeNull();
+    expect(notification?.querySelector('[data-content]')).toHaveClass('pt-0.5');
     fireEvent.click(screen.getByRole('button', { name: 'Close notification' }));
 
     await waitFor(() => expect(screen.queryByText('Changes saved')).not.toBeInTheDocument());

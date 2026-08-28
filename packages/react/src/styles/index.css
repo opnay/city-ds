@@ -94,7 +94,7 @@
   .city-prose {
     display: grid;
     max-inline-size: 68ch;
-    gap: var(--city-space-4);
+    gap: var(--city-space-5);
     overflow-wrap: anywhere;
     word-break: keep-all;
   }
@@ -107,8 +107,8 @@
     padding-inline-start: var(--city-space-6);
   }
 
-  .city-prose > :where(.city-text-section-title, .city-text-subsection-title):not(:first-child) {
-    margin-block-start: var(--city-space-4);
+  .city-prose > :where(h1, h2, h3, h4, h5, h6):not(:first-child) {
+    margin-block-start: var(--city-space-6);
   }
 }
 

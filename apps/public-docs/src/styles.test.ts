@@ -18,6 +18,9 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(/\.city-docs-prose > ul,[^}]*list-style-type:\s*disc;/s);
     expect(styles).toMatch(/\.city-docs-prose > ol,[^}]*list-style-type:\s*decimal;/s);
     expect(styles).toMatch(
+      /\.city-docs-prose > :where\(ul, ol\),[^}]*gap:\s*var\(--city-space-1\);/s,
+    );
+    expect(styles).toMatch(
       /\.city-docs-prose > :where\(h2, h3, p\) > code,[^}]*margin-inline:\s*4px;[^}]*font-size:\s*var\(--city-font-size-sm\);[^}]*line-height:\s*1\.25;[^}]*vertical-align:\s*0\.05em;/s,
     );
   });

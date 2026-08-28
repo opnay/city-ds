@@ -498,7 +498,7 @@
   .city-docs-prose > :where(ul, ol) :where(ul, ol) {
     display: grid;
     padding-left: var(--city-space-6);
-    gap: var(--city-space-2);
+    gap: var(--city-space-1);
   }
 
   .city-docs-prose > ul,

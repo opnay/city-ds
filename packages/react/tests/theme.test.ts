@@ -30,6 +30,7 @@ const colorTokens = [
   '--city-color-foreground',
   '--city-color-surface',
   '--city-color-surface-raised',
+  '--city-color-popup',
   '--city-color-muted',
   '--city-color-muted-foreground',
   '--city-color-accent',
@@ -377,6 +378,18 @@ describe('theme contract', () => {
         expect(theme).toContain(`--city-color-${token}: var(--city-palette-${palette});`);
       }
     }
+  });
+
+  it('uses an opaque white overlay for popup surfaces in dark themes', () => {
+    const lightTheme = themeCss.match(/:root,\n\[data-theme='light'] \{([\s\S]*?)\n}/)?.[1];
+    const darkTheme = themeCss.match(/\[data-theme='dark'] \{([\s\S]*?)\n}/)?.[1];
+    const systemTheme = themeCss.match(/:root:not\(\[data-theme]\) \{([\s\S]*?)\n  }\n}/)?.[1];
+    const darkPopupPattern =
+      /--city-color-popup:\s*color-mix\(\s*in srgb,\s*var\(--city-palette-white\) 12%,\s*var\(--city-color-background\)\s*\);/;
+
+    expect(lightTheme).toContain('--city-color-popup: var(--city-palette-white);');
+    expect(darkTheme).toMatch(darkPopupPattern);
+    expect(systemTheme).toMatch(darkPopupPattern);
   });
 
   it('maps strong feedback fills and foregrounds for both themes', () => {

@@ -218,7 +218,7 @@ export const SelectItem = React.forwardRef<HTMLElement, SelectItemProps>(
       ref={ref}
       className={classes(
         className,
-        'rounded-city-xs data-[highlighted]:bg-city-muted relative flex min-h-8 w-full cursor-default items-center py-1.5 pr-2 pl-8 text-left text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45 data-[selected]:font-medium',
+        'rounded-city-xs data-[highlighted]:bg-city-accent-hover relative flex min-h-8 w-full cursor-default items-center py-1.5 pr-2 pl-8 text-left text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45 data-[selected]:font-medium',
       )}
     />
   ),

@@ -941,7 +941,9 @@ describe('Combobox', () => {
     const input = screen.getByRole('combobox', { name: 'Project' });
     await user.type(input, 'Transit');
 
-    expect(screen.getByRole('option', { name: 'Transit Map' })).toBeVisible();
+    const transitOption = screen.getByRole('option', { name: 'Transit Map' });
+    expect(transitOption).toBeVisible();
+    expect(transitOption).toHaveClass('data-[highlighted]:bg-city-accent-hover');
     expect(screen.queryByRole('option', { name: 'Civic Portal' })).not.toBeInTheDocument();
     expect(screen.getByRole('status')).not.toHaveClass('py-6');
     expect(screen.getByRole('status')).toBeEmptyDOMElement();

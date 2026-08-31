@@ -34,7 +34,7 @@ function classes<State>(className: StateClassName<State> | undefined, defaults: 
 }
 
 const itemStyles =
-  'rounded-city-xs hover:bg-city-accent hover:text-city-accent-foreground data-[highlighted]:bg-city-accent data-[highlighted]:text-city-accent-foreground relative flex w-full cursor-default items-center text-left transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45';
+  'rounded-city-xs hover:bg-city-accent-hover hover:text-city-accent-foreground data-[highlighted]:bg-city-accent-hover data-[highlighted]:text-city-accent-foreground relative flex w-full cursor-default items-center text-left transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45';
 const itemDensityStyles: Record<Density, string> = {
   comfortable: 'min-h-8 gap-2 py-1.5 pr-2 pl-2 text-sm',
   compact: 'min-h-7 gap-1.5 py-1 pr-1.5 pl-1.5 text-xs',

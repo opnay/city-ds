@@ -412,6 +412,7 @@ describe('overlay and selection controls', () => {
     const published = await screen.findByRole('option', { name: 'Published' });
     expect(trigger).toHaveClass('is-open');
     expect(icon).toHaveAttribute('data-popup-open');
+    expect(published).toHaveClass('data-[highlighted]:bg-city-accent-hover');
     expect(screen.getByRole('listbox').parentElement).toHaveClass(
       'min-w-(--anchor-width)',
       'data-[side=bottom]:-mt-px',
@@ -467,8 +468,8 @@ describe('overlay and selection controls', () => {
     expect(screen.getByRole('menuitem', { name: 'Archive' })).toHaveClass(
       'pl-2',
       'text-city-destructive',
-      'hover:bg-city-accent',
-      'data-[highlighted]:bg-city-accent',
+      'hover:bg-city-accent-hover',
+      'data-[highlighted]:bg-city-accent-hover',
       'data-[highlighted]:text-city-destructive',
     );
     expect(screen.getByRole('menuitem', { name: 'Duplicate' })).toHaveClass('pl-2');

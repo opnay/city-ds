@@ -1,8 +1,7 @@
-import { createContext, useContext, useEffect, useId, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { Settings2 } from 'lucide-react';
 import { Button } from '@opnay/city-ds-react/button';
-import { Popover } from '@opnay/city-ds-react/popover';
-import { Switch } from '@opnay/city-ds-react/switch';
+import { Menu } from '@opnay/city-ds-react/menu';
 
 const PREVIEW_GRID_STORAGE_KEY = 'city-docs-preview-grid';
 
@@ -56,41 +55,31 @@ export function PreviewSettingsProvider({ children }: PreviewSettingsProviderPro
 }
 
 export function PreviewSettingsButton() {
-  const labelId = useId();
   const { previewGrid, setPreviewGrid } = usePreviewSettings();
 
   return (
-    <Popover.Root>
-      <Popover.Trigger
+    <Menu.Root>
+      <Menu.Trigger
         render={
           <Button aria-label="미리보기 설정" iconOnly size="sm" type="button" variant="outline" />
         }
       >
         <Settings2 aria-hidden="true" size={16} />
-      </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Positioner align="end" sideOffset={8}>
-          <Popover.Popup>
-            <Popover.Title>미리보기 설정</Popover.Title>
-            <Popover.Description>
-              이 문서의 모든 컴포넌트 미리보기에 적용됩니다.
-            </Popover.Description>
-            <div className="city-docs-preview-settings-option">
-              <div>
-                <strong id={labelId}>격자 보기</strong>
-                <span>배경의 정렬 격자를 표시합니다.</span>
-              </div>
-              <Switch
-                aria-labelledby={labelId}
-                checked={previewGrid}
-                onCheckedChange={setPreviewGrid}
-                size="sm"
-              />
-            </div>
-            <Popover.Arrow />
-          </Popover.Popup>
-        </Popover.Positioner>
-      </Popover.Portal>
-    </Popover.Root>
+      </Menu.Trigger>
+      <Menu.Portal>
+        <Menu.Positioner align="end" sideOffset={8}>
+          <Menu.Popup aria-label="미리보기 설정">
+            <Menu.Group>
+              <Menu.GroupLabel>미리보기 설정</Menu.GroupLabel>
+              <Menu.CheckboxItem checked={previewGrid} onCheckedChange={setPreviewGrid}>
+                <Menu.CheckboxItemIndicator />
+                격자 보기
+              </Menu.CheckboxItem>
+            </Menu.Group>
+            <Menu.Arrow />
+          </Menu.Popup>
+        </Menu.Positioner>
+      </Menu.Portal>
+    </Menu.Root>
   );
 }

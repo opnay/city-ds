@@ -412,7 +412,9 @@ describe('overlay and selection controls', () => {
     const published = await screen.findByRole('option', { name: 'Published' });
     expect(trigger).toHaveClass('is-open');
     expect(icon).toHaveAttribute('data-popup-open');
+    expect(published).toHaveClass('data-[highlighted]:bg-city-accent-hover');
     expect(screen.getByRole('listbox').parentElement).toHaveClass(
+      'bg-city-background',
       'min-w-(--anchor-width)',
       'data-[side=bottom]:-mt-px',
       'data-[side=bottom]:rounded-t-none',
@@ -454,11 +456,13 @@ describe('overlay and selection controls', () => {
 
     expect(await screen.findByRole('menu')).toHaveAttribute('tabindex', '0');
     expect(screen.getByRole('menu')).toHaveClass(
+      'bg-city-background',
       'max-h-(--available-height)',
       'overflow-y-auto',
       'overscroll-contain',
     );
     const scrollUpIndicator = screen.getByTestId('menu-scroll-up');
+    expect(scrollUpIndicator.firstElementChild).toHaveClass('bg-city-background');
     expect(scrollUpIndicator).not.toHaveAttribute('data-visible');
     fireEvent.scroll(screen.getByRole('menu'), { target: { scrollTop: 16 } });
     expect(scrollUpIndicator).toHaveAttribute('data-visible');
@@ -467,8 +471,8 @@ describe('overlay and selection controls', () => {
     expect(screen.getByRole('menuitem', { name: 'Archive' })).toHaveClass(
       'pl-2',
       'text-city-destructive',
-      'hover:bg-city-accent',
-      'data-[highlighted]:bg-city-accent',
+      'hover:bg-city-accent-hover',
+      'data-[highlighted]:bg-city-accent-hover',
       'data-[highlighted]:text-city-destructive',
     );
     expect(screen.getByRole('menuitem', { name: 'Duplicate' })).toHaveClass('pl-2');

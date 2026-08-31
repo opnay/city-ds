@@ -34,7 +34,7 @@ function classes<State>(className: StateClassName<State> | undefined, defaults: 
 }
 
 const itemStyles =
-  'rounded-city-xs hover:bg-city-accent hover:text-city-accent-foreground data-[highlighted]:bg-city-accent data-[highlighted]:text-city-accent-foreground relative flex w-full cursor-default items-center text-left transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45';
+  'rounded-city-xs hover:bg-city-accent-hover hover:text-city-accent-foreground data-[highlighted]:bg-city-accent-hover data-[highlighted]:text-city-accent-foreground relative flex w-full cursor-default items-center text-left transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45';
 const itemDensityStyles: Record<Density, string> = {
   comfortable: 'min-h-8 gap-2 py-1.5 pr-2 pl-2 text-sm',
   compact: 'min-h-7 gap-1.5 py-1 pr-1.5 pl-1.5 text-xs',
@@ -159,7 +159,7 @@ export const MenuPopup = React.forwardRef<HTMLDivElement, MenuPopupProps>(
           className={classes(
             className,
             cn(
-              'rounded-city-md border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup max-h-(--available-height) min-w-44 overflow-y-auto overscroll-contain border outline-none',
+              'rounded-city-md border-city-border bg-city-background text-city-foreground shadow-city-popup max-h-(--available-height) min-w-44 overflow-y-auto overscroll-contain border outline-none',
               density === 'compact' ? 'p-0.5 text-xs' : 'p-1 text-sm',
             ),
           )}
@@ -363,7 +363,7 @@ export const MenuArrow = React.forwardRef<HTMLDivElement, MenuArrowProps>(
       ref={ref}
       className={classes(
         className,
-        'border-city-border bg-city-surface-raised size-2 rotate-45 border-t border-l',
+        'border-city-border bg-city-background size-2 rotate-45 border-t border-l',
       )}
     />
   ),
@@ -388,7 +388,7 @@ export const MenuScrollUpIndicator = React.forwardRef<HTMLDivElement, MenuScroll
       >
         <span
           className={cn(
-            'border-city-border bg-city-surface-raised text-city-muted-foreground absolute -inset-x-1 -top-1 flex items-center justify-center border-b shadow-sm',
+            'border-city-border bg-city-background text-city-muted-foreground absolute -inset-x-1 -top-1 flex items-center justify-center border-b shadow-sm',
             density === 'compact' ? 'h-7' : 'h-8',
           )}
         >

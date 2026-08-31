@@ -137,7 +137,6 @@
   --city-color-foreground: var(--city-palette-neutral-900);
   --city-color-surface: var(--city-palette-neutral-50);
   --city-color-surface-raised: var(--city-palette-white);
-  --city-color-popup: var(--city-palette-white);
   --city-color-muted: var(--city-palette-neutral-100);
   --city-color-muted-foreground: color-mix(
     in oklch,
@@ -195,11 +194,6 @@
     var(--city-palette-neutral-800) 90%,
     var(--city-palette-neutral-900)
   );
-  --city-color-popup: color-mix(
-    in srgb,
-    var(--city-palette-white) 12%,
-    var(--city-color-background)
-  );
   --city-color-muted: var(--city-palette-neutral-800);
   --city-color-muted-foreground: var(--city-palette-neutral-400);
   --city-color-accent: var(--city-palette-neutral-800);
@@ -251,11 +245,6 @@
       in oklch,
       var(--city-palette-neutral-800) 90%,
       var(--city-palette-neutral-900)
-    );
-    --city-color-popup: color-mix(
-      in srgb,
-      var(--city-palette-white) 12%,
-      var(--city-color-background)
     );
     --city-color-muted: var(--city-palette-neutral-800);
     --city-color-muted-foreground: var(--city-palette-neutral-400);
@@ -363,7 +352,6 @@
   --color-city-foreground: var(--city-color-foreground);
   --color-city-surface: var(--city-color-surface);
   --color-city-surface-raised: var(--city-color-surface-raised);
-  --color-city-popup: var(--city-color-popup);
   --color-city-muted: var(--city-color-muted);
   --color-city-muted-foreground: var(--city-color-muted-foreground);
   --color-city-accent: var(--city-color-accent);

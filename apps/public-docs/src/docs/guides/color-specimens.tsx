@@ -15,7 +15,6 @@ const feedbackAppearances = ['solid', 'subtle', 'outline'] as const;
 const themeTokens = [
   ['--city-color-background', 'Canvas'],
   ['--city-color-surface', 'Surface'],
-  ['--city-color-popup', 'Popup'],
   ['--city-color-muted', 'Muted'],
   ['--city-color-primary', 'Primary'],
   ['--city-color-info', 'Info'],

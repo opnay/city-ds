@@ -22,7 +22,6 @@ const semanticGroups = [
     tokens: [
       ['--city-color-surface', '페이지 안의 기능 구획'],
       ['--city-color-surface-raised', '떠 있는 표면'],
-      ['--city-color-popup', '떠 있는 팝업 표면'],
       ['--city-color-muted', '보조 배경'],
       ['--city-color-accent', '상호작용 기본 배경'],
       ['--city-color-accent-hover', '상호작용 hover'],

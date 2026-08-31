@@ -944,7 +944,7 @@ describe('Combobox', () => {
     const transitOption = screen.getByRole('option', { name: 'Transit Map' });
     expect(transitOption).toBeVisible();
     expect(transitOption).toHaveClass('data-[highlighted]:bg-city-accent-hover');
-    expect(screen.getByRole('listbox').parentElement).toHaveClass('bg-city-popup');
+    expect(screen.getByRole('listbox').parentElement).toHaveClass('bg-city-background');
     expect(screen.queryByRole('option', { name: 'Civic Portal' })).not.toBeInTheDocument();
     expect(screen.getByRole('status')).not.toHaveClass('py-6');
     expect(screen.getByRole('status')).toBeEmptyDOMElement();

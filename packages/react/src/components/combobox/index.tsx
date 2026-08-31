@@ -326,7 +326,7 @@ export const ComboboxPopup = React.forwardRef<HTMLDivElement, ComboboxPopupProps
       ref={ref}
       className={classes(
         className,
-        'rounded-city-md border-city-border bg-city-popup text-city-foreground shadow-city-popup min-w-(--anchor-width) overflow-visible border p-1 text-sm outline-none data-[side=bottom]:-mt-px data-[side=bottom]:rounded-t-none data-[side=left]:-mr-px data-[side=left]:rounded-r-none data-[side=right]:-ml-px data-[side=right]:rounded-l-none data-[side=top]:-mb-px data-[side=top]:rounded-b-none',
+        'rounded-city-md border-city-border bg-city-background text-city-foreground shadow-city-popup min-w-(--anchor-width) overflow-visible border p-1 text-sm outline-none data-[side=bottom]:-mt-px data-[side=bottom]:rounded-t-none data-[side=left]:-mr-px data-[side=left]:rounded-r-none data-[side=right]:-ml-px data-[side=right]:rounded-l-none data-[side=top]:-mb-px data-[side=top]:rounded-b-none',
       )}
     />
   ),
@@ -458,7 +458,7 @@ export const ComboboxArrow = React.forwardRef<HTMLDivElement, ComboboxArrowProps
       ref={ref}
       className={classes(
         className,
-        'border-city-border bg-city-popup size-2 rotate-45 data-[side=bottom]:-top-1 data-[side=bottom]:border-t data-[side=bottom]:border-l data-[side=left]:-right-1 data-[side=left]:border-t data-[side=left]:border-r data-[side=right]:-left-1 data-[side=right]:border-b data-[side=right]:border-l data-[side=top]:-bottom-1 data-[side=top]:border-r data-[side=top]:border-b',
+        'border-city-border bg-city-background size-2 rotate-45 data-[side=bottom]:-top-1 data-[side=bottom]:border-t data-[side=bottom]:border-l data-[side=left]:-right-1 data-[side=left]:border-t data-[side=left]:border-r data-[side=right]:-left-1 data-[side=right]:border-b data-[side=right]:border-l data-[side=top]:-bottom-1 data-[side=top]:border-r data-[side=top]:border-b',
       )}
     />
   ),

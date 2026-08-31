@@ -414,7 +414,7 @@ describe('overlay and selection controls', () => {
     expect(icon).toHaveAttribute('data-popup-open');
     expect(published).toHaveClass('data-[highlighted]:bg-city-accent-hover');
     expect(screen.getByRole('listbox').parentElement).toHaveClass(
-      'bg-city-popup',
+      'bg-city-background',
       'min-w-(--anchor-width)',
       'data-[side=bottom]:-mt-px',
       'data-[side=bottom]:rounded-t-none',
@@ -456,13 +456,13 @@ describe('overlay and selection controls', () => {
 
     expect(await screen.findByRole('menu')).toHaveAttribute('tabindex', '0');
     expect(screen.getByRole('menu')).toHaveClass(
-      'bg-city-popup',
+      'bg-city-background',
       'max-h-(--available-height)',
       'overflow-y-auto',
       'overscroll-contain',
     );
     const scrollUpIndicator = screen.getByTestId('menu-scroll-up');
-    expect(scrollUpIndicator.firstElementChild).toHaveClass('bg-city-popup');
+    expect(scrollUpIndicator.firstElementChild).toHaveClass('bg-city-background');
     expect(scrollUpIndicator).not.toHaveAttribute('data-visible');
     fireEvent.scroll(screen.getByRole('menu'), { target: { scrollTop: 16 } });
     expect(scrollUpIndicator).toHaveAttribute('data-visible');

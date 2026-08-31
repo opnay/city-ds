@@ -426,19 +426,55 @@ describe('catalog and local UI state', () => {
     );
   });
 
-  it('applies one persisted preview grid option across document pages', async () => {
+  it('applies persisted preview settings across document pages', async () => {
+    window.localStorage.setItem('city-docs-preview-density', 'compact');
     window.localStorage.setItem('city-docs-preview-grid', 'off');
+    window.localStorage.setItem('city-docs-theme', 'dark');
     const user = userEvent.setup();
-    const { router } = await renderDocs(['/components/button']);
+    const { container, router } = await renderDocs(['/components/button']);
 
     expect(screen.queryByRole('menuitemcheckbox', { name: '격자 보기' })).not.toBeInTheDocument();
     await user.click(screen.getAllByRole('button', { name: '미리보기 설정' })[0]!);
-    expect(await screen.findByRole('menu', { name: '미리보기 설정' })).toBeVisible();
+    const previewMenu = await screen.findByRole('menu', { name: '미리보기 설정' });
+    expect(previewMenu).toBeVisible();
+    const darkTheme = within(previewMenu).getByRole('menuitemradio', { name: '다크' });
+    const lightTheme = within(previewMenu).getByRole('menuitemradio', { name: '라이트' });
+    const comfortableDensity = within(previewMenu).getByRole('menuitemradio', {
+      name: 'Comfortable',
+    });
+    const compactDensity = within(previewMenu).getByRole('menuitemradio', { name: 'Compact' });
     const gridOption = await screen.findByRole('menuitemcheckbox', { name: '격자 보기' });
+    expect(darkTheme).toBeChecked();
+    expect(compactDensity).toBeChecked();
     expect(gridOption).not.toBeChecked();
-    await waitFor(() =>
-      expect(document.documentElement).toHaveAttribute('data-city-docs-preview-grid', 'off'),
-    );
+    await waitFor(() => {
+      expect(document.documentElement).toHaveAttribute('data-city-docs-preview-density', 'compact');
+      expect(document.documentElement).toHaveAttribute('data-city-docs-preview-grid', 'off');
+      expect(document.documentElement).toHaveAttribute('data-theme', 'dark');
+    });
+    for (const preview of container.querySelectorAll('.city-docs-example-preview-content')) {
+      expect(preview).toHaveAttribute('data-city-density', 'compact');
+    }
+
+    await user.click(lightTheme);
+    expect(lightTheme).toBeChecked();
+    await waitFor(() => {
+      expect(document.documentElement).toHaveAttribute('data-theme', 'light');
+      expect(window.localStorage.getItem('city-docs-theme')).toBe('light');
+    });
+
+    await user.click(comfortableDensity);
+    expect(comfortableDensity).toBeChecked();
+    await waitFor(() => {
+      expect(document.documentElement).toHaveAttribute(
+        'data-city-docs-preview-density',
+        'comfortable',
+      );
+      expect(window.localStorage.getItem('city-docs-preview-density')).toBe('comfortable');
+    });
+    for (const preview of container.querySelectorAll('.city-docs-example-preview-content')) {
+      expect(preview).toHaveAttribute('data-city-density', 'comfortable');
+    }
 
     await user.click(gridOption);
     expect(gridOption).toBeChecked();
@@ -452,7 +488,13 @@ describe('catalog and local UI state', () => {
     });
     expect(await screen.findByRole('heading', { level: 1, name: 'Calendar' })).toBeVisible();
     await user.click(screen.getAllByRole('button', { name: '미리보기 설정' })[0]!);
+    expect(await screen.findByRole('menuitemradio', { name: '라이트' })).toBeChecked();
+    expect(await screen.findByRole('menuitemradio', { name: 'Comfortable' })).toBeChecked();
     expect(await screen.findByRole('menuitemcheckbox', { name: '격자 보기' })).toBeChecked();
+    expect(document.documentElement).toHaveAttribute(
+      'data-city-docs-preview-density',
+      'comfortable',
+    );
     expect(document.documentElement).toHaveAttribute('data-city-docs-preview-grid', 'on');
   });
 

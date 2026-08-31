@@ -243,7 +243,7 @@ describe('public docs layout styles', () => {
 
   it('centers bounded preview content while explicit wide examples keep the full canvas', () => {
     expect(styles).toMatch(
-      /\.city-docs-example-preview\s*{[^}]*--city-docs-preview-content-max:\s*40rem;[^}]*display:\s*grid;[^}]*place-items:\s*center;/s,
+      /\.city-docs-example-preview\s*{[^}]*--city-docs-preview-content-max:\s*40rem;[^}]*display:\s*grid;[^}]*color:\s*var\(--city-color-foreground\);[^}]*place-items:\s*center;/s,
     );
     expect(styles).toMatch(
       /\.city-docs-example-preview-content\s*{[^}]*width:\s*min\(100%, var\(--city-docs-preview-content-max\)\);[^}]*justify-items:\s*center;/s,

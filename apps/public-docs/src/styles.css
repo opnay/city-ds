@@ -1566,6 +1566,7 @@
       linear-gradient(90deg, var(--city-docs-preview-grid-color) 1px, transparent 1px),
       var(--city-color-background);
     background-size: 1.5rem 1.5rem;
+    color: var(--city-color-foreground);
     place-items: center;
   }
 

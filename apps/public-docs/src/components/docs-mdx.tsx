@@ -68,7 +68,7 @@ function useComponentDocTitle() {
 }
 
 function ExampleFrame({ example, featuredTitle, previewLayout = 'center' }: ExampleFrameProps) {
-  const { previewDensity } = usePreviewSettings();
+  const { previewDensity, resolvedPreviewTheme } = usePreviewSettings();
   const isFeatured = featuredTitle !== undefined;
   const title = featuredTitle ?? example.title;
   const titleId = `example-${example.id}`;
@@ -108,7 +108,7 @@ function ExampleFrame({ example, featuredTitle, previewLayout = 'center' }: Exam
         </div>
       </Panel.Header>
       <Panel.Body className="city-docs-example-body">
-        <div className="city-docs-example-preview">
+        <div className="city-docs-example-preview" data-theme={resolvedPreviewTheme}>
           <DensityProvider
             className="city-docs-example-preview-content"
             data-city-docs-layout={previewLayout}

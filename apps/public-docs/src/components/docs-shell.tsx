@@ -23,8 +23,10 @@ import {
 } from '../docs/doc-catalog';
 import type { ComponentDocEntry, DocumentSearchResult, StaticDocEntry } from '../docs/types';
 import { GuidePage } from './doc-page';
-import { usePreviewSettings, type ResolvedTheme } from './preview-settings';
 
+const THEME_STORAGE_KEY = 'city-docs-theme';
+const THEMES: readonly CityTheme[] = ['system', 'light', 'dark'];
+type ResolvedTheme = Exclude<CityTheme, 'system'>;
 type NavigationMode = 'guides' | 'components';
 
 const NAVIGATION_MODE_ITEMS: Record<NavigationMode, string> = {
@@ -37,6 +39,38 @@ const STATIC_SECTION_LABELS = {
   guides: '가이드',
   start: '홈',
 };
+
+function isCityTheme(value: string | null): value is CityTheme {
+  return THEMES.some((theme) => theme === value);
+}
+
+function readStoredTheme(): CityTheme {
+  try {
+    const value = window.localStorage.getItem(THEME_STORAGE_KEY);
+    return isCityTheme(value) ? value : 'system';
+  } catch {
+    return 'system';
+  }
+}
+
+function readSystemTheme(): ResolvedTheme {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function useSystemTheme(): ResolvedTheme {
+  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(readSystemTheme);
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const updateSystemTheme = () => setSystemTheme(media.matches ? 'dark' : 'light');
+
+    updateSystemTheme();
+    media.addEventListener('change', updateSystemTheme);
+    return () => media.removeEventListener('change', updateSystemTheme);
+  }, []);
+
+  return systemTheme;
+}
 
 function resolvePage(pathname: string) {
   const componentMatch = /^\/components\/([^/]+)$/.exec(pathname);
@@ -438,11 +472,24 @@ export function DocsShell() {
     resolveNavigationMode(pathname),
   );
   const [query, setQuery] = useState('');
-  const { resolvedTheme, setTheme } = usePreviewSettings();
+  const [theme, setTheme] = useState<CityTheme>(readStoredTheme);
+  const systemTheme = useSystemTheme();
+  const resolvedTheme = theme === 'system' ? systemTheme : theme;
 
   useEffect(() => {
     document.title = pathname === '/' ? 'city-ds · React 디자인 시스템' : `${page.title} · city-ds`;
   }, [page.title, pathname]);
+
+  useEffect(() => {
+    if (theme === 'system') delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = theme;
+
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {
+      // The theme still applies for this session when storage is unavailable.
+    }
+  }, [theme]);
 
   useEffect(() => {
     if (previousPathRef.current === pathname) return;

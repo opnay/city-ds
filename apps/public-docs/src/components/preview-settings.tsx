@@ -6,20 +6,20 @@ import { Menu } from '@opnay/city-ds-react/menu';
 
 const PREVIEW_GRID_STORAGE_KEY = 'city-docs-preview-grid';
 const PREVIEW_DENSITY_STORAGE_KEY = 'city-docs-preview-density';
-const THEME_STORAGE_KEY = 'city-docs-theme';
+const PREVIEW_THEME_STORAGE_KEY = 'city-docs-preview-theme';
 const THEMES: readonly CityTheme[] = ['system', 'light', 'dark'];
 const PREVIEW_DENSITIES: readonly Density[] = ['comfortable', 'compact'];
 
-export type ResolvedTheme = Exclude<CityTheme, 'system'>;
+type ResolvedTheme = Exclude<CityTheme, 'system'>;
 
 interface PreviewSettingsContextValue {
   previewDensity: Density;
   previewGrid: boolean;
-  resolvedTheme: ResolvedTheme;
+  previewTheme: CityTheme;
+  resolvedPreviewTheme: ResolvedTheme;
   setPreviewDensity: (density: Density) => void;
   setPreviewGrid: (checked: boolean) => void;
-  setTheme: (theme: CityTheme) => void;
-  theme: CityTheme;
+  setPreviewTheme: (theme: CityTheme) => void;
 }
 
 interface PreviewSettingsProviderProps {
@@ -36,9 +36,9 @@ function isPreviewDensity(value: string | null): value is Density {
   return PREVIEW_DENSITIES.some((density) => density === value);
 }
 
-function readStoredTheme(): CityTheme {
+function readStoredPreviewTheme(): CityTheme {
   try {
-    const value = window.localStorage.getItem(THEME_STORAGE_KEY);
+    const value = window.localStorage.getItem(PREVIEW_THEME_STORAGE_KEY);
     return isCityTheme(value) ? value : 'system';
   } catch {
     return 'system';
@@ -94,24 +94,19 @@ export function usePreviewSettings() {
 export function PreviewSettingsProvider({ children }: PreviewSettingsProviderProps) {
   const [previewDensity, setPreviewDensity] = useState<Density>(readStoredPreviewDensity);
   const [previewGrid, setPreviewGrid] = useState(readStoredPreviewGrid);
-  const [theme, setTheme] = useState<CityTheme>(readStoredTheme);
+  const [previewTheme, setPreviewTheme] = useState<CityTheme>(readStoredPreviewTheme);
   const systemTheme = useSystemTheme();
-  const resolvedTheme = theme === 'system' ? systemTheme : theme;
+  const resolvedPreviewTheme = previewTheme === 'system' ? systemTheme : previewTheme;
 
   useEffect(() => {
-    if (theme === 'system') delete document.documentElement.dataset.theme;
-    else document.documentElement.dataset.theme = theme;
-
     try {
-      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+      window.localStorage.setItem(PREVIEW_THEME_STORAGE_KEY, previewTheme);
     } catch {
-      // The theme still applies for this session when storage is unavailable.
+      // The preview theme still applies for this session when storage is unavailable.
     }
-  }, [theme]);
+  }, [previewTheme]);
 
   useEffect(() => {
-    document.documentElement.dataset.cityDocsPreviewDensity = previewDensity;
-
     try {
       window.localStorage.setItem(PREVIEW_DENSITY_STORAGE_KEY, previewDensity);
     } catch {
@@ -134,11 +129,11 @@ export function PreviewSettingsProvider({ children }: PreviewSettingsProviderPro
       value={{
         previewDensity,
         previewGrid,
-        resolvedTheme,
+        previewTheme,
+        resolvedPreviewTheme,
         setPreviewDensity,
         setPreviewGrid,
-        setTheme,
-        theme,
+        setPreviewTheme,
       }}
     >
       {children}
@@ -147,8 +142,14 @@ export function PreviewSettingsProvider({ children }: PreviewSettingsProviderPro
 }
 
 export function PreviewSettingsButton() {
-  const { previewDensity, previewGrid, setPreviewDensity, setPreviewGrid, setTheme, theme } =
-    usePreviewSettings();
+  const {
+    previewDensity,
+    previewGrid,
+    previewTheme,
+    setPreviewDensity,
+    setPreviewGrid,
+    setPreviewTheme,
+  } = usePreviewSettings();
 
   return (
     <Menu.Root>
@@ -166,9 +167,9 @@ export function PreviewSettingsButton() {
               <Menu.GroupLabel>테마</Menu.GroupLabel>
               <Menu.RadioGroup
                 onValueChange={(value) => {
-                  if (isCityTheme(value)) setTheme(value);
+                  if (isCityTheme(value)) setPreviewTheme(value);
                 }}
-                value={theme}
+                value={previewTheme}
               >
                 <Menu.RadioItem value="system">
                   <Menu.RadioItemIndicator />

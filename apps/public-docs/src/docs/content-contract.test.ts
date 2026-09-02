@@ -113,6 +113,24 @@ describe('component document content', () => {
     expect(modules.every((module) => typeof module.default === 'function')).toBe(true);
   });
 
+  it('separates Combobox single and multiple previews without internal labels', () => {
+    const pageData = pageDataModules['./components/combobox/page-data.tsx']?.pageData;
+    const selectionExamples = pageData?.examples.filter((example) =>
+      ['combobox-single', 'combobox-multiple'].includes(example.id),
+    );
+
+    expect(selectionExamples?.map((example) => example.id)).toEqual([
+      'combobox-single',
+      'combobox-multiple',
+    ]);
+    expect(
+      selectionExamples?.every(
+        (example) =>
+          typeof example.source === 'string' && !example.source.includes('city-docs-example-label'),
+      ),
+    ).toBe(true);
+  });
+
   it.each(Object.entries(REQUIRED_COMBINATION_AXES))(
     '%s covers every required option combination',
     (slug, axisNames) => {

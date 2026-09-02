@@ -62,11 +62,11 @@ const popupSideClasses: Record<DrawerSide, string> = {
 };
 
 const popupMotionClasses: Record<DrawerSide, string> = {
-  left: '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)] data-[starting-style]:[transform:translateX(calc(-50%-2px))_scale(0.97)] data-[ending-style]:[transform:translateX(calc(-50%-2px))_scale(0.97)]',
+  left: '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)] data-[starting-style]:[transform:translateX(-4%)_scale(0.97)] data-[ending-style]:[transform:translateX(-4%)_scale(0.97)]',
   right:
-    '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)] data-[starting-style]:[transform:translateX(calc(50%+2px))_scale(0.97)] data-[ending-style]:[transform:translateX(calc(50%+2px))_scale(0.97)]',
+    '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)] data-[starting-style]:[transform:translateX(4%)_scale(0.97)] data-[ending-style]:[transform:translateX(4%)_scale(0.97)]',
   bottom:
-    '[transform:translateY(var(--drawer-swipe-movement-y))_scale(1)] data-[starting-style]:[transform:translateY(calc(50%+2px))_scale(0.97)] data-[ending-style]:[transform:translateY(calc(50%+2px))_scale(0.97)]',
+    '[transform:translateY(var(--drawer-swipe-movement-y))_scale(1)] data-[starting-style]:[transform:translateY(4%)_scale(0.97)] data-[ending-style]:[transform:translateY(4%)_scale(0.97)]',
 };
 
 const popupSizeClasses: Record<DrawerSide, Record<DrawerSize, string>> = {

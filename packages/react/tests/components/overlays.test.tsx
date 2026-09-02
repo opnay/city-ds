@@ -177,8 +177,8 @@ describe('overlay and selection controls', () => {
       'w-[min(32rem,calc(100vw-2rem))]',
       'origin-right',
       '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)]',
-      'data-[starting-style]:[transform:translateX(calc(50%+2px))_scale(0.97)]',
-      'data-[ending-style]:[transform:translateX(calc(50%+2px))_scale(0.97)]',
+      'data-[starting-style]:[transform:translateX(4%)_scale(0.97)]',
+      'data-[ending-style]:[transform:translateX(4%)_scale(0.97)]',
       'duration-(--city-duration-normal)',
       'ease-city-standard',
       'data-[swiping]:duration-0',
@@ -223,14 +223,14 @@ describe('overlay and selection controls', () => {
     expect(await screen.findByTestId('left-drawer')).toHaveClass(
       'origin-left',
       '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)]',
-      'data-[starting-style]:[transform:translateX(calc(-50%-2px))_scale(0.97)]',
-      'data-[ending-style]:[transform:translateX(calc(-50%-2px))_scale(0.97)]',
+      'data-[starting-style]:[transform:translateX(-4%)_scale(0.97)]',
+      'data-[ending-style]:[transform:translateX(-4%)_scale(0.97)]',
     );
     expect(screen.getByTestId('bottom-drawer')).toHaveClass(
       'origin-bottom',
       '[transform:translateY(var(--drawer-swipe-movement-y))_scale(1)]',
-      'data-[starting-style]:[transform:translateY(calc(50%+2px))_scale(0.97)]',
-      'data-[ending-style]:[transform:translateY(calc(50%+2px))_scale(0.97)]',
+      'data-[starting-style]:[transform:translateY(4%)_scale(0.97)]',
+      'data-[ending-style]:[transform:translateY(4%)_scale(0.97)]',
     );
   });
 

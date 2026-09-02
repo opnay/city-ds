@@ -28,8 +28,8 @@ describe('documented component interactions', () => {
 
   it('updates a controlled form example and exposes its local result', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/search-field']);
-    const featuredExample = screen.getByRole('region', { name: 'SearchField' });
+    await renderDocs(['/components/search-input']);
+    const featuredExample = screen.getByRole('region', { name: 'SearchInput' });
     const search = within(featuredExample).getByRole('searchbox', {
       name: '문서 검색',
     });
@@ -40,9 +40,7 @@ describe('documented component interactions', () => {
     await user.type(search, 'Button');
 
     expect(search).toHaveValue('Button');
-    const form = search.closest('form');
-    if (!form) throw new Error('문서 검색 form을 찾을 수 없습니다.');
-    expect(within(form).getByText('Button')).toBeVisible();
+    expect(within(featuredExample).getByText('Button')).toBeVisible();
   });
 
   it('adds transient feedback through the documented Sonner API', async () => {

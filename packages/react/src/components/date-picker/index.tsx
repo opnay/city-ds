@@ -5,22 +5,14 @@ import { useRender } from '@base-ui/react/use-render';
 import { CalendarDays } from 'lucide-react';
 
 import { Calendar, type CalendarProps } from '../calendar';
-import {
-  DateFieldDescription,
-  type DateFieldDescriptionProps,
-  DateFieldError,
-  type DateFieldErrorProps,
-  DateFieldInput,
-  type DateFieldInputProps,
-  DateFieldLabel,
-  type DateFieldLabelProps,
-} from '../date-field';
+import { DateInputInput, type DateInputInputProps } from '../date-input';
 import {
   DateControlProvider,
+  DateControlRoot,
   type DateControlProps,
+  type DateControlRootProps,
   useDateControl,
-} from '../date-field/date-control';
-import { Field, type FieldRootProps } from '../field';
+} from '../../lib/date-control';
 import {
   Popover,
   type PopoverPopupProps,
@@ -58,7 +50,7 @@ function useDatePickerContext(component: string): DatePickerContextValue {
 }
 
 export interface DatePickerRootProps
-  extends Omit<FieldRootProps, keyof DateControlProps>, DateControlProps {
+  extends Omit<DateControlRootProps, keyof DateControlProps>, DateControlProps {
   defaultOpen?: boolean | undefined;
   onOpenChange?: PopoverRootProps['onOpenChange'];
   open?: boolean | undefined;
@@ -118,7 +110,7 @@ export const DatePickerRoot = React.forwardRef<HTMLDivElement, DatePickerRootPro
 
 DatePickerRoot.displayName = 'DatePicker.Root';
 
-interface DatePickerRootContentProps extends FieldRootProps {
+interface DatePickerRootContentProps extends DateControlRootProps {
   defaultOpen?: boolean | undefined;
   onOpenChange?: PopoverRootProps['onOpenChange'];
   open?: boolean | undefined;
@@ -129,7 +121,6 @@ const DatePickerRootContent = React.forwardRef<HTMLDivElement, DatePickerRootCon
     { children, defaultOpen = false, onOpenChange, open: openProp, ...props },
     ref,
   ) {
-    const dateControl = useDateControl('DatePicker.Root');
     const controlled = openProp !== undefined;
     const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
     const open = controlled ? openProp : uncontrolledOpen;
@@ -142,12 +133,7 @@ const DatePickerRootContent = React.forwardRef<HTMLDivElement, DatePickerRootCon
 
     return (
       <DatePickerContext.Provider value={context}>
-        <Field.Root
-          {...props}
-          ref={ref}
-          disabled={dateControl.disabled}
-          invalid={dateControl.invalid}
-        >
+        <DateControlRoot {...props} ref={ref}>
           <Popover.Root
             actionsRef={actionsRef}
             open={open}
@@ -158,26 +144,17 @@ const DatePickerRootContent = React.forwardRef<HTMLDivElement, DatePickerRootCon
           >
             {children}
           </Popover.Root>
-        </Field.Root>
+        </DateControlRoot>
       </DatePickerContext.Provider>
     );
   },
 );
 
-export const DatePickerLabel = DateFieldLabel;
-export type DatePickerLabelProps = DateFieldLabelProps;
-
-export const DatePickerDescription = DateFieldDescription;
-export type DatePickerDescriptionProps = DateFieldDescriptionProps;
-
-export const DatePickerError = DateFieldError;
-export type DatePickerErrorProps = DateFieldErrorProps;
-
-export type DatePickerInputProps = DateFieldInputProps;
+export type DatePickerInputProps = DateInputInputProps;
 
 export const DatePickerInput = React.forwardRef<HTMLElement, DatePickerInputProps>(
   function DatePickerInput(props, ref) {
-    return <DateFieldInput {...props} ref={ref} />;
+    return <DateInputInput {...props} ref={ref} />;
   },
 );
 
@@ -376,12 +353,9 @@ export function DatePickerCalendar({
 
 export const DatePicker = {
   Root: DatePickerRoot,
-  Label: DatePickerLabel,
   Group: DatePickerGroup,
   Input: DatePickerInput,
   Trigger: DatePickerTrigger,
-  Description: DatePickerDescription,
-  Error: DatePickerError,
   Portal: DatePickerPortal,
   Positioner: DatePickerPositioner,
   Popup: DatePickerPopup,

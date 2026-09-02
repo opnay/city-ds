@@ -3,8 +3,9 @@ import { ArrowRight, PackageSearch } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { Button } from '@opnay/city-ds-react/button';
 import { EmptyState } from '@opnay/city-ds-react/empty-state';
+import { Field } from '@opnay/city-ds-react/field';
 import { FilterBar } from '@opnay/city-ds-react/filter-bar';
-import { SearchField } from '@opnay/city-ds-react/search-field';
+import { SearchInput } from '@opnay/city-ds-react/search-input';
 import { Select } from '@opnay/city-ds-react/select';
 
 import { CATEGORY_LABELS, COMPONENT_CATEGORIES, filterComponentDocs } from '../docs/doc-catalog';
@@ -43,18 +44,15 @@ export function ComponentCatalog() {
         className="city-docs-catalog-filter"
       >
         <div className="city-docs-catalog-search">
-          <SearchField.Root
-            className="city-docs-catalog-search-field"
-            onValueChange={setQuery}
-            size="sm"
-            value={query}
-          >
-            <SearchField.Label className="city-docs-sr-only">컴포넌트 검색</SearchField.Label>
-            <SearchField.Group>
-              <SearchField.Input placeholder="Button, 버튼, 폼…" />
-              <SearchField.Clear aria-label="검색어 지우기" />
-            </SearchField.Group>
-          </SearchField.Root>
+          <Field.Root className="city-docs-catalog-search-input">
+            <Field.Label className="city-docs-sr-only">컴포넌트 검색</Field.Label>
+            <SearchInput.Root onValueChange={setQuery} size="sm" value={query}>
+              <SearchInput.Group>
+                <SearchInput.Input placeholder="Button, 버튼, 폼…" />
+                <SearchInput.Clear aria-label="검색어 지우기" />
+              </SearchInput.Group>
+            </SearchInput.Root>
+          </Field.Root>
         </div>
         <div className="city-docs-catalog-category">
           <Select.Root

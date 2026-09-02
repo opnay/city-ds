@@ -5,9 +5,10 @@ import {
   Button,
   DensityProvider,
   Drawer,
+  Field,
   FilterBar,
   Pagination,
-  SearchField,
+  SearchInput,
   Select,
   Toaster,
   toast,
@@ -285,29 +286,30 @@ function OperationsPage() {
               appearance="band"
               aria-label="현장 작업 필터"
             >
-              <SearchField.Root
-                className="city-ops-search-field"
-                onSubmit={(value) => {
-                  setQuery(value);
-                  setPage(1);
-                }}
-                onValueChange={(value) => {
-                  setQueryDraft(value);
-                  if (value.length === 0) {
-                    setQuery('');
+              <Field.Root className="city-ops-search-input">
+                <Field.Label className="city-sr-only">작업 검색</Field.Label>
+                <SearchInput.Root
+                  onSubmit={(value) => {
+                    setQuery(value);
                     setPage(1);
-                  }
-                }}
-                size="sm"
-                value={queryDraft}
-              >
-                <SearchField.Label className="city-sr-only">작업 검색</SearchField.Label>
-                <SearchField.Group>
-                  <SearchField.Input placeholder="작업 번호, 위치, 제목 검색" />
-                  <SearchField.Clear aria-label="검색어 지우기" />
-                  <SearchField.Submit aria-label="작업 검색 실행" />
-                </SearchField.Group>
-              </SearchField.Root>
+                  }}
+                  onValueChange={(value) => {
+                    setQueryDraft(value);
+                    if (value.length === 0) {
+                      setQuery('');
+                      setPage(1);
+                    }
+                  }}
+                  size="sm"
+                  value={queryDraft}
+                >
+                  <SearchInput.Group>
+                    <SearchInput.Input placeholder="작업 번호, 위치, 제목 검색" />
+                    <SearchInput.Clear aria-label="검색어 지우기" />
+                    <SearchInput.Submit aria-label="작업 검색 실행" />
+                  </SearchInput.Group>
+                </SearchInput.Root>
+              </Field.Root>
 
               <Select.Root
                 items={DISTRICT_ITEMS}

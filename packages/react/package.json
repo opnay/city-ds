@@ -70,9 +70,9 @@
       "types": "./dist/components/dialog/index.d.ts",
       "import": "./dist/components/dialog/index.js"
     },
-    "./date-field": {
-      "types": "./dist/components/date-field/index.d.ts",
-      "import": "./dist/components/date-field/index.js"
+    "./date-input": {
+      "types": "./dist/components/date-input/index.d.ts",
+      "import": "./dist/components/date-input/index.js"
     },
     "./date-picker": {
       "types": "./dist/components/date-picker/index.d.ts",
@@ -169,13 +169,13 @@
       "types": "./dist/components/popover/index.d.ts",
       "import": "./dist/components/popover/index.js"
     },
-    "./number-field": {
-      "types": "./dist/components/number-field/index.d.ts",
-      "import": "./dist/components/number-field/index.js"
+    "./number-input": {
+      "types": "./dist/components/number-input/index.d.ts",
+      "import": "./dist/components/number-input/index.js"
     },
-    "./search-field": {
-      "types": "./dist/components/search-field/index.d.ts",
-      "import": "./dist/components/search-field/index.js"
+    "./search-input": {
+      "types": "./dist/components/search-input/index.d.ts",
+      "import": "./dist/components/search-input/index.js"
     },
     "./toolbar": {
       "types": "./dist/components/toolbar/index.d.ts",

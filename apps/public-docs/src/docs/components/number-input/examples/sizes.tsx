@@ -1,9 +1,9 @@
 import { Field } from '@opnay/city-ds-react/field';
-import { NumberField } from '@opnay/city-ds-react/number-field';
+import { NumberInput } from '@opnay/city-ds-react/number-input';
 
 const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
-export default function NumberFieldSizesExample() {
+export default function NumberInputSizesExample() {
   return (
     <div className="city-docs-example-stack">
       {sizes.map((size) => (
@@ -11,13 +11,13 @@ export default function NumberFieldSizesExample() {
           <span className="city-docs-example-label">{size}</span>
           <Field.Root>
             <Field.Label>인원</Field.Label>
-            <NumberField.Root defaultValue={2} size={size}>
-              <NumberField.Group>
-                <NumberField.Input />
-                <NumberField.Decrement aria-label="인원 줄이기" />
-                <NumberField.Increment aria-label="인원 늘리기" />
-              </NumberField.Group>
-            </NumberField.Root>
+            <NumberInput.Root defaultValue={2} size={size}>
+              <NumberInput.Group>
+                <NumberInput.Input />
+                <NumberInput.Decrement aria-label="인원 줄이기" />
+                <NumberInput.Increment aria-label="인원 늘리기" />
+              </NumberInput.Group>
+            </NumberInput.Root>
           </Field.Root>
         </div>
       ))}

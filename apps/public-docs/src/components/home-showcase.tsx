@@ -24,7 +24,7 @@ import { Checkbox } from '@opnay/city-ds-react/checkbox';
 import { Field } from '@opnay/city-ds-react/field';
 import { FileUpload } from '@opnay/city-ds-react/file-upload';
 import { Input, InputGroup } from '@opnay/city-ds-react/input';
-import { SearchField } from '@opnay/city-ds-react/search-field';
+import { SearchInput } from '@opnay/city-ds-react/search-input';
 import { Select } from '@opnay/city-ds-react/select';
 import { Switch } from '@opnay/city-ds-react/switch';
 import { Table, type TableSortDirection } from '@opnay/city-ds-react/table';
@@ -566,16 +566,18 @@ function QuickCommandCard() {
       icon={Command}
       title="Quick command"
     >
-      <SearchField.Root onValueChange={setQuery} size="sm" value={query}>
-        <SearchField.Label className="city-docs-sr-only">Search commands</SearchField.Label>
-        <SearchField.Group>
-          <InputGroup.Addon>
-            <Search aria-hidden="true" size={15} />
-          </InputGroup.Addon>
-          <SearchField.Input placeholder="Type a command or search…" />
-          <SearchField.Clear aria-label="Clear command search" />
-        </SearchField.Group>
-      </SearchField.Root>
+      <Field.Root>
+        <Field.Label className="city-docs-sr-only">Search commands</Field.Label>
+        <SearchInput.Root onValueChange={setQuery} size="sm" value={query}>
+          <SearchInput.Group>
+            <InputGroup.Addon>
+              <Search aria-hidden="true" size={15} />
+            </InputGroup.Addon>
+            <SearchInput.Input placeholder="Type a command or search…" />
+            <SearchInput.Clear aria-label="Clear command search" />
+          </SearchInput.Group>
+        </SearchInput.Root>
+      </Field.Root>
       <ul className="city-showcase-command-list" aria-live="polite">
         {results.length > 0 ? (
           results.map((command) => (

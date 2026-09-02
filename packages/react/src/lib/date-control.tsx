@@ -1,14 +1,17 @@
 'use client';
 
 import * as React from 'react';
+import { useRender } from '@base-ui/react/use-render';
 
 import {
   compareLocalDates,
   formatLocalDate,
   normalizeLocalDate,
   parseLocalDate,
-} from '../../lib/local-date';
-import type { ControlSize } from '../../types';
+} from './local-date';
+import { cn } from './cn';
+import { resolveClassName, type StateClassName } from './resolve-class-name';
+import type { ControlSize } from '../types';
 
 export interface DateControlProps {
   defaultValue?: Date | null | undefined;
@@ -46,6 +49,21 @@ export interface DateControlContextValue {
 
 const DateControlContext = React.createContext<DateControlContextValue | null>(null);
 
+export interface DateControlRootState extends Record<string, unknown> {
+  disabled: boolean;
+  invalid: boolean;
+  readOnly: boolean;
+  required: boolean;
+  size: ControlSize;
+}
+
+export interface DateControlRootProps extends Omit<
+  useRender.ComponentProps<'div', DateControlRootState>,
+  'className'
+> {
+  className?: StateClassName<DateControlRootState>;
+}
+
 export function useDateControl(component: string): DateControlContextValue {
   const context = React.useContext(DateControlContext);
   if (!context) {
@@ -53,6 +71,38 @@ export function useDateControl(component: string): DateControlContextValue {
   }
   return context;
 }
+
+export const DateControlRoot = React.forwardRef<HTMLDivElement, DateControlRootProps>(
+  function DateControlRoot({ className, render, ...props }, ref) {
+    const context = useDateControl('DateControl.Root');
+    const state: DateControlRootState = {
+      disabled: context.disabled,
+      invalid: context.invalid,
+      readOnly: context.readOnly,
+      required: context.required,
+      size: context.size,
+    };
+
+    return useRender({
+      defaultTagName: 'div',
+      ref,
+      render,
+      state,
+      props: {
+        ...props,
+        'data-city-date-control': '',
+        'data-city-size': state.size,
+        'data-disabled': state.disabled ? '' : undefined,
+        'data-invalid': state.invalid ? '' : undefined,
+        'data-readonly': state.readOnly ? '' : undefined,
+        'data-required': state.required ? '' : undefined,
+        className: cn('grid gap-1.5', resolveClassName(className, state)),
+      },
+    });
+  },
+);
+
+DateControlRoot.displayName = 'DateControl.Root';
 
 function getValidationMessage({
   disabled,

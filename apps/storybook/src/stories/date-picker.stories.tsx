@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
 
-import { DatePicker } from '@opnay/city-ds-react';
+import { DatePicker, Field } from '@opnay/city-ds-react';
 
 const meta = {
   title: 'Forms/DatePicker',
@@ -13,7 +13,7 @@ const meta = {
     docs: {
       description: {
         component:
-          '`DatePicker`는 DateField와 Calendar를 Outline Frame과 팝오버로 조합합니다. 날짜를 선택하면 값을 반영하고 팝오버를 닫으며, 초점은 달력 트리거로 돌아갑니다. 값은 `YYYY-MM-DD`로 저장하고, 날짜가 달라질 수 있는 `toISOString()` 변환은 피하십시오.',
+          '`DatePicker`는 DateInput과 Calendar를 Outline Frame과 팝오버로 조합합니다. 날짜를 선택하면 값을 반영하고 팝오버를 닫으며, 초점은 달력 트리거로 돌아갑니다. 값은 `YYYY-MM-DD`로 저장하고, 날짜가 달라질 수 있는 `toISOString()` 변환은 피하십시오.',
       },
     },
   },
@@ -39,22 +39,24 @@ function Picker({
   label: string;
 }) {
   return (
-    <DatePicker.Root {...props} size={size}>
-      <DatePicker.Label>{label}</DatePicker.Label>
-      <DatePicker.Group>
-        <DatePicker.Input />
-        <DatePicker.Trigger />
-      </DatePicker.Group>
-      <DatePicker.Description>Type YYYY-MM-DD or choose from the calendar.</DatePicker.Description>
-      <DatePicker.Error>Enter an available date.</DatePicker.Error>
-      <DatePicker.Portal>
-        <DatePicker.Positioner>
-          <DatePicker.Popup>
-            <DatePicker.Calendar aria-label={`${label} calendar`} today={referenceDate} />
-          </DatePicker.Popup>
-        </DatePicker.Positioner>
-      </DatePicker.Portal>
-    </DatePicker.Root>
+    <Field.Root disabled={props.disabled} invalid={props.invalid}>
+      <Field.Label>{label}</Field.Label>
+      <DatePicker.Root {...props} size={size}>
+        <DatePicker.Group>
+          <DatePicker.Input />
+          <DatePicker.Trigger />
+        </DatePicker.Group>
+        <DatePicker.Portal>
+          <DatePicker.Positioner>
+            <DatePicker.Popup>
+              <DatePicker.Calendar aria-label={`${label} calendar`} today={referenceDate} />
+            </DatePicker.Popup>
+          </DatePicker.Positioner>
+        </DatePicker.Portal>
+      </DatePicker.Root>
+      <Field.Description>Type YYYY-MM-DD or choose from the calendar.</Field.Description>
+      <Field.Error match={props.invalid}>Enter an available date.</Field.Error>
+    </Field.Root>
   );
 }
 

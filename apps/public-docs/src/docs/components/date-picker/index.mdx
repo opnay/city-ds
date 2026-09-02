@@ -4,9 +4,10 @@ import { pageData } from './page-data';
 
 ## Field 조합
 
-DatePicker는 날짜 입력의 Field 문맥을 내장합니다. 외부 `Field.Root`로 감싸지 말고
-`DatePicker.Label`, `DatePicker.Description`, `DatePicker.Error`를 사용하십시오.
+DatePicker는 날짜 입력과 달력 선택 동작을 조합한 제어입니다. 레이블, 설명, 오류가 필요하면
+외부 `Field.Root`로 감싸고 `Field.Label`, `Field.Description`, `Field.Error`를 함께
+배치하십시오.
 
 ## 접근성
 
-Trigger의 기본 이름은 달력을 연다는 뜻입니다. Calendar에는 날짜 필드와 구분되는 이름을 제공하십시오.
+Trigger의 기본 이름은 달력을 연다는 뜻입니다. Calendar에는 날짜 입력과 구분되는 이름을 제공하십시오.

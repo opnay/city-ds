@@ -35,7 +35,7 @@ export const pageData = {
     {
       Component: DatePickerSizesExample,
       coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
-      description: '입력 세그먼트와 달력 트리거의 제어 높이를 함께 맞춥니다.',
+      description: '날짜 입력과 달력 트리거의 제어 높이를 함께 맞춥니다.',
       id: 'date-picker-sizes',
       filename: 'sizes.tsx',
       source: sizesSource,

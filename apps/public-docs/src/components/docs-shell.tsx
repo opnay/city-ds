@@ -6,7 +6,8 @@ import { Alert } from '@opnay/city-ds-react/alert';
 import { Breadcrumbs } from '@opnay/city-ds-react/breadcrumbs';
 import { Button } from '@opnay/city-ds-react/button';
 import { Drawer } from '@opnay/city-ds-react/drawer';
-import { SearchField } from '@opnay/city-ds-react/search-field';
+import { Field } from '@opnay/city-ds-react/field';
+import { SearchInput } from '@opnay/city-ds-react/search-input';
 import { Select } from '@opnay/city-ds-react/select';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
 import { ToggleGroup } from '@opnay/city-ds-react/toggle-group';
@@ -219,18 +220,15 @@ function DocsNavigation({ mode, onModeChange, onNavigate, query, setQuery }: Doc
   return (
     <nav aria-label="문서 탐색" className="city-docs-navigation">
       <div className="city-docs-nav-controls">
-        <SearchField.Root
-          className="city-docs-nav-search"
-          onValueChange={setQuery}
-          size="sm"
-          value={query}
-        >
-          <SearchField.Label className="city-docs-sr-only">문서 검색</SearchField.Label>
-          <SearchField.Group>
-            <SearchField.Input placeholder="문서 검색" />
-            <SearchField.Clear aria-label="검색어 지우기" />
-          </SearchField.Group>
-        </SearchField.Root>
+        <Field.Root className="city-docs-nav-search">
+          <Field.Label className="city-docs-sr-only">문서 검색</Field.Label>
+          <SearchInput.Root onValueChange={setQuery} size="sm" value={query}>
+            <SearchInput.Group>
+              <SearchInput.Input placeholder="문서 검색" />
+              <SearchInput.Clear aria-label="검색어 지우기" />
+            </SearchInput.Group>
+          </SearchInput.Root>
+        </Field.Root>
         <NavigationModeSelect onChange={onModeChange} value={mode} />
       </div>
 

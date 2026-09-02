@@ -5,25 +5,19 @@ import { useRender } from '@base-ui/react/use-render';
 import { Search, X } from 'lucide-react';
 
 import { Button, type ButtonProps } from '../button';
-import {
-  Field,
-  type FieldDescriptionProps,
-  type FieldErrorProps,
-  type FieldLabelProps,
-} from '../field';
 import { Input, InputGroup, type InputGroupProps, type InputProps } from '../input';
 import { cn } from '../../lib/cn';
 import { outlineFrameSegmentWidthClasses } from '../../lib/outline-frame';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
 
-type SearchFieldState = {
+type SearchInputState = {
   disabled: boolean;
   empty: boolean;
   loading: boolean;
 };
 
-type SearchFieldContextValue = {
+type SearchInputContextValue = {
   disabled: boolean;
   invalid: boolean;
   loading: boolean;
@@ -32,19 +26,19 @@ type SearchFieldContextValue = {
   value: string;
 };
 
-const SearchFieldContext = React.createContext<SearchFieldContextValue | null>(null);
+const SearchInputContext = React.createContext<SearchInputContextValue | null>(null);
 
-function useSearchFieldContext(component: string) {
-  const context = React.useContext(SearchFieldContext);
+function useSearchInputContext(component: string) {
+  const context = React.useContext(SearchInputContext);
 
   if (!context) {
-    throw new Error(`${component} must be used within SearchField.Root`);
+    throw new Error(`${component} must be used within SearchInput.Root`);
   }
 
   return context;
 }
 
-export interface SearchFieldRootProps extends Omit<
+export interface SearchInputRootProps extends Omit<
   React.ComponentPropsWithoutRef<'form'>,
   'onSubmit'
 > {
@@ -58,8 +52,8 @@ export interface SearchFieldRootProps extends Omit<
   value?: string;
 }
 
-export const SearchFieldRoot = React.forwardRef<HTMLFormElement, SearchFieldRootProps>(
-  function SearchFieldRoot(
+export const SearchInputRoot = React.forwardRef<HTMLFormElement, SearchInputRootProps>(
+  function SearchInputRoot(
     {
       children,
       className,
@@ -88,47 +82,36 @@ export const SearchFieldRoot = React.forwardRef<HTMLFormElement, SearchFieldRoot
       [isControlled, onValueChange],
     );
 
-    const context = React.useMemo<SearchFieldContextValue>(
+    const context = React.useMemo<SearchInputContextValue>(
       () => ({ disabled, invalid, loading, setValue, size, value }),
       [disabled, invalid, loading, setValue, size, value],
     );
 
     return (
-      <SearchFieldContext.Provider value={context}>
-        <Field.Root disabled={disabled} invalid={invalid}>
-          <form
-            {...props}
-            ref={ref}
-            className={cn('grid gap-1.5', className)}
-            onSubmit={(event) => {
-              event.preventDefault();
-              onSubmit?.(value, event);
-            }}
-          >
-            {children}
-          </form>
-        </Field.Root>
-      </SearchFieldContext.Provider>
+      <SearchInputContext.Provider value={context}>
+        <form
+          {...props}
+          ref={ref}
+          className={cn('grid gap-1.5', className)}
+          onSubmit={(event) => {
+            event.preventDefault();
+            onSubmit?.(value, event);
+          }}
+        >
+          {children}
+        </form>
+      </SearchInputContext.Provider>
     );
   },
 );
 
-SearchFieldRoot.displayName = 'SearchField.Root';
+SearchInputRoot.displayName = 'SearchInput.Root';
 
-export const SearchFieldLabel = Field.Label;
-export type SearchFieldLabelProps = FieldLabelProps;
+export type SearchInputGroupProps = Omit<InputGroupProps, 'size'>;
 
-export const SearchFieldDescription = Field.Description;
-export type SearchFieldDescriptionProps = FieldDescriptionProps;
-
-export const SearchFieldError = Field.Error;
-export type SearchFieldErrorProps = FieldErrorProps;
-
-export type SearchFieldGroupProps = Omit<InputGroupProps, 'size'>;
-
-export const SearchFieldGroup = React.forwardRef<HTMLDivElement, SearchFieldGroupProps>(
-  function SearchFieldGroup({ className, ...props }, ref) {
-    const context = useSearchFieldContext('SearchField.Group');
+export const SearchInputGroup = React.forwardRef<HTMLDivElement, SearchInputGroupProps>(
+  function SearchInputGroup({ className, ...props }, ref) {
+    const context = useSearchInputContext('SearchInput.Group');
 
     return (
       <InputGroup.Root
@@ -148,9 +131,9 @@ export const SearchFieldGroup = React.forwardRef<HTMLDivElement, SearchFieldGrou
   },
 );
 
-SearchFieldGroup.displayName = 'SearchField.Group';
+SearchInputGroup.displayName = 'SearchInput.Group';
 
-export interface SearchFieldInputProps extends Omit<
+export interface SearchInputInputProps extends Omit<
   InputProps,
   'onValueChange' | 'size' | 'type' | 'value'
 > {
@@ -158,14 +141,15 @@ export interface SearchFieldInputProps extends Omit<
   size?: ControlSize;
 }
 
-export const SearchFieldInput = React.forwardRef<HTMLElement, SearchFieldInputProps>(
-  function SearchFieldInput({ className, onKeyDown, onValueChange, size, ...props }, forwardedRef) {
-    const context = useSearchFieldContext('SearchField.Input');
+export const SearchInputInput = React.forwardRef<HTMLElement, SearchInputInputProps>(
+  function SearchInputInput({ className, onKeyDown, onValueChange, size, ...props }, forwardedRef) {
+    const context = useSearchInputContext('SearchInput.Input');
 
     return (
       <Input
         {...props}
         ref={forwardedRef}
+        aria-invalid={context.invalid || props['aria-invalid'] || undefined}
         className={(state) =>
           cn(
             'appearance-none [&::-webkit-search-cancel-button]:appearance-none',
@@ -192,7 +176,7 @@ export const SearchFieldInput = React.forwardRef<HTMLElement, SearchFieldInputPr
   },
 );
 
-SearchFieldInput.displayName = 'SearchField.Input';
+SearchInputInput.displayName = 'SearchInput.Input';
 
 const auxiliaryButtonSizeClasses: Record<ControlSize, string> = {
   xsm: 'size-5 p-0',
@@ -210,18 +194,18 @@ const iconSizes: Record<ControlSize, number> = {
   xlg: 16,
 };
 
-export interface SearchFieldClearProps extends Omit<ButtonProps, 'children' | 'size' | 'variant'> {
+export interface SearchInputClearProps extends Omit<ButtonProps, 'children' | 'size' | 'variant'> {
   children?: React.ReactNode;
   hideWhenEmpty?: boolean;
   size?: ControlSize;
 }
 
-export const SearchFieldClear = React.forwardRef<HTMLElement, SearchFieldClearProps>(
-  function SearchFieldClear(
+export const SearchInputClear = React.forwardRef<HTMLElement, SearchInputClearProps>(
+  function SearchInputClear(
     { children, className, hideWhenEmpty = true, onClick, size, ...props },
     ref,
   ) {
-    const context = useSearchFieldContext('SearchField.Clear');
+    const context = useSearchInputContext('SearchInput.Clear');
     const isEmpty = context.value.length === 0;
     const resolvedSize = size ?? context.size;
 
@@ -261,15 +245,15 @@ export const SearchFieldClear = React.forwardRef<HTMLElement, SearchFieldClearPr
   },
 );
 
-SearchFieldClear.displayName = 'SearchField.Clear';
+SearchInputClear.displayName = 'SearchInput.Clear';
 
-export interface SearchFieldSubmitProps extends Omit<ButtonProps, 'size' | 'variant'> {
+export interface SearchInputSubmitProps extends Omit<ButtonProps, 'size' | 'variant'> {
   size?: ControlSize;
 }
 
-export const SearchFieldSubmit = React.forwardRef<HTMLElement, SearchFieldSubmitProps>(
-  function SearchFieldSubmit({ children, className, size, ...props }, ref) {
-    const context = useSearchFieldContext('SearchField.Submit');
+export const SearchInputSubmit = React.forwardRef<HTMLElement, SearchInputSubmitProps>(
+  function SearchInputSubmit({ children, className, size, ...props }, ref) {
+    const context = useSearchInputContext('SearchInput.Submit');
     const resolvedSize = size ?? context.size;
 
     return (
@@ -295,19 +279,19 @@ export const SearchFieldSubmit = React.forwardRef<HTMLElement, SearchFieldSubmit
   },
 );
 
-SearchFieldSubmit.displayName = 'SearchField.Submit';
+SearchInputSubmit.displayName = 'SearchInput.Submit';
 
-export interface SearchFieldLoadingProps extends Omit<
-  useRender.ComponentProps<'span', SearchFieldState>,
+export interface SearchInputLoadingProps extends Omit<
+  useRender.ComponentProps<'span', SearchInputState>,
   'className'
 > {
-  className?: StateClassName<SearchFieldState>;
+  className?: StateClassName<SearchInputState>;
 }
 
-export const SearchFieldLoading = React.forwardRef<HTMLSpanElement, SearchFieldLoadingProps>(
-  function SearchFieldLoading({ className, render, ...props }, ref) {
-    const context = useSearchFieldContext('SearchField.Loading');
-    const state: SearchFieldState = {
+export const SearchInputLoading = React.forwardRef<HTMLSpanElement, SearchInputLoadingProps>(
+  function SearchInputLoading({ className, render, ...props }, ref) {
+    const context = useSearchInputContext('SearchInput.Loading');
+    const state: SearchInputState = {
       disabled: context.disabled,
       empty: context.value.length === 0,
       loading: context.loading,
@@ -329,16 +313,13 @@ export const SearchFieldLoading = React.forwardRef<HTMLSpanElement, SearchFieldL
   },
 );
 
-SearchFieldLoading.displayName = 'SearchField.Loading';
+SearchInputLoading.displayName = 'SearchInput.Loading';
 
-export const SearchField = {
-  Root: SearchFieldRoot,
-  Label: SearchFieldLabel,
-  Group: SearchFieldGroup,
-  Input: SearchFieldInput,
-  Clear: SearchFieldClear,
-  Submit: SearchFieldSubmit,
-  Loading: SearchFieldLoading,
-  Description: SearchFieldDescription,
-  Error: SearchFieldError,
+export const SearchInput = {
+  Root: SearchInputRoot,
+  Group: SearchInputGroup,
+  Input: SearchInputInput,
+  Clear: SearchInputClear,
+  Submit: SearchInputSubmit,
+  Loading: SearchInputLoading,
 };

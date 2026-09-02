@@ -363,7 +363,7 @@ describe('catalog and local UI state', () => {
 
     expect(filter).toHaveClass('city-docs-catalog-filter');
     expect(filter.querySelector('.city-docs-catalog-search')).not.toBeNull();
-    expect(filter.querySelector('.city-docs-catalog-search-field')).not.toBeNull();
+    expect(filter.querySelector('.city-docs-catalog-search-input')).not.toBeNull();
     expect(filter.querySelector('.city-docs-catalog-category')).not.toBeNull();
     expect(
       within(filter).getByRole('combobox', { name: '컴포넌트 범주' }).parentElement,

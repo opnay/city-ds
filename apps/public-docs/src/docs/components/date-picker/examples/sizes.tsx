@@ -1,4 +1,5 @@
 import { DatePicker } from '@opnay/city-ds-react/date-picker';
+import { Field } from '@opnay/city-ds-react/field';
 
 const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
 
@@ -8,13 +9,15 @@ export default function DatePickerSizesExample() {
       {sizes.map((size) => (
         <div className="city-docs-example-variant" key={size}>
           <span className="city-docs-example-label">{size}</span>
-          <DatePicker.Root size={size}>
-            <DatePicker.Label>검토 날짜</DatePicker.Label>
-            <DatePicker.Group>
-              <DatePicker.Input />
-              <DatePicker.Trigger />
-            </DatePicker.Group>
-          </DatePicker.Root>
+          <Field.Root>
+            <Field.Label>검토 날짜</Field.Label>
+            <DatePicker.Root size={size}>
+              <DatePicker.Group>
+                <DatePicker.Input />
+                <DatePicker.Trigger />
+              </DatePicker.Group>
+            </DatePicker.Root>
+          </Field.Root>
         </div>
       ))}
     </div>

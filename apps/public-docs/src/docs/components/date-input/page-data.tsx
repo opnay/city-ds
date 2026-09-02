@@ -1,11 +1,11 @@
 import controlledSource from './examples/controlled.tsx?raw';
 import ControlledExample from './examples/controlled';
 import sizesSource from './examples/sizes.tsx?raw';
-import DateFieldSizesExample from './examples/sizes';
+import DateInputSizesExample from './examples/sizes';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'date-field-controlled',
+  featuredExampleId: 'date-input-controlled',
   api: [
     {
       name: 'value / defaultValue',
@@ -31,10 +31,10 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: DateFieldSizesExample,
+      Component: DateInputSizesExample,
       coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
-      description: '날짜 세그먼트와 필드 높이를 주변 제어에 맞춥니다.',
-      id: 'date-field-sizes',
+      description: '날짜 입력 높이를 주변 제어에 맞춥니다.',
+      id: 'date-input-sizes',
       filename: 'sizes.tsx',
       source: sizesSource,
       title: '크기',
@@ -48,7 +48,7 @@ export const pageData = {
         { axis: 'readOnly', values: ['true'] },
       ],
       description: '제어된 로컬 날짜와 검증 오류를 확인합니다.',
-      id: 'date-field-controlled',
+      id: 'date-input-controlled',
       filename: 'controlled.tsx',
       source: controlledSource,
       title: '날짜 텍스트 입력',

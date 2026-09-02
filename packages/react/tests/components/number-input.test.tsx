@@ -4,24 +4,24 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Field } from '../../src/components/field';
-import { NumberField } from '../../src/components/number-field';
+import { NumberInput } from '../../src/components/number-input';
 
-function QuantityField(props: React.ComponentProps<typeof NumberField.Root>) {
+function QuantityField(props: React.ComponentProps<typeof NumberInput.Root>) {
   return (
     <Field.Root>
       <Field.Label>Quantity</Field.Label>
-      <NumberField.Root {...props}>
-        <NumberField.Group>
-          <NumberField.Input />
-          <NumberField.Decrement aria-label="Decrease quantity" />
-          <NumberField.Increment aria-label="Increase quantity" />
-        </NumberField.Group>
-      </NumberField.Root>
+      <NumberInput.Root {...props}>
+        <NumberInput.Group>
+          <NumberInput.Input />
+          <NumberInput.Decrement aria-label="Decrease quantity" />
+          <NumberInput.Increment aria-label="Increase quantity" />
+        </NumberInput.Group>
+      </NumberInput.Root>
     </Field.Root>
   );
 }
 
-describe('NumberField', () => {
+describe('NumberInput', () => {
   it('accepts typed values and emits numeric changes', async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();
@@ -81,12 +81,12 @@ describe('NumberField', () => {
     render(
       <>
         <ControlledField />
-        <NumberField.Root defaultValue={3}>
-          <NumberField.Group>
-            <NumberField.Input aria-label="Uncontrolled quantity" />
-            <NumberField.Increment aria-label="Increase uncontrolled quantity" />
-          </NumberField.Group>
-        </NumberField.Root>
+        <NumberInput.Root defaultValue={3}>
+          <NumberInput.Group>
+            <NumberInput.Input aria-label="Uncontrolled quantity" />
+            <NumberInput.Increment aria-label="Increase uncontrolled quantity" />
+          </NumberInput.Group>
+        </NumberInput.Root>
       </>,
     );
 
@@ -103,13 +103,13 @@ describe('NumberField', () => {
     render(
       <Field.Root>
         <Field.Label>Capacity</Field.Label>
-        <NumberField.Root defaultValue={8} size="lg">
-          <NumberField.Group data-testid="capacity-group">
-            <NumberField.Input />
-            <NumberField.Decrement aria-label="Decrease capacity" />
-            <NumberField.Increment aria-label="Increase capacity" size="sm" />
-          </NumberField.Group>
-        </NumberField.Root>
+        <NumberInput.Root defaultValue={8} size="lg">
+          <NumberInput.Group data-testid="capacity-group">
+            <NumberInput.Input />
+            <NumberInput.Decrement aria-label="Decrease capacity" />
+            <NumberInput.Increment aria-label="Increase capacity" size="sm" />
+          </NumberInput.Group>
+        </NumberInput.Root>
       </Field.Root>,
     );
 

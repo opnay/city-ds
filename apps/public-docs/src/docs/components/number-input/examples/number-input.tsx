@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Field } from '@opnay/city-ds-react/field';
-import { NumberField } from '@opnay/city-ds-react/number-field';
+import { NumberInput } from '@opnay/city-ds-react/number-input';
 
 function Control({
   disabled = false,
@@ -16,19 +16,19 @@ function Control({
       <span className="city-docs-example-label">{label}</span>
       <Field.Root disabled={disabled}>
         <Field.Label>인원</Field.Label>
-        <NumberField.Root defaultValue={value} disabled={disabled}>
-          <NumberField.Group>
-            <NumberField.Input />
-            <NumberField.Decrement aria-label="인원 줄이기" />
-            <NumberField.Increment aria-label="인원 늘리기" />
-          </NumberField.Group>
-        </NumberField.Root>
+        <NumberInput.Root defaultValue={value} disabled={disabled}>
+          <NumberInput.Group>
+            <NumberInput.Input />
+            <NumberInput.Decrement aria-label="인원 줄이기" />
+            <NumberInput.Increment aria-label="인원 늘리기" />
+          </NumberInput.Group>
+        </NumberInput.Root>
       </Field.Root>
     </div>
   );
 }
 
-export default function NumberFieldExample() {
+export default function NumberInputExample() {
   const [value, setValue] = useState(4);
 
   return (
@@ -37,18 +37,18 @@ export default function NumberFieldExample() {
         <span className="city-docs-example-label">제어</span>
         <Field.Root>
           <Field.Label>인원</Field.Label>
-          <NumberField.Root
+          <NumberInput.Root
             max={12}
             min={1}
             onValueChange={(nextValue) => setValue(nextValue ?? 1)}
             value={value}
           >
-            <NumberField.Group>
-              <NumberField.Input />
-              <NumberField.Decrement aria-label="인원 줄이기" />
-              <NumberField.Increment aria-label="인원 늘리기" />
-            </NumberField.Group>
-          </NumberField.Root>
+            <NumberInput.Group>
+              <NumberInput.Input />
+              <NumberInput.Decrement aria-label="인원 줄이기" />
+              <NumberInput.Increment aria-label="인원 늘리기" />
+            </NumberInput.Group>
+          </NumberInput.Root>
         </Field.Root>
       </div>
       <Control label="비제어" value={2} />

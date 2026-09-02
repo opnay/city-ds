@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { NumberField as BaseNumberField } from '@base-ui/react/number-field';
+import { NumberField as BaseNumberInput } from '@base-ui/react/number-field';
 import { Minus, Plus } from 'lucide-react';
 
 import { cn } from '../../lib/cn';
@@ -14,42 +14,42 @@ import {
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { ControlSize } from '../../types';
 
-export type NumberFieldRootProps = Omit<BaseNumberField.Root.Props, 'className'> & {
-  className?: StateClassName<BaseNumberField.Root.State>;
+export type NumberInputRootProps = Omit<BaseNumberInput.Root.Props, 'className'> & {
+  className?: StateClassName<BaseNumberInput.Root.State>;
   size?: ControlSize;
 };
 
-const NumberFieldSizeContext = React.createContext<ControlSize>('md');
+const NumberInputSizeContext = React.createContext<ControlSize>('md');
 
-export const NumberFieldRoot = React.forwardRef<HTMLDivElement, NumberFieldRootProps>(
-  function NumberFieldRoot({ className, size = 'md', ...props }, ref) {
+export const NumberInputRoot = React.forwardRef<HTMLDivElement, NumberInputRootProps>(
+  function NumberInputRoot({ className, size = 'md', ...props }, ref) {
     return (
-      <NumberFieldSizeContext.Provider value={size}>
-        <BaseNumberField.Root
+      <NumberInputSizeContext.Provider value={size}>
+        <BaseNumberInput.Root
           {...props}
           ref={ref}
           data-city-size={size}
           className={(state) => cn('grid gap-1.5', resolveClassName(className, state))}
         />
-      </NumberFieldSizeContext.Provider>
+      </NumberInputSizeContext.Provider>
     );
   },
 );
 
-NumberFieldRoot.displayName = 'NumberField.Root';
+NumberInputRoot.displayName = 'NumberInput.Root';
 
-export interface NumberFieldGroupProps extends Omit<BaseNumberField.Group.Props, 'className'> {
-  className?: StateClassName<BaseNumberField.Group.State>;
+export interface NumberInputGroupProps extends Omit<BaseNumberInput.Group.Props, 'className'> {
+  className?: StateClassName<BaseNumberInput.Group.State>;
   size?: ControlSize;
 }
 
-export const NumberFieldGroup = React.forwardRef<HTMLDivElement, NumberFieldGroupProps>(
-  function NumberFieldGroup({ className, size: sizeProp, ...props }, ref) {
-    const rootSize = React.useContext(NumberFieldSizeContext);
+export const NumberInputGroup = React.forwardRef<HTMLDivElement, NumberInputGroupProps>(
+  function NumberInputGroup({ className, size: sizeProp, ...props }, ref) {
+    const rootSize = React.useContext(NumberInputSizeContext);
     const size = sizeProp ?? rootSize;
 
     return (
-      <BaseNumberField.Group
+      <BaseNumberInput.Group
         {...props}
         ref={ref}
         data-city-size={size}
@@ -66,13 +66,13 @@ export const NumberFieldGroup = React.forwardRef<HTMLDivElement, NumberFieldGrou
   },
 );
 
-NumberFieldGroup.displayName = 'NumberField.Group';
+NumberInputGroup.displayName = 'NumberInput.Group';
 
-export interface NumberFieldInputProps extends Omit<
-  BaseNumberField.Input.Props,
+export interface NumberInputInputProps extends Omit<
+  BaseNumberInput.Input.Props,
   'className' | 'size'
 > {
-  className?: StateClassName<BaseNumberField.Input.State>;
+  className?: StateClassName<BaseNumberInput.Input.State>;
   size?: ControlSize;
 }
 
@@ -84,13 +84,13 @@ const inputSizeClasses: Record<ControlSize, string> = {
   xlg: 'px-3.5 text-sm',
 };
 
-export const NumberFieldInput = React.forwardRef<HTMLInputElement, NumberFieldInputProps>(
-  function NumberFieldInput({ className, size: sizeProp, ...props }, ref) {
-    const rootSize = React.useContext(NumberFieldSizeContext);
+export const NumberInputInput = React.forwardRef<HTMLInputElement, NumberInputInputProps>(
+  function NumberInputInput({ className, size: sizeProp, ...props }, ref) {
+    const rootSize = React.useContext(NumberInputSizeContext);
     const size = sizeProp ?? rootSize;
 
     return (
-      <BaseNumberField.Input
+      <BaseNumberInput.Input
         {...props}
         ref={ref}
         data-city-size={size}
@@ -106,23 +106,23 @@ export const NumberFieldInput = React.forwardRef<HTMLInputElement, NumberFieldIn
   },
 );
 
-NumberFieldInput.displayName = 'NumberField.Input';
+NumberInputInput.displayName = 'NumberInput.Input';
 
-type StepperProps = Omit<BaseNumberField.Increment.Props, 'className'> & {
-  className?: StateClassName<BaseNumberField.Increment.State>;
+type StepperProps = Omit<BaseNumberInput.Increment.Props, 'className'> & {
+  className?: StateClassName<BaseNumberInput.Increment.State>;
   size?: ControlSize;
 };
 
 const stepperClasses =
   'border-city-border text-city-muted-foreground hover:bg-city-accent hover:text-city-accent-foreground active:bg-city-accent-active focus-visible:ring-city-ring inline-flex h-full shrink-0 self-stretch items-center justify-center transition-colors focus-visible:z-10 focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50';
 
-export const NumberFieldIncrement = React.forwardRef<HTMLButtonElement, StepperProps>(
-  function NumberFieldIncrement({ children, className, size: sizeProp, ...props }, ref) {
-    const rootSize = React.useContext(NumberFieldSizeContext);
+export const NumberInputIncrement = React.forwardRef<HTMLButtonElement, StepperProps>(
+  function NumberInputIncrement({ children, className, size: sizeProp, ...props }, ref) {
+    const rootSize = React.useContext(NumberInputSizeContext);
     const size = sizeProp ?? rootSize;
 
     return (
-      <BaseNumberField.Increment
+      <BaseNumberInput.Increment
         {...props}
         ref={ref}
         data-city-size={size}
@@ -136,20 +136,20 @@ export const NumberFieldIncrement = React.forwardRef<HTMLButtonElement, StepperP
         }
       >
         {children ?? <Plus aria-hidden="true" className="size-3.5" />}
-      </BaseNumberField.Increment>
+      </BaseNumberInput.Increment>
     );
   },
 );
 
-NumberFieldIncrement.displayName = 'NumberField.Increment';
+NumberInputIncrement.displayName = 'NumberInput.Increment';
 
-export const NumberFieldDecrement = React.forwardRef<HTMLButtonElement, StepperProps>(
-  function NumberFieldDecrement({ children, className, size: sizeProp, ...props }, ref) {
-    const rootSize = React.useContext(NumberFieldSizeContext);
+export const NumberInputDecrement = React.forwardRef<HTMLButtonElement, StepperProps>(
+  function NumberInputDecrement({ children, className, size: sizeProp, ...props }, ref) {
+    const rootSize = React.useContext(NumberInputSizeContext);
     const size = sizeProp ?? rootSize;
 
     return (
-      <BaseNumberField.Decrement
+      <BaseNumberInput.Decrement
         {...props}
         ref={ref}
         data-city-size={size}
@@ -163,17 +163,17 @@ export const NumberFieldDecrement = React.forwardRef<HTMLButtonElement, StepperP
         }
       >
         {children ?? <Minus aria-hidden="true" className="size-3.5" />}
-      </BaseNumberField.Decrement>
+      </BaseNumberInput.Decrement>
     );
   },
 );
 
-NumberFieldDecrement.displayName = 'NumberField.Decrement';
+NumberInputDecrement.displayName = 'NumberInput.Decrement';
 
-export const NumberField = {
-  Root: NumberFieldRoot,
-  Group: NumberFieldGroup,
-  Input: NumberFieldInput,
-  Increment: NumberFieldIncrement,
-  Decrement: NumberFieldDecrement,
+export const NumberInput = {
+  Root: NumberInputRoot,
+  Group: NumberInputGroup,
+  Input: NumberInputInput,
+  Increment: NumberInputIncrement,
+  Decrement: NumberInputDecrement,
 };

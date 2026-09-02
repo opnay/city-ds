@@ -2,22 +2,21 @@
 
 import * as React from 'react';
 
-import {
-  Field,
-  type FieldDescriptionProps,
-  type FieldErrorProps,
-  type FieldLabelProps,
-  type FieldRootProps,
-} from '../field';
 import { Input, type InputProps } from '../input';
 import { cn } from '../../lib/cn';
-import { DateControlProvider, type DateControlProps, useDateControl } from './date-control';
+import {
+  DateControlProvider,
+  DateControlRoot,
+  type DateControlProps,
+  type DateControlRootProps,
+  useDateControl,
+} from '../../lib/date-control';
 
-export interface DateFieldRootProps
-  extends Omit<FieldRootProps, keyof DateControlProps>, DateControlProps {}
+export interface DateInputRootProps
+  extends Omit<DateControlRootProps, keyof DateControlProps>, DateControlProps {}
 
-export const DateFieldRoot = React.forwardRef<HTMLDivElement, DateFieldRootProps>(
-  function DateFieldRoot(
+export const DateInputRoot = React.forwardRef<HTMLDivElement, DateInputRootProps>(
+  function DateInputRoot(
     {
       children,
       defaultValue,
@@ -51,44 +50,17 @@ export const DateFieldRoot = React.forwardRef<HTMLDivElement, DateFieldRootProps
         size={size}
         value={value}
       >
-        <DateFieldRootContent {...props} ref={ref}>
+        <DateControlRoot {...props} ref={ref}>
           {children}
-        </DateFieldRootContent>
+        </DateControlRoot>
       </DateControlProvider>
     );
   },
 );
 
-DateFieldRoot.displayName = 'DateField.Root';
+DateInputRoot.displayName = 'DateInput.Root';
 
-const DateFieldRootContent = React.forwardRef<HTMLDivElement, FieldRootProps>(
-  function DateFieldRootContent(props, ref) {
-    const context = useDateControl('DateField.Root');
-    return (
-      <Field.Root {...props} ref={ref} disabled={context.disabled} invalid={context.invalid} />
-    );
-  },
-);
-
-export const DateFieldLabel = Field.Label;
-export type DateFieldLabelProps = FieldLabelProps;
-
-export const DateFieldDescription = Field.Description;
-export type DateFieldDescriptionProps = FieldDescriptionProps;
-
-export type DateFieldErrorProps = FieldErrorProps;
-
-export const DateFieldError = React.forwardRef<HTMLDivElement, DateFieldErrorProps>(
-  function DateFieldError({ match, ...props }, ref) {
-    const context = useDateControl('DateField.Error');
-
-    return <Field.Error {...props} ref={ref} match={match ?? context.invalid} />;
-  },
-);
-
-DateFieldError.displayName = 'DateField.Error';
-
-export type DateFieldInputProps = Omit<
+export type DateInputInputProps = Omit<
   InputProps,
   | 'defaultValue'
   | 'disabled'
@@ -102,12 +74,12 @@ export type DateFieldInputProps = Omit<
   | 'value'
 >;
 
-export const DateFieldInput = React.forwardRef<HTMLElement, DateFieldInputProps>(
-  function DateFieldInput(
+export const DateInputInput = React.forwardRef<HTMLElement, DateInputInputProps>(
+  function DateInputInput(
     { className, inputMode = 'numeric', onBlur, onInvalid, placeholder = 'YYYY-MM-DD', ...props },
     forwardedRef,
   ) {
-    const context = useDateControl('DateField.Input');
+    const context = useDateControl('DateInput.Input');
     const inputRef = React.useRef<HTMLInputElement | null>(null);
 
     const setRefs = React.useCallback(
@@ -130,7 +102,7 @@ export const DateFieldInput = React.forwardRef<HTMLElement, DateFieldInputProps>
       <Input
         {...props}
         ref={setRefs}
-        aria-invalid={context.inputInvalid || undefined}
+        aria-invalid={context.invalid || context.inputInvalid || undefined}
         className={(state) =>
           cn(
             'font-mono tabular-nums',
@@ -161,14 +133,11 @@ export const DateFieldInput = React.forwardRef<HTMLElement, DateFieldInputProps>
   },
 );
 
-DateFieldInput.displayName = 'DateField.Input';
+DateInputInput.displayName = 'DateInput.Input';
 
-export const DateField = {
-  Root: DateFieldRoot,
-  Label: DateFieldLabel,
-  Input: DateFieldInput,
-  Description: DateFieldDescription,
-  Error: DateFieldError,
+export const DateInput = {
+  Root: DateInputRoot,
+  Input: DateInputInput,
 };
 
 export type { DateControlProps };

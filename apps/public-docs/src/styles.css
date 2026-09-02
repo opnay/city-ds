@@ -1757,7 +1757,7 @@
     flex: 1 1 16rem;
   }
 
-  .city-docs-catalog-search-field,
+  .city-docs-catalog-search-input,
   .city-docs-catalog-category > [role='combobox'] {
     width: 100%;
   }

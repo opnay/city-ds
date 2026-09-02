@@ -4,8 +4,9 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Calendar } from '../../src/components/calendar';
-import { DateField } from '../../src/components/date-field';
+import { DateInput } from '../../src/components/date-input';
 import { DatePicker } from '../../src/components/date-picker';
+import { Field } from '../../src/components/field';
 import { formatLocalDate, normalizeLocalDate, parseLocalDate } from '../../src/lib/local-date';
 
 describe('local date values', () => {
@@ -17,17 +18,19 @@ describe('local date values', () => {
   });
 });
 
-describe('DateField', () => {
+describe('DateInput', () => {
   it('keeps partial input and emits only empty or valid local dates', async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();
 
     render(
-      <DateField.Root defaultValue={new Date(2026, 6, 15, 16)} onValueChange={onValueChange}>
-        <DateField.Label>Release date</DateField.Label>
-        <DateField.Input />
-        <DateField.Error>Enter an available date.</DateField.Error>
-      </DateField.Root>,
+      <Field.Root>
+        <Field.Label>Release date</Field.Label>
+        <DateInput.Root defaultValue={new Date(2026, 6, 15, 16)} onValueChange={onValueChange}>
+          <DateInput.Input />
+        </DateInput.Root>
+        <Field.Error>Enter an available date.</Field.Error>
+      </Field.Root>,
     );
 
     const input = screen.getByRole('textbox', { name: 'Release date' });
@@ -49,16 +52,17 @@ describe('DateField', () => {
     const user = userEvent.setup();
 
     render(
-      <DateField.Root
-        isDateUnavailable={(date) => date.getDay() === 0}
-        maxValue={new Date(2026, 6, 31)}
-        minValue={new Date(2026, 6, 1)}
-        required
-      >
-        <DateField.Label>Deployment date</DateField.Label>
-        <DateField.Input />
-        <DateField.Error>Date is outside the deployment window.</DateField.Error>
-      </DateField.Root>,
+      <Field.Root>
+        <Field.Label>Deployment date</Field.Label>
+        <DateInput.Root
+          isDateUnavailable={(date) => date.getDay() === 0}
+          maxValue={new Date(2026, 6, 31)}
+          minValue={new Date(2026, 6, 1)}
+          required
+        >
+          <DateInput.Input />
+        </DateInput.Root>
+      </Field.Root>,
     );
 
     const input = screen.getByRole('textbox', { name: 'Deployment date' });
@@ -67,7 +71,6 @@ describe('DateField', () => {
     await user.tab();
     expect(input).toBeInvalid();
     expect(input).toHaveAttribute('aria-invalid', 'true');
-    expect(screen.getByText('Date is outside the deployment window.')).toBeVisible();
 
     await user.click(input);
     await user.clear(input);
@@ -96,10 +99,12 @@ describe('DateField', () => {
 
     render(
       <form aria-label="Release form" onSubmit={onSubmit}>
-        <DateField.Root name="releaseDate">
-          <DateField.Label>Release date</DateField.Label>
-          <DateField.Input />
-        </DateField.Root>
+        <Field.Root>
+          <Field.Label>Release date</Field.Label>
+          <DateInput.Root name="releaseDate">
+            <DateInput.Input />
+          </DateInput.Root>
+        </Field.Root>
         <button type="submit">Submit</button>
       </form>,
     );
@@ -120,12 +125,13 @@ describe('DateField', () => {
 
     render(
       <form onSubmit={onSubmit}>
-        <DateField.Root name="invoiceDate" required>
-          <DateField.Label>Invoice date</DateField.Label>
-          <DateField.Input />
-          <DateField.Description>Use a real calendar date.</DateField.Description>
-          <DateField.Error>Enter a valid date.</DateField.Error>
-        </DateField.Root>
+        <Field.Root>
+          <Field.Label>Invoice date</Field.Label>
+          <DateInput.Root name="invoiceDate" required>
+            <DateInput.Input />
+          </DateInput.Root>
+          <Field.Description>Use a real calendar date.</Field.Description>
+        </Field.Root>
         <button type="submit">Submit invoice</button>
       </form>,
     );
@@ -137,21 +143,23 @@ describe('DateField', () => {
     expect(onSubmit).not.toHaveBeenCalled();
     expect(input).toBeInvalid();
     expect(input).toHaveAttribute('aria-invalid', 'true');
-    expect(input).toHaveAccessibleDescription('Use a real calendar date. Enter a valid date.');
+    expect(input).toHaveAccessibleDescription('Use a real calendar date.');
   });
 
   it('syncs externally controlled values and exposes field states', async () => {
     const user = userEvent.setup();
 
-    function ControlledDateField() {
+    function ControlledDateInput() {
       const [value, setValue] = React.useState<Date | null>(new Date(2026, 6, 15, 18));
 
       return (
         <>
-          <DateField.Root onValueChange={setValue} value={value}>
-            <DateField.Label>Controlled date</DateField.Label>
-            <DateField.Input />
-          </DateField.Root>
+          <Field.Root>
+            <Field.Label>Controlled date</Field.Label>
+            <DateInput.Root onValueChange={setValue} value={value}>
+              <DateInput.Input />
+            </DateInput.Root>
+          </Field.Root>
           <button type="button" onClick={() => setValue(new Date(2026, 7, 3, 9))}>
             Use August
           </button>
@@ -161,20 +169,29 @@ describe('DateField', () => {
 
     render(
       <>
-        <ControlledDateField />
-        <DateField.Root disabled>
-          <DateField.Label>Disabled date</DateField.Label>
-          <DateField.Input />
-        </DateField.Root>
-        <DateField.Root readOnly>
-          <DateField.Label>Read-only date</DateField.Label>
-          <DateField.Input />
-        </DateField.Root>
-        <DateField.Root invalid required>
-          <DateField.Label>Required date</DateField.Label>
-          <DateField.Input />
-          <DateField.Error>Choose a date.</DateField.Error>
-        </DateField.Root>
+        <ControlledDateInput />
+        <Field.Root disabled>
+          <Field.Label>Disabled date</Field.Label>
+          <DateInput.Root disabled>
+            <DateInput.Input />
+          </DateInput.Root>
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>Read-only date</Field.Label>
+          <DateInput.Root readOnly>
+            <DateInput.Input />
+          </DateInput.Root>
+        </Field.Root>
+        <Field.Root invalid>
+          <Field.Label>Required date</Field.Label>
+          <DateInput.Root invalid required>
+            <DateInput.Input />
+          </DateInput.Root>
+          <Field.Error match>Choose a date.</Field.Error>
+        </Field.Root>
+        <DateInput.Root invalid>
+          <DateInput.Input aria-label="Standalone invalid date" />
+        </DateInput.Root>
       </>,
     );
 
@@ -185,6 +202,10 @@ describe('DateField', () => {
     expect(screen.getByRole('textbox', { name: 'Read-only date' })).toHaveAttribute('readonly');
     expect(screen.getByRole('textbox', { name: 'Required date' })).toBeRequired();
     expect(screen.getByRole('textbox', { name: 'Required date' })).toHaveAttribute('data-invalid');
+    expect(screen.getByRole('textbox', { name: 'Standalone invalid date' })).toHaveAttribute(
+      'aria-invalid',
+      'true',
+    );
     expect(screen.getByText('Choose a date.')).toBeVisible();
   });
 
@@ -192,9 +213,9 @@ describe('DateField', () => {
     render(
       <>
         {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
-          <DateField.Root key={`field-${size}`} size={size}>
-            <DateField.Input aria-label={`${size} date field`} />
-          </DateField.Root>
+          <DateInput.Root key={`date-input-${size}`} size={size}>
+            <DateInput.Input aria-label={`${size} date input`} />
+          </DateInput.Root>
         ))}
         {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
           <DatePicker.Root key={`picker-${size}`} size={size}>
@@ -208,7 +229,7 @@ describe('DateField', () => {
     );
 
     for (const size of ['xsm', 'sm', 'md', 'lg', 'xlg'] as const) {
-      expect(screen.getByRole('textbox', { name: `${size} date field` })).toHaveClass(
+      expect(screen.getByRole('textbox', { name: `${size} date input` })).toHaveClass(
         `h-(--city-control-${size})`,
       );
       expect(screen.getByTestId(`${size}-date-picker`)).toHaveClass(`h-(--city-control-${size})`);
@@ -299,20 +320,22 @@ describe('DatePicker', () => {
     const onValueChange = vi.fn();
 
     render(
-      <DatePicker.Root defaultValue={new Date(2026, 6, 15)} onValueChange={onValueChange}>
-        <DatePicker.Label>Release date</DatePicker.Label>
-        <DatePicker.Group data-testid="date-picker-group">
-          <DatePicker.Input />
-          <DatePicker.Trigger />
-        </DatePicker.Group>
-        <DatePicker.Portal>
-          <DatePicker.Positioner>
-            <DatePicker.Popup>
-              <DatePicker.Calendar aria-label="Release calendar" today={new Date(2026, 6, 15)} />
-            </DatePicker.Popup>
-          </DatePicker.Positioner>
-        </DatePicker.Portal>
-      </DatePicker.Root>,
+      <Field.Root>
+        <Field.Label>Release date</Field.Label>
+        <DatePicker.Root defaultValue={new Date(2026, 6, 15)} onValueChange={onValueChange}>
+          <DatePicker.Group data-testid="date-picker-group">
+            <DatePicker.Input />
+            <DatePicker.Trigger />
+          </DatePicker.Group>
+          <DatePicker.Portal>
+            <DatePicker.Positioner>
+              <DatePicker.Popup>
+                <DatePicker.Calendar aria-label="Release calendar" today={new Date(2026, 6, 15)} />
+              </DatePicker.Popup>
+            </DatePicker.Positioner>
+          </DatePicker.Portal>
+        </DatePicker.Root>
+      </Field.Root>,
     );
 
     const trigger = screen.getByRole('button', { name: 'Open calendar' });
@@ -337,26 +360,28 @@ describe('DatePicker', () => {
     function ControlledPicker() {
       const [open, setOpen] = React.useState(false);
       return (
-        <DatePicker.Root
-          onOpenChange={(nextOpen, details) => {
-            setOpen(nextOpen);
-            onOpenChange(nextOpen, details);
-          }}
-          open={open}
-        >
-          <DatePicker.Label>Start date</DatePicker.Label>
-          <DatePicker.Group>
-            <DatePicker.Input />
-            <DatePicker.Trigger />
-          </DatePicker.Group>
-          <DatePicker.Portal>
-            <DatePicker.Positioner>
-              <DatePicker.Popup>
-                <DatePicker.Calendar aria-label="Start calendar" />
-              </DatePicker.Popup>
-            </DatePicker.Positioner>
-          </DatePicker.Portal>
-        </DatePicker.Root>
+        <Field.Root>
+          <Field.Label>Start date</Field.Label>
+          <DatePicker.Root
+            onOpenChange={(nextOpen, details) => {
+              setOpen(nextOpen);
+              onOpenChange(nextOpen, details);
+            }}
+            open={open}
+          >
+            <DatePicker.Group>
+              <DatePicker.Input />
+              <DatePicker.Trigger />
+            </DatePicker.Group>
+            <DatePicker.Portal>
+              <DatePicker.Positioner>
+                <DatePicker.Popup>
+                  <DatePicker.Calendar aria-label="Start calendar" />
+                </DatePicker.Popup>
+              </DatePicker.Positioner>
+            </DatePicker.Portal>
+          </DatePicker.Root>
+        </Field.Root>
       );
     }
 
@@ -377,25 +402,27 @@ describe('DatePicker', () => {
     const onValueChange = vi.fn();
 
     render(
-      <DatePicker.Root
-        defaultValue={new Date(2026, 6, 15)}
-        onValueChange={onValueChange}
-        readOnly
-        size="lg"
-      >
-        <DatePicker.Label>Audit date</DatePicker.Label>
-        <DatePicker.Group data-testid="readonly-date-picker">
-          <DatePicker.Input />
-          <DatePicker.Trigger />
-        </DatePicker.Group>
-        <DatePicker.Portal>
-          <DatePicker.Positioner>
-            <DatePicker.Popup>
-              <DatePicker.Calendar aria-label="Audit calendar" today={new Date(2026, 6, 15)} />
-            </DatePicker.Popup>
-          </DatePicker.Positioner>
-        </DatePicker.Portal>
-      </DatePicker.Root>,
+      <Field.Root>
+        <Field.Label>Audit date</Field.Label>
+        <DatePicker.Root
+          defaultValue={new Date(2026, 6, 15)}
+          onValueChange={onValueChange}
+          readOnly
+          size="lg"
+        >
+          <DatePicker.Group data-testid="readonly-date-picker">
+            <DatePicker.Input />
+            <DatePicker.Trigger />
+          </DatePicker.Group>
+          <DatePicker.Portal>
+            <DatePicker.Positioner>
+              <DatePicker.Popup>
+                <DatePicker.Calendar aria-label="Audit calendar" today={new Date(2026, 6, 15)} />
+              </DatePicker.Popup>
+            </DatePicker.Positioner>
+          </DatePicker.Portal>
+        </DatePicker.Root>
+      </Field.Root>,
     );
 
     expect(screen.getByTestId('readonly-date-picker')).toHaveClass('h-(--city-control-lg)');
@@ -412,27 +439,31 @@ describe('DatePicker', () => {
 
     render(
       <>
-        <DatePicker.Root disabled>
-          <DatePicker.Label>Disabled picker</DatePicker.Label>
-          <DatePicker.Group>
-            <DatePicker.Input />
-            <DatePicker.Trigger aria-label="Open disabled calendar" />
-          </DatePicker.Group>
-        </DatePicker.Root>
-        <DatePicker.Root invalid required>
-          <DatePicker.Label>Required picker</DatePicker.Label>
-          <DatePicker.Group data-testid="invalid-picker-group">
-            <DatePicker.Input />
-            <DatePicker.Trigger aria-label="Open required calendar" />
-          </DatePicker.Group>
-          <DatePicker.Portal>
-            <DatePicker.Positioner>
-              <DatePicker.Popup>
-                <DatePicker.Calendar aria-label="Required calendar" />
-              </DatePicker.Popup>
-            </DatePicker.Positioner>
-          </DatePicker.Portal>
-        </DatePicker.Root>
+        <Field.Root disabled>
+          <Field.Label>Disabled picker</Field.Label>
+          <DatePicker.Root disabled>
+            <DatePicker.Group>
+              <DatePicker.Input />
+              <DatePicker.Trigger aria-label="Open disabled calendar" />
+            </DatePicker.Group>
+          </DatePicker.Root>
+        </Field.Root>
+        <Field.Root invalid>
+          <Field.Label>Required picker</Field.Label>
+          <DatePicker.Root invalid required>
+            <DatePicker.Group data-testid="invalid-picker-group">
+              <DatePicker.Input />
+              <DatePicker.Trigger aria-label="Open required calendar" />
+            </DatePicker.Group>
+            <DatePicker.Portal>
+              <DatePicker.Positioner>
+                <DatePicker.Popup>
+                  <DatePicker.Calendar aria-label="Required calendar" />
+                </DatePicker.Popup>
+              </DatePicker.Positioner>
+            </DatePicker.Portal>
+          </DatePicker.Root>
+        </Field.Root>
       </>,
     );
 

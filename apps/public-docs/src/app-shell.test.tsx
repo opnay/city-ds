@@ -58,6 +58,7 @@ describe('public docs routes and shell', () => {
       );
       expect(within(preview).getByRole('group', { name: '알림 채널' })).toBeVisible();
       expect(within(preview).getAllByRole('checkbox')).toHaveLength(3);
+      expect(preview.querySelector('.grid-cols-3')).toBeVisible();
     }
 
     expect(
@@ -65,6 +66,9 @@ describe('public docs routes and shell', () => {
         .getByRole('region', { name: '그룹 상태' })
         .querySelector('.city-docs-example-preview-content'),
     ).toHaveAttribute('data-city-docs-layout', 'wide');
+    expect(
+      screen.getByRole('region', { name: '그룹 상태' }).querySelectorAll('.grid-cols-2'),
+    ).toHaveLength(2);
     expect(screen.queryByText(/^(plain|band|outline) 알림 채널$/)).not.toBeInTheDocument();
   });
 

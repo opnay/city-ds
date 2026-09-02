@@ -7,7 +7,7 @@ export default function FieldsetBandExample() {
   return (
     <Fieldset.Root appearance="band">
       <Fieldset.Legend>알림 채널</Fieldset.Legend>
-      <Fieldset.Content>
+      <Fieldset.Content className="grid-cols-3">
         {channels.map((channel) => {
           const id = `fieldset-band-${channel}`;
           return (

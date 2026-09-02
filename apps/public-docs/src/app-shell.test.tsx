@@ -142,6 +142,9 @@ describe('public docs routes and shell', () => {
     const { container } = await renderDocs(['/color']);
 
     expect(screen.getByRole('heading', { level: 2, name: '원시 팔레트' })).toBeVisible();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Surface 위계를 구분하십시오' }),
+    ).toBeVisible();
     expect(screen.getByRole('heading', { level: 2, name: 'Tone과 Appearance' })).toBeVisible();
     expect(screen.getByRole('region', { name: 'Light와 Dark 의미 색상 비교' })).toBeVisible();
     expect(screen.getByRole('region', { name: 'Feedback tone과 appearance 비교' })).toBeVisible();
@@ -153,6 +156,7 @@ describe('public docs routes and shell', () => {
       'dark',
     ]);
     for (const panel of themePanels) {
+      expect(within(panel as HTMLElement).getByText('--city-color-surface-raised')).toBeVisible();
       expect(panel.querySelectorAll('[data-city-badge][data-appearance="solid"]')).toHaveLength(4);
     }
   });

@@ -1,15 +1,15 @@
 import clearSource from './examples/clear.tsx?raw';
-import SearchFieldClearExample from './examples/clear';
+import SearchInputClearExample from './examples/clear';
 import sizesSource from './examples/sizes.tsx?raw';
-import SearchFieldSizesExample from './examples/sizes';
+import SearchInputSizesExample from './examples/sizes';
 import statesSource from './examples/states.tsx?raw';
-import SearchFieldStatesExample from './examples/states';
+import SearchInputStatesExample from './examples/states';
 import usageSource from './examples/usage.tsx?raw';
-import SearchFieldUsageExample from './examples/usage';
+import SearchInputUsageExample from './examples/usage';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'search-field-usage',
+  featuredExampleId: 'search-input-usage',
   api: [
     {
       name: 'value / onValueChange',
@@ -26,7 +26,7 @@ export const pageData = {
       description: '입력 높이입니다.',
     },
     {
-      name: 'SearchField.Clear hideWhenEmpty',
+      name: 'SearchInput.Clear hideWhenEmpty',
       type: 'boolean',
       defaultValue: 'true',
       description: '빈 검색어에서도 지우기 버튼을 유지할지 정합니다.',
@@ -34,41 +34,41 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: SearchFieldUsageExample,
+      Component: SearchInputUsageExample,
       coverage: [{ axis: 'interaction', values: ['controlled', 'submit'] }],
       description: '검색어와 제출 결과를 소비자 상태에서 제어합니다.',
-      id: 'search-field-usage',
+      id: 'search-input-usage',
       filename: 'usage.tsx',
       source: usageSource,
       title: '제어 검색',
     },
     {
-      Component: SearchFieldSizesExample,
+      Component: SearchInputSizesExample,
       coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
       description: '입력과 내부 버튼의 제어 높이를 함께 맞춥니다.',
-      id: 'search-field-sizes',
+      id: 'search-input-sizes',
       filename: 'sizes.tsx',
       source: sizesSource,
       title: '크기',
     },
     {
-      Component: SearchFieldStatesExample,
+      Component: SearchInputStatesExample,
       coverage: [
         { axis: 'loading', values: ['true'] },
         { axis: 'disabled', values: ['true'] },
         { axis: 'invalid', values: ['true'] },
       ],
       description: '검색 처리 중, 비활성, 오류 상태를 구분합니다.',
-      id: 'search-field-states',
+      id: 'search-input-states',
       filename: 'states.tsx',
       source: statesSource,
       title: '검색 상태',
     },
     {
-      Component: SearchFieldClearExample,
+      Component: SearchInputClearExample,
       coverage: [{ axis: 'hideWhenEmpty', values: ['false', 'true'] }],
       description: '빈 검색어에서 지우기 버튼을 숨길지 선택합니다.',
-      id: 'search-field-clear',
+      id: 'search-input-clear',
       filename: 'clear.tsx',
       source: clearSource,
       title: '지우기 버튼 표시',

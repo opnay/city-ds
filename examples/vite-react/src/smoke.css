@@ -790,7 +790,7 @@
     white-space: nowrap;
   }
 
-  .city-ops-search-field {
+  .city-ops-search-input {
     width: min(22rem, 100%);
   }
 
@@ -1165,7 +1165,7 @@
       justify-content: flex-start;
     }
 
-    .city-ops-search-field,
+    .city-ops-search-input,
     .city-ops-filter-select {
       width: 100%;
     }

@@ -45,8 +45,8 @@ function cartesianCombinations(
 
 describe('component document content', () => {
   it('provides page data and lazy MDX for every public component', () => {
-    expect(Object.keys(pageDataModules)).toHaveLength(40);
-    expect(Object.keys(documentModules)).toHaveLength(40);
+    expect(Object.keys(pageDataModules)).toHaveLength(39);
+    expect(Object.keys(documentModules)).toHaveLength(39);
     expect(Object.keys(pageDataModules).map(slugFromPath).sort()).toEqual(
       Object.keys(documentModules).map(slugFromPath).sort(),
     );
@@ -109,8 +109,26 @@ describe('component document content', () => {
   it('lazy-loads every MDX document module', async () => {
     const modules = await Promise.all(Object.values(documentModules).map((load) => load()));
 
-    expect(modules).toHaveLength(40);
+    expect(modules).toHaveLength(39);
     expect(modules.every((module) => typeof module.default === 'function')).toBe(true);
+  });
+
+  it('separates Combobox single and multiple previews without internal labels', () => {
+    const pageData = pageDataModules['./components/combobox/page-data.tsx']?.pageData;
+    const selectionExamples = pageData?.examples.filter((example) =>
+      ['combobox-single', 'combobox-multiple'].includes(example.id),
+    );
+
+    expect(selectionExamples?.map((example) => example.id)).toEqual([
+      'combobox-single',
+      'combobox-multiple',
+    ]);
+    expect(
+      selectionExamples?.every(
+        (example) =>
+          typeof example.source === 'string' && !example.source.includes('city-docs-example-label'),
+      ),
+    ).toBe(true);
   });
 
   it.each(Object.entries(REQUIRED_COMBINATION_AXES))(

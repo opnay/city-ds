@@ -70,16 +70,16 @@ Container와 영역 배치에는 8·12·16·24px 단계를 우선하십시오.
 `Field`는 하나의 control을, `Fieldset`은 같은 의미의 여러 control을 묶습니다.
 입력에만 placeholder를 두고 레이블을 생략하지 마십시오.
 
-| 제어                                 | 폼 문맥과 Label                         |
-| ------------------------------------ | --------------------------------------- |
-| Input, Textarea, NumberField, Select | 외부 `Field.Root`와 `Field.Label`       |
-| 입력형 Combobox                      | 외부 `Field.Root`와 `Field.Label`       |
-| 단독 Select                          | `Select.Label`                          |
-| Trigger형 Combobox                   | `Combobox.Label`                        |
-| SearchField, DateField, DatePicker   | 컴포넌트 자체 Label, Description, Error |
+| 제어                                                  | 폼 문맥과 Label                   |
+| ----------------------------------------------------- | --------------------------------- |
+| Input, Textarea, NumberInput, SearchInput, DatePicker | 외부 `Field.Root`와 `Field.Label` |
+| 입력형 Combobox                                       | 외부 `Field.Root`와 `Field.Label` |
+| 단독 Select                                           | `Select.Label`                    |
+| Trigger형 Combobox                                    | `Combobox.Label`                  |
 
-컴포넌트 이름의 `Field`만 보고 Field 문맥 내장 여부를 판단하지 마십시오. NumberField는
-외부 Field를 사용하고, SearchField와 DateField는 Field 문맥을 내장합니다.
+입력 컴포넌트와 DatePicker는 값을 입력하거나 선택하는 제어만 소유합니다.
+레이블, 설명, 오류, 폼 상태는 외부 `Field`에서 일관되게 구성하십시오.
+합성 입력의 `disabled`와 `invalid` 상태는 `Field.Root`와 입력 Root에 동일하게 전달하십시오.
 
 ```tsx
 import { Field } from '@opnay/city-ds-react/field';
@@ -95,7 +95,7 @@ import { Input } from '@opnay/city-ds-react/input';
 
 고정된 짧은 단일 선택은 `Select`, 비교가 중요한 적은 선택지는 `RadioGroup`, 검색·긴
 목록·다중 선택은 `Combobox`를 사용하십시오. 검색을 제출하거나 지우는 흐름은
-`SearchField`에 두고, 단순 텍스트 필터에는 `Input`으로 충분한지 먼저 확인하십시오.
+`SearchInput`에 두고, 단순 텍스트 필터에는 `Input`으로 충분한지 먼저 확인하십시오.
 
 ## 피드백은 지속 시간과 다음 행동으로 고르십시오
 

@@ -12,7 +12,7 @@ import { Field } from '../../src/components/field';
 import { Fieldset } from '../../src/components/fieldset';
 import { Input, InputGroup, Textarea } from '../../src/components/input';
 import { RadioGroup } from '../../src/components/radio-group';
-import { SearchField } from '../../src/components/search-field';
+import { SearchInput } from '../../src/components/search-input';
 import { Select } from '../../src/components/select';
 import { Switch } from '../../src/components/switch';
 import { Toggle } from '../../src/components/toggle';
@@ -353,10 +353,10 @@ describe('form and display controls', () => {
     const outline = screen.getByRole('group', { name: 'Outline group' });
 
     expect(plain).toHaveAttribute('data-appearance', 'plain');
-    expect(plain).toHaveClass('border-0', 'p-0');
-    expect(band).toHaveClass('border-y', 'py-4');
+    expect(plain).toHaveClass('w-full', 'min-w-0', 'border-0', 'p-0');
+    expect(band).toHaveClass('w-full', 'min-w-0', 'border-y', 'p-4');
     expect(outline).toHaveAttribute('data-appearance', 'outline');
-    expect(outline).toHaveClass('rounded-city-md', 'border', 'p-4');
+    expect(outline).toHaveClass('w-full', 'min-w-0', 'rounded-city-md', 'border', 'p-4');
   });
 
   it('propagates disabled Fieldset state to native controls and composed radio groups', async () => {
@@ -460,19 +460,21 @@ describe('form and display controls', () => {
     );
   });
 
-  it('supports SearchField typing, clear, Escape, and native form submission', async () => {
+  it('supports SearchInput typing, clear, Escape, and native form submission', async () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
 
     render(
-      <SearchField.Root onSubmit={onSubmit}>
-        <SearchField.Label>Search projects</SearchField.Label>
-        <SearchField.Group data-testid="search-group">
-          <SearchField.Input />
-          <SearchField.Clear />
-          <SearchField.Submit />
-        </SearchField.Group>
-      </SearchField.Root>,
+      <Field.Root>
+        <Field.Label>Search projects</Field.Label>
+        <SearchInput.Root onSubmit={onSubmit}>
+          <SearchInput.Group data-testid="search-group">
+            <SearchInput.Input />
+            <SearchInput.Clear />
+            <SearchInput.Submit />
+          </SearchInput.Group>
+        </SearchInput.Root>
+      </Field.Root>,
     );
 
     const input = screen.getByRole('searchbox', { name: 'Search projects' });
@@ -506,7 +508,7 @@ describe('form and display controls', () => {
     expect(onSubmit).toHaveBeenLastCalledWith('bridges', expect.anything());
   });
 
-  it('supports SearchField controlled values and loading status', async () => {
+  it('supports SearchInput controlled values and loading status', async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();
 
@@ -514,22 +516,24 @@ describe('form and display controls', () => {
       const [value, setValue] = React.useState('city');
 
       return (
-        <SearchField.Root
-          loading
-          onValueChange={(nextValue) => {
-            setValue(nextValue);
-            onValueChange(nextValue);
-          }}
-          value={value}
-        >
-          <SearchField.Label>Search packages</SearchField.Label>
-          <SearchField.Group>
-            <SearchField.Input />
-            <SearchField.Clear />
-            <SearchField.Submit />
-          </SearchField.Group>
-          <SearchField.Loading>Searching…</SearchField.Loading>
-        </SearchField.Root>
+        <Field.Root>
+          <Field.Label>Search packages</Field.Label>
+          <SearchInput.Root
+            loading
+            onValueChange={(nextValue) => {
+              setValue(nextValue);
+              onValueChange(nextValue);
+            }}
+            value={value}
+          >
+            <SearchInput.Group>
+              <SearchInput.Input />
+              <SearchInput.Clear />
+              <SearchInput.Submit />
+            </SearchInput.Group>
+            <SearchInput.Loading>Searching…</SearchInput.Loading>
+          </SearchInput.Root>
+        </Field.Root>
       );
     }
 
@@ -549,26 +553,30 @@ describe('form and display controls', () => {
     expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
   });
 
-  it('propagates SearchField disabled and invalid states to its inline controls', () => {
+  it('propagates SearchInput disabled and invalid states to its inline controls', () => {
     render(
       <>
-        <SearchField.Root defaultValue="archived" disabled>
-          <SearchField.Label>Disabled search</SearchField.Label>
-          <SearchField.Group data-testid="disabled-search-group">
-            <SearchField.Input disabled={false} />
-            <SearchField.Clear disabled={false} />
-            <SearchField.Submit disabled={false} />
-          </SearchField.Group>
-        </SearchField.Root>
-        <SearchField.Root defaultValue="x" invalid>
-          <SearchField.Label>Invalid search</SearchField.Label>
-          <SearchField.Group data-testid="invalid-search-group">
-            <SearchField.Input />
-            <SearchField.Clear />
-            <SearchField.Submit />
-          </SearchField.Group>
-          <SearchField.Error match>Enter at least 2 characters.</SearchField.Error>
-        </SearchField.Root>
+        <Field.Root disabled>
+          <Field.Label>Disabled search</Field.Label>
+          <SearchInput.Root defaultValue="archived" disabled>
+            <SearchInput.Group data-testid="disabled-search-group">
+              <SearchInput.Input disabled={false} />
+              <SearchInput.Clear disabled={false} />
+              <SearchInput.Submit disabled={false} />
+            </SearchInput.Group>
+          </SearchInput.Root>
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>Invalid search</Field.Label>
+          <SearchInput.Root defaultValue="x" invalid>
+            <SearchInput.Group data-testid="invalid-search-group">
+              <SearchInput.Input />
+              <SearchInput.Clear />
+              <SearchInput.Submit />
+            </SearchInput.Group>
+          </SearchInput.Root>
+          <Field.Error match>Enter at least 2 characters.</Field.Error>
+        </Field.Root>
       </>,
     );
 
@@ -582,7 +590,7 @@ describe('form and display controls', () => {
     const invalidGroup = screen.getByTestId('invalid-search-group');
     expect(invalidGroup).toHaveAttribute('data-invalid');
     expect(invalidGroup).toHaveClass('data-[invalid]:border-city-destructive');
-    expect(within(invalidGroup).getByRole('searchbox')).toHaveAttribute('data-invalid');
+    expect(within(invalidGroup).getByRole('searchbox')).toHaveAttribute('aria-invalid', 'true');
     expect(screen.getByText('Enter at least 2 characters.')).toBeVisible();
   });
 

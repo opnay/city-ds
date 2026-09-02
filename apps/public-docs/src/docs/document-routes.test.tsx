@@ -9,6 +9,7 @@ const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   badge: 1,
   'data-table-region': 2,
   'empty-state': 1,
+  fieldset: 4,
   'filter-bar': 1,
   panel: 1,
   progress: 1,

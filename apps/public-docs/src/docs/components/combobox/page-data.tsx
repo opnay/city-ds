@@ -1,11 +1,17 @@
-import selectionSource from './examples/selection.tsx?raw';
-import ComboboxSelectionExample from './examples/selection';
+import multipleSource from './examples/multiple.tsx?raw';
+import ComboboxMultipleExample from './examples/multiple';
+import singleSource from './examples/single.tsx?raw';
+import ComboboxSingleExample from './examples/single';
 import statesSource from './examples/states.tsx?raw';
 import ComboboxStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
+const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
+const singleCombinations = sizes.map((size) => `size=${size}|multiple=false`);
+const multipleCombinations = sizes.map((size) => `size=${size}|multiple=true`);
+
 export const pageData = {
-  featuredExampleId: 'combobox-selection',
+  featuredExampleId: 'combobox-single',
   api: [
     { name: 'items', type: 'readonly Value[]', description: '검색하고 선택할 컬렉션입니다.' },
     {
@@ -28,46 +34,44 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: ComboboxSelectionExample,
+      Component: ComboboxSingleExample,
       coverage: [
         {
           axis: 'size',
-          values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
-          combinations: [
-            'size=xsm|multiple=false',
-            'size=xsm|multiple=true',
-            'size=sm|multiple=false',
-            'size=sm|multiple=true',
-            'size=md|multiple=false',
-            'size=md|multiple=true',
-            'size=lg|multiple=false',
-            'size=lg|multiple=true',
-            'size=xlg|multiple=false',
-            'size=xlg|multiple=true',
-          ],
+          values: sizes,
+          combinations: singleCombinations,
         },
         {
           axis: 'multiple',
-          values: ['false', 'true'],
-          combinations: [
-            'size=xsm|multiple=false',
-            'size=xsm|multiple=true',
-            'size=sm|multiple=false',
-            'size=sm|multiple=true',
-            'size=md|multiple=false',
-            'size=md|multiple=true',
-            'size=lg|multiple=false',
-            'size=lg|multiple=true',
-            'size=xlg|multiple=false',
-            'size=xlg|multiple=true',
-          ],
+          values: ['false'],
+          combinations: singleCombinations,
         },
       ],
-      description: '모든 크기에서 단일·복수 선택 구조를 비교합니다.',
-      id: 'combobox-selection',
-      filename: 'selection.tsx',
-      source: selectionSource,
-      title: 'size × multiple',
+      description: '한 개의 값을 검색하고 선택합니다.',
+      id: 'combobox-single',
+      filename: 'single.tsx',
+      source: singleSource,
+      title: '단일 선택',
+    },
+    {
+      Component: ComboboxMultipleExample,
+      coverage: [
+        {
+          axis: 'size',
+          values: sizes,
+          combinations: multipleCombinations,
+        },
+        {
+          axis: 'multiple',
+          values: ['true'],
+          combinations: multipleCombinations,
+        },
+      ],
+      description: '여러 값을 검색해 Chip으로 선택하고 제거합니다.',
+      id: 'combobox-multiple',
+      filename: 'multiple.tsx',
+      source: multipleSource,
+      title: '복수 선택',
     },
     {
       Component: ComboboxStatesExample,
@@ -83,7 +87,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    { name: 'size', defaultValue: 'md', values: sizes },
     { name: 'multiple', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },

@@ -34,7 +34,7 @@ describe('public docs routes and shell', () => {
     },
   );
 
-  it('separates example state captions from accessible field labels', async () => {
+  it('omits redundant state captions while preserving accessible control names', async () => {
     const { container } = await renderDocs(['/components/select']);
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Select' })).toBeVisible();
@@ -42,13 +42,36 @@ describe('public docs routes and shell', () => {
       expect(container.querySelectorAll('.city-docs-example-variant').length).toBeGreaterThan(0),
     );
 
-    const captions = [...container.querySelectorAll('.city-docs-example-label')].map(
-      (caption) => caption.textContent,
-    );
+    const featuredExample = screen.getByRole('region', { name: 'Select' });
+    expect(featuredExample.querySelector('.city-docs-example-label')).toBeNull();
+    expect(within(featuredExample).getAllByRole('combobox', { name: '작업 상태' })).toHaveLength(3);
+  });
 
-    expect(captions).toContain('제어');
-    expect(screen.getAllByRole('combobox', { name: '작업 상태' }).length).toBeGreaterThan(0);
-    expect(screen.queryByRole('combobox', { name: '제어' })).not.toBeInTheDocument();
+  it('separates Fieldset surfaces and keeps each preview as a real group', async () => {
+    await renderDocs(['/components/fieldset']);
+
+    for (const name of ['Fieldset', 'Plain', 'Band']) {
+      const preview = screen.getByRole('region', { name });
+      expect(preview.querySelector('.city-docs-example-preview-content')).toHaveAttribute(
+        'data-city-docs-layout',
+        'wide',
+      );
+      expect(within(preview).getByRole('group', { name: '알림 채널' })).toBeVisible();
+      expect(within(preview).getAllByRole('checkbox')).toHaveLength(3);
+      expect(preview.querySelector('.city-docs-fieldset-options-3')).toBeVisible();
+    }
+
+    expect(
+      screen
+        .getByRole('region', { name: '그룹 상태' })
+        .querySelector('.city-docs-example-preview-content'),
+    ).toHaveAttribute('data-city-docs-layout', 'wide');
+    expect(
+      screen
+        .getByRole('region', { name: '그룹 상태' })
+        .querySelectorAll('.city-docs-fieldset-options-2'),
+    ).toHaveLength(2);
+    expect(screen.queryByText(/^(plain|band|outline) 알림 채널$/)).not.toBeInTheDocument();
   });
 
   it('navigates with internal links, focuses main content and supports back history', async () => {
@@ -341,7 +364,7 @@ describe('catalog and local UI state', () => {
 
     await user.click(within(main).getAllByRole('button', { name: '필터 초기화' })[0]!);
     expect(search).toHaveValue('');
-    expect(within(main).getByText('컴포넌트 40개')).toBeVisible();
+    expect(within(main).getByText('컴포넌트 39개')).toBeVisible();
   });
 
   it('filters the catalog by category', async () => {
@@ -352,7 +375,7 @@ describe('catalog and local UI state', () => {
     await user.click(within(main).getByRole('combobox', { name: '컴포넌트 범주' }));
     await user.click(await screen.findByRole('option', { name: '폼' }));
 
-    expect(within(main).getByText('컴포넌트 15개')).toBeVisible();
+    expect(within(main).getByText('컴포넌트 14개')).toBeVisible();
     expect(within(main).getByRole('link', { name: /^Field외부 입력/ })).toBeVisible();
     expect(within(main).queryByRole('link', { name: /Button/ })).not.toBeInTheDocument();
   });
@@ -363,12 +386,12 @@ describe('catalog and local UI state', () => {
 
     expect(filter).toHaveClass('city-docs-catalog-filter');
     expect(filter.querySelector('.city-docs-catalog-search')).not.toBeNull();
-    expect(filter.querySelector('.city-docs-catalog-search-field')).not.toBeNull();
+    expect(filter.querySelector('.city-docs-catalog-search-input')).not.toBeNull();
     expect(filter.querySelector('.city-docs-catalog-category')).not.toBeNull();
     expect(
       within(filter).getByRole('combobox', { name: '컴포넌트 범주' }).parentElement,
     ).toHaveClass('city-docs-catalog-category');
-    expect(screen.getByText('컴포넌트 40개')).toHaveClass('city-docs-results-count');
+    expect(screen.getByText('컴포넌트 39개')).toHaveClass('city-docs-results-count');
     const groupHeadings = container.querySelectorAll('.city-docs-component-groups h2');
     const descriptions = container.querySelectorAll(
       '.city-docs-component-grid .city-text-supporting',
@@ -378,7 +401,7 @@ describe('catalog and local UI state', () => {
     for (const heading of groupHeadings) {
       expect(heading).toHaveClass('city-text-section-title');
     }
-    expect(descriptions).toHaveLength(40);
+    expect(descriptions).toHaveLength(39);
   });
 
   it('uses the system theme initially and lets the user choose light or dark', async () => {

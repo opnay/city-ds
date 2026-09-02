@@ -1,11 +1,16 @@
-import appearancesSource from './examples/appearances.tsx?raw';
-import FieldsetAppearancesExample from './examples/appearances';
+import bandSource from './examples/band.tsx?raw';
+import FieldsetBandExample from './examples/band';
+import outlineSource from './examples/outline.tsx?raw';
+import FieldsetOutlineExample from './examples/outline';
+import plainSource from './examples/plain.tsx?raw';
+import FieldsetPlainExample from './examples/plain';
 import statesSource from './examples/states.tsx?raw';
 import FieldsetStatesExample from './examples/states';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'fieldset-appearances',
+  featuredExampleId: 'fieldset-outline',
+  widePreviewIds: ['fieldset-outline', 'fieldset-plain', 'fieldset-band', 'fieldset-states'],
   api: [
     {
       name: 'appearance',
@@ -28,13 +33,31 @@ export const pageData = {
   ],
   examples: [
     {
-      Component: FieldsetAppearancesExample,
-      coverage: [{ axis: 'appearance', values: ['plain', 'band', 'outline'] }],
-      description: '주변 레이아웃과 정보 위계에 맞는 그룹 표면을 선택합니다.',
-      id: 'fieldset-appearances',
-      filename: 'appearances.tsx',
-      source: appearancesSource,
-      title: '표면',
+      Component: FieldsetOutlineExample,
+      coverage: [{ axis: 'appearance', values: ['outline'] }],
+      description: '경계가 필요한 독립적인 필드 그룹입니다.',
+      id: 'fieldset-outline',
+      filename: 'outline.tsx',
+      source: outlineSource,
+      title: 'Outline',
+    },
+    {
+      Component: FieldsetPlainExample,
+      coverage: [{ axis: 'appearance', values: ['plain'] }],
+      description: '주변 레이아웃과 같은 표면에서 필드를 묶습니다.',
+      id: 'fieldset-plain',
+      filename: 'plain.tsx',
+      source: plainSource,
+      title: 'Plain',
+    },
+    {
+      Component: FieldsetBandExample,
+      coverage: [{ axis: 'appearance', values: ['band'] }],
+      description: '배경 대비로 필드 그룹을 구분합니다.',
+      id: 'fieldset-band',
+      filename: 'band.tsx',
+      source: bandSource,
+      title: 'Band',
     },
     {
       Component: FieldsetStatesExample,

@@ -9,12 +9,10 @@ export default function DatePickerUsageExample() {
 
   return (
     <DatePicker.Root onOpenChange={setOpen} onValueChange={setValue} open={open} value={value}>
-      <DatePicker.Label>검토 날짜</DatePicker.Label>
       <DatePicker.Group>
-        <DatePicker.Input />
-        <DatePicker.Trigger />
+        <DatePicker.Input aria-label="검토 날짜" />
+        <DatePicker.Trigger aria-label="검토 날짜 달력 열기" />
       </DatePicker.Group>
-      <DatePicker.Description>직접 입력하거나 달력에서 선택하십시오.</DatePicker.Description>
       <DatePicker.Portal>
         <DatePicker.Positioner>
           <DatePicker.Popup>

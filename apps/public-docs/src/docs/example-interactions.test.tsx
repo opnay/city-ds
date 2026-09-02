@@ -28,8 +28,8 @@ describe('documented component interactions', () => {
 
   it('updates a controlled form example and exposes its local result', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/search-field']);
-    const featuredExample = screen.getByRole('region', { name: 'SearchField' });
+    await renderDocs(['/components/search-input']);
+    const featuredExample = screen.getByRole('region', { name: 'SearchInput' });
     const search = within(featuredExample).getByRole('searchbox', {
       name: '문서 검색',
     });
@@ -40,9 +40,7 @@ describe('documented component interactions', () => {
     await user.type(search, 'Button');
 
     expect(search).toHaveValue('Button');
-    const form = search.closest('form');
-    if (!form) throw new Error('문서 검색 form을 찾을 수 없습니다.');
-    expect(within(form).getByText('Button')).toBeVisible();
+    expect(within(featuredExample).getByText('Button')).toBeVisible();
   });
 
   it('adds transient feedback through the documented Sonner API', async () => {
@@ -108,8 +106,14 @@ describe('documented component interactions', () => {
     const user = userEvent.setup();
     const fieldset = await renderDocs(['/components/fieldset']);
 
-    for (const name of ['이메일', '문자', '평일', '서울']) {
-      expect(screen.getByRole('checkbox', { name })).toBeVisible();
+    const defaultPreview = screen.getByRole('region', { name: 'Fieldset' });
+    for (const name of ['이메일', '문자', '푸시']) {
+      expect(within(defaultPreview).getByRole('checkbox', { name })).toBeVisible();
+    }
+
+    const statesPreview = screen.getByRole('region', { name: '그룹 상태' });
+    for (const name of ['평일', '주말', '서울', '경기']) {
+      expect(within(statesPreview).getByRole('checkbox', { name })).toBeVisible();
     }
 
     fieldset.unmount();

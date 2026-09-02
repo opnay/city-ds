@@ -1025,6 +1025,14 @@
     gap: var(--city-space-3);
   }
 
+  .city-docs-fieldset-options-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .city-docs-fieldset-options-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .city-docs-nonmodal-drawer-viewport {
     pointer-events: none;
   }
@@ -1757,7 +1765,7 @@
     flex: 1 1 16rem;
   }
 
-  .city-docs-catalog-search-field,
+  .city-docs-catalog-search-input,
   .city-docs-catalog-category > [role='combobox'] {
     width: 100%;
   }

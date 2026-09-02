@@ -29,7 +29,6 @@ export default function ComboboxStatesExample() {
   return (
     <div className="city-docs-example-stack">
       <div className="city-docs-example-variant">
-        <span className="city-docs-example-label">제어</span>
         <Combobox.Root items={projects} onValueChange={setValue} value={value}>
           <Combobox.InputGroup>
             <Combobox.Input aria-label="프로젝트" placeholder="프로젝트 검색" />
@@ -39,7 +38,6 @@ export default function ComboboxStatesExample() {
         </Combobox.Root>
       </div>
       <div className="city-docs-example-variant">
-        <span className="city-docs-example-label">비활성</span>
         <Combobox.Root disabled items={projects}>
           <Combobox.InputGroup>
             <Combobox.Input aria-label="프로젝트" placeholder="프로젝트 검색" />

@@ -4,7 +4,6 @@ export default function InputStatesExample() {
   return (
     <div className="city-docs-example-stack">
       <div className="city-docs-example-variant">
-        <span className="city-docs-example-label">오류</span>
         <Input
           aria-invalid
           aria-label="프로젝트 이름"
@@ -13,7 +12,6 @@ export default function InputStatesExample() {
         />
       </div>
       <div className="city-docs-example-variant">
-        <span className="city-docs-example-label">비활성</span>
         <Input aria-label="프로젝트 이름" defaultValue="수정할 수 없습니다" disabled />
       </div>
     </div>

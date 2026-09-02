@@ -34,7 +34,7 @@ describe('public docs routes and shell', () => {
     },
   );
 
-  it('separates example state captions from accessible field labels', async () => {
+  it('omits redundant state captions while preserving accessible control names', async () => {
     const { container } = await renderDocs(['/components/select']);
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Select' })).toBeVisible();
@@ -42,13 +42,9 @@ describe('public docs routes and shell', () => {
       expect(container.querySelectorAll('.city-docs-example-variant').length).toBeGreaterThan(0),
     );
 
-    const captions = [...container.querySelectorAll('.city-docs-example-label')].map(
-      (caption) => caption.textContent,
-    );
-
-    expect(captions).toContain('제어');
-    expect(screen.getAllByRole('combobox', { name: '작업 상태' }).length).toBeGreaterThan(0);
-    expect(screen.queryByRole('combobox', { name: '제어' })).not.toBeInTheDocument();
+    const featuredExample = screen.getByRole('region', { name: 'Select' });
+    expect(featuredExample.querySelector('.city-docs-example-label')).toBeNull();
+    expect(within(featuredExample).getAllByRole('combobox', { name: '작업 상태' })).toHaveLength(3);
   });
 
   it('navigates with internal links, focuses main content and supports back history', async () => {

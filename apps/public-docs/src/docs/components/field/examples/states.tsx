@@ -5,7 +5,6 @@ export default function FieldStatesExample() {
   return (
     <div className="city-docs-example-stack">
       <div className="city-docs-example-variant">
-        <span className="city-docs-example-label">기본</span>
         <Field.Root>
           <Field.Label>프로젝트 이름</Field.Label>
           <Input defaultValue="city-ds" />
@@ -13,7 +12,6 @@ export default function FieldStatesExample() {
         </Field.Root>
       </div>
       <div className="city-docs-example-variant">
-        <span className="city-docs-example-label">오류</span>
         <Field.Root invalid>
           <Field.Label>프로젝트 이름</Field.Label>
           <Input defaultValue="city" />
@@ -21,7 +19,6 @@ export default function FieldStatesExample() {
         </Field.Root>
       </div>
       <div className="city-docs-example-variant">
-        <span className="city-docs-example-label">비활성</span>
         <Field.Root disabled>
           <Field.Label>프로젝트 이름</Field.Label>
           <Input defaultValue="city-ds" />

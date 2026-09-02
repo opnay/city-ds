@@ -175,12 +175,15 @@ describe('overlay and selection controls', () => {
     expect(drawer).toHaveAttribute('data-side', 'right');
     expect(drawer).toHaveClass(
       'w-[min(32rem,calc(100vw-2rem))]',
-      '[transform:translateX(var(--drawer-swipe-movement-x))]',
-      'data-[starting-style]:[transform:translateX(calc(100%+2px))]',
-      'data-[ending-style]:[transform:translateX(calc(100%+2px))]',
-      'duration-(--city-duration-slow)',
+      'origin-right',
+      '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)]',
+      'data-[starting-style]:[transform:translateX(calc(50%+2px))_scale(0.97)]',
+      'data-[ending-style]:[transform:translateX(calc(50%+2px))_scale(0.97)]',
+      'duration-(--city-duration-normal)',
       'ease-city-standard',
       'data-[swiping]:duration-0',
+      'data-[starting-style]:blur-[4px]',
+      'data-[ending-style]:blur-[4px]',
       'motion-reduce:transition-none',
     );
     expect(screen.getByText('Asset details').parentElement).toHaveAttribute(
@@ -218,14 +221,16 @@ describe('overlay and selection controls', () => {
     );
 
     expect(await screen.findByTestId('left-drawer')).toHaveClass(
-      '[transform:translateX(var(--drawer-swipe-movement-x))]',
-      'data-[starting-style]:[transform:translateX(calc(-100%-2px))]',
-      'data-[ending-style]:[transform:translateX(calc(-100%-2px))]',
+      'origin-left',
+      '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)]',
+      'data-[starting-style]:[transform:translateX(calc(-50%-2px))_scale(0.97)]',
+      'data-[ending-style]:[transform:translateX(calc(-50%-2px))_scale(0.97)]',
     );
     expect(screen.getByTestId('bottom-drawer')).toHaveClass(
-      '[transform:translateY(var(--drawer-swipe-movement-y))]',
-      'data-[starting-style]:[transform:translateY(calc(100%+2px))]',
-      'data-[ending-style]:[transform:translateY(calc(100%+2px))]',
+      'origin-bottom',
+      '[transform:translateY(var(--drawer-swipe-movement-y))_scale(1)]',
+      'data-[starting-style]:[transform:translateY(calc(50%+2px))_scale(0.97)]',
+      'data-[ending-style]:[transform:translateY(calc(50%+2px))_scale(0.97)]',
     );
   });
 

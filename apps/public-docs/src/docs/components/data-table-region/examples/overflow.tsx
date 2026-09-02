@@ -5,21 +5,36 @@ const appearances = ['plain', 'band', 'outline'] as const;
 
 function ReleaseTable() {
   return (
-    <Table.Root className="city-docs-example-wide">
+    <Table.Root className="city-docs-example-overflow-table">
       <Table.Header>
         <Table.Row>
-          <Table.Head>이름</Table.Head>
+          <Table.Head>데이터셋</Table.Head>
           <Table.Head>상태</Table.Head>
-          <Table.Head>담당자</Table.Head>
+          <Table.Head>유형</Table.Head>
+          <Table.Head>담당 조직</Table.Head>
+          <Table.Head>대상 지역</Table.Head>
+          <Table.Head>공개 범위</Table.Head>
           <Table.Head>갱신 일시</Table.Head>
         </Table.Row>
       </Table.Header>
       <Table.Body>
         <Table.Row>
-          <Table.Cell>도시 데이터</Table.Cell>
+          <Table.Cell>도시 생활 인구</Table.Cell>
           <Table.Cell>공개</Table.Cell>
+          <Table.Cell>실시간 통계</Table.Cell>
           <Table.Cell>플랫폼 팀</Table.Cell>
-          <Table.Cell>2026-08-02</Table.Cell>
+          <Table.Cell>서울 전역</Table.Cell>
+          <Table.Cell>공공 데이터 포털</Table.Cell>
+          <Table.Cell>2026-09-02 09:30</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>도시 공원 시설</Table.Cell>
+          <Table.Cell>검토 중</Table.Cell>
+          <Table.Cell>시설 현황</Table.Cell>
+          <Table.Cell>공원 운영 팀</Table.Cell>
+          <Table.Cell>25개 자치구</Table.Cell>
+          <Table.Cell>내부 운영 도구</Table.Cell>
+          <Table.Cell>2026-09-01 18:10</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table.Root>
@@ -30,15 +45,14 @@ export default function DataTableRegionOverflowExample() {
   return (
     <div className="city-docs-example-stack">
       {appearances.map((appearance) => (
-        <div className="city-docs-example-narrow" key={appearance}>
-          <DataTableRegion
-            appearance={appearance}
-            hint="표를 가로로 스크롤해 나머지 열을 확인하십시오."
-            label={`${appearance} 발행 기록`}
-          >
-            <ReleaseTable />
-          </DataTableRegion>
-        </div>
+        <DataTableRegion
+          appearance={appearance}
+          hint="표를 가로로 스크롤해 나머지 열을 확인하십시오."
+          key={appearance}
+          label={`${appearance} 발행 기록`}
+        >
+          <ReleaseTable />
+        </DataTableRegion>
       ))}
     </div>
   );

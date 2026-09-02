@@ -1049,6 +1049,11 @@
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
   }
 
+  .city-docs-example-grid > [data-city-badge] {
+    width: fit-content;
+    justify-self: start;
+  }
+
   .city-docs-example-item,
   .city-docs-example-panel {
     display: grid;
@@ -1638,12 +1643,12 @@
     color: var(--city-color-muted-foreground);
   }
 
-  .city-docs-example-narrow {
-    width: min(100%, 22rem);
+  .city-docs-example-overflow-table {
+    min-width: 64rem;
   }
 
-  .city-docs-example-wide {
-    min-width: 48rem;
+  .city-docs-example-overflow-table :where(th, td) {
+    white-space: nowrap;
   }
 
   .city-docs-example-scroll {

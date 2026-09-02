@@ -8,8 +8,11 @@ const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   alert: 2,
   badge: 1,
   'data-table-region': 2,
+  'empty-state': 1,
   'filter-bar': 1,
+  panel: 1,
   progress: 1,
+  skeleton: 1,
   table: 4,
   toast: 1,
 };
@@ -155,5 +158,20 @@ describe('all component document routes', () => {
     expect(screen.getAllByRole('grid')).toHaveLength(11);
     expect(screen.queryByRole('group', { name: '달력 크기' })).toBeNull();
     expect(screen.queryByRole('group', { name: '달력 상태' })).toBeNull();
+  });
+
+  it.each([
+    { slug: 'data-table-region', tableCount: 5 },
+    { slug: 'table', tableCount: 3 },
+  ])('uses the full preview width before $slug tables overflow', async ({ slug, tableCount }) => {
+    const { container } = await renderDocs([`/components/${slug}`]);
+    const overflowTables = container.querySelectorAll('.city-docs-example-overflow-table');
+
+    expect(container.querySelector('.city-docs-example-narrow')).toBeNull();
+    expect(overflowTables).toHaveLength(tableCount);
+    for (const table of overflowTables) {
+      expect(table.closest('[data-city-table-scroll-area]')).not.toBeNull();
+      expect(table.closest("[data-city-docs-layout='wide']")).not.toBeNull();
+    }
   });
 });

@@ -10,13 +10,14 @@ import {
 import { Accordion } from '@opnay/city-ds-react/accordion';
 import { Checkbox } from '@opnay/city-ds-react/checkbox';
 import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
+import { DensityProvider } from '@opnay/city-ds-react/density-provider';
 import { Panel } from '@opnay/city-ds-react/panel';
 import { Table } from '@opnay/city-ds-react/table';
 import type { MDXComponents } from 'mdx/types.js';
 
 import type { ApiItem, ComponentPageData, DocExample } from '../docs/types';
 import { CodeBlock, type CodeFile } from './code-block';
-import { PreviewSettingsButton } from './preview-settings';
+import { PreviewSettingsButton, usePreviewSettings } from './preview-settings';
 
 interface DocsMdxProviderProps {
   children: ReactNode;
@@ -67,6 +68,7 @@ function useComponentDocTitle() {
 }
 
 function ExampleFrame({ example, featuredTitle, previewLayout = 'center' }: ExampleFrameProps) {
+  const { previewDensity, resolvedPreviewTheme } = usePreviewSettings();
   const isFeatured = featuredTitle !== undefined;
   const title = featuredTitle ?? example.title;
   const titleId = `example-${example.id}`;
@@ -106,10 +108,14 @@ function ExampleFrame({ example, featuredTitle, previewLayout = 'center' }: Exam
         </div>
       </Panel.Header>
       <Panel.Body className="city-docs-example-body">
-        <div className="city-docs-example-preview">
-          <div className="city-docs-example-preview-content" data-city-docs-layout={previewLayout}>
+        <div className="city-docs-example-preview" data-theme={resolvedPreviewTheme}>
+          <DensityProvider
+            className="city-docs-example-preview-content"
+            data-city-docs-layout={previewLayout}
+            density={previewDensity}
+          >
             <Example />
-          </div>
+          </DensityProvider>
         </div>
         <Accordion.Root className="city-docs-example-code divide-y-0 rounded-none border-0 bg-transparent">
           <Accordion.Item value="code">

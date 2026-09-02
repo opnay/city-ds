@@ -221,7 +221,8 @@
   }
 
   .city-docs-sidebar > .city-docs-home-link {
-    width: 100%;
+    width: calc(100% - var(--city-space-1));
+    height: auto;
     padding: var(--city-space-2);
   }
 
@@ -245,7 +246,7 @@
 
   .city-docs-nav-controls {
     display: grid;
-    padding-inline: var(--city-space-1);
+    padding-right: var(--city-space-1);
     flex: none;
     gap: var(--city-space-2);
   }

@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { renderDocs } from '../test/render-docs';
-import { CATEGORY_LABELS, COMPONENT_DOCS } from './doc-catalog';
+import { COMPONENT_DOCS } from './doc-catalog';
 
 const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   alert: 2,
@@ -30,9 +30,7 @@ describe('all component document routes', () => {
       .closest('header');
 
     expect(pageHeading).not.toBeNull();
-    expect(
-      within(pageHeading as HTMLElement).getByText(`컴포넌트 · ${CATEGORY_LABELS[entry.category]}`),
-    ).toHaveClass('city-docs-page-eyebrow', 'city-text-caption');
+    expect(pageHeading?.querySelector('.city-docs-page-eyebrow')).not.toBeInTheDocument();
     expect(pageHeading?.querySelector(':scope > [data-city-badge]')).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2, name: '접근성' })).toHaveClass(
       'city-text-section-title',

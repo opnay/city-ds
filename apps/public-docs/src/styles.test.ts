@@ -110,7 +110,7 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(/\.city-docs-nav-mode-trigger\s*{[^}]*width:\s*100%;/s);
     expect(styles).toMatch(/\.city-docs-home-link\s*{[^}]*justify-content:\s*flex-start;/s);
     expect(styles).toMatch(
-      /\.city-docs-sidebar\s*>\s*\.city-docs-home-link\s*{[^}]*width:\s*100%;[^}]*padding:\s*var\(--city-space-2\);/s,
+      /\.city-docs-sidebar\s*>\s*\.city-docs-home-link\s*{[^}]*width:\s*calc\(100% - var\(--city-space-1\)\);[^}]*height:\s*auto;[^}]*padding:\s*var\(--city-space-2\);/s,
     );
     expect(styles).not.toContain('.city-docs-mobile-brand .city-docs-brand');
     expect(styles).not.toContain('.city-docs-theme-trigger');

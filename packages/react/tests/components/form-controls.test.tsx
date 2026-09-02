@@ -603,6 +603,8 @@ describe('form and display controls', () => {
     await user.click(screen.getByRole('checkbox', { name: 'Locked' }));
 
     expect(checkbox).toHaveAttribute('aria-checked', 'true');
+    expect(checkbox).toHaveClass('inline-grid');
+    expect(checkbox).not.toHaveClass('grid');
     expect(onCheckedChange).toHaveBeenCalledTimes(1);
     expect(screen.getByRole('checkbox', { name: 'Partial' })).toHaveAttribute(
       'aria-checked',

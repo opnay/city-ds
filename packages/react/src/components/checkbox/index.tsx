@@ -71,7 +71,7 @@ const CheckboxRoot = React.forwardRef<HTMLElement, CheckboxProps>(function Check
       className={(state) =>
         cn(
           atomicRectShapeClasses.compact,
-          'group border-city-input bg-city-background text-city-primary-foreground focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:border-city-primary data-[checked]:bg-city-primary data-[indeterminate]:border-city-primary data-[indeterminate]:bg-city-primary grid shrink-0 place-items-center border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
+          'group border-city-input bg-city-background text-city-primary-foreground focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:border-city-primary data-[checked]:bg-city-primary data-[indeterminate]:border-city-primary data-[indeterminate]:bg-city-primary inline-grid shrink-0 place-items-center border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
           checkboxSizeClasses[size],
           resolveClassName(className, state),
         )

@@ -1,0 +1,23 @@
+import { Checkbox } from '@opnay/city-ds-react/checkbox';
+import { Fieldset } from '@opnay/city-ds-react/fieldset';
+
+const channels = ['이메일', '문자', '푸시'] as const;
+
+export default function FieldsetBandExample() {
+  return (
+    <Fieldset.Root appearance="band">
+      <Fieldset.Legend>알림 채널</Fieldset.Legend>
+      <Fieldset.Content>
+        {channels.map((channel) => {
+          const id = `fieldset-band-${channel}`;
+          return (
+            <div className="city-docs-example-row" key={channel}>
+              <Checkbox aria-labelledby={id} defaultChecked={channel === '이메일'} />
+              <span id={id}>{channel}</span>
+            </div>
+          );
+        })}
+      </Fieldset.Content>
+    </Fieldset.Root>
+  );
+}

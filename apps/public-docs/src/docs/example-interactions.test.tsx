@@ -106,8 +106,14 @@ describe('documented component interactions', () => {
     const user = userEvent.setup();
     const fieldset = await renderDocs(['/components/fieldset']);
 
-    for (const name of ['이메일', '문자', '평일', '서울']) {
-      expect(screen.getByRole('checkbox', { name })).toBeVisible();
+    const defaultPreview = screen.getByRole('region', { name: 'Fieldset' });
+    for (const name of ['이메일', '문자', '푸시']) {
+      expect(within(defaultPreview).getByRole('checkbox', { name })).toBeVisible();
+    }
+
+    const statesPreview = screen.getByRole('region', { name: '그룹 상태' });
+    for (const name of ['평일', '주말', '서울', '경기']) {
+      expect(within(statesPreview).getByRole('checkbox', { name })).toBeVisible();
     }
 
     fieldset.unmount();

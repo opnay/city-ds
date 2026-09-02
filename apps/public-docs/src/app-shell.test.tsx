@@ -47,6 +47,18 @@ describe('public docs routes and shell', () => {
     expect(within(featuredExample).getAllByRole('combobox', { name: '작업 상태' })).toHaveLength(3);
   });
 
+  it('separates Fieldset surfaces and keeps each preview as a real group', async () => {
+    await renderDocs(['/components/fieldset']);
+
+    for (const name of ['Fieldset', 'Plain', 'Band']) {
+      const preview = screen.getByRole('region', { name });
+      expect(within(preview).getByRole('group', { name: '알림 채널' })).toBeVisible();
+      expect(within(preview).getAllByRole('checkbox')).toHaveLength(3);
+    }
+
+    expect(screen.queryByText(/^(plain|band|outline) 알림 채널$/)).not.toBeInTheDocument();
+  });
+
   it('navigates with internal links, focuses main content and supports back history', async () => {
     const user = userEvent.setup();
     const { history } = await renderDocs(['/']);

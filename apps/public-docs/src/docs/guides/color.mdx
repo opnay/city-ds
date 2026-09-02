@@ -34,6 +34,28 @@ Light·Dark·System에서 의미와 위계가 유지됩니다.
 
 <ColorThemeComparison />
 
+## Surface 위계를 구분하십시오
+
+`surface-raised`는 현재 면 위로 분리된 독립 레이어를 표현합니다. Light와 Dark 모두
+`background` 90%와 `surface` 10%를 혼합해 Canvas와 가까운 면을 유지하며, border와 shadow로
+레이어 관계를 보완합니다.
+
+| 토큰             | 면의 역할                 | 대표 사용                                            |
+| ---------------- | ------------------------- | ---------------------------------------------------- |
+| `background`     | 페이지 Canvas와 기본 면   | 페이지, 입력, 일반 outline 컨트롤                    |
+| `surface`        | Canvas 안의 지속 구획     | 섹션, Toolbar·FilterBar 같은 구조적 밴드             |
+| `surface-raised` | 현재 면에서 분리된 레이어 | Dialog·Drawer·Popover Popup, 독립적으로 떠 있는 카드 |
+| `muted`          | 위계를 낮춘 보조 면       | 보조 그룹, 빈 상태, 트랙과 비활성 영역               |
+
+- Popup처럼 실제로 떠 있는 면에는 `surface-raised`를 사용하고 필요에 따라 border와 shadow를
+  함께 적용하십시오.
+- Trigger·Close·입력처럼 현재 면에 놓인 컨트롤을 밝게 만들기 위해 `surface-raised`를 사용하지
+  마십시오. 기본 면에는 `background`, 상호작용 상태에는 `accent-*`를 사용하십시오.
+- Raised 컨테이너 내부의 Header·Body·Footer는 기본적으로 면을 상속하십시오. 독립된 레이어가
+  아니라면 같은 `surface-raised`를 다시 지정하지 마십시오.
+- 선택 상태는 surface 위계와 다릅니다. 선택은 해당 컴포넌트의 selected·pressed 계약으로
+  표현하고, 밝기 차이만으로 구분하지 마십시오.
+
 white·neutral 계열을 제외한 유색 solid는 모든 테마에서 전경을 `neutral-50`으로 고정하고,
 일반 텍스트 대비 4.5:1 이상을 만족하는 어두운 tone fill만 사용합니다. 밝은 유색 면이 필요하면
 전경을 어둡게 바꾸지 말고 subtle 또는 outline을 사용하십시오.

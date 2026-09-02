@@ -500,6 +500,14 @@ describe('theme contract', () => {
     expect(interactionColors).not.toContain(readToken('--city-color-surface-raised'));
   });
 
+  it('keeps raised surfaces close to the background in every theme', () => {
+    const raisedSurfaceDefinitions = themeCss.match(
+      /--city-color-surface-raised:\s*color-mix\(\s*in oklch,\s*var\(--city-color-background\) 90%,\s*var\(--city-color-surface\)\s*\);/g,
+    );
+
+    expect(raisedSurfaceDefinitions).toHaveLength(3);
+  });
+
   it('keeps consumer examples on published variables', () => {
     const publishedTokens = new Set(
       [...themeCss.matchAll(/(--city-[a-z0-9-]+)\s*:/g)].map((match) => match[1]),

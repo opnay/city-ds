@@ -4,6 +4,7 @@ import type { ComponentPageData } from '../../types';
 
 export const pageData = {
   featuredExampleId: 'panel-structure',
+  widePreviewIds: ['panel-structure'],
   api: [
     {
       name: 'Panel.Root',

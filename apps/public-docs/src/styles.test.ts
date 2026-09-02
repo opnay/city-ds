@@ -232,6 +232,17 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(
       /\.city-docs-example-grid\s*{\s*grid-template-columns:\s*repeat\(auto-fit, minmax\(min\(100%, 18rem\), 1fr\)\);/,
     );
+    expect(styles).toMatch(
+      /\.city-docs-example-grid > \[data-city-badge]\s*{[^}]*width:\s*fit-content;[^}]*justify-self:\s*start;/s,
+    );
+  });
+
+  it('uses the full preview width before table content overflows', () => {
+    expect(styles).not.toContain('.city-docs-example-narrow');
+    expect(styles).toMatch(/\.city-docs-example-overflow-table\s*{\s*min-width:\s*64rem;/);
+    expect(styles).toMatch(
+      /\.city-docs-example-overflow-table :where\(th, td\)\s*{\s*white-space:\s*nowrap;/,
+    );
   });
 
   it('uses a subtle optional grid for every example preview', () => {

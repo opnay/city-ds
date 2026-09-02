@@ -4,6 +4,7 @@ import type { ComponentPageData } from '../../types';
 
 export const pageData = {
   featuredExampleId: 'empty-state',
+  widePreviewIds: ['empty-state'],
   api: [
     {
       name: 'density',

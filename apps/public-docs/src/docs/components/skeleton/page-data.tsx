@@ -3,6 +3,7 @@ import SkeletonMatrixExample from './examples/matrix';
 import type { ComponentPageData } from '../../types';
 export const pageData = {
   featuredExampleId: 'skeleton-matrix',
+  widePreviewIds: ['skeleton-matrix'],
   api: [
     {
       name: 'variant',

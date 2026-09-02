@@ -136,7 +136,11 @@
   --city-color-background: var(--city-palette-white);
   --city-color-foreground: var(--city-palette-neutral-900);
   --city-color-surface: var(--city-palette-neutral-50);
-  --city-color-surface-raised: var(--city-palette-white);
+  --city-color-surface-raised: color-mix(
+    in oklch,
+    var(--city-color-background) 90%,
+    var(--city-color-surface)
+  );
   --city-color-muted: var(--city-palette-neutral-100);
   --city-color-muted-foreground: color-mix(
     in oklch,
@@ -191,8 +195,8 @@
   --city-color-surface: var(--city-palette-neutral-900);
   --city-color-surface-raised: color-mix(
     in oklch,
-    var(--city-palette-neutral-800) 90%,
-    var(--city-palette-neutral-900)
+    var(--city-color-background) 90%,
+    var(--city-color-surface)
   );
   --city-color-muted: var(--city-palette-neutral-800);
   --city-color-muted-foreground: var(--city-palette-neutral-400);
@@ -243,8 +247,8 @@
     --city-color-surface: var(--city-palette-neutral-900);
     --city-color-surface-raised: color-mix(
       in oklch,
-      var(--city-palette-neutral-800) 90%,
-      var(--city-palette-neutral-900)
+      var(--city-color-background) 90%,
+      var(--city-color-surface)
     );
     --city-color-muted: var(--city-palette-neutral-800);
     --city-color-muted-foreground: var(--city-palette-neutral-400);

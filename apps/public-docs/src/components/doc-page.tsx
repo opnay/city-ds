@@ -2,7 +2,7 @@ import type { ComponentType, ReactNode } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 
-import { CATEGORY_LABELS, getComponentDoc } from '../docs/doc-catalog';
+import { getComponentDoc } from '../docs/doc-catalog';
 import type { ComponentDocEntry } from '../docs/types';
 import { CodeBlock } from './code-block';
 import { ComponentDocScope } from './docs-mdx';
@@ -44,9 +44,6 @@ export function ComponentDocPage({ Content, entry }: ComponentDocPageProps) {
     <article className="city-docs-article">
       <header className="city-docs-page-heading">
         <div className="city-docs-page-heading-copy">
-          <p className="city-docs-page-eyebrow city-text-caption">
-            컴포넌트 · {CATEGORY_LABELS[entry.category]}
-          </p>
           <h1 className="city-text-page-title">{entry.title}</h1>
           <p className="city-docs-page-description city-text-lead">{entry.description}</p>
         </div>

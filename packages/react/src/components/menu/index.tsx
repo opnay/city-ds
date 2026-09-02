@@ -25,6 +25,7 @@ import type {
 } from '@base-ui/react/menu';
 import { Check, ChevronRight, ChevronUp, Circle } from 'lucide-react';
 import { cn } from '../../lib/cn';
+import { floatingArrowClasses } from '../../lib/floating-arrow';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 import type { Density } from '../../types';
 import { useDensity } from '../density-provider';
@@ -363,7 +364,7 @@ export const MenuArrow = React.forwardRef<HTMLDivElement, MenuArrowProps>(
       ref={ref}
       className={classes(
         className,
-        'border-city-border bg-city-background size-2 rotate-45 border-t border-l',
+        cn(floatingArrowClasses, 'text-city-background before:border before:border-city-border'),
       )}
     />
   ),

@@ -13,6 +13,7 @@ import type {
   TooltipViewportProps as BaseTooltipViewportProps,
 } from '@base-ui/react/tooltip';
 import { cn } from '../../lib/cn';
+import { floatingArrowClasses } from '../../lib/floating-arrow';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 
 function classes<State>(className: StateClassName<State> | undefined, defaults: string) {
@@ -79,7 +80,7 @@ export const TooltipArrow = React.forwardRef<HTMLDivElement, TooltipArrowProps>(
     <BaseTooltip.Arrow
       {...props}
       ref={ref}
-      className={classes(className, 'bg-city-inverse size-2 rotate-45')}
+      className={classes(className, cn(floatingArrowClasses, 'text-city-inverse'))}
     />
   ),
 );

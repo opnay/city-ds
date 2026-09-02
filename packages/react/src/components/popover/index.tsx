@@ -16,6 +16,7 @@ import type {
   PopoverViewportProps as BasePopoverViewportProps,
 } from '@base-ui/react/popover';
 import { cn } from '../../lib/cn';
+import { floatingArrowClasses } from '../../lib/floating-arrow';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 
 function classes<State>(className: StateClassName<State> | undefined, defaults: string) {
@@ -79,7 +80,10 @@ export const PopoverArrow = React.forwardRef<HTMLDivElement, PopoverArrowProps>(
       ref={ref}
       className={classes(
         className,
-        'border-city-border bg-city-surface-raised size-2 rotate-45 border-r border-b',
+        cn(
+          floatingArrowClasses,
+          'text-city-surface-raised before:border before:border-city-border',
+        ),
       )}
     />
   ),

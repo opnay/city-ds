@@ -313,6 +313,7 @@ describe('overlay and selection controls', () => {
               <Popover.Title>Filters</Popover.Title>
               <Popover.Description>Refine the deployments list.</Popover.Description>
               <Popover.Close>Done</Popover.Close>
+              <Popover.Arrow data-testid="popover-arrow" />
             </Popover.Popup>
           </Popover.Positioner>
         </Popover.Portal>
@@ -328,6 +329,14 @@ describe('overlay and selection controls', () => {
     expect(document.querySelector('.bg-city-backdrop-subtle')).toBeInTheDocument();
     expect(screen.getByText('Refine the deployments list.')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Done' })).toHaveClass('text-xs');
+    expect(screen.getByTestId('popover-arrow')).toHaveClass(
+      'overflow-clip',
+      'data-[side=left]:-right-[9px]',
+      'data-[side=right]:-left-[9px]',
+      'before:size-[8.5px]',
+      'before:border-city-border',
+      'text-city-surface-raised',
+    );
 
     await user.keyboard('{Escape}');
 
@@ -444,6 +453,7 @@ describe('overlay and selection controls', () => {
                 Archive
               </Menu.Item>
               <Menu.Item>Duplicate</Menu.Item>
+              <Menu.Arrow data-testid="menu-arrow" />
             </Menu.Popup>
           </Menu.Positioner>
         </Menu.Portal>
@@ -476,6 +486,14 @@ describe('overlay and selection controls', () => {
       'data-[highlighted]:text-city-destructive',
     );
     expect(screen.getByRole('menuitem', { name: 'Duplicate' })).toHaveClass('pl-2');
+    expect(screen.getByTestId('menu-arrow')).toHaveClass(
+      'overflow-clip',
+      'data-[side=left]:rotate-90',
+      'data-[side=right]:-rotate-90',
+      'before:size-[8.5px]',
+      'before:border-city-border',
+      'text-city-background',
+    );
     expect(onOpen).toHaveBeenCalledWith(true, expect.objectContaining({ reason: 'trigger-press' }));
 
     await user.keyboard('{ArrowDown}{Enter}');
@@ -622,7 +640,10 @@ describe('overlay and selection controls', () => {
           <Tooltip.Trigger render={<Button variant="ghost" />}>More info</Tooltip.Trigger>
           <Tooltip.Portal>
             <Tooltip.Positioner>
-              <Tooltip.Popup>Helpful context</Tooltip.Popup>
+              <Tooltip.Popup>
+                Helpful context
+                <Tooltip.Arrow data-testid="tooltip-arrow" />
+              </Tooltip.Popup>
             </Tooltip.Positioner>
           </Tooltip.Portal>
         </Tooltip.Root>
@@ -638,6 +659,14 @@ describe('overlay and selection controls', () => {
     expect(await screen.findByRole('tooltip')).toHaveClass(
       'bg-city-inverse',
       'text-city-inverse-foreground',
+    );
+    expect(screen.getByTestId('tooltip-arrow')).toHaveClass(
+      'overflow-clip',
+      'data-[side=bottom]:-top-1.5',
+      'data-[side=top]:-bottom-1.5',
+      'before:size-[8.5px]',
+      'before:bg-current',
+      'text-city-inverse',
     );
   });
 

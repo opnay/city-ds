@@ -353,10 +353,10 @@ describe('form and display controls', () => {
     const outline = screen.getByRole('group', { name: 'Outline group' });
 
     expect(plain).toHaveAttribute('data-appearance', 'plain');
-    expect(plain).toHaveClass('border-0', 'p-0');
-    expect(band).toHaveClass('border-y', 'py-4');
+    expect(plain).toHaveClass('w-full', 'min-w-0', 'border-0', 'p-0');
+    expect(band).toHaveClass('w-full', 'min-w-0', 'border-y', 'p-4');
     expect(outline).toHaveAttribute('data-appearance', 'outline');
-    expect(outline).toHaveClass('rounded-city-md', 'border', 'p-4');
+    expect(outline).toHaveClass('w-full', 'min-w-0', 'rounded-city-md', 'border', 'p-4');
   });
 
   it('propagates disabled Fieldset state to native controls and composed radio groups', async () => {

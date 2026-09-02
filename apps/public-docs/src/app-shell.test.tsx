@@ -52,10 +52,19 @@ describe('public docs routes and shell', () => {
 
     for (const name of ['Fieldset', 'Plain', 'Band']) {
       const preview = screen.getByRole('region', { name });
+      expect(preview.querySelector('.city-docs-example-preview-content')).toHaveAttribute(
+        'data-city-docs-layout',
+        'wide',
+      );
       expect(within(preview).getByRole('group', { name: '알림 채널' })).toBeVisible();
       expect(within(preview).getAllByRole('checkbox')).toHaveLength(3);
     }
 
+    expect(
+      screen
+        .getByRole('region', { name: '그룹 상태' })
+        .querySelector('.city-docs-example-preview-content'),
+    ).toHaveAttribute('data-city-docs-layout', 'wide');
     expect(screen.queryByText(/^(plain|band|outline) 알림 채널$/)).not.toBeInTheDocument();
   });
 

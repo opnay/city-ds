@@ -10,6 +10,7 @@ import type { ComponentPageData } from '../../types';
 
 export const pageData = {
   featuredExampleId: 'fieldset-outline',
+  widePreviewIds: ['fieldset-outline', 'fieldset-plain', 'fieldset-band', 'fieldset-states'],
   api: [
     {
       name: 'appearance',

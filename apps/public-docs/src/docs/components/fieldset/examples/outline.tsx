@@ -7,7 +7,7 @@ export default function FieldsetOutlineExample() {
   return (
     <Fieldset.Root appearance="outline">
       <Fieldset.Legend>알림 채널</Fieldset.Legend>
-      <Fieldset.Content className="grid-cols-3">
+      <Fieldset.Content className="city-docs-fieldset-options-3">
         {channels.map((channel) => {
           const id = `fieldset-outline-${channel}`;
           return (

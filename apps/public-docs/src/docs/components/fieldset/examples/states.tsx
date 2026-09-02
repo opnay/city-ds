@@ -6,7 +6,7 @@ export default function FieldsetStatesExample() {
     <div className="city-docs-example-stack">
       <Fieldset.Root aria-invalid="true">
         <Fieldset.Legend>배포 요일</Fieldset.Legend>
-        <Fieldset.Content className="grid-cols-2">
+        <Fieldset.Content className="city-docs-fieldset-options-2">
           <div className="city-docs-example-row">
             <Checkbox aria-labelledby="fieldset-weekday-label" />
             <span id="fieldset-weekday-label">평일</span>
@@ -21,7 +21,7 @@ export default function FieldsetStatesExample() {
       <Fieldset.Root disabled>
         <Fieldset.Legend>관리 범위</Fieldset.Legend>
         <Fieldset.Description>조직 정책으로 잠긴 그룹입니다.</Fieldset.Description>
-        <Fieldset.Content className="grid-cols-2">
+        <Fieldset.Content className="city-docs-fieldset-options-2">
           <div className="city-docs-example-row">
             <Checkbox aria-labelledby="fieldset-seoul-label" defaultChecked />
             <span id="fieldset-seoul-label">서울</span>

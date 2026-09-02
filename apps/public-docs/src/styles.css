@@ -245,7 +245,7 @@
 
   .city-docs-nav-controls {
     display: grid;
-    padding-inline: var(--city-space-1);
+    padding-right: var(--city-space-1);
     flex: none;
     gap: var(--city-space-2);
   }

@@ -105,7 +105,7 @@ describe('public docs layout styles', () => {
       /\.city-docs-theme-controls\s*{[^}]*display:\s*inline-flex;[^}]*gap:\s*var\(--city-space-1\);/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-nav-controls\s*{[^}]*display:\s*grid;[^}]*padding-inline:\s*var\(--city-space-1\);[^}]*gap:\s*var\(--city-space-2\);/s,
+      /\.city-docs-nav-controls\s*{[^}]*display:\s*grid;[^}]*padding-right:\s*var\(--city-space-1\);[^}]*gap:\s*var\(--city-space-2\);/s,
     );
     expect(styles).toMatch(/\.city-docs-nav-mode-trigger\s*{[^}]*width:\s*100%;/s);
     expect(styles).toMatch(/\.city-docs-home-link\s*{[^}]*justify-content:\s*flex-start;/s);

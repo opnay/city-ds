@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Calendar } from '../../src/components/calendar';
-import { DateInput } from '../../src/components/date-input';
 import { DatePicker } from '../../src/components/date-picker';
 import { Field } from '../../src/components/field';
 import { formatLocalDate, normalizeLocalDate, parseLocalDate } from '../../src/lib/local-date';
@@ -18,7 +17,7 @@ describe('local date values', () => {
   });
 });
 
-describe('DateInput', () => {
+describe('DatePicker input', () => {
   it('keeps partial input and emits only empty or valid local dates', async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();
@@ -26,9 +25,9 @@ describe('DateInput', () => {
     render(
       <Field.Root>
         <Field.Label>Release date</Field.Label>
-        <DateInput.Root defaultValue={new Date(2026, 6, 15, 16)} onValueChange={onValueChange}>
-          <DateInput.Input />
-        </DateInput.Root>
+        <DatePicker.Root defaultValue={new Date(2026, 6, 15, 16)} onValueChange={onValueChange}>
+          <DatePicker.Input />
+        </DatePicker.Root>
         <Field.Error>Enter an available date.</Field.Error>
       </Field.Root>,
     );
@@ -54,14 +53,14 @@ describe('DateInput', () => {
     render(
       <Field.Root>
         <Field.Label>Deployment date</Field.Label>
-        <DateInput.Root
+        <DatePicker.Root
           isDateUnavailable={(date) => date.getDay() === 0}
           maxValue={new Date(2026, 6, 31)}
           minValue={new Date(2026, 6, 1)}
           required
         >
-          <DateInput.Input />
-        </DateInput.Root>
+          <DatePicker.Input />
+        </DatePicker.Root>
       </Field.Root>,
     );
 
@@ -101,9 +100,9 @@ describe('DateInput', () => {
       <form aria-label="Release form" onSubmit={onSubmit}>
         <Field.Root>
           <Field.Label>Release date</Field.Label>
-          <DateInput.Root name="releaseDate">
-            <DateInput.Input />
-          </DateInput.Root>
+          <DatePicker.Root name="releaseDate">
+            <DatePicker.Input />
+          </DatePicker.Root>
         </Field.Root>
         <button type="submit">Submit</button>
       </form>,
@@ -127,9 +126,9 @@ describe('DateInput', () => {
       <form onSubmit={onSubmit}>
         <Field.Root>
           <Field.Label>Invoice date</Field.Label>
-          <DateInput.Root name="invoiceDate" required>
-            <DateInput.Input />
-          </DateInput.Root>
+          <DatePicker.Root name="invoiceDate" required>
+            <DatePicker.Input />
+          </DatePicker.Root>
           <Field.Description>Use a real calendar date.</Field.Description>
         </Field.Root>
         <button type="submit">Submit invoice</button>
@@ -149,16 +148,16 @@ describe('DateInput', () => {
   it('syncs externally controlled values and exposes field states', async () => {
     const user = userEvent.setup();
 
-    function ControlledDateInput() {
+    function ControlledDatePickerInput() {
       const [value, setValue] = React.useState<Date | null>(new Date(2026, 6, 15, 18));
 
       return (
         <>
           <Field.Root>
             <Field.Label>Controlled date</Field.Label>
-            <DateInput.Root onValueChange={setValue} value={value}>
-              <DateInput.Input />
-            </DateInput.Root>
+            <DatePicker.Root onValueChange={setValue} value={value}>
+              <DatePicker.Input />
+            </DatePicker.Root>
           </Field.Root>
           <button type="button" onClick={() => setValue(new Date(2026, 7, 3, 9))}>
             Use August
@@ -169,29 +168,29 @@ describe('DateInput', () => {
 
     render(
       <>
-        <ControlledDateInput />
+        <ControlledDatePickerInput />
         <Field.Root disabled>
           <Field.Label>Disabled date</Field.Label>
-          <DateInput.Root disabled>
-            <DateInput.Input />
-          </DateInput.Root>
+          <DatePicker.Root disabled>
+            <DatePicker.Input />
+          </DatePicker.Root>
         </Field.Root>
         <Field.Root>
           <Field.Label>Read-only date</Field.Label>
-          <DateInput.Root readOnly>
-            <DateInput.Input />
-          </DateInput.Root>
+          <DatePicker.Root readOnly>
+            <DatePicker.Input />
+          </DatePicker.Root>
         </Field.Root>
         <Field.Root invalid>
           <Field.Label>Required date</Field.Label>
-          <DateInput.Root invalid required>
-            <DateInput.Input />
-          </DateInput.Root>
+          <DatePicker.Root invalid required>
+            <DatePicker.Input />
+          </DatePicker.Root>
           <Field.Error match>Choose a date.</Field.Error>
         </Field.Root>
-        <DateInput.Root invalid>
-          <DateInput.Input aria-label="Standalone invalid date" />
-        </DateInput.Root>
+        <DatePicker.Root invalid>
+          <DatePicker.Input aria-label="Standalone invalid date" />
+        </DatePicker.Root>
       </>,
     );
 
@@ -213,9 +212,9 @@ describe('DateInput', () => {
     render(
       <>
         {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
-          <DateInput.Root key={`date-input-${size}`} size={size}>
-            <DateInput.Input aria-label={`${size} date input`} />
-          </DateInput.Root>
+          <DatePicker.Root key={`date-picker-input-${size}`} size={size}>
+            <DatePicker.Input aria-label={`${size} date picker input`} />
+          </DatePicker.Root>
         ))}
         {(['xsm', 'sm', 'md', 'lg', 'xlg'] as const).map((size) => (
           <DatePicker.Root key={`picker-${size}`} size={size}>
@@ -229,7 +228,7 @@ describe('DateInput', () => {
     );
 
     for (const size of ['xsm', 'sm', 'md', 'lg', 'xlg'] as const) {
-      expect(screen.getByRole('textbox', { name: `${size} date input` })).toHaveClass(
+      expect(screen.getByRole('textbox', { name: `${size} date picker input` })).toHaveClass(
         `h-(--city-control-${size})`,
       );
       expect(screen.getByTestId(`${size}-date-picker`)).toHaveClass(`h-(--city-control-${size})`);

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Combobox } from '@opnay/city-ds-react/combobox';
-import { Field } from '@opnay/city-ds-react/field';
 
 const projects = ['도시 포털', '교통 지도', '허가 추적기'];
 
@@ -31,29 +30,23 @@ export default function ComboboxStatesExample() {
     <div className="city-docs-example-stack">
       <div className="city-docs-example-variant">
         <span className="city-docs-example-label">제어</span>
-        <Field.Root>
-          <Field.Label>프로젝트</Field.Label>
-          <Combobox.Root items={projects} onValueChange={setValue} value={value}>
-            <Combobox.InputGroup>
-              <Combobox.Input placeholder="프로젝트 검색" />
-              <Combobox.Trigger />
-            </Combobox.InputGroup>
-            <ProjectOptions />
-          </Combobox.Root>
-        </Field.Root>
+        <Combobox.Root items={projects} onValueChange={setValue} value={value}>
+          <Combobox.InputGroup>
+            <Combobox.Input aria-label="프로젝트" placeholder="프로젝트 검색" />
+            <Combobox.Trigger />
+          </Combobox.InputGroup>
+          <ProjectOptions />
+        </Combobox.Root>
       </div>
       <div className="city-docs-example-variant">
         <span className="city-docs-example-label">비활성</span>
-        <Field.Root disabled>
-          <Field.Label>프로젝트</Field.Label>
-          <Combobox.Root disabled items={projects}>
-            <Combobox.InputGroup>
-              <Combobox.Input placeholder="프로젝트 검색" />
-              <Combobox.Trigger />
-            </Combobox.InputGroup>
-            <ProjectOptions />
-          </Combobox.Root>
-        </Field.Root>
+        <Combobox.Root disabled items={projects}>
+          <Combobox.InputGroup>
+            <Combobox.Input aria-label="프로젝트" placeholder="프로젝트 검색" />
+            <Combobox.Trigger />
+          </Combobox.InputGroup>
+          <ProjectOptions />
+        </Combobox.Root>
       </div>
     </div>
   );

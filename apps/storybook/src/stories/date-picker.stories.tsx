@@ -13,7 +13,7 @@ const meta = {
     docs: {
       description: {
         component:
-          '`DatePicker`는 DateInput과 Calendar를 Outline Frame과 팝오버로 조합합니다. 날짜를 선택하면 값을 반영하고 팝오버를 닫으며, 초점은 달력 트리거로 돌아갑니다. 값은 `YYYY-MM-DD`로 저장하고, 날짜가 달라질 수 있는 `toISOString()` 변환은 피하십시오.',
+          '`DatePicker`는 직접 입력과 Calendar 선택을 하나의 Outline Frame과 팝오버로 제공합니다. 날짜를 선택하면 값을 반영하고 팝오버를 닫으며, 초점은 달력 트리거로 돌아갑니다. 값은 `YYYY-MM-DD`로 저장하고, 날짜가 달라질 수 있는 `toISOString()` 변환은 피하십시오.',
       },
     },
   },

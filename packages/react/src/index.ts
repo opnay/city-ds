@@ -9,7 +9,6 @@ export * from './components/checkbox';
 export * from './components/checkbox-group';
 export * from './components/combobox';
 export * from './components/data-table-region';
-export * from './components/date-input';
 export * from './components/date-picker';
 export * from './components/dialog';
 export * from './components/density-provider';

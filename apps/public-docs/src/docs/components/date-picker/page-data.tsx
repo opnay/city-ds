@@ -15,6 +15,16 @@ export const pageData = {
       description: '날짜 입력과 달력의 공통 값을 제어합니다.',
     },
     {
+      name: 'onValueChange',
+      type: '(value: Date | null) => void',
+      description: '직접 입력하거나 달력에서 선택한 유효한 날짜 변경을 받습니다.',
+    },
+    {
+      name: 'minValue / maxValue / isDateUnavailable',
+      type: 'Date / (date: Date) => boolean',
+      description: '직접 입력과 달력 선택에 같은 날짜 제약을 적용합니다.',
+    },
+    {
       name: 'open / onOpenChange / defaultOpen',
       type: 'boolean / callback',
       description: '달력 팝오버의 열림을 제어하거나 초기화합니다.',

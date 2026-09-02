@@ -341,7 +341,7 @@ describe('catalog and local UI state', () => {
 
     await user.click(within(main).getAllByRole('button', { name: '필터 초기화' })[0]!);
     expect(search).toHaveValue('');
-    expect(within(main).getByText('컴포넌트 40개')).toBeVisible();
+    expect(within(main).getByText('컴포넌트 39개')).toBeVisible();
   });
 
   it('filters the catalog by category', async () => {
@@ -352,7 +352,7 @@ describe('catalog and local UI state', () => {
     await user.click(within(main).getByRole('combobox', { name: '컴포넌트 범주' }));
     await user.click(await screen.findByRole('option', { name: '폼' }));
 
-    expect(within(main).getByText('컴포넌트 15개')).toBeVisible();
+    expect(within(main).getByText('컴포넌트 14개')).toBeVisible();
     expect(within(main).getByRole('link', { name: /^Field외부 입력/ })).toBeVisible();
     expect(within(main).queryByRole('link', { name: /Button/ })).not.toBeInTheDocument();
   });
@@ -368,7 +368,7 @@ describe('catalog and local UI state', () => {
     expect(
       within(filter).getByRole('combobox', { name: '컴포넌트 범주' }).parentElement,
     ).toHaveClass('city-docs-catalog-category');
-    expect(screen.getByText('컴포넌트 40개')).toHaveClass('city-docs-results-count');
+    expect(screen.getByText('컴포넌트 39개')).toHaveClass('city-docs-results-count');
     const groupHeadings = container.querySelectorAll('.city-docs-component-groups h2');
     const descriptions = container.querySelectorAll(
       '.city-docs-component-grid .city-text-supporting',
@@ -378,7 +378,7 @@ describe('catalog and local UI state', () => {
     for (const heading of groupHeadings) {
       expect(heading).toHaveClass('city-text-section-title');
     }
-    expect(descriptions).toHaveLength(40);
+    expect(descriptions).toHaveLength(39);
   });
 
   it('uses the system theme initially and lets the user choose light or dark', async () => {

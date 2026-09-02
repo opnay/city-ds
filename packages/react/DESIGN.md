@@ -203,7 +203,7 @@ CTA는 결과를 예측할 수 있게 쓰십시오. `확인`, `예`보다 `변�
 | 저장 버튼 없이 즉시 적용되는 이진 설정   | `Switch`                    | 폼 제출 시 확정되는 선택은 `Checkbox`를 사용하십시오.                      |
 | 파일 선택과 선택 목록 제거               | `FileUpload`                | 네트워크 업로드, 재시도, 서버 진행률은 소비자 코드에서 처리하십시오.       |
 
-`Input`, `NumberInput`, `SearchInput`, `DateInput`와 `DatePicker`는 입력·선택 제어만 소유합니다. 레이블, 설명, 오류가 필요한 경우 외부 `Field.Root` 안에서 `Field.Label`, 제어, `Field.Description`, `Field.Error`를 조합하십시오. 합성 입력의 `disabled`와 `invalid` 상태는 `Field.Root`와 입력 Root에 동일하게 전달하십시오.
+`Input`, `NumberInput`, `SearchInput`과 `DatePicker`는 입력·선택 제어만 소유합니다. 레이블, 설명, 오류가 필요한 경우 외부 `Field.Root` 안에서 `Field.Label`, 제어, `Field.Description`, `Field.Error`를 조합하십시오. 합성 입력의 `disabled`와 `invalid` 상태는 `Field.Root`와 입력 Root에 동일하게 전달하십시오.
 
 필수 여부, 형식, 단위, 제한은 입력 전에 알 수 있게 하십시오. 제출 후 오류만 보여주지 말고 가능하면 잘못된 필드 가까이에 원인과 수정 방법을 표시하십시오. 비활성 상태로 이유를 숨기기보다 필요한 조건을 설명하십시오.
 

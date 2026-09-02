@@ -5,14 +5,14 @@ import { useRender } from '@base-ui/react/use-render';
 import { CalendarDays } from 'lucide-react';
 
 import { Calendar, type CalendarProps } from '../calendar';
-import { DateInputInput, type DateInputInputProps } from '../date-input';
+import { Input, type InputProps } from '../input';
 import {
-  DateControlProvider,
-  DateControlRoot,
-  type DateControlProps,
-  type DateControlRootProps,
-  useDateControl,
-} from '../../lib/date-control';
+  DatePickerControlProvider,
+  DatePickerControlRoot,
+  type DatePickerControlProps,
+  type DatePickerControlRootProps,
+  useDatePickerControl,
+} from './date-picker-control';
 import {
   Popover,
   type PopoverPopupProps,
@@ -50,7 +50,7 @@ function useDatePickerContext(component: string): DatePickerContextValue {
 }
 
 export interface DatePickerRootProps
-  extends Omit<DateControlRootProps, keyof DateControlProps>, DateControlProps {
+  extends Omit<DatePickerControlRootProps, keyof DatePickerControlProps>, DatePickerControlProps {
   defaultOpen?: boolean | undefined;
   onOpenChange?: PopoverRootProps['onOpenChange'];
   open?: boolean | undefined;
@@ -80,7 +80,7 @@ export const DatePickerRoot = React.forwardRef<HTMLDivElement, DatePickerRootPro
     ref,
   ) {
     return (
-      <DateControlProvider
+      <DatePickerControlProvider
         defaultValue={defaultValue}
         disabled={disabled}
         invalid={invalid}
@@ -103,14 +103,14 @@ export const DatePickerRoot = React.forwardRef<HTMLDivElement, DatePickerRootPro
         >
           {children}
         </DatePickerRootContent>
-      </DateControlProvider>
+      </DatePickerControlProvider>
     );
   },
 );
 
 DatePickerRoot.displayName = 'DatePicker.Root';
 
-interface DatePickerRootContentProps extends DateControlRootProps {
+interface DatePickerRootContentProps extends DatePickerControlRootProps {
   defaultOpen?: boolean | undefined;
   onOpenChange?: PopoverRootProps['onOpenChange'];
   open?: boolean | undefined;
@@ -133,7 +133,7 @@ const DatePickerRootContent = React.forwardRef<HTMLDivElement, DatePickerRootCon
 
     return (
       <DatePickerContext.Provider value={context}>
-        <DateControlRoot {...props} ref={ref}>
+        <DatePickerControlRoot {...props} ref={ref}>
           <Popover.Root
             actionsRef={actionsRef}
             open={open}
@@ -144,17 +144,82 @@ const DatePickerRootContent = React.forwardRef<HTMLDivElement, DatePickerRootCon
           >
             {children}
           </Popover.Root>
-        </DateControlRoot>
+        </DatePickerControlRoot>
       </DatePickerContext.Provider>
     );
   },
 );
 
-export type DatePickerInputProps = DateInputInputProps;
+export type DatePickerInputProps = Omit<
+  InputProps,
+  | 'defaultValue'
+  | 'disabled'
+  | 'maxLength'
+  | 'name'
+  | 'onValueChange'
+  | 'readOnly'
+  | 'required'
+  | 'size'
+  | 'type'
+  | 'value'
+>;
 
 export const DatePickerInput = React.forwardRef<HTMLElement, DatePickerInputProps>(
-  function DatePickerInput(props, ref) {
-    return <DateInputInput {...props} ref={ref} />;
+  function DatePickerInput(
+    { className, inputMode = 'numeric', onBlur, onInvalid, placeholder = 'YYYY-MM-DD', ...props },
+    forwardedRef,
+  ) {
+    const dateControl = useDatePickerControl('DatePicker.Input');
+    const inputRef = React.useRef<HTMLInputElement | null>(null);
+
+    const setRefs = React.useCallback(
+      (node: HTMLElement | null) => {
+        inputRef.current = node as HTMLInputElement | null;
+        if (typeof forwardedRef === 'function') {
+          forwardedRef(node);
+        } else if (forwardedRef) {
+          forwardedRef.current = node;
+        }
+      },
+      [forwardedRef],
+    );
+
+    React.useEffect(() => {
+      inputRef.current?.setCustomValidity(dateControl.validationMessage);
+    }, [dateControl.validationMessage]);
+
+    return (
+      <Input
+        {...props}
+        ref={setRefs}
+        aria-invalid={dateControl.invalid || dateControl.inputInvalid || undefined}
+        className={(state) =>
+          cn(
+            'font-mono tabular-nums',
+            typeof className === 'function' ? className(state) : className,
+          )
+        }
+        disabled={dateControl.disabled}
+        inputMode={inputMode}
+        maxLength={10}
+        name={dateControl.name}
+        onBlur={(event) => {
+          onBlur?.(event);
+          dateControl.markTouched();
+        }}
+        onInvalid={(event) => {
+          onInvalid?.(event);
+          dateControl.markTouched();
+        }}
+        onValueChange={(nextValue) => dateControl.setDraft(nextValue)}
+        placeholder={placeholder}
+        readOnly={dateControl.readOnly}
+        required={dateControl.required}
+        size={dateControl.size}
+        type="text"
+        value={dateControl.draft}
+      />
+    );
   },
 );
 
@@ -177,7 +242,7 @@ export interface DatePickerGroupProps extends Omit<
 
 export const DatePickerGroup = React.forwardRef<HTMLDivElement, DatePickerGroupProps>(
   function DatePickerGroup({ className, render, ...props }, ref) {
-    const dateControl = useDateControl('DatePicker.Group');
+    const dateControl = useDatePickerControl('DatePicker.Group');
     const datePicker = useDatePickerContext('DatePicker.Group');
     const state: DatePickerGroupState = {
       disabled: dateControl.disabled,
@@ -228,7 +293,7 @@ export const DatePickerTrigger = React.forwardRef<HTMLButtonElement, DatePickerT
     { 'aria-label': ariaLabel = 'Open calendar', children, className, disabled, render, ...props },
     ref,
   ) {
-    const dateControl = useDateControl('DatePicker.Trigger');
+    const dateControl = useDatePickerControl('DatePicker.Trigger');
     const size = dateControl.size;
 
     return (
@@ -324,7 +389,7 @@ export function DatePickerCalendar({
   size,
   ...props
 }: DatePickerCalendarProps): React.JSX.Element {
-  const dateControl = useDateControl('DatePicker.Calendar');
+  const dateControl = useDatePickerControl('DatePicker.Calendar');
   const datePicker = useDatePickerContext('DatePicker.Calendar');
 
   return (

@@ -1,7 +1,6 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import {
   Combobox,
-  DateInput,
   DatePicker,
   Input,
   InputGroup,
@@ -83,13 +82,6 @@ Outline Frame은 atom·molecule의 Surface 축에서 폼 사용자가 **값을
 </div>
 
 <div className="grid min-w-0 gap-2">
-  <span className="text-city-muted-foreground text-xs font-medium">DateInput</span>
-  <DateInput.Root defaultValue={new Date(2026, 6, 15)}>
-    <DateInput.Input aria-label="릴리스 날짜" />
-  </DateInput.Root>
-</div>
-
-<div className="grid min-w-0 gap-2">
   <span className="text-city-muted-foreground text-xs font-medium">DatePicker</span>
   <DatePicker.Root defaultValue={new Date(2026, 6, 15)}>
     <DatePicker.Group>
@@ -130,7 +122,7 @@ Outline Frame은 atom·molecule의 Surface 축에서 폼 사용자가 **값을
 외곽 높이는 공통 [Control Size](?path=/docs/디자인-패턴-density-control-size--docs) 계약인
 `xsm/sm/md/lg/xlg = 24/28/32/36/40px`를 사용합니다.
 
-같은 `size`의 Input, SearchInput, Select, Combobox, NumberInput, DateInput, DatePicker는 한
+같은 `size`의 Input, SearchInput, Select, Combobox, NumberInput, DatePicker는 한
 줄에 배치했을 때 위아래 경계가 일치해야 합니다.
 
 단일 행 Outline Frame의 텍스트는 `xsm/sm/md/lg/xlg = 12/12/12/14/14px`, line-height는
@@ -183,8 +175,8 @@ Segmented 프레임은 hit target 구성에 따라 두 방식으로 구분합니
 
 ## 적용 범위
 
-적용 대상은 Input, InputGroup, SearchInput, Select, Combobox, NumberInput, DateInput,
-DatePicker처럼 사용자가 값을 직접 편집하거나 선택하는 프레임형 컨트롤입니다.
+적용 대상은 Input, InputGroup, SearchInput, Select, Combobox, NumberInput, DatePicker처럼
+사용자가 값을 직접 편집하거나 선택하는 프레임형 컨트롤입니다.
 
 Button, Checkbox, RadioGroup, Switch, Toggle은 폼에서 사용할 수 있어도 Outline Frame 대상이
 아닙니다. 이들은 값을 담는 프레임이 아니라 액션이나 선택 상태 자체의 형태가 핵심이기

@@ -48,7 +48,7 @@ export const pageData = {
       Component: DatePickerPreview,
       configurable: true,
       coverage: [{ axis: 'preview', values: ['configurable'] }],
-      description: '사이드바에서 크기, 달력 열림과 입력 상태를 조절합니다.',
+      description: '사이드바에서 크기와 입력 상태를 조절합니다.',
       id: 'date-picker-playground',
       filename: 'playground.tsx',
       source: createPlaygroundSource('@opnay/city-ds-react/date-picker', 'DatePicker'),
@@ -92,6 +92,12 @@ export const pageData = {
   optionAxes: [
     { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'open', defaultValue: 'false', values: ['false', 'true'] },
+    { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
+    { name: 'readOnly', defaultValue: 'false', values: ['false', 'true'] },
+    { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },
+  ],
+  previewOptionAxes: [
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'readOnly', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },

@@ -14,7 +14,7 @@ export default function DatePickerUsageExample() {
         <DatePicker.Trigger aria-label="검토 날짜 달력 열기" />
       </DatePicker.Group>
       <DatePicker.Portal>
-        <DatePicker.Positioner>
+        <DatePicker.Positioner align="end">
           <DatePicker.Popup>
             <DatePicker.Calendar aria-label="검토 날짜 달력" today={today} />
           </DatePicker.Popup>

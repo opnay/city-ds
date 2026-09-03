@@ -263,18 +263,14 @@ export function ComboboxPreview({ disabled, mode, multiple, size }: PreviewOptio
   );
 }
 
-export function DatePickerPreview({ disabled, invalid, open, readOnly, size }: PreviewOptionProps) {
+export function DatePickerPreview({ disabled, invalid, readOnly, size }: PreviewOptionProps) {
   const [value, setValue] = useState<Date | null>(TODAY);
-  const [localOpen, setLocalOpen] = useState(false);
-  const isOpen = open === undefined ? localOpen : isEnabled(open);
 
   return (
     <DatePicker.Root
       disabled={isEnabled(disabled)}
       invalid={isEnabled(invalid)}
-      onOpenChange={setLocalOpen}
       onValueChange={setValue}
-      open={isOpen}
       readOnly={isEnabled(readOnly)}
       size={toControlSize(size)}
       value={value}
@@ -284,7 +280,7 @@ export function DatePickerPreview({ disabled, invalid, open, readOnly, size }: P
         <DatePicker.Trigger aria-label="검토 날짜 달력 열기" />
       </DatePicker.Group>
       <DatePicker.Portal>
-        <DatePicker.Positioner>
+        <DatePicker.Positioner align="end">
           <DatePicker.Popup>
             <DatePicker.Calendar aria-label="검토 날짜 달력" today={TODAY} />
           </DatePicker.Popup>

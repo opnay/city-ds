@@ -4,10 +4,12 @@ import sizesSource from './examples/sizes.tsx?raw';
 import BadgeSizesExample from './examples/sizes';
 import variantsSource from './examples/variants.tsx?raw';
 import BadgeVariantsExample from './examples/variants';
+import { BadgePreview } from '../../preview-playgrounds/surfaces';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'badge-presentation',
+  featuredExampleId: 'badge-playground',
   widePreviewIds: ['badge-presentation'],
   api: [
     {
@@ -41,6 +43,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: BadgePreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 표현 방식, 의미, 표면과 크기를 조절합니다.',
+      id: 'badge-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/badge', 'Badge'),
+      title: 'Preview',
+    },
     {
       Component: BadgePresentationExample,
       coverage: [
@@ -137,5 +149,15 @@ export const pageData = {
       defaultValue: 'solid',
       values: ['solid', 'subtle', 'outline', 'destructive'],
     },
+  ],
+  previewOptionAxes: [
+    { name: 'mode', defaultValue: 'label', values: ['label', 'count', 'dot'] },
+    {
+      name: 'tone',
+      defaultValue: 'neutral',
+      values: ['neutral', 'info', 'success', 'warning', 'destructive'],
+    },
+    { name: 'appearance', defaultValue: 'solid', values: ['solid', 'subtle', 'outline'] },
+    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
   ],
 } satisfies ComponentPageData;

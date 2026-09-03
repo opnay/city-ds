@@ -86,7 +86,7 @@ describe('documented component interactions', () => {
     const user = userEvent.setup();
     await renderDocs(['/components/popover']);
 
-    const controlledPreview = screen.getByRole('region', { name: 'Popover' });
+    const controlledPreview = screen.getByRole('region', { name: '열림 상태 소유권' });
     expect(within(controlledPreview).getByText('컴포넌트 소유')).toBeVisible();
     expect(within(controlledPreview).getByText('외부 상태 소유')).toBeVisible();
 
@@ -128,6 +128,12 @@ describe('documented component interactions', () => {
     await renderDocs(['/components/combobox']);
 
     const example = screen.getByRole('region', { name: 'Combobox' });
+    expect(within(example).queryByRole('button', { name: '코드 보기' })).toBeNull();
+    expect(
+      within(example).getByText(
+        '이 Preview는 옵션을 비교하는 도구입니다. 실제 사용 코드는 아래 예제를 확인하십시오.',
+      ),
+    ).toBeVisible();
     await user.click(within(example).getByRole('button', { name: '미리보기 옵션 열기' }));
 
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
@@ -135,6 +141,71 @@ describe('documented component interactions', () => {
 
     expect(within(example).getByRole('button', { name: '도시 포털 제거' })).toBeVisible();
     expect(within(example).getByRole('button', { name: '모든 프로젝트 지우기' })).toBeVisible();
+  });
+
+  it('syncs ToggleGroup selection when the pressed preview option changes', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/toggle-group']);
+
+    const example = screen.getByRole('region', { name: 'ToggleGroup' });
+    await user.click(within(example).getByRole('button', { name: '미리보기 옵션 열기' }));
+    const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
+    await user.click(
+      within(sidebar).getByRole('switch', {
+        name: 'pressed',
+      }),
+    );
+
+    await waitFor(() =>
+      expect(within(example).getByRole('button', { name: '굵게' })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      ),
+    );
+  });
+
+  it('syncs Table sorting and selection when preview options change', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/table']);
+
+    const example = screen.getByRole('region', { name: 'Table' });
+    const table = within(example).getByRole('table', { name: '옵션을 조절할 수 있는 장소' });
+    await user.click(within(example).getByRole('button', { name: '미리보기 옵션 열기' }));
+    const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
+
+    await user.click(within(sidebar).getByRole('combobox', { name: 'sort' }));
+    await user.click(await screen.findByRole('option', { name: 'asc' }));
+    await waitFor(() =>
+      expect(within(table).getByRole('button', { name: '이름 (sorted ascending)' })).toBeVisible(),
+    );
+
+    await user.click(within(sidebar).getByRole('combobox', { name: 'selection' }));
+    await user.click(await screen.findByRole('option', { name: 'indeterminate' }));
+    await waitFor(() =>
+      expect(within(table).getByRole('checkbox', { name: '모든 장소 선택' })).toHaveAttribute(
+        'aria-checked',
+        'mixed',
+      ),
+    );
+    expect(within(table).getByRole('checkbox', { name: '한강 선택' })).toBeChecked();
+    expect(within(table).getByRole('checkbox', { name: '도시 공원 선택' })).not.toBeChecked();
+  });
+
+  it('limits the Badge preview to non-conflicting presentation options', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/badge']);
+
+    const example = screen.getByRole('region', { name: 'Badge' });
+    await user.click(within(example).getByRole('button', { name: '미리보기 옵션 열기' }));
+    const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
+
+    expect(within(sidebar).queryByRole('combobox', { name: 'variant' })).toBeNull();
+    await user.click(within(sidebar).getByRole('combobox', { name: 'tone' }));
+    await user.click(await screen.findByRole('option', { name: 'destructive' }));
+    expect(within(example).getByText('알림').closest('[data-city-badge]')).toHaveAttribute(
+      'data-tone',
+      'destructive',
+    );
   });
 
   it('adds transient feedback through the documented Sonner API', async () => {

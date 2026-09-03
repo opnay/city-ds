@@ -1,10 +1,12 @@
 import matrixSource from './examples/matrix.tsx?raw';
 import FilterBarMatrixExample from './examples/matrix';
+import { FilterBarPreview } from '../../preview-playgrounds/surfaces';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'filter-bar-matrix',
-  widePreviewIds: ['filter-bar-matrix'],
+  featuredExampleId: 'filter-bar-playground',
+  widePreviewIds: ['filter-bar-playground', 'filter-bar-matrix'],
   api: [
     {
       name: 'appearance',
@@ -24,6 +26,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: FilterBarPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 필터 영역의 표면과 밀도를 조절합니다.',
+      id: 'filter-bar-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/filter-bar', 'FilterBar'),
+      title: 'Preview',
+    },
     {
       Component: FilterBarMatrixExample,
       coverage: [

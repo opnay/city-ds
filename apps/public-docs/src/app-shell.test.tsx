@@ -44,7 +44,9 @@ describe('public docs routes and shell', () => {
 
     const selectionExample = screen.getByRole('region', { name: '선택 방식' });
     expect(selectionExample.querySelector('.city-docs-example-label')).toBeNull();
-    expect(within(selectionExample).getAllByRole('combobox', { name: '작업 상태' })).toHaveLength(3);
+    expect(within(selectionExample).getAllByRole('combobox', { name: '작업 상태' })).toHaveLength(
+      3,
+    );
   });
 
   it('separates Fieldset surfaces and keeps each preview as a real group', async () => {

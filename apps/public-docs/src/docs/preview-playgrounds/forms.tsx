@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Accordion } from '@opnay/city-ds-react/accordion';
 import { Calendar } from '@opnay/city-ds-react/calendar';
 import { Checkbox } from '@opnay/city-ds-react/checkbox';
@@ -19,12 +19,7 @@ import { Select } from '@opnay/city-ds-react/select';
 import { Switch } from '@opnay/city-ds-react/switch';
 import { ToggleGroup } from '@opnay/city-ds-react/toggle-group';
 
-import {
-  isControlled,
-  isEnabled,
-  toControlSize,
-  type PreviewOptionProps,
-} from './types';
+import { isControlled, isEnabled, toControlSize, type PreviewOptionProps } from './types';
 
 const TODAY = new Date(2026, 6, 15);
 const PROJECTS = ['도시 포털', '교통 지도', '허가 추적기'];
@@ -92,9 +87,14 @@ export function ToggleGroupPreview({
   const [value, setValue] = useState(['bold']);
   const isMultiple = isEnabled(multiple);
   const initialValue = isEnabled(pressed) ? ['bold'] : [];
-  const rootProps = isControlled(mode)
+  const controlled = isControlled(mode);
+  const rootProps = controlled
     ? { onValueChange: setValue, value }
     : { defaultValue: initialValue };
+
+  useEffect(() => {
+    if (controlled) setValue(isEnabled(pressed) ? ['bold'] : []);
+  }, [controlled, pressed]);
 
   return (
     <ToggleGroup
@@ -104,10 +104,12 @@ export function ToggleGroupPreview({
       orientation={orientation === 'vertical' ? 'vertical' : 'horizontal'}
       size={toControlSize(size)}
       variant={
-        typeof variant === 'string' && TOGGLE_VARIANTS.includes(variant as (typeof TOGGLE_VARIANTS)[number])
+        typeof variant === 'string' &&
+        TOGGLE_VARIANTS.includes(variant as (typeof TOGGLE_VARIANTS)[number])
           ? (variant as (typeof TOGGLE_VARIANTS)[number])
           : 'ghost'
       }
+      key={controlled ? 'controlled' : `uncontrolled-${pressed}`}
       {...rootProps}
     >
       <ToggleGroup.Item value="bold">굵게</ToggleGroup.Item>
@@ -371,7 +373,13 @@ export function NumberInputPreview({ disabled, mode, size }: PreviewOptionProps)
     : { defaultValue: 4 };
 
   return (
-    <NumberInput.Root disabled={isEnabled(disabled)} max={12} min={1} size={toControlSize(size)} {...rootProps}>
+    <NumberInput.Root
+      disabled={isEnabled(disabled)}
+      max={12}
+      min={1}
+      size={toControlSize(size)}
+      {...rootProps}
+    >
       <NumberInput.Group>
         <NumberInput.Input aria-label="인원" />
         <NumberInput.Decrement aria-label="인원 줄이기" />

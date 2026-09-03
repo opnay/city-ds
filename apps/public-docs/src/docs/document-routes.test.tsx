@@ -7,21 +7,23 @@ import { COMPONENT_DOCS } from './doc-catalog';
 const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   alert: 2,
   badge: 1,
-  'data-table-region': 2,
+  'data-table-region': 3,
   'empty-state': 1,
   fieldset: 5,
-  'filter-bar': 1,
-  panel: 1,
+  'filter-bar': 2,
+  panel: 2,
   popover: 1,
   progress: 1,
   skeleton: 1,
-  table: 4,
+  table: 5,
   toast: 1,
 };
 
 const CONFIGURABLE_COMPONENTS = new Set([
   'accordion',
   'alert',
+  'alert-dialog',
+  'badge',
   'button',
   'breadcrumbs',
   'calendar',
@@ -29,15 +31,21 @@ const CONFIGURABLE_COMPONENTS = new Set([
   'checkbox-group',
   'combobox',
   'date-picker',
+  'data-table-region',
   'density-provider',
+  'dialog',
+  'drawer',
   'empty-state',
   'field',
   'fieldset',
   'file-upload',
+  'filter-bar',
   'input',
   'number-input',
   'menu',
   'pagination',
+  'panel',
+  'popover',
   'progress',
   'radio-group',
   'search-input',
@@ -45,13 +53,21 @@ const CONFIGURABLE_COMPONENTS = new Set([
   'select',
   'skeleton',
   'switch',
+  'table',
   'tabs',
   'toast',
   'toggle-group',
   'toolbar',
+  'tooltip',
 ]);
 
 describe('all component document routes', () => {
+  it('adds an option playground to every component route', () => {
+    expect([...CONFIGURABLE_COMPONENTS].sort()).toEqual(
+      COMPONENT_DOCS.map((entry) => entry.slug).sort(),
+    );
+  });
+
   it.each(COMPONENT_DOCS)('renders $slug with examples and API', async (entry) => {
     const { container } = await renderDocs([`/components/${entry.slug}`]);
 
@@ -203,7 +219,7 @@ describe('all component document routes', () => {
   });
 
   it.each([
-    { slug: 'data-table-region', tableCount: 5 },
+    { slug: 'data-table-region', tableCount: 6 },
     { slug: 'table', tableCount: 3 },
   ])('uses the full preview width before $slug tables overflow', async ({ slug, tableCount }) => {
     const { container } = await renderDocs([`/components/${slug}`]);

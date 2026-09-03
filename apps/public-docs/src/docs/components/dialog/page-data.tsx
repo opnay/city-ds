@@ -2,10 +2,12 @@ import controlledSource from './examples/controlled.tsx?raw';
 import ControlledExample from './examples/controlled';
 import scrollSource from './examples/scroll.tsx?raw';
 import DialogScrollExample from './examples/scroll';
+import { DialogPreview } from '../../preview-playgrounds/surfaces';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'dialog-controlled',
+  featuredExampleId: 'dialog-playground',
   api: [
     {
       name: 'open / defaultOpen',
@@ -31,6 +33,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: DialogPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 Dialog 크기와 본문 스크롤을 조절합니다.',
+      id: 'dialog-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/dialog', 'Dialog'),
+      title: 'Preview',
+    },
     {
       Component: ControlledExample,
       coverage: [

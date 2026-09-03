@@ -41,12 +41,7 @@ function isBooleanOptionAxis(axis: OptionAxis) {
 
 function PreviewOptions({ axes, id, onValueChange, open, values }: PreviewOptionsConfig) {
   return (
-    <aside
-      aria-label="미리보기 옵션"
-      className="city-docs-preview-sidebar"
-      hidden={!open}
-      id={id}
-    >
+    <aside aria-label="미리보기 옵션" className="city-docs-preview-sidebar" hidden={!open} id={id}>
       <div className="city-docs-preview-options">
         {axes.map((axis) => {
           const value = values[axis.name] ?? axis.defaultValue ?? axis.values[0] ?? '';

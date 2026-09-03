@@ -6,11 +6,19 @@ import presentationSource from './examples/presentation.tsx?raw';
 import TablePresentationExample from './examples/presentation';
 import statesSource from './examples/states.tsx?raw';
 import TableStatesExample from './examples/states';
+import { TablePreview } from '../../preview-playgrounds/surfaces';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'table-interactions',
-  widePreviewIds: ['table-presentation', 'table-states', 'table-overflow', 'table-interactions'],
+  featuredExampleId: 'table-playground',
+  widePreviewIds: [
+    'table-playground',
+    'table-presentation',
+    'table-states',
+    'table-overflow',
+    'table-interactions',
+  ],
   api: [
     {
       defaultValue: "'md'",
@@ -46,6 +54,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: TablePreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 셀 밀도, 표면, 스크롤과 정렬·선택 상태를 조절합니다.',
+      id: 'table-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/table', 'Table'),
+      title: 'Preview',
+    },
     {
       Component: TablePresentationExample,
       coverage: [
@@ -123,5 +141,12 @@ export const pageData = {
       name: 'selection',
       values: ['none', 'indeterminate', 'all'],
     },
+  ],
+  previewOptionAxes: [
+    { defaultValue: 'md', name: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    { defaultValue: 'line', name: 'variant', values: ['line', 'surface'] },
+    { defaultValue: 'outline', name: 'scrollAppearance', values: ['plain', 'band', 'outline'] },
+    { defaultValue: 'none', name: 'sort', values: ['none', 'asc', 'desc'] },
+    { defaultValue: 'none', name: 'selection', values: ['none', 'indeterminate', 'all'] },
   ],
 } satisfies ComponentPageData;

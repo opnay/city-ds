@@ -75,8 +75,13 @@ export function EmptyStatePreview({ density }: PreviewOptionProps) {
 }
 
 export function ProgressPreview({ shape, size, status }: PreviewOptionProps) {
-  const resolvedStatus = isOneOf(status, ['progressing', 'complete', 'indeterminate'] as const, 'progressing');
-  const value = resolvedStatus === 'complete' ? 100 : resolvedStatus === 'indeterminate' ? null : 55;
+  const resolvedStatus = isOneOf(
+    status,
+    ['progressing', 'complete', 'indeterminate'] as const,
+    'progressing',
+  );
+  const value =
+    resolvedStatus === 'complete' ? 100 : resolvedStatus === 'indeterminate' ? null : 55;
   const label = `작업 ${resolvedStatus}`;
 
   if (shape === 'circular') {
@@ -163,7 +168,9 @@ export function MenuPreview({ density, mode, variant }: PreviewOptionProps) {
           <Menu.Popup>
             <Menu.Item>이름 변경</Menu.Item>
             <Menu.Separator />
-            <Menu.Item variant={variant === 'destructive' ? 'destructive' : 'default'}>삭제</Menu.Item>
+            <Menu.Item variant={variant === 'destructive' ? 'destructive' : 'default'}>
+              삭제
+            </Menu.Item>
           </Menu.Popup>
         </Menu.Positioner>
       </Menu.Portal>
@@ -213,7 +220,9 @@ export function ToolbarPreview({
       size={toControlSize(size)}
     >
       <Toolbar.Group>
-        <Toolbar.Button variant={typeof buttonVariant === 'string' ? (buttonVariant as never) : 'ghost'}>
+        <Toolbar.Button
+          variant={typeof buttonVariant === 'string' ? (buttonVariant as never) : 'ghost'}
+        >
           저장
         </Toolbar.Button>
         <Toolbar.Link
@@ -223,7 +232,10 @@ export function ToolbarPreview({
           문서
         </Toolbar.Link>
         <Toolbar.ToggleGroup aria-label="서식" defaultValue={['bold']} multiple>
-          <Toolbar.Toggle value="bold" variant={typeof toggleVariant === 'string' ? (toggleVariant as never) : 'ghost'}>
+          <Toolbar.Toggle
+            value="bold"
+            variant={typeof toggleVariant === 'string' ? (toggleVariant as never) : 'ghost'}
+          >
             굵게
           </Toolbar.Toggle>
         </Toolbar.ToggleGroup>

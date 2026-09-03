@@ -111,6 +111,9 @@ function ExampleFrame({
   );
   const isFeatured = featuredTitle !== undefined;
   const isConfigurable = example.configurable === true && optionAxes.length > 0;
+  const isGeneratedPlaygroundReference =
+    isConfigurable &&
+    example.source?.includes('Preview 옵션 사이드바에서 대표 props를 조절합니다.') === true;
   const title = featuredTitle ?? example.title;
   const titleId = `example-${example.id}`;
   const previewOptionsId = `preview-options-${example.id}`;
@@ -186,32 +189,40 @@ function ExampleFrame({
         >
           {previewContent}
         </Preview>
-        <Accordion.Root className="city-docs-example-code divide-y-0 rounded-none border-0 bg-transparent">
-          <Accordion.Item value="code">
-            <Accordion.Header render={<CodeHeading />}>
-              <Accordion.Trigger className="city-docs-example-code-trigger">
-                코드 보기
-              </Accordion.Trigger>
-            </Accordion.Header>
-            <Accordion.Panel className="city-docs-example-code-panel px-0 pb-0">
-              {example.files ? (
-                <CodeBlock
-                  aria-label={`${example.title} 예제 소스 코드`}
-                  files={example.files}
-                  tabIndex={0}
-                />
-              ) : (
-                <CodeBlock
-                  aria-label={`${example.title} 예제 소스 코드`}
-                  code={example.source}
-                  filename={example.filename}
-                  language="tsx"
-                  tabIndex={0}
-                />
-              )}
-            </Accordion.Panel>
-          </Accordion.Item>
-        </Accordion.Root>
+        {isGeneratedPlaygroundReference ? (
+          <div className="city-docs-example-code px-4 pb-4">
+            <p className="text-sm text-city-muted-foreground">
+              이 Preview는 옵션을 비교하는 도구입니다. 실제 사용 코드는 아래 예제를 확인하십시오.
+            </p>
+          </div>
+        ) : (
+          <Accordion.Root className="city-docs-example-code divide-y-0 rounded-none border-0 bg-transparent">
+            <Accordion.Item value="code">
+              <Accordion.Header render={<CodeHeading />}>
+                <Accordion.Trigger className="city-docs-example-code-trigger">
+                  코드 보기
+                </Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Panel className="city-docs-example-code-panel px-0 pb-0">
+                {example.files ? (
+                  <CodeBlock
+                    aria-label={`${example.title} 예제 소스 코드`}
+                    files={example.files}
+                    tabIndex={0}
+                  />
+                ) : (
+                  <CodeBlock
+                    aria-label={`${example.title} 예제 소스 코드`}
+                    code={example.source}
+                    filename={example.filename}
+                    language="tsx"
+                    tabIndex={0}
+                  />
+                )}
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion.Root>
+        )}
       </Panel.Body>
     </Panel.Root>
   );
@@ -245,7 +256,9 @@ export function ComponentReference({ data }: ComponentReferenceProps) {
       <ExampleFrame
         example={featuredExample}
         featuredTitle={componentTitle}
-        optionAxes={featuredExample.configurable ? data.optionAxes : undefined}
+        optionAxes={
+          featuredExample.configurable ? (data.previewOptionAxes ?? data.optionAxes) : undefined
+        }
         previewLayout={data.widePreviewIds?.includes(featuredExample.id) ? 'wide' : 'center'}
       />
       <ApiTable items={data.api} />

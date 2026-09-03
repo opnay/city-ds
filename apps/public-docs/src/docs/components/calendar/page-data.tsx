@@ -4,10 +4,12 @@ import sizesSource from './examples/sizes.tsx?raw';
 import CalendarSizesExample from './examples/sizes';
 import statesSource from './examples/states.tsx?raw';
 import StatesExample from './examples/states';
+import { CalendarPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'calendar-states',
+  featuredExampleId: 'calendar-playground',
   api: [
     {
       name: 'value / defaultValue',
@@ -38,6 +40,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: CalendarPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 크기, 선택 가능 상태와 월 경계 표시를 조절합니다.',
+      id: 'calendar-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/calendar', 'Calendar'),
+      title: 'Preview',
+    },
     {
       Component: CalendarSizesExample,
       coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],

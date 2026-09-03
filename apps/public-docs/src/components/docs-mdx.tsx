@@ -82,11 +82,18 @@ function createPreviewOptionValues(axes: readonly OptionAxis[]): PreviewOptionVa
   );
 }
 
+function isBooleanOptionAxis(axis: OptionAxis) {
+  return (
+    axis.control === 'switch' ||
+    (axis.values.length === 2 && axis.values.includes('false') && axis.values.includes('true'))
+  );
+}
+
 function createPreviewProps(axes: readonly OptionAxis[], values: PreviewOptionValues) {
   return Object.fromEntries(
     axes.map((axis) => {
       const value = values[axis.name] ?? axis.defaultValue ?? axis.values[0] ?? '';
-      return [axis.name, axis.control === 'switch' ? value === 'true' : value];
+      return [axis.name, isBooleanOptionAxis(axis) ? value === 'true' : value];
     }),
   );
 }

@@ -42,15 +42,15 @@ describe('public docs routes and shell', () => {
       expect(container.querySelectorAll('.city-docs-example-variant').length).toBeGreaterThan(0),
     );
 
-    const featuredExample = screen.getByRole('region', { name: 'Select' });
-    expect(featuredExample.querySelector('.city-docs-example-label')).toBeNull();
-    expect(within(featuredExample).getAllByRole('combobox', { name: '작업 상태' })).toHaveLength(3);
+    const selectionExample = screen.getByRole('region', { name: '선택 방식' });
+    expect(selectionExample.querySelector('.city-docs-example-label')).toBeNull();
+    expect(within(selectionExample).getAllByRole('combobox', { name: '작업 상태' })).toHaveLength(3);
   });
 
   it('separates Fieldset surfaces and keeps each preview as a real group', async () => {
     await renderDocs(['/components/fieldset']);
 
-    for (const name of ['Fieldset', 'Plain', 'Band']) {
+    for (const name of ['Fieldset', 'Outline', 'Plain', 'Band']) {
       const preview = screen.getByRole('region', { name });
       expect(preview.querySelector('.city-docs-example-preview-content')).toHaveAttribute(
         'data-city-docs-layout',

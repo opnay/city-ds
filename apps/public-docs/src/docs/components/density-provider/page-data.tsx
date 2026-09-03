@@ -1,9 +1,11 @@
 import densitySource from './examples/density.tsx?raw';
 import DensityExample from './examples/density';
+import { DensityProviderPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'density-provider',
+  featuredExampleId: 'density-provider-playground',
   api: [
     {
       name: 'density',
@@ -23,6 +25,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: DensityProviderPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 하위 제어의 밀도를 조절합니다.',
+      id: 'density-provider-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/density-provider', 'DensityProvider'),
+      title: 'Preview',
+    },
     {
       Component: DensityExample,
       coverage: [{ axis: 'density', values: ['comfortable', 'compact'] }],

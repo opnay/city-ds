@@ -109,8 +109,8 @@ describe('documented component interactions', () => {
   it('updates a controlled form example and exposes its local result', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/search-input']);
-    const featuredExample = screen.getByRole('region', { name: 'SearchInput' });
-    const search = within(featuredExample).getByRole('searchbox', {
+    const searchExample = screen.getByRole('region', { name: '제어 검색' });
+    const search = within(searchExample).getByRole('searchbox', {
       name: '문서 검색',
     });
 
@@ -120,7 +120,7 @@ describe('documented component interactions', () => {
     await user.type(search, 'Button');
 
     expect(search).toHaveValue('Button');
-    expect(within(featuredExample).getByText('Button')).toBeVisible();
+    expect(within(searchExample).getByText('Button')).toBeVisible();
   });
 
   it('adds transient feedback through the documented Sonner API', async () => {
@@ -198,7 +198,7 @@ describe('documented component interactions', () => {
 
     fieldset.unmount();
     await renderDocs(['/components/segmented-control']);
-    const segmentedControl = screen.getByRole('region', { name: 'SegmentedControl' });
+    const segmentedControl = screen.getByRole('region', { name: '필수 단일 선택' });
     const grid = within(segmentedControl).getByRole('radio', { name: '격자' });
     const list = within(segmentedControl).getByRole('radio', { name: '목록' });
     const map = within(segmentedControl).getByRole('radio', { name: '지도' });

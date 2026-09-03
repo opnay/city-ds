@@ -6,10 +6,12 @@ import statesSource from './examples/states.tsx?raw';
 import SearchInputStatesExample from './examples/states';
 import usageSource from './examples/usage.tsx?raw';
 import SearchInputUsageExample from './examples/usage';
+import { SearchInputPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'search-input-usage',
+  featuredExampleId: 'search-input-playground',
   api: [
     {
       name: 'value / onValueChange',
@@ -33,6 +35,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: SearchInputPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 크기, 로딩·오류·비활성 상태와 지우기 동작을 조절합니다.',
+      id: 'search-input-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/search-input', 'SearchInput'),
+      title: 'Preview',
+    },
     {
       Component: SearchInputUsageExample,
       coverage: [{ axis: 'interaction', values: ['controlled', 'submit'] }],

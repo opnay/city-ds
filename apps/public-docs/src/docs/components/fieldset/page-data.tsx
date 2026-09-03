@@ -6,11 +6,19 @@ import plainSource from './examples/plain.tsx?raw';
 import FieldsetPlainExample from './examples/plain';
 import statesSource from './examples/states.tsx?raw';
 import FieldsetStatesExample from './examples/states';
+import { FieldsetPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'fieldset-outline',
-  widePreviewIds: ['fieldset-outline', 'fieldset-plain', 'fieldset-band', 'fieldset-states'],
+  featuredExampleId: 'fieldset-playground',
+  widePreviewIds: [
+    'fieldset-playground',
+    'fieldset-outline',
+    'fieldset-plain',
+    'fieldset-band',
+    'fieldset-states',
+  ],
   api: [
     {
       name: 'appearance',
@@ -32,6 +40,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: FieldsetPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 그룹 표면과 비활성 상태를 조절합니다.',
+      id: 'fieldset-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/fieldset', 'Fieldset'),
+      title: 'Preview',
+    },
     {
       Component: FieldsetOutlineExample,
       coverage: [{ axis: 'appearance', values: ['outline'] }],

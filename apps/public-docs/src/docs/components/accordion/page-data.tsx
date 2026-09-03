@@ -2,10 +2,12 @@ import selectionSource from './examples/selection.tsx?raw';
 import AccordionSelectionExample from './examples/selection';
 import statesSource from './examples/states.tsx?raw';
 import AccordionStatesExample from './examples/states';
+import { AccordionPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'accordion-selection',
+  featuredExampleId: 'accordion-playground',
   api: [
     {
       name: 'multiple',
@@ -26,6 +28,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: AccordionPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 여러 항목 열기와 비활성 상태를 조절합니다.',
+      id: 'accordion-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/accordion', 'Accordion'),
+      title: 'Preview',
+    },
     {
       Component: AccordionSelectionExample,
       coverage: [{ axis: 'multiple', values: ['false', 'true'] }],

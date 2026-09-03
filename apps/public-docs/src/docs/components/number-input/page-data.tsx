@@ -2,10 +2,12 @@ import numberInputSource from './examples/number-input.tsx?raw';
 import NumberInputExample from './examples/number-input';
 import sizesSource from './examples/sizes.tsx?raw';
 import NumberInputSizesExample from './examples/sizes';
+import { NumberInputPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'number-input-basic',
+  featuredExampleId: 'number-input-playground',
   api: [
     {
       name: 'value / onValueChange',
@@ -22,6 +24,16 @@ export const pageData = {
     { name: 'disabled', type: 'boolean', description: '값 변경을 막습니다.' },
   ],
   examples: [
+    {
+      Component: NumberInputPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 크기, 값 소유 방식과 비활성 상태를 조절합니다.',
+      id: 'number-input-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/number-input', 'NumberInput'),
+      title: 'Preview',
+    },
     {
       Component: NumberInputSizesExample,
       coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],

@@ -2,10 +2,12 @@ import sizesSource from './examples/sizes.tsx?raw';
 import SwitchSizesExample from './examples/sizes';
 import statesSource from './examples/states.tsx?raw';
 import SwitchStatesExample from './examples/states';
+import { SwitchPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'switch-states',
+  featuredExampleId: 'switch-playground',
   api: [
     {
       name: 'checked / onCheckedChange',
@@ -22,6 +24,16 @@ export const pageData = {
     { name: 'disabled', type: 'boolean', description: '변경을 막습니다.' },
   ],
   examples: [
+    {
+      Component: SwitchPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 켜짐, 비활성 상태와 크기를 조절합니다.',
+      id: 'switch-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/switch', 'Switch'),
+      title: 'Preview',
+    },
     {
       Component: SwitchStatesExample,
       coverage: [

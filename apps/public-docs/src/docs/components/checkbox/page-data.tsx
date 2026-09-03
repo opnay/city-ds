@@ -2,10 +2,12 @@ import sizesSource from './examples/sizes.tsx?raw';
 import CheckboxSizesExample from './examples/sizes';
 import statesSource from './examples/states.tsx?raw';
 import StatesExample from './examples/states';
+import { CheckboxPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'checkbox-states',
+  featuredExampleId: 'checkbox-playground',
   api: [
     {
       name: 'checked / defaultChecked',
@@ -31,6 +33,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: CheckboxPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 선택, 부분 선택, 비활성 상태와 크기를 조절합니다.',
+      id: 'checkbox-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/checkbox', 'Checkbox'),
+      title: 'Preview',
+    },
     {
       Component: StatesExample,
       coverage: [

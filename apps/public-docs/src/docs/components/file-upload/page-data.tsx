@@ -4,10 +4,12 @@ import disabledSource from './examples/disabled.tsx?raw';
 import FileUploadDisabledExample from './examples/disabled';
 import selectionSource from './examples/selection.tsx?raw';
 import FileUploadSelectionExample from './examples/selection';
+import { FileUploadPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'file-upload-selection',
+  featuredExampleId: 'file-upload-playground',
   api: [
     {
       name: 'files / defaultFiles',
@@ -28,6 +30,16 @@ export const pageData = {
     { name: 'accept', type: 'string', description: '파일 선택기의 허용 형식을 힌트로 제공합니다.' },
   ],
   examples: [
+    {
+      Component: FileUploadPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 단일·복수 선택, 비활성 상태와 밀도를 조절합니다.',
+      id: 'file-upload-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/file-upload', 'FileUpload'),
+      title: 'Preview',
+    },
     {
       Component: FileUploadSelectionExample,
       coverage: [

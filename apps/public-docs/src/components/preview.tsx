@@ -32,6 +32,13 @@ interface PreviewSidebarButtonProps {
   open: boolean;
 }
 
+function isBooleanOptionAxis(axis: OptionAxis) {
+  return (
+    axis.control === 'switch' ||
+    (axis.values.length === 2 && axis.values.includes('false') && axis.values.includes('true'))
+  );
+}
+
 function PreviewOptions({ axes, id, onValueChange, open, values }: PreviewOptionsConfig) {
   return (
     <aside
@@ -44,7 +51,7 @@ function PreviewOptions({ axes, id, onValueChange, open, values }: PreviewOption
         {axes.map((axis) => {
           const value = values[axis.name] ?? axis.defaultValue ?? axis.values[0] ?? '';
 
-          if (axis.control === 'switch') {
+          if (isBooleanOptionAxis(axis)) {
             const labelId = `${id}-${axis.name}`;
 
             return (

@@ -9,7 +9,7 @@ const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   badge: 1,
   'data-table-region': 2,
   'empty-state': 1,
-  fieldset: 4,
+  fieldset: 5,
   'filter-bar': 1,
   panel: 1,
   popover: 1,
@@ -18,6 +18,28 @@ const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   table: 4,
   toast: 1,
 };
+
+const CONFIGURABLE_COMPONENTS = new Set([
+  'accordion',
+  'button',
+  'calendar',
+  'checkbox',
+  'checkbox-group',
+  'combobox',
+  'date-picker',
+  'density-provider',
+  'field',
+  'fieldset',
+  'file-upload',
+  'input',
+  'number-input',
+  'radio-group',
+  'search-input',
+  'segmented-control',
+  'select',
+  'switch',
+  'toggle-group',
+]);
 
 describe('all component document routes', () => {
   it.each(COMPONENT_DOCS)('renders $slug with examples and API', async (entry) => {
@@ -120,9 +142,14 @@ describe('all component document routes', () => {
         within(header as HTMLElement).getByRole('button', { name: '미리보기 설정' }),
       ).toBeVisible();
     }
-    expect(screen.queryAllByRole('button', { name: '미리보기 옵션 열기' })).toHaveLength(
-      entry.slug === 'button' ? 1 : 0,
-    );
+    const optionTriggers = screen.queryAllByRole('button', { name: '미리보기 옵션 열기' });
+    expect(optionTriggers).toHaveLength(CONFIGURABLE_COMPONENTS.has(entry.slug) ? 1 : 0);
+    for (const trigger of optionTriggers) {
+      const controls = trigger.getAttribute('aria-controls');
+
+      expect(controls).not.toBeNull();
+      expect(document.getElementById(controls!)).toHaveAttribute('hidden');
+    }
     expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
     const importRegion = screen.getByRole('region', { name: `${entry.title} 가져오기` });
     expect(pageHeading).toContainElement(importRegion);
@@ -157,10 +184,10 @@ describe('all component document routes', () => {
   it('keeps Calendar static examples centered', async () => {
     const { container } = await renderDocs(['/components/calendar']);
 
-    expect(container.querySelectorAll('.city-docs-example')).toHaveLength(3);
-    expect(container.querySelectorAll("[data-city-docs-layout='center']")).toHaveLength(3);
+    expect(container.querySelectorAll('.city-docs-example')).toHaveLength(4);
+    expect(container.querySelectorAll("[data-city-docs-layout='center']")).toHaveLength(4);
     expect(container.querySelectorAll("[data-city-docs-layout='wide']")).toHaveLength(0);
-    expect(screen.getAllByRole('grid')).toHaveLength(11);
+    expect(screen.getAllByRole('grid')).toHaveLength(12);
     expect(screen.queryByRole('group', { name: '달력 크기' })).toBeNull();
     expect(screen.queryByRole('group', { name: '달력 상태' })).toBeNull();
   });

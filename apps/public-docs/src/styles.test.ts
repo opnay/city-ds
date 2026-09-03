@@ -254,7 +254,10 @@ describe('public docs layout styles', () => {
 
   it('centers bounded preview content while explicit wide examples keep the full canvas', () => {
     expect(styles).toMatch(
-      /\.city-docs-example-preview\s*{[^}]*--city-docs-preview-content-max:\s*40rem;[^}]*display:\s*grid;[^}]*color:\s*var\(--city-color-foreground\);[^}]*place-items:\s*center;/s,
+      /\.city-docs-example-preview\s*{[^}]*--city-docs-preview-content-max:\s*40rem;[^}]*display:\s*grid;[^}]*min-height:\s*180px;[^}]*color:\s*var\(--city-color-foreground\);[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-example-preview-canvas\s*{[^}]*min-height:\s*180px;[^}]*place-items:\s*center;/s,
     );
     expect(styles).toMatch(
       /\.city-docs-example-preview-content\s*{[^}]*width:\s*min\(100%, var\(--city-docs-preview-content-max\)\);[^}]*justify-items:\s*center;/s,
@@ -264,6 +267,21 @@ describe('public docs layout styles', () => {
     );
     expect(styles).toMatch(
       /\.city-docs-example-preview-content\[data-city-docs-layout='wide'\]\s*{[^}]*width:\s*100%;[^}]*justify-items:\s*stretch;/s,
+    );
+  });
+
+  it('keeps the options sidebar inside the preview grid', () => {
+    expect(styles).toMatch(
+      /\.city-docs-example-preview\[data-sidebar-open]\s*{\s*grid-template-columns:\s*minmax\(0, 1fr\) var\(--city-docs-preview-sidebar-width\);/,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-preview-sidebar\s*{[^}]*border-left:\s*1px solid var\(--city-color-border\);[^}]*background:\s*var\(--city-color-surface-raised\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-preview-option-field\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-2\);/s,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 40rem\)\s*{[\s\S]*?\.city-docs-example-preview\[data-sidebar-open]\s*{\s*grid-template-columns:\s*minmax\(0, 1fr\);[\s\S]*?\.city-docs-preview-sidebar\s*{[^}]*border-top:\s*1px solid var\(--city-color-border\);[^}]*border-left:\s*0;/,
     );
   });
 

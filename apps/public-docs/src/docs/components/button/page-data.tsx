@@ -1,5 +1,7 @@
 import compositionSource from './examples/composition.tsx?raw';
 import ButtonCompositionExample from './examples/composition';
+import playgroundSource from './examples/playground.tsx?raw';
+import ButtonPlaygroundExample from './examples/playground';
 import sizesSource from './examples/sizes.tsx?raw';
 import ButtonSizesExample from './examples/sizes';
 import variantsSource from './examples/variants.tsx?raw';
@@ -7,7 +9,7 @@ import ButtonVariantsExample from './examples/variants';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'button-variants',
+  featuredExampleId: 'button-playground',
   api: [
     {
       defaultValue: "'primary'",
@@ -46,6 +48,24 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: ButtonPlaygroundExample,
+      configurable: true,
+      coverage: [
+        {
+          axis: 'variant',
+          values: ['primary', 'secondary', 'outline', 'ghost', 'destructive'],
+        },
+        { axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+        { axis: 'iconOnly', values: ['false', 'true'] },
+        { axis: 'disabled', values: ['false', 'true'] },
+      ],
+      description: '사이드바에서 Button의 대표 옵션을 조절합니다.',
+      id: 'button-playground',
+      filename: 'playground.tsx',
+      source: playgroundSource,
+      title: 'Preview',
+    },
     {
       Component: ButtonVariantsExample,
       coverage: [
@@ -92,7 +112,17 @@ export const pageData = {
       values: ['primary', 'secondary', 'outline', 'ghost', 'destructive'],
     },
     { defaultValue: 'md', name: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
-    { defaultValue: 'false', name: 'iconOnly', values: ['false', 'true'] },
-    { defaultValue: 'false', name: 'disabled', values: ['false', 'true'] },
+    {
+      control: 'switch',
+      defaultValue: 'false',
+      name: 'iconOnly',
+      values: ['false', 'true'],
+    },
+    {
+      control: 'switch',
+      defaultValue: 'false',
+      name: 'disabled',
+      values: ['false', 'true'],
+    },
   ],
 } satisfies ComponentPageData;

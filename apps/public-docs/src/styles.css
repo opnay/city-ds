@@ -1571,17 +1571,62 @@
   .city-docs-example-preview {
     --city-docs-preview-content-max: 40rem;
     --city-docs-preview-grid-color: color-mix(in oklab, var(--city-color-border) 20%, transparent);
+    --city-docs-preview-sidebar-width: min(15rem, 42%);
 
     display: grid;
-    min-height: 8rem;
-    padding: clamp(var(--city-space-4), 5vw, var(--city-space-8));
+    min-height: 180px;
     background:
       linear-gradient(var(--city-docs-preview-grid-color) 1px, transparent 1px),
       linear-gradient(90deg, var(--city-docs-preview-grid-color) 1px, transparent 1px),
       var(--city-color-background);
     background-size: 1.5rem 1.5rem;
     color: var(--city-color-foreground);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .city-docs-example-preview[data-sidebar-open] {
+    grid-template-columns: minmax(0, 1fr) var(--city-docs-preview-sidebar-width);
+  }
+
+  .city-docs-example-preview-canvas {
+    display: grid;
+    min-width: 0;
+    min-height: 180px;
+    padding: clamp(var(--city-space-4), 5vw, var(--city-space-8));
     place-items: center;
+  }
+
+  .city-docs-preview-sidebar {
+    display: grid;
+    min-width: 0;
+    padding: var(--city-space-4);
+    border-left: 1px solid var(--city-color-border);
+    background: var(--city-color-surface-raised);
+    align-content: start;
+  }
+
+  .city-docs-preview-options {
+    display: grid;
+    gap: var(--city-space-4);
+  }
+
+  .city-docs-preview-option-field {
+    display: grid;
+    min-width: 0;
+    gap: var(--city-space-2);
+  }
+
+  .city-docs-preview-option-switch {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--city-space-3);
+  }
+
+  .city-docs-preview-sidebar code {
+    color: var(--city-color-foreground);
+    font-size: var(--city-font-size-xs);
   }
 
   html[data-city-docs-preview-grid='off'] .city-docs-example-preview {
@@ -1912,6 +1957,15 @@
       min-width: 0;
       flex: 1 1 auto;
     }
+
+    .city-docs-example-preview[data-sidebar-open] {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .city-docs-preview-sidebar {
+      border-top: 1px solid var(--city-color-border);
+      border-left: 0;
+    }
   }
 
   @media (max-width: 30rem) {
@@ -1933,7 +1987,7 @@
       margin-left: 0;
     }
 
-    .city-docs-example-preview {
+    .city-docs-example-preview-canvas {
       padding: var(--city-space-4);
     }
 

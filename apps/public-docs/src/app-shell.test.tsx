@@ -480,7 +480,10 @@ describe('catalog and local UI state', () => {
     });
     for (const preview of container.querySelectorAll('.city-docs-example-preview')) {
       expect(preview).toHaveAttribute('data-theme', 'dark');
-      expect(preview.firstElementChild).toHaveAttribute('data-city-density', 'compact');
+      expect(preview.querySelector('.city-docs-example-preview-content')).toHaveAttribute(
+        'data-city-density',
+        'compact',
+      );
     }
 
     const systemTheme = within(previewMenu).getByRole('menuitemradio', { name: '시스템' });
@@ -523,7 +526,10 @@ describe('catalog and local UI state', () => {
     expect(document.documentElement).toHaveAttribute('data-city-docs-preview-grid', 'on');
     for (const preview of container.querySelectorAll('.city-docs-example-preview')) {
       expect(preview).toHaveAttribute('data-theme', 'light');
-      expect(preview.firstElementChild).toHaveAttribute('data-city-density', 'comfortable');
+      expect(preview.querySelector('.city-docs-example-preview-content')).toHaveAttribute(
+        'data-city-density',
+        'comfortable',
+      );
     }
   });
 
@@ -545,7 +551,7 @@ describe('catalog and local UI state', () => {
 
     expect(within(disclosure).getByRole('button', { name: '복사 실패' })).toBeVisible();
     expect(
-      within(disclosure).getByText(/variants\.tsx 코드를 복사할 수 없습니다/),
+      within(disclosure).getByText(/playground\.tsx 코드를 복사할 수 없습니다/),
     ).toBeInTheDocument();
     expect(within(disclosure).getByRole('code')).not.toBeEmptyDOMElement();
 

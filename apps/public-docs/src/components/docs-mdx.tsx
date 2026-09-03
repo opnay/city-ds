@@ -3,20 +3,28 @@ import {
   Children,
   createContext,
   isValidElement,
+  type ComponentType,
   type ComponentPropsWithoutRef,
   type ReactNode,
   useContext,
+  useState,
 } from 'react';
 import { Accordion } from '@opnay/city-ds-react/accordion';
 import { Checkbox } from '@opnay/city-ds-react/checkbox';
 import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
-import { DensityProvider } from '@opnay/city-ds-react/density-provider';
 import { Panel } from '@opnay/city-ds-react/panel';
 import { Table } from '@opnay/city-ds-react/table';
 import type { MDXComponents } from 'mdx/types.js';
 
-import type { ApiItem, ComponentPageData, DocExample } from '../docs/types';
+import type {
+  ApiItem,
+  ComponentPageData,
+  DocExample,
+  OptionAxis,
+  PreviewOptionValues,
+} from '../docs/types';
 import { CodeBlock, type CodeFile } from './code-block';
+import { Preview, PreviewSidebarButton } from './preview';
 import { PreviewSettingsButton, usePreviewSettings } from './preview-settings';
 
 interface DocsMdxProviderProps {
@@ -44,6 +52,7 @@ interface ComponentDocScopeProps {
 interface ExampleFrameProps {
   example: DocExample;
   featuredTitle?: string | undefined;
+  optionAxes?: readonly OptionAxis[] | undefined;
   previewLayout?: 'center' | 'wide' | undefined;
 }
 
@@ -67,19 +76,62 @@ function useComponentDocTitle() {
   return title;
 }
 
-function ExampleFrame({ example, featuredTitle, previewLayout = 'center' }: ExampleFrameProps) {
+function createPreviewOptionValues(axes: readonly OptionAxis[]): PreviewOptionValues {
+  return Object.fromEntries(
+    axes.map((axis) => [axis.name, axis.defaultValue ?? axis.values[0] ?? '']),
+  );
+}
+
+function createPreviewProps(axes: readonly OptionAxis[], values: PreviewOptionValues) {
+  return Object.fromEntries(
+    axes.map((axis) => {
+      const value = values[axis.name] ?? axis.defaultValue ?? axis.values[0] ?? '';
+      return [axis.name, axis.control === 'switch' ? value === 'true' : value];
+    }),
+  );
+}
+
+function ExampleFrame({
+  example,
+  featuredTitle,
+  optionAxes = [],
+  previewLayout = 'center',
+}: ExampleFrameProps) {
   const { previewDensity, resolvedPreviewTheme } = usePreviewSettings();
+  const [previewOptionsOpen, setPreviewOptionsOpen] = useState(false);
+  const [previewOptionValues, setPreviewOptionValues] = useState(() =>
+    createPreviewOptionValues(optionAxes),
+  );
   const isFeatured = featuredTitle !== undefined;
+  const isConfigurable = example.configurable === true && optionAxes.length > 0;
   const title = featuredTitle ?? example.title;
   const titleId = `example-${example.id}`;
+  const previewOptionsId = `preview-options-${example.id}`;
   const Example = example.Component;
+  const ConfigurableExample = Example as ComponentType<Record<string, unknown>>;
   const Heading = isFeatured ? 'h2' : 'h3';
   const CodeHeading = isFeatured ? 'h3' : 'h4';
+  const previewContent = isConfigurable ? (
+    <ConfigurableExample {...createPreviewProps(optionAxes, previewOptionValues)} />
+  ) : (
+    <Example />
+  );
 
   return (
     <Panel.Root aria-labelledby={titleId} className="city-docs-example" render={<section />}>
       <Panel.Header
-        actions={<PreviewSettingsButton />}
+        actions={
+          <>
+            <PreviewSettingsButton />
+            {isConfigurable ? (
+              <PreviewSidebarButton
+                controls={previewOptionsId}
+                onOpenChange={setPreviewOptionsOpen}
+                open={previewOptionsOpen}
+              />
+            ) : null}
+          </>
+        }
         className="city-docs-example-heading"
         data-has-coverage={isFeatured ? undefined : ''}
       >
@@ -108,15 +160,24 @@ function ExampleFrame({ example, featuredTitle, previewLayout = 'center' }: Exam
         </div>
       </Panel.Header>
       <Panel.Body className="city-docs-example-body">
-        <div className="city-docs-example-preview" data-theme={resolvedPreviewTheme}>
-          <DensityProvider
-            className="city-docs-example-preview-content"
-            data-city-docs-layout={previewLayout}
-            density={previewDensity}
-          >
-            <Example />
-          </DensityProvider>
-        </div>
+        <Preview
+          density={previewDensity}
+          layout={previewLayout}
+          options={
+            isConfigurable && previewOptionsOpen
+              ? {
+                  axes: optionAxes,
+                  id: previewOptionsId,
+                  onValueChange: (name, value) =>
+                    setPreviewOptionValues((current) => ({ ...current, [name]: value })),
+                  values: previewOptionValues,
+                }
+              : undefined
+          }
+          theme={resolvedPreviewTheme}
+        >
+          {previewContent}
+        </Preview>
         <Accordion.Root className="city-docs-example-code divide-y-0 rounded-none border-0 bg-transparent">
           <Accordion.Item value="code">
             <Accordion.Header render={<CodeHeading />}>
@@ -176,6 +237,7 @@ export function ComponentReference({ data }: ComponentReferenceProps) {
       <ExampleFrame
         example={featuredExample}
         featuredTitle={componentTitle}
+        optionAxes={featuredExample.configurable ? data.optionAxes : undefined}
         previewLayout={data.widePreviewIds?.includes(featuredExample.id) ? 'wide' : 'center'}
       />
       <ApiTable items={data.api} />

@@ -215,14 +215,19 @@ describe('documented component interactions', () => {
 
     const declared = progressPageData.examples
       .flatMap((example) => example.coverage)
-      .flatMap((coverage) => coverage.combinations ?? [])
-      .sort();
-    const rendered = [...document.querySelectorAll<HTMLElement>('[data-docs-combination]')]
+      .flatMap((coverage) =>
+        'combinations' in coverage && Array.isArray(coverage.combinations)
+          ? coverage.combinations
+          : [],
+      )
+      .sort((first, second) => first.localeCompare(second));
+    const progressExample = screen.getByRole('region', { name: '진행 상태' });
+    const rendered = [...progressExample.querySelectorAll<HTMLElement>('[data-docs-combination]')]
       .map((element) => element.dataset.docsCombination ?? '')
-      .sort();
+      .sort((first, second) => first.localeCompare(second));
 
     expect(rendered).toEqual(declared);
-    expect(screen.getAllByRole('progressbar')).toHaveLength(30);
+    expect(within(progressExample).getAllByRole('progressbar')).toHaveLength(30);
   });
 
   it('renders every declared Toast tone', async () => {

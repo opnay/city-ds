@@ -1,9 +1,11 @@
 import usageSource from './examples/usage.tsx?raw';
 import UsageExample from './examples/usage';
+import { BreadcrumbsPreview } from '../../preview-playgrounds/content';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'breadcrumbs-usage',
+  featuredExampleId: 'breadcrumbs-playground',
   api: [
     {
       name: 'Breadcrumbs.Root',
@@ -28,6 +30,19 @@ export const pageData = {
   ],
   examples: [
     {
+      Component: BreadcrumbsPreview,
+      configurable: true,
+      coverage: [
+        { axis: 'route', values: ['short', 'long'] },
+        { axis: 'overflow', values: ['none', 'ellipsis'] },
+      ],
+      description: '사이드바에서 경로 길이와 생략 표기를 조절합니다.',
+      id: 'breadcrumbs-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/breadcrumbs', 'Breadcrumbs'),
+      title: 'Preview',
+    },
+    {
       Component: UsageExample,
       coverage: [
         { axis: 'current', values: ['page'] },
@@ -41,7 +56,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'current', values: ['page'] },
-    { name: 'overflow', values: ['ellipsis'] },
+    { name: 'route', defaultValue: 'short', values: ['short', 'long'] },
+    { name: 'overflow', defaultValue: 'ellipsis', values: ['none', 'ellipsis'] },
   ],
 } satisfies ComponentPageData;

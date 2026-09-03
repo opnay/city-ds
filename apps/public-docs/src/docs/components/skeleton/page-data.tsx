@@ -1,8 +1,10 @@
 import matrixSource from './examples/matrix.tsx?raw';
 import SkeletonMatrixExample from './examples/matrix';
+import { SkeletonPreview } from '../../preview-playgrounds/content';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 export const pageData = {
-  featuredExampleId: 'skeleton-matrix',
+  featuredExampleId: 'skeleton-playground',
   widePreviewIds: ['skeleton-matrix'],
   api: [
     {
@@ -19,6 +21,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: SkeletonPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 골격의 형태와 크기를 조절합니다.',
+      id: 'skeleton-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/skeleton', 'Skeleton'),
+      title: 'Preview',
+    },
     {
       Component: SkeletonMatrixExample,
       coverage: [

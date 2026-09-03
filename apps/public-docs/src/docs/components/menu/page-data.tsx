@@ -4,10 +4,12 @@ import densitySource from './examples/density.tsx?raw';
 import MenuDensityExample from './examples/density';
 import variantsSource from './examples/variants.tsx?raw';
 import MenuVariantsExample from './examples/variants';
+import { MenuPreview } from '../../preview-playgrounds/content';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'menu-variants',
+  featuredExampleId: 'menu-playground',
   api: [
     { name: 'density', type: "'comfortable' | 'compact'", description: '항목의 밀도입니다.' },
     {
@@ -23,6 +25,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: MenuPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 밀도, 명령 의미와 열림 상태 소유 방식을 조절합니다.',
+      id: 'menu-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/menu', 'Menu'),
+      title: 'Preview',
+    },
     {
       Component: MenuDensityExample,
       coverage: [{ axis: 'density', values: ['comfortable', 'compact'] }],

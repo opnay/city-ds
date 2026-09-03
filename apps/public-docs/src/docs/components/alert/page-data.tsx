@@ -4,10 +4,12 @@ import presentationSource from './examples/presentation.tsx?raw';
 import AlertPresentationExample from './examples/presentation';
 import variantsSource from './examples/variants.tsx?raw';
 import AlertVariantsExample from './examples/variants';
+import { AlertPreview } from '../../preview-playgrounds/content';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'alert-presentation',
+  featuredExampleId: 'alert-playground',
   widePreviewIds: ['alert-presentation', 'alert-variants'],
   api: [
     {
@@ -35,6 +37,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: AlertPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 의미, 표면과 아이콘을 조절합니다.',
+      id: 'alert-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/alert', 'Alert'),
+      title: 'Preview',
+    },
     {
       Component: AlertPresentationExample,
       coverage: [

@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { Alert } from '@opnay/city-ds-react/alert';
 import { Breadcrumbs } from '@opnay/city-ds-react/breadcrumbs';
 import { Button } from '@opnay/city-ds-react/button';
+import { Divider } from '@opnay/city-ds-react/divider';
 import { EmptyState } from '@opnay/city-ds-react/empty-state';
 import { Menu } from '@opnay/city-ds-react/menu';
 import { Pagination } from '@opnay/city-ds-react/pagination';
@@ -72,6 +73,10 @@ export function EmptyStatePreview({ density }: PreviewOptionProps) {
       </EmptyState.Actions>
     </EmptyState.Root>
   );
+}
+
+export function DividerPreview({ label }: PreviewOptionProps) {
+  return label === 'section' ? <Divider label="섹션 구분" /> : <Divider />;
 }
 
 export function ProgressPreview({ shape, size, status }: PreviewOptionProps) {

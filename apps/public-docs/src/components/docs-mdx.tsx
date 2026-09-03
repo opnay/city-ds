@@ -164,12 +164,13 @@ function ExampleFrame({
           density={previewDensity}
           layout={previewLayout}
           options={
-            isConfigurable && previewOptionsOpen
+            isConfigurable
               ? {
                   axes: optionAxes,
                   id: previewOptionsId,
                   onValueChange: (name, value) =>
                     setPreviewOptionValues((current) => ({ ...current, [name]: value })),
+                  open: previewOptionsOpen,
                   values: previewOptionValues,
                 }
               : undefined

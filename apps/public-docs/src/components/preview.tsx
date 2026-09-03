@@ -14,6 +14,7 @@ interface PreviewOptionsConfig {
   axes: readonly OptionAxis[];
   id: string;
   onValueChange: (name: string, value: string) => void;
+  open: boolean;
   values: PreviewOptionValues;
 }
 
@@ -31,9 +32,14 @@ interface PreviewSidebarButtonProps {
   open: boolean;
 }
 
-function PreviewOptions({ axes, id, onValueChange, values }: PreviewOptionsConfig) {
+function PreviewOptions({ axes, id, onValueChange, open, values }: PreviewOptionsConfig) {
   return (
-    <aside aria-label="미리보기 옵션" className="city-docs-preview-sidebar" id={id}>
+    <aside
+      aria-label="미리보기 옵션"
+      className="city-docs-preview-sidebar"
+      hidden={!open}
+      id={id}
+    >
       <div className="city-docs-preview-options">
         {axes.map((axis) => {
           const value = values[axis.name] ?? axis.defaultValue ?? axis.values[0] ?? '';
@@ -100,7 +106,7 @@ export function Preview({ children, density, layout, options, theme }: PreviewPr
   return (
     <div
       className="city-docs-example-preview"
-      data-sidebar-open={options ? '' : undefined}
+      data-sidebar-open={options?.open ? '' : undefined}
       data-theme={theme}
     >
       <div className="city-docs-example-preview-canvas">

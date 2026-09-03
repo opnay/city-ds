@@ -23,6 +23,8 @@ describe('documented component interactions', () => {
 
     expect(preview).not.toBeNull();
     expect(optionsTrigger).toHaveAttribute('aria-expanded', 'false');
+    expect(optionsTrigger).toHaveAttribute('aria-controls', 'preview-options-button-playground');
+    expect(document.getElementById('preview-options-button-playground')).toHaveAttribute('hidden');
     await user.click(optionsTrigger);
 
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
@@ -42,6 +44,7 @@ describe('documented component interactions', () => {
 
     await user.click(within(example).getByRole('button', { name: '미리보기 옵션 닫기' }));
     expect(within(example).queryByRole('complementary', { name: '미리보기 옵션' })).toBeNull();
+    expect(document.getElementById('preview-options-button-playground')).toHaveAttribute('hidden');
   });
 
   it('opens and closes an overlay example', async () => {

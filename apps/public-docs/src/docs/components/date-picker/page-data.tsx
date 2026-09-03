@@ -90,19 +90,19 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    {
-      control: 'segmented',
-      name: 'size',
-      defaultValue: 'md',
-      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
-    },
+    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'open', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'readOnly', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },
   ],
   previewOptionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'readOnly', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },

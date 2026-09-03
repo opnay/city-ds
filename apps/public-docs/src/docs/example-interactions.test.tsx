@@ -145,6 +145,7 @@ describe('documented component interactions', () => {
     const example = screen.getByRole('region', { name: 'DatePicker' });
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     expect(within(sidebar).queryByRole('switch', { name: 'open' })).toBeNull();
+    expect(within(sidebar).getByRole('radiogroup', { name: 'size' })).toBeVisible();
 
     await user.click(within(example).getByRole('button', { name: '검토 날짜 달력 열기' }));
     expect(await screen.findByLabelText('검토 날짜 달력')).toBeVisible();

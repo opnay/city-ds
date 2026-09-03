@@ -5,7 +5,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import { SegmentedControl } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Actions/SegmentedControl',
+  title: 'Forms/SegmentedControl',
   component: SegmentedControl,
   subcomponents: { Item: SegmentedControl.Item },
   tags: ['autodocs'],

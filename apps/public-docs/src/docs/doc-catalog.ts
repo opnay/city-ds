@@ -129,18 +129,6 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Actions',
-    description: '보기·기간처럼 동등한 선택지 중 하나를 항상 유지합니다.',
-    importPath: '@opnay/city-ds-react/segmented-control',
-    keywords: ['세그먼트', '단일 선택', '보기 전환', '기간 선택'],
-    load: () => import('./components/segmented-control/index.mdx'),
-    related: ['radio-group', 'toggle-group'],
-    selectionGuidance:
-      '선택과 콘텐츠 패널이 일대일로 연결되면 Tabs를, 해제 가능한 도구 상태에는 ToggleGroup을 사용하십시오.',
-    slug: 'segmented-control',
-    title: 'SegmentedControl',
-  },
-  {
-    category: 'Actions',
     description: '서로 관련된 해제 가능한 단일 또는 복수 도구 상태를 묶습니다.',
     importPath: '@opnay/city-ds-react/toggle-group',
     keywords: ['토글 그룹', '도구 상태', '복수 선택'],
@@ -298,6 +286,18 @@ export const COMPONENT_DOCS = [
     selectionGuidance: '일반 텍스트 입력에는 Input을 사용하십시오.',
     slug: 'search-input',
     title: 'SearchInput',
+  },
+  {
+    category: 'Forms',
+    description: '보기·기간처럼 동등한 선택지 중 하나를 항상 유지합니다.',
+    importPath: '@opnay/city-ds-react/segmented-control',
+    keywords: ['세그먼트', '단일 선택', '보기 전환', '기간 선택'],
+    load: () => import('./components/segmented-control/index.mdx'),
+    related: ['radio-group', 'toggle-group'],
+    selectionGuidance:
+      '선택과 콘텐츠 패널이 일대일로 연결되면 Tabs를, 해제 가능한 도구 상태에는 ToggleGroup을 사용하십시오.',
+    slug: 'segmented-control',
+    title: 'SegmentedControl',
   },
   {
     category: 'Forms',

@@ -375,8 +375,9 @@ describe('catalog and local UI state', () => {
     await user.click(within(main).getByRole('combobox', { name: '컴포넌트 범주' }));
     await user.click(await screen.findByRole('option', { name: '폼' }));
 
-    expect(within(main).getByText('컴포넌트 14개')).toBeVisible();
+    expect(within(main).getByText('컴포넌트 15개')).toBeVisible();
     expect(within(main).getByRole('link', { name: /^Field외부 입력/ })).toBeVisible();
+    expect(within(main).getByRole('link', { name: /^SegmentedControl보기/ })).toBeVisible();
     expect(within(main).queryByRole('link', { name: /Button/ })).not.toBeInTheDocument();
   });
 

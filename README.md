@@ -119,9 +119,9 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 
 `@opnay/city-ds-react`의 대표 컴포넌트는 다음과 같습니다.
 
-- Actions: Button, SegmentedControl, ToggleGroup
+- Actions: Button, ToggleGroup
 - Status: Badge, Progress, Toast
-- Forms: Field, Input·Textarea·InputGroup, Checkbox, RadioGroup, Switch, Select, FileUpload
+- Forms: Field, Input·Textarea·InputGroup, Checkbox, RadioGroup, SegmentedControl, Switch, Select, FileUpload
 - Navigation: Tabs, Pagination
 - Overlays: Dialog, Tooltip
 - Data display: Table

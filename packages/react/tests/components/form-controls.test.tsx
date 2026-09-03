@@ -828,9 +828,10 @@ describe('form and display controls', () => {
     expect(overriddenItem).toHaveClass(
       'h-(--city-control-sm)',
       'hover:bg-city-accent',
-      'opacity-[0.84]',
-      'data-[pressed]:opacity-100',
+      'data-[pressed]:underline',
+      'data-[pressed]:underline-offset-4',
     );
+    expect(overriddenItem).not.toHaveClass('opacity-[0.84]');
     expect(overriddenItem).not.toHaveClass('data-[pressed]:bg-city-inverse');
   });
 

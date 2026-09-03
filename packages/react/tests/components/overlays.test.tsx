@@ -47,18 +47,18 @@ describe('overlay and selection controls', () => {
     expect(dialog).toHaveClass(
       'origin-center',
       'transition-[opacity,transform]',
-      'duration-(--city-duration-fast)',
+      'duration-(--city-duration-normal)',
       'ease-city-standard',
       'data-[starting-style]:opacity-0',
-      'data-[starting-style]:[transform:translateY(2%)_scale(0.97)]',
+      'data-[starting-style]:[transform:translateY(3%)_scale(0.97)]',
       'data-[ending-style]:opacity-0',
-      'data-[ending-style]:[transform:translateY(2%)_scale(0.97)]',
+      'data-[ending-style]:[transform:translateY(3%)_scale(0.97)]',
       'motion-reduce:transition-none',
     );
     expect(document.querySelector('.bg-city-backdrop')).toHaveClass(
       'backdrop-blur-[8px]',
       'transition-opacity',
-      'duration-(--city-duration-fast)',
+      'duration-(--city-duration-normal)',
       'ease-city-standard',
       'data-[starting-style]:opacity-0',
       'data-[ending-style]:opacity-0',
@@ -312,9 +312,9 @@ describe('overlay and selection controls', () => {
     expect(document.querySelector('.bg-city-backdrop')).toHaveClass('backdrop-blur-[8px]');
     expect(dialog).toHaveClass(
       'transition-[opacity,transform]',
-      'duration-(--city-duration-fast)',
-      'data-[starting-style]:[transform:translateY(2%)_scale(0.97)]',
-      'data-[ending-style]:[transform:translateY(2%)_scale(0.97)]',
+      'duration-(--city-duration-normal)',
+      'data-[starting-style]:[transform:translateY(3%)_scale(0.97)]',
+      'data-[ending-style]:[transform:translateY(3%)_scale(0.97)]',
       'motion-reduce:transition-none',
     );
     expect(screen.getByText('This action cannot be undone.')).toBeVisible();

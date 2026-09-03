@@ -57,7 +57,7 @@ const itemVariantClasses: Record<ToggleGroupVariant, string> = {
   outline:
     'border border-city-border bg-city-background text-city-foreground hover:bg-city-accent active:bg-city-accent-active data-[pressed]:bg-city-inverse data-[pressed]:text-city-inverse-foreground',
   ghost:
-    'text-city-foreground hover:bg-city-accent active:bg-city-accent-active data-[pressed]:bg-city-inverse data-[pressed]:text-city-inverse-foreground',
+    'text-city-foreground opacity-[0.84] hover:bg-city-accent hover:opacity-100 active:bg-city-accent-active active:opacity-100 data-[pressed]:opacity-100',
   destructive:
     'bg-city-destructive text-city-destructive-foreground hover:bg-city-destructive-hover active:bg-city-destructive-active data-[pressed]:bg-city-destructive-active',
 };

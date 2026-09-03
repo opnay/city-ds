@@ -218,10 +218,25 @@ export function ComboboxPreview({ disabled, mode, multiple, size }: PreviewOptio
       : { defaultValue: ['도시 포털'] };
 
     return (
-      <Combobox.Root multiple {...commonProps} {...valueProps}>
+      <Combobox.Root key="multiple" multiple {...commonProps} {...valueProps}>
         <Combobox.InputGroup>
-          <Combobox.Input aria-label="프로젝트" placeholder="프로젝트 검색" />
-          <Combobox.Trigger />
+          <Combobox.Chips>
+            <Combobox.InputRow>
+              <Combobox.Input aria-label="프로젝트" placeholder="프로젝트 검색" />
+              <Combobox.Clear aria-label="모든 프로젝트 지우기" />
+              <Combobox.Trigger />
+            </Combobox.InputRow>
+            <Combobox.Value>
+              {(selectedProjects: string[]) =>
+                selectedProjects.map((project) => (
+                  <Combobox.Chip key={project}>
+                    {project}
+                    <Combobox.ChipRemove aria-label={`${project} 제거`} />
+                  </Combobox.Chip>
+                ))
+              }
+            </Combobox.Value>
+          </Combobox.Chips>
         </Combobox.InputGroup>
         <ComboboxOptions />
       </Combobox.Root>
@@ -236,7 +251,7 @@ export function ComboboxPreview({ disabled, mode, multiple, size }: PreviewOptio
     : { defaultValue: '도시 포털' };
 
   return (
-    <Combobox.Root {...commonProps} {...valueProps}>
+    <Combobox.Root key="single" {...commonProps} {...valueProps}>
       <Combobox.InputGroup>
         <Combobox.Input aria-label="프로젝트" placeholder="프로젝트 검색" />
         <Combobox.Trigger />

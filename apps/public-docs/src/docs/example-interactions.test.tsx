@@ -123,6 +123,20 @@ describe('documented component interactions', () => {
     expect(within(searchExample).getByText('Button')).toBeVisible();
   });
 
+  it('uses chips when the Combobox preview switches to multiple selection', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/combobox']);
+
+    const example = screen.getByRole('region', { name: 'Combobox' });
+    await user.click(within(example).getByRole('button', { name: '미리보기 옵션 열기' }));
+
+    const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
+    await user.click(within(sidebar).getByRole('switch', { name: 'multiple' }));
+
+    expect(within(example).getByRole('button', { name: '도시 포털 제거' })).toBeVisible();
+    expect(within(example).getByRole('button', { name: '모든 프로젝트 지우기' })).toBeVisible();
+  });
+
   it('adds transient feedback through the documented Sonner API', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/toast']);

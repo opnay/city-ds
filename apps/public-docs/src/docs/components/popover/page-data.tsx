@@ -4,10 +4,12 @@ import modalSource from './examples/modal.tsx?raw';
 import PopoverModalExample from './examples/modal';
 import placementsSource from './examples/placements.tsx?raw';
 import PopoverPlacementsExample from './examples/placements';
+import { PopoverPreview } from '../../preview-playgrounds/surfaces';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'popover-controlled',
+  featuredExampleId: 'popover-playground',
   api: [
     {
       name: 'open / onOpenChange',
@@ -19,6 +21,16 @@ export const pageData = {
     { name: 'modal', type: 'boolean', description: '모달 포커스 동작을 선택합니다.' },
   ],
   examples: [
+    {
+      Component: PopoverPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 열림 상태 소유, 위치와 모달 동작을 조절합니다.',
+      id: 'popover-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/popover', 'Popover'),
+      title: 'Preview',
+    },
     {
       Component: PopoverPlacementsExample,
       coverage: [
@@ -76,6 +88,22 @@ export const pageData = {
     { name: 'side', values: ['top', 'right', 'bottom', 'left'] },
     { name: 'align', defaultValue: 'center', values: ['start', 'center', 'end'] },
     { name: 'modal', defaultValue: 'false', values: ['false', 'true'] },
+  ],
+  previewOptionAxes: [
+    { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },
+    {
+      control: 'segmented',
+      name: 'side',
+      defaultValue: 'bottom',
+      values: ['top', 'right', 'bottom', 'left'],
+    },
+    {
+      control: 'segmented',
+      name: 'align',
+      defaultValue: 'center',
+      values: ['start', 'center', 'end'],
+    },
+    { control: 'switch', name: 'modal', defaultValue: 'false', values: ['false', 'true'] },
   ],
   widePreviewIds: ['popover-placements'],
 } satisfies ComponentPageData;

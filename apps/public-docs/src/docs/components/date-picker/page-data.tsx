@@ -4,10 +4,12 @@ import statesSource from './examples/states.tsx?raw';
 import DatePickerStatesExample from './examples/states';
 import usageSource from './examples/usage.tsx?raw';
 import UsageExample from './examples/usage';
+import { DatePickerPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'date-picker-usage',
+  featuredExampleId: 'date-picker-playground',
   api: [
     {
       name: 'value / defaultValue',
@@ -42,6 +44,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: DatePickerPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 크기와 입력 상태를 조절합니다.',
+      id: 'date-picker-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/date-picker', 'DatePicker'),
+      title: 'Preview',
+    },
     {
       Component: DatePickerSizesExample,
       coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
@@ -80,6 +92,17 @@ export const pageData = {
   optionAxes: [
     { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
     { name: 'open', defaultValue: 'false', values: ['false', 'true'] },
+    { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
+    { name: 'readOnly', defaultValue: 'false', values: ['false', 'true'] },
+    { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },
+  ],
+  previewOptionAxes: [
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'readOnly', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },

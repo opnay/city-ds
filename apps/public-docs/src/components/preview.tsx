@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import type { CityTheme, Density } from '@opnay/city-ds-react';
 import { Button } from '@opnay/city-ds-react/button';
 import { DensityProvider } from '@opnay/city-ds-react/density-provider';
+import { SegmentedControl } from '@opnay/city-ds-react/segmented-control';
 import { Select } from '@opnay/city-ds-react/select';
 import { Switch } from '@opnay/city-ds-react/switch';
 
@@ -14,6 +15,7 @@ interface PreviewOptionsConfig {
   axes: readonly OptionAxis[];
   id: string;
   onValueChange: (name: string, value: string) => void;
+  open: boolean;
   values: PreviewOptionValues;
 }
 
@@ -31,25 +33,79 @@ interface PreviewSidebarButtonProps {
   open: boolean;
 }
 
-function PreviewOptions({ axes, id, onValueChange, values }: PreviewOptionsConfig) {
+function isBooleanOptionAxis(axis: OptionAxis) {
   return (
-    <aside aria-label="미리보기 옵션" className="city-docs-preview-sidebar" id={id}>
+    axis.control === 'switch' ||
+    (axis.values.length === 2 && axis.values.includes('false') && axis.values.includes('true'))
+  );
+}
+
+function getOptionOrder(axis: OptionAxis) {
+  if (axis.name === 'density') return 0;
+  if (axis.name === 'size') return 1;
+  if (axis.name === 'disabled') return 4;
+  if (isBooleanOptionAxis(axis)) return 3;
+  return 2;
+}
+
+function orderOptionAxes(axes: readonly OptionAxis[]) {
+  return axes
+    .map((axis, index) => ({ axis, index }))
+    .sort((left, right) => {
+      const rankDifference = getOptionOrder(left.axis) - getOptionOrder(right.axis);
+      return rankDifference === 0 ? left.index - right.index : rankDifference;
+    })
+    .map(({ axis }) => axis);
+}
+
+function PreviewOptions({ axes, id, onValueChange, open, values }: PreviewOptionsConfig) {
+  return (
+    <aside aria-label="미리보기 옵션" className="city-docs-preview-sidebar" hidden={!open} id={id}>
       <div className="city-docs-preview-options">
-        {axes.map((axis) => {
+        {orderOptionAxes(axes).map((axis) => {
           const value = values[axis.name] ?? axis.defaultValue ?? axis.values[0] ?? '';
 
-          if (axis.control === 'switch') {
+          if (isBooleanOptionAxis(axis)) {
             const labelId = `${id}-${axis.name}`;
+            const controlId = `${labelId}-control`;
 
             return (
-              <div className="city-docs-preview-option-switch" key={axis.name}>
+              <label
+                className="city-docs-preview-option-switch"
+                htmlFor={controlId}
+                key={axis.name}
+              >
                 <code id={labelId}>{axis.name}</code>
                 <Switch
                   aria-labelledby={labelId}
                   checked={value === 'true'}
+                  id={controlId}
                   onCheckedChange={(checked) => onValueChange(axis.name, String(checked))}
                   size="sm"
                 />
+              </label>
+            );
+          }
+
+          if (axis.control === 'segmented') {
+            const labelId = `${id}-${axis.name}`;
+
+            return (
+              <div className="city-docs-preview-option-field" key={axis.name}>
+                <code id={labelId}>{axis.name}</code>
+                <SegmentedControl
+                  aria-labelledby={labelId}
+                  className="city-docs-preview-option-segmented"
+                  onValueChange={(nextValue) => onValueChange(axis.name, nextValue)}
+                  size="sm"
+                  value={value}
+                >
+                  {axis.values.map((option) => (
+                    <SegmentedControl.Item key={option} value={option}>
+                      {option}
+                    </SegmentedControl.Item>
+                  ))}
+                </SegmentedControl>
               </div>
             );
           }
@@ -100,7 +156,7 @@ export function Preview({ children, density, layout, options, theme }: PreviewPr
   return (
     <div
       className="city-docs-example-preview"
-      data-sidebar-open={options ? '' : undefined}
+      data-sidebar-open={options?.open ? '' : undefined}
       data-theme={theme}
     >
       <div className="city-docs-example-preview-canvas">

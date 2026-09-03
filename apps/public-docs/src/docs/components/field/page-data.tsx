@@ -1,9 +1,11 @@
 import statesSource from './examples/states.tsx?raw';
 import StatesExample from './examples/states';
+import { FieldPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'field-states',
+  featuredExampleId: 'field-playground',
   api: [
     {
       name: 'invalid',
@@ -29,6 +31,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: FieldPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 오류와 비활성 상태를 조절합니다.',
+      id: 'field-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/field', 'Field'),
+      title: 'Preview',
+    },
     {
       Component: StatesExample,
       coverage: [

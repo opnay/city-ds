@@ -4,6 +4,8 @@ import singleSource from './examples/single.tsx?raw';
 import ComboboxSingleExample from './examples/single';
 import statesSource from './examples/states.tsx?raw';
 import ComboboxStatesExample from './examples/states';
+import { ComboboxPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 const sizes = ['xsm', 'sm', 'md', 'lg', 'xlg'] as const;
@@ -11,7 +13,7 @@ const singleCombinations = sizes.map((size) => `size=${size}|multiple=false`);
 const multipleCombinations = sizes.map((size) => `size=${size}|multiple=true`);
 
 export const pageData = {
-  featuredExampleId: 'combobox-single',
+  featuredExampleId: 'combobox-playground',
   api: [
     { name: 'items', type: 'readonly Value[]', description: '검색하고 선택할 컬렉션입니다.' },
     {
@@ -33,6 +35,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: ComboboxPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 크기, 단일·복수 선택과 값 소유 방식을 조절합니다.',
+      id: 'combobox-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/combobox', 'Combobox'),
+      title: 'Preview',
+    },
     {
       Component: ComboboxSingleExample,
       coverage: [
@@ -87,7 +99,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: sizes },
+    { control: 'segmented', name: 'size', defaultValue: 'md', values: sizes },
     { name: 'multiple', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },

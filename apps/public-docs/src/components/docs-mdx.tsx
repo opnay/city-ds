@@ -82,11 +82,18 @@ function createPreviewOptionValues(axes: readonly OptionAxis[]): PreviewOptionVa
   );
 }
 
+function isBooleanOptionAxis(axis: OptionAxis) {
+  return (
+    axis.control === 'switch' ||
+    (axis.values.length === 2 && axis.values.includes('false') && axis.values.includes('true'))
+  );
+}
+
 function createPreviewProps(axes: readonly OptionAxis[], values: PreviewOptionValues) {
   return Object.fromEntries(
     axes.map((axis) => {
       const value = values[axis.name] ?? axis.defaultValue ?? axis.values[0] ?? '';
-      return [axis.name, axis.control === 'switch' ? value === 'true' : value];
+      return [axis.name, isBooleanOptionAxis(axis) ? value === 'true' : value];
     }),
   );
 }
@@ -97,8 +104,8 @@ function ExampleFrame({
   optionAxes = [],
   previewLayout = 'center',
 }: ExampleFrameProps) {
-  const { previewDensity, resolvedPreviewTheme } = usePreviewSettings();
-  const [previewOptionsOpen, setPreviewOptionsOpen] = useState(false);
+  const { previewDensity, previewOptionsOpen, resolvedPreviewTheme, setPreviewOptionsOpen } =
+    usePreviewSettings();
   const [previewOptionValues, setPreviewOptionValues] = useState(() =>
     createPreviewOptionValues(optionAxes),
   );
@@ -164,12 +171,13 @@ function ExampleFrame({
           density={previewDensity}
           layout={previewLayout}
           options={
-            isConfigurable && previewOptionsOpen
+            isConfigurable
               ? {
                   axes: optionAxes,
                   id: previewOptionsId,
                   onValueChange: (name, value) =>
                     setPreviewOptionValues((current) => ({ ...current, [name]: value })),
+                  open: previewOptionsOpen,
                   values: previewOptionValues,
                 }
               : undefined
@@ -237,7 +245,9 @@ export function ComponentReference({ data }: ComponentReferenceProps) {
       <ExampleFrame
         example={featuredExample}
         featuredTitle={componentTitle}
-        optionAxes={featuredExample.configurable ? data.optionAxes : undefined}
+        optionAxes={
+          featuredExample.configurable ? (data.previewOptionAxes ?? data.optionAxes) : undefined
+        }
         previewLayout={data.widePreviewIds?.includes(featuredExample.id) ? 'wide' : 'center'}
       />
       <ApiTable items={data.api} />

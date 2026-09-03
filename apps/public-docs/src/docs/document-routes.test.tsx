@@ -7,19 +7,67 @@ import { COMPONENT_DOCS } from './doc-catalog';
 const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   alert: 2,
   badge: 1,
-  'data-table-region': 2,
+  'data-table-region': 3,
   'empty-state': 1,
-  fieldset: 4,
-  'filter-bar': 1,
-  panel: 1,
+  fieldset: 5,
+  'filter-bar': 2,
+  panel: 2,
   popover: 1,
   progress: 1,
   skeleton: 1,
-  table: 4,
+  table: 5,
   toast: 1,
 };
 
+const CONFIGURABLE_COMPONENTS = new Set([
+  'accordion',
+  'alert',
+  'alert-dialog',
+  'badge',
+  'button',
+  'breadcrumbs',
+  'calendar',
+  'checkbox',
+  'checkbox-group',
+  'combobox',
+  'date-picker',
+  'data-table-region',
+  'density-provider',
+  'dialog',
+  'drawer',
+  'empty-state',
+  'field',
+  'fieldset',
+  'file-upload',
+  'filter-bar',
+  'input',
+  'number-input',
+  'menu',
+  'pagination',
+  'panel',
+  'popover',
+  'progress',
+  'radio-group',
+  'search-input',
+  'segmented-control',
+  'select',
+  'skeleton',
+  'switch',
+  'table',
+  'tabs',
+  'toast',
+  'toggle-group',
+  'toolbar',
+  'tooltip',
+]);
+
 describe('all component document routes', () => {
+  it('adds an option playground to every component route', () => {
+    expect([...CONFIGURABLE_COMPONENTS].sort()).toEqual(
+      COMPONENT_DOCS.map((entry) => entry.slug).sort(),
+    );
+  });
+
   it.each(COMPONENT_DOCS)('renders $slug with examples and API', async (entry) => {
     const { container } = await renderDocs([`/components/${entry.slug}`]);
 
@@ -120,9 +168,11 @@ describe('all component document routes', () => {
         within(header as HTMLElement).getByRole('button', { name: '미리보기 설정' }),
       ).toBeVisible();
     }
-    expect(screen.queryAllByRole('button', { name: '미리보기 옵션 열기' })).toHaveLength(
-      entry.slug === 'button' ? 1 : 0,
-    );
+    const optionPanels = screen.queryAllByRole('complementary', { name: '미리보기 옵션' });
+    expect(optionPanels).toHaveLength(CONFIGURABLE_COMPONENTS.has(entry.slug) ? 1 : 0);
+    for (const panel of optionPanels) {
+      expect(panel).not.toHaveAttribute('hidden');
+    }
     expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
     const importRegion = screen.getByRole('region', { name: `${entry.title} 가져오기` });
     expect(pageHeading).toContainElement(importRegion);
@@ -157,16 +207,16 @@ describe('all component document routes', () => {
   it('keeps Calendar static examples centered', async () => {
     const { container } = await renderDocs(['/components/calendar']);
 
-    expect(container.querySelectorAll('.city-docs-example')).toHaveLength(3);
-    expect(container.querySelectorAll("[data-city-docs-layout='center']")).toHaveLength(3);
+    expect(container.querySelectorAll('.city-docs-example')).toHaveLength(4);
+    expect(container.querySelectorAll("[data-city-docs-layout='center']")).toHaveLength(4);
     expect(container.querySelectorAll("[data-city-docs-layout='wide']")).toHaveLength(0);
-    expect(screen.getAllByRole('grid')).toHaveLength(11);
+    expect(screen.getAllByRole('grid')).toHaveLength(12);
     expect(screen.queryByRole('group', { name: '달력 크기' })).toBeNull();
     expect(screen.queryByRole('group', { name: '달력 상태' })).toBeNull();
   });
 
   it.each([
-    { slug: 'data-table-region', tableCount: 5 },
+    { slug: 'data-table-region', tableCount: 6 },
     { slug: 'table', tableCount: 3 },
   ])('uses the full preview width before $slug tables overflow', async ({ slug, tableCount }) => {
     const { container } = await renderDocs([`/components/${slug}`]);

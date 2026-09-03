@@ -10,10 +10,12 @@ import sizesSource from './examples/sizes.tsx?raw';
 import ToolbarSizesExample from './examples/sizes';
 import toggleVariantsSource from './examples/toggle-variants.tsx?raw';
 import ToolbarToggleVariantsExample from './examples/toggle-variants';
+import { ToolbarPreview } from '../../preview-playgrounds/content';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'toolbar-appearances',
+  featuredExampleId: 'toolbar-playground',
   api: [
     {
       name: 'appearance',
@@ -46,6 +48,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: ToolbarPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 도구 모음 표면, 방향과 항목 위계를 조절합니다.',
+      id: 'toolbar-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/toolbar', 'Toolbar'),
+      title: 'Preview',
+    },
     {
       Component: ToolbarAppearancesExample,
       coverage: [{ axis: 'appearance', values: ['plain', 'band', 'outline'] }],
@@ -112,9 +124,24 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'appearance', defaultValue: 'outline', values: ['plain', 'band', 'outline'] },
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
-    { name: 'orientation', defaultValue: 'horizontal', values: ['horizontal', 'vertical'] },
+    {
+      control: 'segmented',
+      name: 'appearance',
+      defaultValue: 'outline',
+      values: ['plain', 'band', 'outline'],
+    },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
+    {
+      control: 'segmented',
+      name: 'orientation',
+      defaultValue: 'horizontal',
+      values: ['horizontal', 'vertical'],
+    },
     {
       name: 'buttonVariant',
       defaultValue: 'ghost',

@@ -1,9 +1,11 @@
 import confirmSource from './examples/confirm.tsx?raw';
 import ConfirmExample from './examples/confirm';
+import { AlertDialogPreview } from '../../preview-playgrounds/surfaces';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'alert-dialog-confirm',
+  featuredExampleId: 'alert-dialog-playground',
   api: [
     {
       name: 'open / defaultOpen',
@@ -28,6 +30,16 @@ export const pageData = {
   ],
   examples: [
     {
+      Component: AlertDialogPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 확인 행동의 파괴적 의미를 조절합니다.',
+      id: 'alert-dialog-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/alert-dialog', 'AlertDialog'),
+      title: 'Preview',
+    },
+    {
       Component: ConfirmExample,
       coverage: [
         { axis: 'open', values: ['false', 'true'] },
@@ -44,5 +56,8 @@ export const pageData = {
   optionAxes: [
     { name: 'open', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'destructive', defaultValue: 'false', values: ['false', 'true'] },
+  ],
+  previewOptionAxes: [
+    { control: 'switch', name: 'destructive', defaultValue: 'false', values: ['false', 'true'] },
   ],
 } satisfies ComponentPageData;

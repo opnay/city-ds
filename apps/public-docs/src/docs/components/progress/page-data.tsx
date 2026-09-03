@@ -1,8 +1,10 @@
 import statesSource from './examples/states.tsx?raw';
 import ProgressStatesExample from './examples/states';
+import { ProgressPreview } from '../../preview-playgrounds/content';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 export const pageData = {
-  featuredExampleId: 'progress-states',
+  featuredExampleId: 'progress-playground',
   widePreviewIds: ['progress-states'],
   api: [
     { name: 'value', type: 'number | null', description: 'null은 불확정 진행을 표시합니다.' },
@@ -20,6 +22,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: ProgressPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 형태, 진행 상태와 크기를 조절합니다.',
+      id: 'progress-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/progress', 'Progress'),
+      title: 'Preview',
+    },
     {
       Component: ProgressStatesExample,
       coverage: [
@@ -70,8 +82,13 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'shape', values: ['linear', 'circular'] },
+    { control: 'segmented', name: 'shape', values: ['linear', 'circular'] },
     { name: 'status', values: ['progressing', 'complete', 'indeterminate'] },
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
   ],
 } satisfies ComponentPageData;

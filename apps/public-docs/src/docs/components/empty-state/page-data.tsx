@@ -1,9 +1,11 @@
 import emptySource from './examples/empty.tsx?raw';
 import EmptyExample from './examples/empty';
+import { EmptyStatePreview } from '../../preview-playgrounds/content';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'empty-state',
+  featuredExampleId: 'empty-state-playground',
   widePreviewIds: ['empty-state'],
   api: [
     {
@@ -17,6 +19,16 @@ export const pageData = {
   ],
   examples: [
     {
+      Component: EmptyStatePreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 빈 상태의 정보 밀도를 조절합니다.',
+      id: 'empty-state-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/empty-state', 'EmptyState'),
+      title: 'Preview',
+    },
+    {
       Component: EmptyExample,
       coverage: [
         { axis: 'density', values: ['default', 'compact'] },
@@ -29,5 +41,12 @@ export const pageData = {
       title: '빈 결과 복구',
     },
   ],
-  optionAxes: [{ name: 'density', defaultValue: 'default', values: ['default', 'compact'] }],
+  optionAxes: [
+    {
+      control: 'segmented',
+      name: 'density',
+      defaultValue: 'default',
+      values: ['default', 'compact'],
+    },
+  ],
 } satisfies ComponentPageData;

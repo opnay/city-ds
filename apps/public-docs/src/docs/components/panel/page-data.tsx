@@ -1,10 +1,12 @@
 import structureSource from './examples/structure.tsx?raw';
 import PanelStructureExample from './examples/structure';
+import { PanelPreview } from '../../preview-playgrounds/surfaces';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'panel-structure',
-  widePreviewIds: ['panel-structure'],
+  featuredExampleId: 'panel-playground',
+  widePreviewIds: ['panel-playground', 'panel-structure'],
   api: [
     {
       name: 'Panel.Root',
@@ -23,6 +25,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: PanelPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 Header 액션 제공 여부를 조절합니다.',
+      id: 'panel-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/panel', 'Panel'),
+      title: 'Preview',
+    },
     {
       Component: PanelStructureExample,
       coverage: [{ axis: 'actions', values: ['none', 'provided'] }],

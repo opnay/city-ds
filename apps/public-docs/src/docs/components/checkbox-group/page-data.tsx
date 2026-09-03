@@ -2,10 +2,12 @@ import selectionSource from './examples/selection.tsx?raw';
 import CheckboxGroupSelectionExample from './examples/selection';
 import sizesSource from './examples/sizes.tsx?raw';
 import CheckboxGroupSizesExample from './examples/sizes';
+import { CheckboxGroupPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'checkbox-group-selection',
+  featuredExampleId: 'checkbox-group-playground',
   api: [
     {
       name: 'value / onValueChange',
@@ -22,6 +24,16 @@ export const pageData = {
     { name: 'disabled', type: 'boolean', description: '그룹이나 항목 선택을 막습니다.' },
   ],
   examples: [
+    {
+      Component: CheckboxGroupPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 크기, 값 소유 방식과 비활성 상태를 조절합니다.',
+      id: 'checkbox-group-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/checkbox-group', 'CheckboxGroup'),
+      title: 'Preview',
+    },
     {
       Component: CheckboxGroupSizesExample,
       coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
@@ -45,7 +57,12 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
     { name: 'mode', values: ['controlled', 'uncontrolled'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
   ],

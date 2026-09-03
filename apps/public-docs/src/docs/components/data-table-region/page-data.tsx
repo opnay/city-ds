@@ -2,11 +2,17 @@ import hintSource from './examples/hint.tsx?raw';
 import DataTableRegionHintExample from './examples/hint';
 import overflowSource from './examples/overflow.tsx?raw';
 import OverflowExample from './examples/overflow';
+import { DataTableRegionPreview } from '../../preview-playgrounds/surfaces';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'data-table-region-overflow',
-  widePreviewIds: ['data-table-region-overflow', 'data-table-region-hint'],
+  featuredExampleId: 'data-table-region-playground',
+  widePreviewIds: [
+    'data-table-region-playground',
+    'data-table-region-overflow',
+    'data-table-region-hint',
+  ],
   api: [
     {
       name: 'label',
@@ -28,6 +34,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: DataTableRegionPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 스크롤 영역 표면과 안내 표시를 조절합니다.',
+      id: 'data-table-region-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/data-table-region', 'DataTableRegion'),
+      title: 'Preview',
+    },
     {
       Component: OverflowExample,
       coverage: [
@@ -51,7 +67,12 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'appearance', defaultValue: 'plain', values: ['plain', 'band', 'outline'] },
+    {
+      control: 'segmented',
+      name: 'appearance',
+      defaultValue: 'plain',
+      values: ['plain', 'band', 'outline'],
+    },
     { name: 'showHint', defaultValue: 'true', values: ['true', 'false'] },
   ],
 } satisfies ComponentPageData;

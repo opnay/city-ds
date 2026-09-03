@@ -2,10 +2,12 @@ import selectionSource from './examples/selection.tsx?raw';
 import SelectSelectionExample from './examples/selection';
 import sizesSource from './examples/sizes.tsx?raw';
 import SelectSizesExample from './examples/sizes';
+import { SelectPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'select-selection',
+  featuredExampleId: 'select-playground',
   api: [
     { name: 'items', type: 'Record<Value, string> | Item[]', description: '선택 가능한 값입니다.' },
     {
@@ -27,6 +29,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: SelectPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 크기, 단일·복수 선택과 값 소유 방식을 조절합니다.',
+      id: 'select-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/select', 'Select'),
+      title: 'Preview',
+    },
     {
       Component: SelectSizesExample,
       coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
@@ -50,7 +62,12 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
     { name: 'multiple', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'mode', values: ['controlled', 'uncontrolled'] },
   ],

@@ -42,15 +42,17 @@ describe('public docs routes and shell', () => {
       expect(container.querySelectorAll('.city-docs-example-variant').length).toBeGreaterThan(0),
     );
 
-    const featuredExample = screen.getByRole('region', { name: 'Select' });
-    expect(featuredExample.querySelector('.city-docs-example-label')).toBeNull();
-    expect(within(featuredExample).getAllByRole('combobox', { name: '작업 상태' })).toHaveLength(3);
+    const selectionExample = screen.getByRole('region', { name: '선택 방식' });
+    expect(selectionExample.querySelector('.city-docs-example-label')).toBeNull();
+    expect(within(selectionExample).getAllByRole('combobox', { name: '작업 상태' })).toHaveLength(
+      3,
+    );
   });
 
   it('separates Fieldset surfaces and keeps each preview as a real group', async () => {
     await renderDocs(['/components/fieldset']);
 
-    for (const name of ['Fieldset', 'Plain', 'Band']) {
+    for (const name of ['Fieldset', 'Outline', 'Plain', 'Band']) {
       const preview = screen.getByRole('region', { name });
       expect(preview.querySelector('.city-docs-example-preview-content')).toHaveAttribute(
         'data-city-docs-layout',
@@ -451,6 +453,24 @@ describe('catalog and local UI state', () => {
       'aria-checked',
       'true',
     );
+  });
+
+  it('shares direct options buttons state across document pages and defaults it to open', async () => {
+    const user = userEvent.setup();
+    const { router } = await renderDocs(['/components/button']);
+
+    expect(screen.getByRole('complementary', { name: '미리보기 옵션' })).toBeVisible();
+    await user.click(screen.getAllByRole('button', { name: '미리보기 옵션 닫기' })[0]!);
+    expect(screen.queryByRole('complementary', { name: '미리보기 옵션' })).toBeNull();
+
+    await act(async () => {
+      await router.navigate({ params: { slug: 'calendar' }, to: '/components/$slug' });
+    });
+    expect(await screen.findByRole('heading', { level: 1, name: 'Calendar' })).toBeVisible();
+    expect(screen.queryByRole('complementary', { name: '미리보기 옵션' })).toBeNull();
+
+    await user.click(screen.getAllByRole('button', { name: '미리보기 옵션 열기' })[0]!);
+    expect(screen.getByRole('complementary', { name: '미리보기 옵션' })).toBeVisible();
   });
 
   it('applies persisted preview settings across document pages', async () => {

@@ -6,10 +6,12 @@ import statesSource from './examples/states.tsx?raw';
 import InputStatesExample from './examples/states';
 import textareaSource from './examples/textarea.tsx?raw';
 import InputTextareaExample from './examples/textarea';
+import { InputPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'input-addons',
+  featuredExampleId: 'input-playground',
   api: [
     {
       name: 'size',
@@ -31,6 +33,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: InputPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 크기, 상태와 Addon 위치를 조절합니다.',
+      id: 'input-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/input', 'Input, InputGroup'),
+      title: 'Preview',
+    },
     {
       Component: InputSizesExample,
       coverage: [{ axis: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] }],
@@ -72,9 +84,19 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
     { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
-    { name: 'addonPosition', defaultValue: 'leading', values: ['leading', 'trailing'] },
+    {
+      control: 'segmented',
+      name: 'addonPosition',
+      defaultValue: 'leading',
+      values: ['leading', 'trailing'],
+    },
   ],
 } satisfies ComponentPageData;

@@ -111,7 +111,12 @@ export const pageData = {
       name: 'variant',
       values: ['primary', 'secondary', 'outline', 'ghost', 'destructive'],
     },
-    { defaultValue: 'md', name: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      defaultValue: 'md',
+      name: 'size',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
     {
       control: 'switch',
       defaultValue: 'false',

@@ -2,10 +2,12 @@ import controlledSource from './examples/controlled.tsx?raw';
 import TooltipControlledExample from './examples/controlled';
 import placementsSource from './examples/placements.tsx?raw';
 import TooltipPlacementsExample from './examples/placements';
+import { TooltipPreview } from '../../preview-playgrounds/surfaces';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'tooltip-placements',
+  featuredExampleId: 'tooltip-playground',
   api: [
     { name: 'delay', type: 'number', description: '표시 전 대기 시간입니다.' },
     {
@@ -20,6 +22,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: TooltipPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 위치와 열림 상태 소유 방식을 조절합니다.',
+      id: 'tooltip-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/tooltip', 'Tooltip'),
+      title: 'Preview',
+    },
     {
       Component: TooltipPlacementsExample,
       coverage: [{ axis: 'side', values: ['top', 'right', 'bottom', 'left'] }],
@@ -40,7 +52,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'side', values: ['top', 'right', 'bottom', 'left'] },
+    { control: 'segmented', name: 'side', values: ['top', 'right', 'bottom', 'left'] },
     { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },
   ],
 } satisfies ComponentPageData;

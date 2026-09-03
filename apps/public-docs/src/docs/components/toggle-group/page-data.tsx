@@ -6,10 +6,12 @@ import sizesSource from './examples/sizes.tsx?raw';
 import ToggleGroupSizesExample from './examples/sizes';
 import variantsSource from './examples/variants.tsx?raw';
 import ToggleGroupVariantsExample from './examples/variants';
+import { ToggleGroupPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'toggle-group-selection',
+  featuredExampleId: 'toggle-group-playground',
   api: [
     {
       name: 'variant',
@@ -48,6 +50,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: ToggleGroupPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 항목 표면, 선택 방식, 방향과 상태를 조절합니다.',
+      id: 'toggle-group-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/toggle-group', 'ToggleGroup'),
+      title: 'Preview',
+    },
     {
       Component: ToggleGroupVariantsExample,
       coverage: [
@@ -121,8 +133,18 @@ export const pageData = {
     },
     { name: 'pressed', values: ['false', 'true'] },
     { name: 'multiple', defaultValue: 'false', values: ['false', 'true'] },
-    { name: 'orientation', defaultValue: 'horizontal', values: ['horizontal', 'vertical'] },
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      name: 'orientation',
+      defaultValue: 'horizontal',
+      values: ['horizontal', 'vertical'],
+    },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
     { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
   ],

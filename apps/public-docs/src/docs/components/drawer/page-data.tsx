@@ -2,10 +2,12 @@ import modalitySource from './examples/modality.tsx?raw';
 import DrawerModalityExample from './examples/modality';
 import sidesSource from './examples/sides.tsx?raw';
 import SidesExample from './examples/sides';
+import { DrawerPreview } from '../../preview-playgrounds/surfaces';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'drawer-modality',
+  featuredExampleId: 'drawer-playground',
   api: [
     {
       name: 'side',
@@ -32,6 +34,16 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      Component: DrawerPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 방향, 크기와 모달 동작을 조절합니다.',
+      id: 'drawer-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/drawer', 'Drawer'),
+      title: 'Preview',
+    },
     {
       Component: SidesExample,
       coverage: [
@@ -75,8 +87,18 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'side', defaultValue: 'right', values: ['left', 'right', 'bottom'] },
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg', 'xl', 'full'] },
+    {
+      control: 'segmented',
+      name: 'side',
+      defaultValue: 'right',
+      values: ['left', 'right', 'bottom'],
+    },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['sm', 'md', 'lg', 'xl', 'full'],
+    },
     { name: 'modal', defaultValue: 'true', values: ['true', 'false'] },
   ],
 } satisfies ComponentPageData;

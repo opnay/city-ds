@@ -61,7 +61,7 @@ export interface ApiItem {
 }
 
 export interface OptionAxis {
-  control?: 'select' | 'switch';
+  control?: 'select' | 'segmented' | 'switch';
   defaultValue?: string;
   name: string;
   values: readonly string[];
@@ -109,5 +109,6 @@ export interface ComponentPageData {
   examples: readonly DocExample[];
   featuredExampleId: string;
   optionAxes: readonly OptionAxis[];
+  previewOptionAxes?: readonly OptionAxis[];
   widePreviewIds?: readonly string[];
 }

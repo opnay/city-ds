@@ -2,10 +2,12 @@ import selectionSource from './examples/selection.tsx?raw';
 import SegmentedControlSelectionExample from './examples/selection';
 import sizesSource from './examples/sizes.tsx?raw';
 import SegmentedControlSizesExample from './examples/sizes';
+import { SegmentedControlPreview } from '../../preview-playgrounds/forms';
+import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
 
 export const pageData = {
-  featuredExampleId: 'segmented-control-selection',
+  featuredExampleId: 'segmented-control-playground',
   api: [
     {
       name: 'value / onValueChange',
@@ -32,6 +34,16 @@ export const pageData = {
   ],
   examples: [
     {
+      Component: SegmentedControlPreview,
+      configurable: true,
+      coverage: [{ axis: 'preview', values: ['configurable'] }],
+      description: '사이드바에서 크기, 값 소유 방식과 비활성 상태를 조절합니다.',
+      id: 'segmented-control-playground',
+      filename: 'playground.tsx',
+      source: createPlaygroundSource('@opnay/city-ds-react/segmented-control', 'SegmentedControl'),
+      title: 'Preview',
+    },
+    {
       Component: SegmentedControlSelectionExample,
       coverage: [
         { axis: 'mode', values: ['controlled', 'uncontrolled'] },
@@ -54,7 +66,12 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
     { name: 'mode', values: ['controlled', 'uncontrolled'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
   ],

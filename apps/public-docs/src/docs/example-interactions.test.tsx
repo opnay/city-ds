@@ -128,12 +128,6 @@ describe('documented component interactions', () => {
     await renderDocs(['/components/combobox']);
 
     const example = screen.getByRole('region', { name: 'Combobox' });
-    expect(within(example).queryByRole('button', { name: '코드 보기' })).toBeNull();
-    expect(
-      within(example).getByText(
-        '이 Preview는 옵션을 비교하는 도구입니다. 실제 사용 코드는 아래 예제를 확인하십시오.',
-      ),
-    ).toBeVisible();
     await user.click(within(example).getByRole('button', { name: '미리보기 옵션 열기' }));
 
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });

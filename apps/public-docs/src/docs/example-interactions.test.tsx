@@ -64,6 +64,32 @@ describe('documented component interactions', () => {
     expect(within(settings).queryByRole('menuitemcheckbox', { name: '옵션 패널' })).toBeNull();
   });
 
+  it('adds and removes the Divider label from the preview options', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/divider']);
+
+    const example = screen.getByRole('region', { name: 'Divider' });
+    const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
+    expect(within(sidebar).getByRole('radio', { name: 'section' })).toBeChecked();
+    expect(within(example).getByRole('separator', { name: '섹션 구분' })).toHaveAttribute(
+      'data-city-divider-labeled',
+      '',
+    );
+
+    await user.click(within(sidebar).getByRole('radio', { name: 'none' }));
+
+    expect(within(example).queryByText('섹션 구분')).toBeNull();
+    expect(within(example).getByRole('separator')).not.toHaveAttribute('data-city-divider-labeled');
+
+    await user.click(within(sidebar).getByRole('radio', { name: 'section' }));
+
+    expect(within(example).getByText('섹션 구분')).toBeVisible();
+    expect(within(example).getByRole('separator', { name: '섹션 구분' })).toHaveAttribute(
+      'data-city-divider-labeled',
+      '',
+    );
+  });
+
   it('opens and closes an overlay example', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/dialog']);

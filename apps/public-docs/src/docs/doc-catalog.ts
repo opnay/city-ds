@@ -525,6 +525,18 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Layout',
+    description: '콘텐츠 영역 사이의 수평 경계를 선 또는 가운데 레이블과 함께 표시합니다.',
+    importPath: '@opnay/city-ds-react/divider',
+    keywords: ['구분선', '구분', '레이아웃', 'separator', '레이블'],
+    load: () => import('./components/divider/index.mdx'),
+    related: ['panel', 'fieldset'],
+    selectionGuidance:
+      '간격만 필요하면 레이아웃 gap을 사용하십시오. 제목이나 독립된 영역 구조를 Divider로 대신하지 마십시오.',
+    slug: 'divider',
+    title: 'Divider',
+  },
+  {
+    category: 'Layout',
     description: '문맥·액션 Header와 임의의 Body 콘텐츠를 하나의 구조로 연결합니다.',
     importPath: '@opnay/city-ds-react/panel',
     keywords: ['패널', '헤더', '본문', '액션', '레이아웃'],

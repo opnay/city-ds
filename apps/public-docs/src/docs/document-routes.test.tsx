@@ -34,6 +34,7 @@ const CONFIGURABLE_COMPONENTS = new Set([
   'data-table-region',
   'density-provider',
   'dialog',
+  'divider',
   'drawer',
   'empty-state',
   'field',

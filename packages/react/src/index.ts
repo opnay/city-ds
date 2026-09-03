@@ -12,6 +12,7 @@ export * from './components/data-table-region';
 export * from './components/date-picker';
 export * from './components/dialog';
 export * from './components/density-provider';
+export * from './components/divider';
 export * from './components/drawer';
 export * from './components/empty-state';
 export * from './components/field';

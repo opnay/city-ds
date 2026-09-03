@@ -124,9 +124,24 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'appearance', defaultValue: 'outline', values: ['plain', 'band', 'outline'] },
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
-    { name: 'orientation', defaultValue: 'horizontal', values: ['horizontal', 'vertical'] },
+    {
+      control: 'segmented',
+      name: 'appearance',
+      defaultValue: 'outline',
+      values: ['plain', 'band', 'outline'],
+    },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
+    {
+      control: 'segmented',
+      name: 'orientation',
+      defaultValue: 'horizontal',
+      values: ['horizontal', 'vertical'],
+    },
     {
       name: 'buttonVariant',
       defaultValue: 'ghost',

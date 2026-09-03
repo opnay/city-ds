@@ -143,10 +143,20 @@ export const pageData = {
     },
   ],
   previewOptionAxes: [
-    { defaultValue: 'md', name: 'size', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
-    { defaultValue: 'line', name: 'variant', values: ['line', 'surface'] },
-    { defaultValue: 'outline', name: 'scrollAppearance', values: ['plain', 'band', 'outline'] },
-    { defaultValue: 'none', name: 'sort', values: ['none', 'asc', 'desc'] },
+    {
+      control: 'segmented',
+      defaultValue: 'md',
+      name: 'size',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
+    { control: 'segmented', defaultValue: 'line', name: 'variant', values: ['line', 'surface'] },
+    {
+      control: 'segmented',
+      defaultValue: 'outline',
+      name: 'scrollAppearance',
+      values: ['plain', 'band', 'outline'],
+    },
+    { control: 'segmented', defaultValue: 'none', name: 'sort', values: ['none', 'asc', 'desc'] },
     { defaultValue: 'none', name: 'selection', values: ['none', 'indeterminate', 'all'] },
   ],
 } satisfies ComponentPageData;

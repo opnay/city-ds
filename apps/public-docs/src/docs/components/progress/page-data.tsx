@@ -82,8 +82,13 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'shape', values: ['linear', 'circular'] },
+    { control: 'segmented', name: 'shape', values: ['linear', 'circular'] },
     { name: 'status', values: ['progressing', 'complete', 'indeterminate'] },
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
   ],
 } satisfies ComponentPageData;

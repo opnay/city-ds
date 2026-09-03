@@ -99,7 +99,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: sizes },
+    { control: 'segmented', name: 'size', defaultValue: 'md', values: sizes },
     { name: 'multiple', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },

@@ -87,7 +87,12 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
     { name: 'loading', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },

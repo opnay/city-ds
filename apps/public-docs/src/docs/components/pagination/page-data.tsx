@@ -42,6 +42,11 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'density', defaultValue: 'comfortable', values: ['comfortable', 'compact'] },
+    {
+      control: 'segmented',
+      name: 'density',
+      defaultValue: 'comfortable',
+      values: ['comfortable', 'compact'],
+    },
   ],
 } satisfies ComponentPageData;

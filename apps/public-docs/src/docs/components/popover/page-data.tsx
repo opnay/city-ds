@@ -91,8 +91,18 @@ export const pageData = {
   ],
   previewOptionAxes: [
     { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },
-    { name: 'side', defaultValue: 'bottom', values: ['top', 'right', 'bottom', 'left'] },
-    { name: 'align', defaultValue: 'center', values: ['start', 'center', 'end'] },
+    {
+      control: 'segmented',
+      name: 'side',
+      defaultValue: 'bottom',
+      values: ['top', 'right', 'bottom', 'left'],
+    },
+    {
+      control: 'segmented',
+      name: 'align',
+      defaultValue: 'center',
+      values: ['start', 'center', 'end'],
+    },
     { control: 'switch', name: 'modal', defaultValue: 'false', values: ['false', 'true'] },
   ],
   widePreviewIds: ['popover-placements'],

@@ -12,28 +12,29 @@ afterEach(() => {
 });
 
 describe('documented component interactions', () => {
-  it('configures the Button preview from its internal options sidebar', async () => {
+  it('configures the Button preview from the global options sidebar', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/button']);
 
     const example = screen.getByRole('region', { name: 'Button' });
     const preview = example.querySelector('.city-docs-example-preview');
-    const optionsTrigger = within(example).getByRole('button', { name: '미리보기 옵션 열기' });
     const previewButton = within(example).getByRole('button', { name: '미리보기 버튼' });
 
     expect(preview).not.toBeNull();
-    expect(optionsTrigger).toHaveAttribute('aria-expanded', 'false');
-    expect(optionsTrigger).toHaveAttribute('aria-controls', 'preview-options-button-playground');
-    expect(document.getElementById('preview-options-button-playground')).toHaveAttribute('hidden');
-    await user.click(optionsTrigger);
-
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     expect(preview).toContainElement(sidebar);
     expect(within(sidebar).queryByText('옵션')).toBeNull();
-    expect(within(example).getByRole('button', { name: '미리보기 옵션 닫기' })).toHaveAttribute(
-      'aria-expanded',
-      'true',
-    );
+    expect(Array.from(sidebar.querySelectorAll('code'), (label) => label.textContent)).toEqual([
+      'size',
+      'variant',
+      'iconOnly',
+      'disabled',
+    ]);
+    expect(within(sidebar).getByRole('radiogroup', { name: 'size' })).toBeVisible();
+    expect(within(sidebar).getByRole('radio', { name: 'md' })).toBeChecked();
+
+    await user.click(within(sidebar).getByRole('radio', { name: 'lg' }));
+    expect(previewButton).toHaveAttribute('data-city-size', 'lg');
 
     await user.click(within(sidebar).getByRole('combobox', { name: 'variant' }));
     await user.click(await screen.findByRole('option', { name: 'destructive' }));
@@ -42,7 +43,9 @@ describe('documented component interactions', () => {
     await user.click(within(sidebar).getByRole('switch', { name: 'disabled' }));
     expect(previewButton).toBeDisabled();
 
-    await user.click(within(example).getByRole('button', { name: '미리보기 옵션 닫기' }));
+    await user.click(within(example).getByRole('button', { name: '미리보기 설정' }));
+    const settings = await screen.findByRole('menu', { name: '미리보기 설정' });
+    await user.click(within(settings).getByRole('menuitemcheckbox', { name: '옵션 패널' }));
     expect(within(example).queryByRole('complementary', { name: '미리보기 옵션' })).toBeNull();
     expect(document.getElementById('preview-options-button-playground')).toHaveAttribute('hidden');
   });
@@ -128,8 +131,6 @@ describe('documented component interactions', () => {
     await renderDocs(['/components/combobox']);
 
     const example = screen.getByRole('region', { name: 'Combobox' });
-    await user.click(within(example).getByRole('button', { name: '미리보기 옵션 열기' }));
-
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     await user.click(within(sidebar).getByRole('switch', { name: 'multiple' }));
 
@@ -137,12 +138,23 @@ describe('documented component interactions', () => {
     expect(within(example).getByRole('button', { name: '모든 프로젝트 지우기' })).toBeVisible();
   });
 
+  it('keeps DatePicker open state with the picker instead of the options panel', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/date-picker']);
+
+    const example = screen.getByRole('region', { name: 'DatePicker' });
+    const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
+    expect(within(sidebar).queryByRole('switch', { name: 'open' })).toBeNull();
+
+    await user.click(within(example).getByRole('button', { name: '검토 날짜 달력 열기' }));
+    expect(await screen.findByLabelText('검토 날짜 달력')).toBeVisible();
+  });
+
   it('syncs ToggleGroup selection when the pressed preview option changes', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/toggle-group']);
 
     const example = screen.getByRole('region', { name: 'ToggleGroup' });
-    await user.click(within(example).getByRole('button', { name: '미리보기 옵션 열기' }));
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     await user.click(
       within(sidebar).getByRole('switch', {
@@ -164,11 +176,9 @@ describe('documented component interactions', () => {
 
     const example = screen.getByRole('region', { name: 'Table' });
     const table = within(example).getByRole('table', { name: '옵션을 조절할 수 있는 장소' });
-    await user.click(within(example).getByRole('button', { name: '미리보기 옵션 열기' }));
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
 
-    await user.click(within(sidebar).getByRole('combobox', { name: 'sort' }));
-    await user.click(await screen.findByRole('option', { name: 'asc' }));
+    await user.click(within(sidebar).getByRole('radio', { name: 'asc' }));
     await waitFor(() =>
       expect(within(table).getByRole('button', { name: '이름 (sorted ascending)' })).toBeVisible(),
     );
@@ -190,7 +200,6 @@ describe('documented component interactions', () => {
     await renderDocs(['/components/badge']);
 
     const example = screen.getByRole('region', { name: 'Badge' });
-    await user.click(within(example).getByRole('button', { name: '미리보기 옵션 열기' }));
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
 
     expect(within(sidebar).queryByRole('combobox', { name: 'variant' })).toBeNull();

@@ -1624,6 +1624,18 @@
     gap: var(--city-space-3);
   }
 
+  .city-docs-preview-option-segmented {
+    display: flex;
+    width: 100%;
+  }
+
+  .city-docs-preview-option-segmented [role='radio'] {
+    min-width: 0;
+    flex: 1 1 0;
+    padding-right: var(--city-space-1);
+    padding-left: var(--city-space-1);
+  }
+
   .city-docs-preview-sidebar code {
     color: var(--city-color-foreground);
     font-size: var(--city-font-size-xs);

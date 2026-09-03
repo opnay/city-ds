@@ -87,8 +87,18 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'side', defaultValue: 'right', values: ['left', 'right', 'bottom'] },
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg', 'xl', 'full'] },
+    {
+      control: 'segmented',
+      name: 'side',
+      defaultValue: 'right',
+      values: ['left', 'right', 'bottom'],
+    },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['sm', 'md', 'lg', 'xl', 'full'],
+    },
     { name: 'modal', defaultValue: 'true', values: ['true', 'false'] },
   ],
 } satisfies ComponentPageData;

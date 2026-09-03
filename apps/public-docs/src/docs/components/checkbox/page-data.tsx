@@ -70,6 +70,11 @@ export const pageData = {
     { name: 'checked', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'indeterminate', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
   ],
 } satisfies ComponentPageData;

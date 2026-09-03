@@ -64,7 +64,12 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'density', defaultValue: 'comfortable', values: ['comfortable', 'compact'] },
+    {
+      control: 'segmented',
+      name: 'density',
+      defaultValue: 'comfortable',
+      values: ['comfortable', 'compact'],
+    },
     { name: 'variant', defaultValue: 'default', values: ['default', 'destructive'] },
     { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },
   ],

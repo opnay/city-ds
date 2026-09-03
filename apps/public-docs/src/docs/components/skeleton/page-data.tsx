@@ -60,6 +60,6 @@ export const pageData = {
   ],
   optionAxes: [
     { name: 'variant', defaultValue: 'text', values: ['text', 'circular', 'rectangular'] },
-    { name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
+    { control: 'segmented', name: 'size', defaultValue: 'md', values: ['sm', 'md', 'lg'] },
   ],
 } satisfies ComponentPageData;

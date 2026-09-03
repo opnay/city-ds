@@ -52,7 +52,7 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'side', values: ['top', 'right', 'bottom', 'left'] },
+    { control: 'segmented', name: 'side', values: ['top', 'right', 'bottom', 'left'] },
     { name: 'mode', defaultValue: 'uncontrolled', values: ['uncontrolled', 'controlled'] },
   ],
 } satisfies ComponentPageData;

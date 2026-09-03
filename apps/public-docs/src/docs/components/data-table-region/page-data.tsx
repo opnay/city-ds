@@ -67,7 +67,12 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'appearance', defaultValue: 'plain', values: ['plain', 'band', 'outline'] },
+    {
+      control: 'segmented',
+      name: 'appearance',
+      defaultValue: 'plain',
+      values: ['plain', 'band', 'outline'],
+    },
     { name: 'showHint', defaultValue: 'true', values: ['true', 'false'] },
   ],
 } satisfies ComponentPageData;

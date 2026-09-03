@@ -41,5 +41,12 @@ export const pageData = {
       title: '빈 결과 복구',
     },
   ],
-  optionAxes: [{ name: 'density', defaultValue: 'default', values: ['default', 'compact'] }],
+  optionAxes: [
+    {
+      control: 'segmented',
+      name: 'density',
+      defaultValue: 'default',
+      values: ['default', 'compact'],
+    },
+  ],
 } satisfies ComponentPageData;

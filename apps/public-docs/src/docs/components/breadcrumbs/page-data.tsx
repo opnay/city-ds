@@ -56,7 +56,12 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'route', defaultValue: 'short', values: ['short', 'long'] },
-    { name: 'overflow', defaultValue: 'ellipsis', values: ['none', 'ellipsis'] },
+    { control: 'segmented', name: 'route', defaultValue: 'short', values: ['short', 'long'] },
+    {
+      control: 'segmented',
+      name: 'overflow',
+      defaultValue: 'ellipsis',
+      values: ['none', 'ellipsis'],
+    },
   ],
 } satisfies ComponentPageData;

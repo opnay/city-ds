@@ -84,9 +84,19 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'size', defaultValue: 'md', values: ['xsm', 'sm', 'md', 'lg', 'xlg'] },
+    {
+      control: 'segmented',
+      name: 'size',
+      defaultValue: 'md',
+      values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
     { name: 'invalid', defaultValue: 'false', values: ['false', 'true'] },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
-    { name: 'addonPosition', defaultValue: 'leading', values: ['leading', 'trailing'] },
+    {
+      control: 'segmented',
+      name: 'addonPosition',
+      defaultValue: 'leading',
+      values: ['leading', 'trailing'],
+    },
   ],
 } satisfies ComponentPageData;

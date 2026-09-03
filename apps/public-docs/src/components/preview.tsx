@@ -1,8 +1,7 @@
-import { PanelRightClose, PanelRightOpen } from 'lucide-react';
 import type { ReactNode } from 'react';
 import type { CityTheme, Density } from '@opnay/city-ds-react';
-import { Button } from '@opnay/city-ds-react/button';
 import { DensityProvider } from '@opnay/city-ds-react/density-provider';
+import { SegmentedControl } from '@opnay/city-ds-react/segmented-control';
 import { Select } from '@opnay/city-ds-react/select';
 import { Switch } from '@opnay/city-ds-react/switch';
 
@@ -26,12 +25,6 @@ interface PreviewProps {
   theme: ResolvedTheme;
 }
 
-interface PreviewSidebarButtonProps {
-  controls: string;
-  onOpenChange: (open: boolean) => void;
-  open: boolean;
-}
-
 function isBooleanOptionAxis(axis: OptionAxis) {
   return (
     axis.control === 'switch' ||
@@ -39,11 +32,29 @@ function isBooleanOptionAxis(axis: OptionAxis) {
   );
 }
 
+function getOptionOrder(axis: OptionAxis) {
+  if (axis.name === 'density') return 0;
+  if (axis.name === 'size') return 1;
+  if (axis.name === 'disabled') return 4;
+  if (isBooleanOptionAxis(axis)) return 3;
+  return 2;
+}
+
+function orderOptionAxes(axes: readonly OptionAxis[]) {
+  return axes
+    .map((axis, index) => ({ axis, index }))
+    .sort((left, right) => {
+      const rankDifference = getOptionOrder(left.axis) - getOptionOrder(right.axis);
+      return rankDifference === 0 ? left.index - right.index : rankDifference;
+    })
+    .map(({ axis }) => axis);
+}
+
 function PreviewOptions({ axes, id, onValueChange, open, values }: PreviewOptionsConfig) {
   return (
     <aside aria-label="미리보기 옵션" className="city-docs-preview-sidebar" hidden={!open} id={id}>
       <div className="city-docs-preview-options">
-        {axes.map((axis) => {
+        {orderOptionAxes(axes).map((axis) => {
           const value = values[axis.name] ?? axis.defaultValue ?? axis.values[0] ?? '';
 
           if (isBooleanOptionAxis(axis)) {
@@ -58,6 +69,29 @@ function PreviewOptions({ axes, id, onValueChange, open, values }: PreviewOption
                   onCheckedChange={(checked) => onValueChange(axis.name, String(checked))}
                   size="sm"
                 />
+              </div>
+            );
+          }
+
+          if (axis.control === 'segmented') {
+            const labelId = `${id}-${axis.name}`;
+
+            return (
+              <div className="city-docs-preview-option-field" key={axis.name}>
+                <code id={labelId}>{axis.name}</code>
+                <SegmentedControl
+                  aria-labelledby={labelId}
+                  className="city-docs-preview-option-segmented"
+                  onValueChange={(nextValue) => onValueChange(axis.name, nextValue)}
+                  size="sm"
+                  value={value}
+                >
+                  {axis.values.map((option) => (
+                    <SegmentedControl.Item key={option} value={option}>
+                      {option}
+                    </SegmentedControl.Item>
+                  ))}
+                </SegmentedControl>
               </div>
             );
           }
@@ -122,25 +156,5 @@ export function Preview({ children, density, layout, options, theme }: PreviewPr
       </div>
       {options ? <PreviewOptions {...options} /> : null}
     </div>
-  );
-}
-
-export function PreviewSidebarButton({ controls, onOpenChange, open }: PreviewSidebarButtonProps) {
-  const label = open ? '미리보기 옵션 닫기' : '미리보기 옵션 열기';
-  const Icon = open ? PanelRightClose : PanelRightOpen;
-
-  return (
-    <Button
-      aria-controls={controls}
-      aria-expanded={open}
-      aria-label={label}
-      iconOnly
-      onClick={() => onOpenChange(!open)}
-      size="sm"
-      type="button"
-      variant="outline"
-    >
-      <Icon aria-hidden="true" size={16} />
-    </Button>
   );
 }

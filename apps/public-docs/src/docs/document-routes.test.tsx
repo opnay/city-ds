@@ -168,13 +168,10 @@ describe('all component document routes', () => {
         within(header as HTMLElement).getByRole('button', { name: '미리보기 설정' }),
       ).toBeVisible();
     }
-    const optionTriggers = screen.queryAllByRole('button', { name: '미리보기 옵션 열기' });
-    expect(optionTriggers).toHaveLength(CONFIGURABLE_COMPONENTS.has(entry.slug) ? 1 : 0);
-    for (const trigger of optionTriggers) {
-      const controls = trigger.getAttribute('aria-controls');
-
-      expect(controls).not.toBeNull();
-      expect(document.getElementById(controls!)).toHaveAttribute('hidden');
+    const optionPanels = screen.queryAllByRole('complementary', { name: '미리보기 옵션' });
+    expect(optionPanels).toHaveLength(CONFIGURABLE_COMPONENTS.has(entry.slug) ? 1 : 0);
+    for (const panel of optionPanels) {
+      expect(panel).not.toHaveAttribute('hidden');
     }
     expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
     const importRegion = screen.getByRole('region', { name: `${entry.title} 가져오기` });

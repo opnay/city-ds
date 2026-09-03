@@ -91,7 +91,12 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'appearance', defaultValue: 'outline', values: ['plain', 'band', 'outline'] },
+    {
+      control: 'segmented',
+      name: 'appearance',
+      defaultValue: 'outline',
+      values: ['plain', 'band', 'outline'],
+    },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
   ],
 } satisfies ComponentPageData;

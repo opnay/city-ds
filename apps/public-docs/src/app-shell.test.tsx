@@ -455,6 +455,34 @@ describe('catalog and local UI state', () => {
     );
   });
 
+  it('shares the options panel state across document pages and defaults it to open', async () => {
+    const user = userEvent.setup();
+    const { router } = await renderDocs(['/components/button']);
+
+    expect(screen.getByRole('complementary', { name: '미리보기 옵션' })).toBeVisible();
+    await user.click(screen.getAllByRole('button', { name: '미리보기 설정' })[0]!);
+    const previewMenu = await screen.findByRole('menu', { name: '미리보기 설정' });
+    const optionsPanel = within(previewMenu).getByRole('menuitemcheckbox', { name: '옵션 패널' });
+    expect(optionsPanel).toBeChecked();
+
+    await user.click(optionsPanel);
+    expect(screen.queryByRole('complementary', { name: '미리보기 옵션' })).toBeNull();
+
+    await act(async () => {
+      await router.navigate({ params: { slug: 'calendar' }, to: '/components/$slug' });
+    });
+    expect(await screen.findByRole('heading', { level: 1, name: 'Calendar' })).toBeVisible();
+    expect(screen.queryByRole('complementary', { name: '미리보기 옵션' })).toBeNull();
+
+    await user.click(screen.getAllByRole('button', { name: '미리보기 설정' })[0]!);
+    const calendarMenu = await screen.findByRole('menu', { name: '미리보기 설정' });
+    const calendarOptionsPanel = within(calendarMenu).getByRole('menuitemcheckbox', {
+      name: '옵션 패널',
+    });
+    await user.click(calendarOptionsPanel);
+    expect(screen.getByRole('complementary', { name: '미리보기 옵션' })).toBeVisible();
+  });
+
   it('applies persisted preview settings across document pages', async () => {
     window.localStorage.setItem('city-docs-preview-density', 'compact');
     window.localStorage.setItem('city-docs-preview-grid', 'off');

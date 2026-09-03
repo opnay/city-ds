@@ -16,7 +16,7 @@ export default function ToggleGroupVariantsExample() {
           <ToggleGroup.Item value="bold">굵게</ToggleGroup.Item>
           <ToggleGroup.Item value="italic">기울임</ToggleGroup.Item>
           <ToggleGroup.Item disabled value="underline">
-            밑줄 사용 불가
+            밑줄
           </ToggleGroup.Item>
         </ToggleGroup>
       ))}

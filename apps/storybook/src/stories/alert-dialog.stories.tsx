@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { AlertDialog, Button } from '@opnay/city-ds-react';
 
 const meta = {
@@ -122,7 +122,7 @@ export const Controlled: Story = {
     await expect(trigger).toHaveAttribute('aria-expanded', 'true');
     await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
     await expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    await expect(trigger).toHaveFocus();
+    await waitFor(() => expect(trigger).toHaveFocus());
   },
   render: function ControlledAlertDialog() {
     const [open, setOpen] = React.useState(false);

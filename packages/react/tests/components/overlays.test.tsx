@@ -42,8 +42,27 @@ describe('overlay and selection controls', () => {
     expect(trigger).not.toHaveClass('bg-city-surface-raised');
     await user.click(trigger);
 
-    expect(await screen.findByRole('dialog', { name: 'Delete project' })).toBeVisible();
-    expect(document.querySelector('.bg-city-backdrop')).toBeInTheDocument();
+    const dialog = await screen.findByRole('dialog', { name: 'Delete project' });
+    expect(dialog).toBeVisible();
+    expect(dialog).toHaveClass(
+      'origin-center',
+      'transition-[opacity,transform]',
+      'duration-(--city-duration-xslow)',
+      'ease-city-standard',
+      'data-[starting-style]:opacity-0',
+      'data-[starting-style]:[transform:scale(0.98)]',
+      'data-[ending-style]:opacity-0',
+      'data-[ending-style]:[transform:scale(0.98)]',
+      'motion-reduce:transition-none',
+    );
+    expect(document.querySelector('.bg-city-backdrop')).toHaveClass(
+      'transition-opacity',
+      'duration-(--city-duration-xslow)',
+      'ease-city-standard',
+      'data-[starting-style]:opacity-0',
+      'data-[ending-style]:opacity-0',
+      'motion-reduce:transition-none',
+    );
     expect(screen.getByText('This action cannot be undone.')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Cancel' })).toHaveClass('bg-city-accent');
 
@@ -289,6 +308,13 @@ describe('overlay and selection controls', () => {
 
     const dialog = await screen.findByRole('alertdialog', { name: 'Delete this project?' });
     expect(dialog).toBeVisible();
+    expect(dialog).toHaveClass(
+      'transition-[opacity,transform]',
+      'duration-(--city-duration-xslow)',
+      'data-[starting-style]:[transform:scale(0.98)]',
+      'data-[ending-style]:[transform:scale(0.98)]',
+      'motion-reduce:transition-none',
+    );
     expect(screen.getByText('This action cannot be undone.')).toBeVisible();
     const cancel = screen.getByRole('button', { name: 'Cancel' });
     expect(cancel).toHaveClass('h-(--city-control-md)', 'bg-city-accent');

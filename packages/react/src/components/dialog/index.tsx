@@ -93,7 +93,10 @@ export const DialogBackdrop = React.forwardRef<HTMLDivElement, DialogBackdropPro
     <BaseDialog.Backdrop
       {...props}
       ref={ref}
-      className={classes(className, 'bg-city-backdrop fixed inset-0 z-50')}
+      className={classes(
+        className,
+        'bg-city-backdrop fixed inset-0 z-50 transition-opacity duration-(--city-duration-xslow) ease-city-standard data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 motion-reduce:transition-none',
+      )}
     />
   ),
 );
@@ -126,7 +129,7 @@ export const DialogPopup = React.forwardRef<HTMLDivElement, DialogPopupProps>(
           className={classes(
             className,
             cn(
-              'rounded-city-md border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup w-full border outline-none',
+              'rounded-city-md border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup w-full origin-center border transition-[opacity,transform] duration-(--city-duration-xslow) ease-city-standard outline-none data-[starting-style]:opacity-0 data-[starting-style]:[transform:scale(0.98)] data-[ending-style]:opacity-0 data-[ending-style]:[transform:scale(0.98)] motion-reduce:transition-none',
               dialogSizeClasses[size],
               scroll === 'body'
                 ? 'flex max-h-[calc(100dvh-2rem)] flex-col overflow-hidden p-0'

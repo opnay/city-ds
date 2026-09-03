@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { Button, Dialog, Field, Input } from '@opnay/city-ds-react';
 
 const meta = {
@@ -179,14 +179,16 @@ export const Default: Story = {
     const dialog = await within(document.body).findByRole('dialog', {
       name: 'Workspace settings',
     });
-    await expect(dialog).toBeVisible();
+    await waitFor(() => expect(dialog).toBeVisible());
     await expect(within(dialog).getByRole('textbox', { name: 'Workspace name' })).toHaveFocus();
 
     await userEvent.keyboard('{Escape}');
-    await expect(
-      within(document.body).queryByRole('dialog', { name: 'Workspace settings' }),
-    ).toBeNull();
-    await expect(trigger).toHaveFocus();
+    await waitFor(() =>
+      expect(
+        within(document.body).queryByRole('dialog', { name: 'Workspace settings' }),
+      ).toBeNull(),
+    );
+    await waitFor(() => expect(trigger).toHaveFocus());
   },
   render: () => <WorkspaceSettingsDialog />,
 };

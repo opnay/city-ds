@@ -43,7 +43,13 @@ describe('documented component interactions', () => {
     await user.click(await screen.findByRole('option', { name: 'destructive' }));
     expect(previewButton).toHaveClass('bg-city-destructive');
 
-    await user.click(within(sidebar).getByRole('switch', { name: 'disabled' }));
+    const disabledOption = within(sidebar).getByText('disabled').closest('label');
+    expect(disabledOption).toHaveClass('city-docs-preview-option-switch');
+    expect(disabledOption).toHaveAttribute(
+      'for',
+      'preview-options-button-playground-disabled-control',
+    );
+    await user.click(disabledOption!);
     expect(previewButton).toBeDisabled();
 
     await user.click(optionsTrigger);

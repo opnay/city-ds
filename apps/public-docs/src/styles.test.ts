@@ -281,6 +281,12 @@ describe('public docs layout styles', () => {
       /\.city-docs-preview-option-field\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-2\);/s,
     );
     expect(styles).toMatch(
+      /\.city-docs-preview-option-switch\s*{[^}]*width:\s*100%;[^}]*padding:\s*var\(--city-space-2\);[^}]*cursor:\s*pointer;[^}]*transition:\s*background-color var\(--city-duration-fast\) var\(--city-easing-standard\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-preview-option-switch:hover\s*{\s*background:\s*var\(--city-color-accent\);/,
+    );
+    expect(styles).toMatch(
       /@media \(max-width: 40rem\)\s*{[\s\S]*?\.city-docs-example-preview\[data-sidebar-open]\s*{\s*grid-template-columns:\s*minmax\(0, 1fr\);[\s\S]*?\.city-docs-preview-sidebar\s*{[^}]*border-top:\s*1px solid var\(--city-color-border\);[^}]*border-left:\s*0;/,
     );
   });

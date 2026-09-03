@@ -67,17 +67,23 @@ function PreviewOptions({ axes, id, onValueChange, open, values }: PreviewOption
 
           if (isBooleanOptionAxis(axis)) {
             const labelId = `${id}-${axis.name}`;
+            const controlId = `${labelId}-control`;
 
             return (
-              <div className="city-docs-preview-option-switch" key={axis.name}>
+              <label
+                className="city-docs-preview-option-switch"
+                htmlFor={controlId}
+                key={axis.name}
+              >
                 <code id={labelId}>{axis.name}</code>
                 <Switch
                   aria-labelledby={labelId}
                   checked={value === 'true'}
+                  id={controlId}
                   onCheckedChange={(checked) => onValueChange(axis.name, String(checked))}
                   size="sm"
                 />
-              </div>
+              </label>
             );
           }
 

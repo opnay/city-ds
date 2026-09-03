@@ -1618,10 +1618,19 @@
 
   .city-docs-preview-option-switch {
     display: flex;
+    width: 100%;
     min-width: 0;
+    padding: var(--city-space-2);
+    border-radius: var(--city-radius-sm);
     align-items: center;
     justify-content: space-between;
     gap: var(--city-space-3);
+    cursor: pointer;
+    transition: background-color var(--city-duration-fast) var(--city-easing-standard);
+  }
+
+  .city-docs-preview-option-switch:hover {
+    background: var(--city-color-accent);
   }
 
   .city-docs-preview-option-segmented {

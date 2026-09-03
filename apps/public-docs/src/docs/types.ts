@@ -61,10 +61,13 @@ export interface ApiItem {
 }
 
 export interface OptionAxis {
+  control?: 'select' | 'switch';
   defaultValue?: string;
   name: string;
   values: readonly string[];
 }
+
+export type PreviewOptionValues = Readonly<Record<string, string>>;
 
 export interface ExampleCoverage {
   axis: string;
@@ -80,6 +83,7 @@ export interface DocCodeFile {
 
 interface DocExampleBase {
   Component: ComponentType;
+  configurable?: boolean;
   coverage: readonly ExampleCoverage[];
   description: string;
   id: string;

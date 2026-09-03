@@ -91,6 +91,10 @@ describe('component document content', () => {
       }
 
       for (const axis of pageData.optionAxes) {
+        if (axis.control === 'switch') {
+          expect([...axis.values].sort()).toEqual(['false', 'true']);
+        }
+
         const covered = new Set([
           ...(axis.defaultValue === undefined ? [] : [axis.defaultValue]),
           ...pageData.examples.flatMap((example) =>

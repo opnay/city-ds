@@ -64,12 +64,14 @@ describe('all component document routes', () => {
     const exampleFrames = container.querySelectorAll('.city-docs-example');
     const exampleTitleRows = container.querySelectorAll('.city-docs-example-title-row');
     const exampleHeaders = container.querySelectorAll('.city-docs-example-heading');
+    const previewCanvases = container.querySelectorAll('.city-docs-example-preview-canvas');
     const previewContents = container.querySelectorAll('.city-docs-example-preview-content');
 
     expect(exampleTitles.length).toBeGreaterThan(0);
     expect(exampleFrames).toHaveLength(exampleTitles.length);
     expect(exampleTitleRows).toHaveLength(exampleTitles.length);
     expect(exampleHeaders).toHaveLength(exampleTitles.length);
+    expect(previewCanvases).toHaveLength(exampleTitles.length);
     expect(previewContents).toHaveLength(exampleTitles.length);
     expect(container.querySelectorAll("[data-city-docs-layout='wide']")).toHaveLength(
       WIDE_PREVIEW_COUNTS[entry.slug] ?? 0,
@@ -118,6 +120,9 @@ describe('all component document routes', () => {
         within(header as HTMLElement).getByRole('button', { name: '미리보기 설정' }),
       ).toBeVisible();
     }
+    expect(screen.queryAllByRole('button', { name: '미리보기 옵션 열기' })).toHaveLength(
+      entry.slug === 'button' ? 1 : 0,
+    );
     expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
     const importRegion = screen.getByRole('region', { name: `${entry.title} 가져오기` });
     expect(pageHeading).toContainElement(importRegion);

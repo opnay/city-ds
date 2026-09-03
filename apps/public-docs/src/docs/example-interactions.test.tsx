@@ -12,6 +12,37 @@ afterEach(() => {
 });
 
 describe('documented component interactions', () => {
+  it('configures the Button preview from its internal options sidebar', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/button']);
+
+    const example = screen.getByRole('region', { name: 'Button' });
+    const preview = example.querySelector('.city-docs-example-preview');
+    const optionsTrigger = within(example).getByRole('button', { name: '미리보기 옵션 열기' });
+    const previewButton = within(example).getByRole('button', { name: '미리보기 버튼' });
+
+    expect(preview).not.toBeNull();
+    expect(optionsTrigger).toHaveAttribute('aria-expanded', 'false');
+    await user.click(optionsTrigger);
+
+    const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
+    expect(preview).toContainElement(sidebar);
+    expect(within(example).getByRole('button', { name: '미리보기 옵션 닫기' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+
+    await user.click(within(sidebar).getByRole('combobox', { name: 'variant' }));
+    await user.click(await screen.findByRole('option', { name: 'destructive' }));
+    expect(previewButton).toHaveClass('bg-city-destructive');
+
+    await user.click(within(sidebar).getByRole('switch', { name: 'disabled' }));
+    expect(previewButton).toBeDisabled();
+
+    await user.click(within(example).getByRole('button', { name: '미리보기 옵션 닫기' }));
+    expect(within(example).queryByRole('complementary', { name: '미리보기 옵션' })).toBeNull();
+  });
+
   it('opens and closes an overlay example', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/dialog']);

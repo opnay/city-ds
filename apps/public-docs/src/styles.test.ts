@@ -278,10 +278,13 @@ describe('public docs layout styles', () => {
       /\.city-docs-preview-sidebar\s*{[^}]*border-left:\s*1px solid var\(--city-color-border\);[^}]*background:\s*var\(--city-color-surface-raised\);/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-preview-option-field\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-2\);/s,
+      /\.city-docs-preview-options\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-3\);/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-preview-option-switch\s*{[^}]*width:\s*100%;[^}]*padding:\s*var\(--city-space-2\);[^}]*cursor:\s*pointer;[^}]*transition:\s*background-color var\(--city-duration-fast\) var\(--city-easing-standard\);/s,
+      /\.city-docs-preview-option-field\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-1\);/s,
+    );
+    expect(styles).toMatch(
+      /\.city-docs-preview-option-switch\s*{[^}]*width:\s*100%;[^}]*padding:\s*var\(--city-space-1\) var\(--city-space-2\);[^}]*cursor:\s*pointer;[^}]*transition:\s*background-color var\(--city-duration-fast\) var\(--city-easing-standard\);/s,
     );
     expect(styles).toMatch(
       /\.city-docs-preview-option-switch:hover\s*{\s*background:\s*var\(--city-color-accent\);/,

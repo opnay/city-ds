@@ -825,7 +825,12 @@ describe('form and display controls', () => {
 
     expect(ref.current).toBe(group);
     expect(inheritedItem).toHaveClass('h-(--city-control-lg)', 'bg-city-primary');
-    expect(overriddenItem).toHaveClass('h-(--city-control-sm)', 'hover:bg-city-accent');
+    expect(overriddenItem).toHaveClass(
+      'h-(--city-control-sm)',
+      'hover:bg-city-accent',
+      'data-[pressed]:bg-city-inverse',
+      'data-[pressed]:text-city-inverse-foreground',
+    );
   });
 
   it('moves ToggleGroup focus with arrow keys', async () => {

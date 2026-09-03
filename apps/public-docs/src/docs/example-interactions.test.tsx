@@ -45,9 +45,7 @@ describe('documented component interactions', () => {
 
     await user.click(within(example).getByRole('button', { name: '미리보기 설정' }));
     const settings = await screen.findByRole('menu', { name: '미리보기 설정' });
-    await user.click(within(settings).getByRole('menuitemcheckbox', { name: '옵션 패널' }));
-    expect(within(example).queryByRole('complementary', { name: '미리보기 옵션' })).toBeNull();
-    expect(document.getElementById('preview-options-button-playground')).toHaveAttribute('hidden');
+    expect(within(settings).queryByRole('menuitemcheckbox', { name: '옵션 패널' })).toBeNull();
   });
 
   it('opens and closes an overlay example', async () => {

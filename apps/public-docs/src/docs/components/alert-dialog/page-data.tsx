@@ -34,7 +34,7 @@ export const pageData = {
         { axis: 'controlled', values: ['true'] },
         { axis: 'destructive', values: ['true'] },
       ],
-      description: '제어된 파괴적 확인과 취소 복귀를 보여 줍니다.',
+      description: '삭제 대상과 손실 범위를 먼저 설명하는 파괴적 확인 흐름을 보여 줍니다.',
       id: 'alert-dialog-confirm',
       filename: 'confirm.tsx',
       source: confirmSource,

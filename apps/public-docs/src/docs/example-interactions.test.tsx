@@ -16,14 +16,59 @@ describe('documented component interactions', () => {
     const user = userEvent.setup();
     await renderDocs(['/components/dialog']);
 
-    await user.click(screen.getByRole('button', { name: '세부 정보' }));
+    await user.click(screen.getByRole('button', { name: 'MD 크기' }));
     const dialog = await screen.findByRole('dialog', { name: '프로젝트 세부 정보' });
-    expect(within(dialog).getByText('현재 페이지를 벗어나지 않고 확인합니다.')).toBeVisible();
+    expect(
+      within(dialog).getByText('운영에 필요한 핵심 정보와 공개 범위를 확인합니다.'),
+    ).toBeVisible();
+    expect(within(dialog).getByText('워크스페이스 멤버')).toBeVisible();
 
     await user.click(within(dialog).getByRole('button', { name: '닫기' }));
     await waitFor(() =>
       expect(screen.queryByRole('dialog', { name: '프로젝트 세부 정보' })).not.toBeInTheDocument(),
     );
+  });
+
+  it('explains destructive consequences before confirming an alert dialog', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/alert-dialog']);
+
+    await user.click(screen.getByRole('button', { name: '프로젝트 삭제' }));
+    const dialog = await screen.findByRole('alertdialog', {
+      name: 'Atlas 프로젝트를 삭제하시겠습니까?',
+    });
+
+    expect(
+      within(dialog).getByText(
+        '연결된 배포 12개와 활동 기록이 영구적으로 삭제되며 복구할 수 없습니다.',
+      ),
+    ).toBeVisible();
+    expect(within(dialog).getByRole('button', { name: '취소' })).toBeVisible();
+    expect(within(dialog).getByRole('button', { name: '프로젝트 삭제' })).toBeVisible();
+  });
+
+  it('separates popover state ownership and modal interaction scope', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/popover']);
+
+    const controlledPreview = screen.getByRole('region', { name: 'Popover' });
+    expect(within(controlledPreview).getByText('컴포넌트 소유')).toBeVisible();
+    expect(within(controlledPreview).getByText('외부 상태 소유')).toBeVisible();
+
+    await user.click(within(controlledPreview).getByRole('button', { name: '릴리스 정보' }));
+    const releasePopover = await screen.findByRole('dialog', { name: '릴리스 정보' });
+    expect(
+      within(releasePopover).getByText('v0.1.1이 8분 전에 프로덕션에 배포되었습니다.'),
+    ).toBeVisible();
+    await user.click(within(releasePopover).getByRole('button', { name: '확인' }));
+
+    const modalPreview = screen.getByRole('region', { name: '상호작용 범위' });
+    await user.click(within(modalPreview).getByRole('button', { name: '공유 범위 변경' }));
+    const modalPopover = await screen.findByRole('dialog', { name: '공유 범위 변경' });
+    expect(
+      within(modalPopover).getByText('링크가 있는 모든 사용자가 프로젝트를 볼 수 있게 됩니다.'),
+    ).toBeVisible();
+    expect(document.querySelector('.bg-city-backdrop-subtle')).toBeInTheDocument();
   });
 
   it('updates a controlled form example and exposes its local result', async () => {

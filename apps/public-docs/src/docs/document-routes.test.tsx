@@ -12,6 +12,7 @@ const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   fieldset: 4,
   'filter-bar': 1,
   panel: 1,
+  popover: 1,
   progress: 1,
   skeleton: 1,
   table: 4,

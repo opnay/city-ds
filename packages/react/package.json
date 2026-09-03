@@ -66,6 +66,10 @@
       "types": "./dist/components/density-provider/index.d.ts",
       "import": "./dist/components/density-provider/index.js"
     },
+    "./divider": {
+      "types": "./dist/components/divider/index.d.ts",
+      "import": "./dist/components/divider/index.js"
+    },
     "./dialog": {
       "types": "./dist/components/dialog/index.d.ts",
       "import": "./dist/components/dialog/index.js"

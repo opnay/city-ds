@@ -119,7 +119,7 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 
 `@opnay/city-ds-react`의 대표 컴포넌트는 다음과 같습니다.
 
-- Actions: Button, Toggle, ToggleGroup
+- Actions: Button, SegmentedControl, ToggleGroup
 - Status: Badge, Progress, Toast
 - Forms: Field, Input·Textarea·InputGroup, Checkbox, RadioGroup, Switch, Select, FileUpload
 - Navigation: Tabs, Pagination
@@ -130,9 +130,11 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 
 ### ToggleGroup 접근성
 
-`ToggleGroup`은 보기 모드, 정렬 방향, 텍스트 스타일처럼 서로 관련된 토글 선택지를 하나의
+`ToggleGroup`은 서식이나 표시 도구처럼 다시 눌러 해제할 수 있는 토글 상태를 하나의
 그룹으로 묶습니다. 그룹 자체에는 `aria-label` 또는 `aria-labelledby`로 접근 가능한 이름을
 제공하십시오. 아이콘만 있는 `ToggleGroup.Item`은 각 항목에도 `aria-label`을 제공해야 합니다.
+
+보기 모드나 기간처럼 현재 값을 항상 하나 유지해야 하면 `SegmentedControl`을 사용하십시오.
 
 ### Storybook 브라우저 테스트
 

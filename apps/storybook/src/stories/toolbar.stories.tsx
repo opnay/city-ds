@@ -70,25 +70,25 @@ export const EmbeddedBand: Story = {
   ),
 };
 
-export const ViewSwitcher: Story = {
+export const FormattingToggles: Story = {
   render: () => (
-    <Toolbar.Root aria-label="View switcher">
-      <Toolbar.ToggleGroup defaultValue={['list']}>
-        <Toolbar.Toggle value="list">List</Toolbar.Toggle>
-        <Toolbar.Toggle value="grid">Grid</Toolbar.Toggle>
-        <Toolbar.Toggle value="map">Map</Toolbar.Toggle>
+    <Toolbar.Root aria-label="Formatting tools">
+      <Toolbar.ToggleGroup defaultValue={['bold']} multiple>
+        <Toolbar.Toggle value="bold">Bold</Toolbar.Toggle>
+        <Toolbar.Toggle value="italic">Italic</Toolbar.Toggle>
+        <Toolbar.Toggle value="underline">Underline</Toolbar.Toggle>
       </Toolbar.ToggleGroup>
     </Toolbar.Root>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const list = canvas.getByRole('button', { name: 'List' });
-    const grid = canvas.getByRole('button', { name: 'Grid' });
+    const bold = canvas.getByRole('button', { name: 'Bold' });
+    const italic = canvas.getByRole('button', { name: 'Italic' });
 
-    await expect(list).toHaveAttribute('aria-pressed', 'true');
-    await userEvent.click(grid);
-    await expect(list).toHaveAttribute('aria-pressed', 'false');
-    await expect(grid).toHaveAttribute('aria-pressed', 'true');
+    await expect(bold).toHaveAttribute('aria-pressed', 'true');
+    await userEvent.click(italic);
+    await expect(bold).toHaveAttribute('aria-pressed', 'true');
+    await expect(italic).toHaveAttribute('aria-pressed', 'true');
   },
 };
 

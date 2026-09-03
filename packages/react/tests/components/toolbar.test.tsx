@@ -142,25 +142,25 @@ describe('Toolbar', () => {
     );
   });
 
-  it('supports an exclusive toggle group without independent pressed states', async () => {
+  it('coordinates pressed tools through its toggle group', async () => {
     const user = userEvent.setup();
 
     render(
-      <Toolbar.Root aria-label="View switcher" size="sm">
-        <Toolbar.ToggleGroup defaultValue={['list']}>
-          <Toolbar.Toggle value="list">List</Toolbar.Toggle>
-          <Toolbar.Toggle value="grid">Grid</Toolbar.Toggle>
+      <Toolbar.Root aria-label="Formatting tools" size="sm">
+        <Toolbar.ToggleGroup defaultValue={['bold']} multiple>
+          <Toolbar.Toggle value="bold">Bold</Toolbar.Toggle>
+          <Toolbar.Toggle value="italic">Italic</Toolbar.Toggle>
         </Toolbar.ToggleGroup>
       </Toolbar.Root>,
     );
 
-    const list = screen.getByRole('button', { name: 'List' });
-    const grid = screen.getByRole('button', { name: 'Grid' });
+    const bold = screen.getByRole('button', { name: 'Bold' });
+    const italic = screen.getByRole('button', { name: 'Italic' });
 
-    expect(list).toHaveAttribute('aria-pressed', 'true');
-    expect(list).toHaveClass('h-(--city-control-sm)');
-    await user.click(grid);
-    expect(list).toHaveAttribute('aria-pressed', 'false');
-    expect(grid).toHaveAttribute('aria-pressed', 'true');
+    expect(bold).toHaveAttribute('aria-pressed', 'true');
+    expect(bold).toHaveClass('h-(--city-control-sm)');
+    await user.click(italic);
+    expect(bold).toHaveAttribute('aria-pressed', 'true');
+    expect(italic).toHaveAttribute('aria-pressed', 'true');
   });
 });

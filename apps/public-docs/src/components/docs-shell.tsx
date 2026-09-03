@@ -10,7 +10,7 @@ import { Field } from '@opnay/city-ds-react/field';
 import { SearchInput } from '@opnay/city-ds-react/search-input';
 import { Select } from '@opnay/city-ds-react/select';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
-import { ToggleGroup } from '@opnay/city-ds-react/toggle-group';
+import { SegmentedControl } from '@opnay/city-ds-react/segmented-control';
 
 import {
   CATEGORY_LABELS,
@@ -310,34 +310,30 @@ function ThemeButtons({
   value: ResolvedTheme;
 }) {
   return (
-    <ToggleGroup
+    <SegmentedControl
       aria-label="화면 테마"
       className="city-docs-theme-controls"
-      onValueChange={(nextValue) => {
-        const nextTheme = nextValue[0];
-        if (nextTheme === 'dark' || nextTheme === 'light') onChange(nextTheme);
-      }}
+      onValueChange={onChange}
       size="sm"
-      value={[value]}
-      variant="secondary"
+      value={value}
     >
-      <ToggleGroup.Item
+      <SegmentedControl.Item
         aria-label="다크 테마"
         className="w-(--city-control-sm) px-0"
         title="다크 테마"
         value="dark"
       >
         <Moon aria-hidden="true" size={16} />
-      </ToggleGroup.Item>
-      <ToggleGroup.Item
+      </SegmentedControl.Item>
+      <SegmentedControl.Item
         aria-label="라이트 테마"
         className="w-(--city-control-sm) px-0"
         title="라이트 테마"
         value="light"
       >
         <Sun aria-hidden="true" size={16} />
-      </ToggleGroup.Item>
-    </ToggleGroup>
+      </SegmentedControl.Item>
+    </SegmentedControl>
   );
 }
 

@@ -411,31 +411,30 @@ describe('catalog and local UI state', () => {
 
     await waitFor(() => expect(window.localStorage.getItem('city-docs-theme')).toBe('system'));
     expect(document.documentElement).not.toHaveAttribute('data-theme');
-    const themeGroup = screen.getByRole('group', { name: '화면 테마' });
-    expect(themeGroup).toHaveAttribute('data-city-variant', 'secondary');
+    const themeGroup = screen.getByRole('radiogroup', { name: '화면 테마' });
     expect(themeGroup).toHaveAttribute('data-city-size', 'sm');
-    const darkTheme = within(themeGroup).getByRole('button', { name: '다크 테마' });
-    const lightTheme = within(themeGroup).getByRole('button', { name: '라이트 테마' });
-    expect(darkTheme).toHaveAttribute('aria-pressed', 'false');
-    expect(lightTheme).toHaveAttribute('aria-pressed', 'true');
+    const darkTheme = within(themeGroup).getByRole('radio', { name: '다크 테마' });
+    const lightTheme = within(themeGroup).getByRole('radio', { name: '라이트 테마' });
+    expect(darkTheme).toHaveAttribute('aria-checked', 'false');
+    expect(lightTheme).toHaveAttribute('aria-checked', 'true');
     expect(screen.queryByRole('combobox', { name: '화면 테마' })).not.toBeInTheDocument();
 
     await user.click(darkTheme);
 
     await waitFor(() => expect(document.documentElement).toHaveAttribute('data-theme', 'dark'));
     expect(window.localStorage.getItem('city-docs-theme')).toBe('dark');
-    expect(darkTheme).toHaveAttribute('aria-pressed', 'true');
-    expect(lightTheme).toHaveAttribute('aria-pressed', 'false');
+    expect(darkTheme).toHaveAttribute('aria-checked', 'true');
+    expect(lightTheme).toHaveAttribute('aria-checked', 'false');
 
     await user.click(lightTheme);
 
     await waitFor(() => expect(document.documentElement).toHaveAttribute('data-theme', 'light'));
     expect(window.localStorage.getItem('city-docs-theme')).toBe('light');
-    expect(darkTheme).toHaveAttribute('aria-pressed', 'false');
-    expect(lightTheme).toHaveAttribute('aria-pressed', 'true');
+    expect(darkTheme).toHaveAttribute('aria-checked', 'false');
+    expect(lightTheme).toHaveAttribute('aria-checked', 'true');
 
     await user.click(lightTheme);
-    expect(lightTheme).toHaveAttribute('aria-pressed', 'true');
+    expect(lightTheme).toHaveAttribute('aria-checked', 'true');
     expect(window.localStorage.getItem('city-docs-theme')).toBe('light');
   });
 
@@ -443,12 +442,12 @@ describe('catalog and local UI state', () => {
     window.localStorage.setItem('city-docs-theme', 'dark');
     await renderDocs(['/components/button']);
 
-    const themeGroup = screen.getByRole('group', { name: '화면 테마' });
+    const themeGroup = screen.getByRole('radiogroup', { name: '화면 테마' });
 
     await waitFor(() => expect(document.documentElement).toHaveAttribute('data-theme', 'dark'));
     expect(window.localStorage.getItem('city-docs-theme')).toBe('dark');
-    expect(within(themeGroup).getByRole('button', { name: '다크 테마' })).toHaveAttribute(
-      'aria-pressed',
+    expect(within(themeGroup).getByRole('radio', { name: '다크 테마' })).toHaveAttribute(
+      'aria-checked',
       'true',
     );
   });

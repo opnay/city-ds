@@ -7,13 +7,14 @@ export default function ToggleGroupVariantsExample() {
     <div className="city-docs-example-stack">
       {variants.map((variant) => (
         <ToggleGroup
-          aria-label={`${variant} 보기`}
-          defaultValue={['grid']}
+          aria-label={`${variant} 서식`}
+          defaultValue={['bold']}
           key={variant}
+          multiple
           variant={variant}
         >
-          <ToggleGroup.Item value="grid">격자</ToggleGroup.Item>
-          <ToggleGroup.Item value="list">목록</ToggleGroup.Item>
+          <ToggleGroup.Item value="bold">굵게</ToggleGroup.Item>
+          <ToggleGroup.Item value="italic">기울임</ToggleGroup.Item>
         </ToggleGroup>
       ))}
     </div>

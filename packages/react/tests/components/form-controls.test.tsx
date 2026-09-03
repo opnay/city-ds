@@ -13,9 +13,9 @@ import { Fieldset } from '../../src/components/fieldset';
 import { Input, InputGroup, Textarea } from '../../src/components/input';
 import { RadioGroup } from '../../src/components/radio-group';
 import { SearchInput } from '../../src/components/search-input';
+import { SegmentedControl } from '../../src/components/segmented-control';
 import { Select } from '../../src/components/select';
 import { Switch } from '../../src/components/switch';
-import { Toggle } from '../../src/components/toggle';
 import { ToggleGroup } from '../../src/components/toggle-group';
 
 describe('form and display controls', () => {
@@ -76,7 +76,9 @@ describe('form and display controls', () => {
       <>
         <Button size="xsm">Extra small button</Button>
         <Button size="sm">Small button</Button>
-        <Toggle aria-label="Medium toggle" size="md" />
+        <SegmentedControl aria-label="Medium view" defaultValue="grid" size="md">
+          <SegmentedControl.Item value="grid">Medium segment</SegmentedControl.Item>
+        </SegmentedControl>
         <Input aria-label="Large input" size="lg" />
         <Input aria-label="Extra large input" size="xlg" />
         <InputGroup.Root data-testid="small-input-group" size="sm">
@@ -93,7 +95,7 @@ describe('form and display controls', () => {
       'h-(--city-control-sm)',
       'text-xs',
     );
-    expect(screen.getByRole('button', { name: 'Medium toggle' })).toHaveClass(
+    expect(screen.getByRole('radio', { name: 'Medium segment' })).toHaveClass(
       'h-(--city-control-md)',
       'text-xs',
     );
@@ -117,7 +119,9 @@ describe('form and display controls', () => {
     render(
       <>
         <Button size="sm">Rectangular button</Button>
-        <Toggle aria-label="Rectangular toggle" size="lg" />
+        <SegmentedControl aria-label="Rectangular view" defaultValue="grid" size="lg">
+          <SegmentedControl.Item value="grid">Rectangular segment</SegmentedControl.Item>
+        </SegmentedControl>
         <Input aria-label="Rectangular input" size="md" />
         <Checkbox aria-label="Compact checkbox" size="lg" />
         <Badge data-testid="badge-sm" size="sm">
@@ -140,7 +144,7 @@ describe('form and display controls', () => {
     expect(screen.getByRole('button', { name: 'Rectangular button' })).toHaveClass(
       'rounded-city-sm',
     );
-    expect(screen.getByRole('button', { name: 'Rectangular toggle' })).toHaveClass(
+    expect(screen.getByRole('radio', { name: 'Rectangular segment' })).toHaveClass(
       'rounded-city-sm',
     );
     expect(screen.getByRole('textbox', { name: 'Rectangular input' })).toHaveClass(
@@ -738,55 +742,23 @@ describe('form and display controls', () => {
     expect(sms).toHaveClass('size-3');
   });
 
-  it('toggles Toggle pressed state with pointer and keyboard interaction', async () => {
-    const user = userEvent.setup();
-    const onPressedChange = vi.fn();
-
-    render(
-      <>
-        <Toggle aria-label="Bold" onPressedChange={onPressedChange}>
-          B
-        </Toggle>
-        <Toggle aria-label="Pinned" defaultPressed />
-        <Toggle aria-label="Locked" disabled onPressedChange={onPressedChange}>
-          Locked
-        </Toggle>
-      </>,
-    );
-
-    const toggle = screen.getByRole('button', { name: 'Bold' });
-    expect(toggle).toHaveClass('hover:bg-city-accent', 'active:bg-city-accent-active');
-    await user.click(toggle);
-    toggle.focus();
-    await user.keyboard('[Space]');
-    await user.click(screen.getByRole('button', { name: 'Locked' }));
-
-    expect(toggle).toHaveAttribute('aria-pressed', 'false');
-    expect(screen.getByRole('button', { name: 'Pinned' })).toHaveAttribute('aria-pressed', 'true');
-    expect(onPressedChange).toHaveBeenCalledTimes(2);
-    expect(onPressedChange).toHaveBeenLastCalledWith(
-      false,
-      expect.objectContaining({ reason: 'none' }),
-    );
-  });
-
-  it('changes ToggleGroup single selection values', async () => {
+  it('changes a releasable ToggleGroup tool value', async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();
 
     render(
-      <ToggleGroup aria-label="View mode" defaultValue={['grid']} onValueChange={onValueChange}>
-        <ToggleGroup.Item value="grid">Grid</ToggleGroup.Item>
-        <ToggleGroup.Item value="list">List</ToggleGroup.Item>
+      <ToggleGroup aria-label="Pinned column" defaultValue={['left']} onValueChange={onValueChange}>
+        <ToggleGroup.Item value="left">Left</ToggleGroup.Item>
+        <ToggleGroup.Item value="right">Right</ToggleGroup.Item>
       </ToggleGroup>,
     );
 
-    await user.click(screen.getByRole('button', { name: 'List' }));
+    await user.click(screen.getByRole('button', { name: 'Right' }));
 
-    expect(screen.getByRole('button', { name: 'Grid' })).toHaveAttribute('aria-pressed', 'false');
-    expect(screen.getByRole('button', { name: 'List' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Left' })).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('button', { name: 'Right' })).toHaveAttribute('aria-pressed', 'true');
     expect(onValueChange).toHaveBeenLastCalledWith(
-      ['list'],
+      ['right'],
       expect.objectContaining({ reason: 'none' }),
     );
   });
@@ -806,23 +778,23 @@ describe('form and display controls', () => {
           <ToggleGroup.Item value="bold">Bold</ToggleGroup.Item>
           <ToggleGroup.Item value="italic">Italic</ToggleGroup.Item>
         </ToggleGroup>
-        <ToggleGroup aria-label="Locked view mode" defaultValue={['grid']} disabled>
-          <ToggleGroup.Item value="grid">Grid</ToggleGroup.Item>
-          <ToggleGroup.Item value="list">List</ToggleGroup.Item>
+        <ToggleGroup aria-label="Locked formatting" defaultValue={['code']} disabled>
+          <ToggleGroup.Item value="code">Code</ToggleGroup.Item>
+          <ToggleGroup.Item value="quote">Quote</ToggleGroup.Item>
         </ToggleGroup>
       </>,
     );
 
     await user.click(screen.getByRole('button', { name: 'Italic' }));
-    await user.click(screen.getByRole('button', { name: 'List' }));
+    await user.click(screen.getByRole('button', { name: 'Quote' }));
 
-    const disabledGroup = screen.getByRole('group', { name: 'Locked view mode' });
+    const disabledGroup = screen.getByRole('group', { name: 'Locked formatting' });
     expect(screen.getByRole('button', { name: 'Bold' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('button', { name: 'Italic' })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('button', { name: 'Grid' })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('button', { name: 'List' })).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('button', { name: 'Code' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Quote' })).toHaveAttribute('aria-pressed', 'false');
     expect(disabledGroup).not.toHaveClass('data-[disabled]:opacity-50');
-    expect(screen.getByRole('button', { name: 'Grid' })).toHaveClass('data-[disabled]:opacity-50');
+    expect(screen.getByRole('button', { name: 'Code' })).toHaveClass('data-[disabled]:opacity-50');
     expect(onValueChange).toHaveBeenLastCalledWith(
       ['bold', 'italic'],
       expect.objectContaining({ reason: 'none' }),
@@ -860,20 +832,20 @@ describe('form and display controls', () => {
     const user = userEvent.setup();
 
     render(
-      <ToggleGroup aria-label="View mode" defaultValue={['grid']}>
-        <ToggleGroup.Item value="grid">Grid</ToggleGroup.Item>
-        <ToggleGroup.Item value="list">List</ToggleGroup.Item>
-        <ToggleGroup.Item value="split">Split</ToggleGroup.Item>
+      <ToggleGroup aria-label="Pinned panel" defaultValue={['top']}>
+        <ToggleGroup.Item value="top">Top</ToggleGroup.Item>
+        <ToggleGroup.Item value="bottom">Bottom</ToggleGroup.Item>
+        <ToggleGroup.Item value="side">Side</ToggleGroup.Item>
       </ToggleGroup>,
     );
 
-    const grid = screen.getByRole('button', { name: 'Grid' });
-    const list = screen.getByRole('button', { name: 'List' });
+    const top = screen.getByRole('button', { name: 'Top' });
+    const bottom = screen.getByRole('button', { name: 'Bottom' });
 
-    grid.focus();
+    top.focus();
     await user.keyboard('[ArrowRight]');
 
-    expect(list).toHaveFocus();
+    expect(bottom).toHaveFocus();
   });
 
   it('toggles Switch while leaving disabled Switch unchanged', async () => {

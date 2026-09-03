@@ -100,7 +100,7 @@ export const pageData = {
         { axis: 'mode', values: ['uncontrolled', 'controlled'] },
         { axis: 'disabled', values: ['true'] },
       ],
-      description: '단일·복수 선택과 외부 상태 제어, 비활성 항목을 구분합니다.',
+      description: '해제 가능한 단일·복수 도구와 외부 상태 제어를 구분합니다.',
       id: 'toggle-group-selection',
       filename: 'selection.tsx',
       source: selectionSource,

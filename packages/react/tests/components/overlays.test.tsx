@@ -408,7 +408,7 @@ describe('overlay and selection controls', () => {
     await user.click(trigger);
 
     expect(await screen.findByRole('dialog', { name: 'Filters' })).toBeVisible();
-    expect(document.querySelector('.bg-city-backdrop-subtle')).toBeInTheDocument();
+    expect(document.querySelector('.bg-city-backdrop-subtle')).toHaveClass('backdrop-blur-[8px]');
     expect(screen.getByText('Refine the deployments list.')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Done' })).toHaveClass('text-xs');
     expect(screen.getByTestId('popover-arrow')).toHaveClass(

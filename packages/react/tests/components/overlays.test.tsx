@@ -47,17 +47,18 @@ describe('overlay and selection controls', () => {
     expect(dialog).toHaveClass(
       'origin-center',
       'transition-[opacity,transform]',
-      'duration-(--city-duration-xslow)',
+      'duration-(--city-duration-fast)',
       'ease-city-standard',
       'data-[starting-style]:opacity-0',
-      'data-[starting-style]:[transform:scale(0.98)]',
+      'data-[starting-style]:[transform:translateY(2%)_scale(0.97)]',
       'data-[ending-style]:opacity-0',
-      'data-[ending-style]:[transform:scale(0.98)]',
+      'data-[ending-style]:[transform:translateY(2%)_scale(0.97)]',
       'motion-reduce:transition-none',
     );
     expect(document.querySelector('.bg-city-backdrop')).toHaveClass(
+      'backdrop-blur-[8px]',
       'transition-opacity',
-      'duration-(--city-duration-xslow)',
+      'duration-(--city-duration-fast)',
       'ease-city-standard',
       'data-[starting-style]:opacity-0',
       'data-[ending-style]:opacity-0',
@@ -308,11 +309,12 @@ describe('overlay and selection controls', () => {
 
     const dialog = await screen.findByRole('alertdialog', { name: 'Delete this project?' });
     expect(dialog).toBeVisible();
+    expect(document.querySelector('.bg-city-backdrop')).toHaveClass('backdrop-blur-[8px]');
     expect(dialog).toHaveClass(
       'transition-[opacity,transform]',
-      'duration-(--city-duration-xslow)',
-      'data-[starting-style]:[transform:scale(0.98)]',
-      'data-[ending-style]:[transform:scale(0.98)]',
+      'duration-(--city-duration-fast)',
+      'data-[starting-style]:[transform:translateY(2%)_scale(0.97)]',
+      'data-[ending-style]:[transform:translateY(2%)_scale(0.97)]',
       'motion-reduce:transition-none',
     );
     expect(screen.getByText('This action cannot be undone.')).toBeVisible();

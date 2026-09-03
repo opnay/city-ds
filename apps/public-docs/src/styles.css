@@ -1957,6 +1957,15 @@
       min-width: 0;
       flex: 1 1 auto;
     }
+
+    .city-docs-example-preview[data-sidebar-open] {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .city-docs-preview-sidebar {
+      border-top: 1px solid var(--city-color-border);
+      border-left: 0;
+    }
   }
 
   @media (max-width: 30rem) {

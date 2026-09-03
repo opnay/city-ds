@@ -34,7 +34,6 @@ interface PreviewSidebarButtonProps {
 function PreviewOptions({ axes, id, onValueChange, values }: PreviewOptionsConfig) {
   return (
     <aside aria-label="미리보기 옵션" className="city-docs-preview-sidebar" id={id}>
-      <strong className="city-docs-preview-sidebar-title">옵션</strong>
       <div className="city-docs-preview-options">
         {axes.map((axis) => {
           const value = values[axis.name] ?? axis.defaultValue ?? axis.values[0] ?? '';
@@ -58,37 +57,38 @@ function PreviewOptions({ axes, id, onValueChange, values }: PreviewOptionsConfi
           const items = Object.fromEntries(axis.values.map((option) => [option, option]));
 
           return (
-            <Select.Root
-              items={items}
-              key={axis.name}
-              onValueChange={(nextValue) => {
-                if (typeof nextValue === 'string') onValueChange(axis.name, nextValue);
-              }}
-              size="sm"
-              value={value}
-            >
-              <Select.Label>
-                <code>{axis.name}</code>
-              </Select.Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Icon />
-              </Select.Trigger>
-              <Select.Portal>
-                <Select.Positioner sideOffset={6}>
-                  <Select.Popup>
-                    <Select.List>
-                      {axis.values.map((option) => (
-                        <Select.Item key={option} value={option}>
-                          <Select.ItemIndicator />
-                          <Select.ItemText>{option}</Select.ItemText>
-                        </Select.Item>
-                      ))}
-                    </Select.List>
-                  </Select.Popup>
-                </Select.Positioner>
-              </Select.Portal>
-            </Select.Root>
+            <div className="city-docs-preview-option-field" key={axis.name}>
+              <Select.Root
+                items={items}
+                onValueChange={(nextValue) => {
+                  if (typeof nextValue === 'string') onValueChange(axis.name, nextValue);
+                }}
+                size="sm"
+                value={value}
+              >
+                <Select.Label className="mb-0">
+                  <code>{axis.name}</code>
+                </Select.Label>
+                <Select.Trigger>
+                  <Select.Value />
+                  <Select.Icon />
+                </Select.Trigger>
+                <Select.Portal>
+                  <Select.Positioner sideOffset={6}>
+                    <Select.Popup>
+                      <Select.List>
+                        {axis.values.map((option) => (
+                          <Select.Item key={option} value={option}>
+                            <Select.ItemIndicator />
+                            <Select.ItemText>{option}</Select.ItemText>
+                          </Select.Item>
+                        ))}
+                      </Select.List>
+                    </Select.Popup>
+                  </Select.Positioner>
+                </Select.Portal>
+              </Select.Root>
+            </div>
           );
         })}
       </div>

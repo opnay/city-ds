@@ -1603,17 +1603,17 @@
     border-left: 1px solid var(--city-color-border);
     background: var(--city-color-surface-raised);
     align-content: start;
-    gap: var(--city-space-4);
-  }
-
-  .city-docs-preview-sidebar-title {
-    font-size: var(--city-font-size-sm);
-    line-height: var(--city-line-height-sm);
   }
 
   .city-docs-preview-options {
     display: grid;
     gap: var(--city-space-4);
+  }
+
+  .city-docs-preview-option-field {
+    display: grid;
+    min-width: 0;
+    gap: var(--city-space-2);
   }
 
   .city-docs-preview-option-switch {

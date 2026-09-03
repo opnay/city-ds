@@ -27,6 +27,7 @@ describe('documented component interactions', () => {
 
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     expect(preview).toContainElement(sidebar);
+    expect(within(sidebar).queryByText('옵션')).toBeNull();
     expect(within(example).getByRole('button', { name: '미리보기 옵션 닫기' })).toHaveAttribute(
       'aria-expanded',
       'true',

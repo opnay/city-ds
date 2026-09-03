@@ -277,6 +277,9 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(
       /\.city-docs-preview-sidebar\s*{[^}]*border-left:\s*1px solid var\(--city-color-border\);[^}]*background:\s*var\(--city-color-surface-raised\);/s,
     );
+    expect(styles).toMatch(
+      /\.city-docs-preview-option-field\s*{[^}]*display:\s*grid;[^}]*gap:\s*var\(--city-space-2\);/s,
+    );
   });
 
   it('separates example captions from the field controls they describe', () => {

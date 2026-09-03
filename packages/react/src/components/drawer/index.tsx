@@ -56,17 +56,17 @@ const viewportSideClasses: Record<DrawerSide, string> = {
 };
 
 const popupSideClasses: Record<DrawerSide, string> = {
-  left: 'h-full max-h-dvh origin-left rounded-r-city-lg border-r',
-  right: 'h-full max-h-dvh origin-right rounded-l-city-lg border-l',
-  bottom: 'w-full origin-bottom rounded-t-city-lg border-t',
+  left: 'h-full max-h-dvh rounded-r-city-lg border-r',
+  right: 'h-full max-h-dvh rounded-l-city-lg border-l',
+  bottom: 'w-full rounded-t-city-lg border-t',
 };
 
 const popupMotionClasses: Record<DrawerSide, string> = {
-  left: '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)] data-[starting-style]:[transform:translateX(-2%)_scale(0.98)] data-[ending-style]:[transform:translateX(-2%)_scale(0.98)]',
+  left: '[transform:translateX(var(--drawer-swipe-movement-x))] data-[starting-style]:[transform:translateX(-100%)] data-[ending-style]:[transform:translateX(-100%)]',
   right:
-    '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)] data-[starting-style]:[transform:translateX(2%)_scale(0.98)] data-[ending-style]:[transform:translateX(2%)_scale(0.98)]',
+    '[transform:translateX(var(--drawer-swipe-movement-x))] data-[starting-style]:[transform:translateX(100%)] data-[ending-style]:[transform:translateX(100%)]',
   bottom:
-    '[transform:translateY(var(--drawer-swipe-movement-y))_scale(1)] data-[starting-style]:[transform:translateY(2%)_scale(0.98)] data-[ending-style]:[transform:translateY(2%)_scale(0.98)]',
+    '[transform:translateY(var(--drawer-swipe-movement-y))] data-[starting-style]:[transform:translateY(100%)] data-[ending-style]:[transform:translateY(100%)]',
 };
 
 const popupSizeClasses: Record<DrawerSide, Record<DrawerSize, string>> = {
@@ -151,7 +151,7 @@ export const DrawerPopup = React.forwardRef<HTMLDivElement, DrawerPopupProps>(
       className={classes(
         className,
         cn(
-          'border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup flex flex-col transition-[transform,filter] duration-(--city-duration-normal) ease-city-standard outline-none data-[swiping]:duration-0 data-[swiping]:select-none data-[starting-style]:blur-[4px] data-[ending-style]:blur-[4px] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength,1)*var(--city-duration-normal))] motion-reduce:transition-none',
+          'border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup flex flex-col transition-transform duration-(--city-duration-normal) ease-city-standard outline-none data-[swiping]:duration-0 data-[swiping]:select-none data-[ending-style]:duration-[calc(var(--drawer-swipe-strength,1)*var(--city-duration-normal))] motion-reduce:transition-none',
           popupSideClasses[side],
           popupMotionClasses[side],
           popupSizeClasses[side][size],

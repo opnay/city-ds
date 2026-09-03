@@ -175,15 +175,13 @@ describe('overlay and selection controls', () => {
     expect(drawer).toHaveAttribute('data-side', 'right');
     expect(drawer).toHaveClass(
       'w-[min(32rem,calc(100vw-2rem))]',
-      'origin-right',
-      '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)]',
-      'data-[starting-style]:[transform:translateX(2%)_scale(0.98)]',
-      'data-[ending-style]:[transform:translateX(2%)_scale(0.98)]',
+      'transition-transform',
+      '[transform:translateX(var(--drawer-swipe-movement-x))]',
+      'data-[starting-style]:[transform:translateX(100%)]',
+      'data-[ending-style]:[transform:translateX(100%)]',
       'duration-(--city-duration-normal)',
       'ease-city-standard',
       'data-[swiping]:duration-0',
-      'data-[starting-style]:blur-[4px]',
-      'data-[ending-style]:blur-[4px]',
       'motion-reduce:transition-none',
     );
     expect(screen.getByText('Asset details').parentElement).toHaveAttribute(
@@ -196,7 +194,7 @@ describe('overlay and selection controls', () => {
     ).toHaveAttribute('data-city-drawer-footer');
   });
 
-  it('moves left and bottom drawers from their owning edges', async () => {
+  it('slides left and bottom drawers in from outside their owning edges', async () => {
     render(
       <>
         <Drawer.Root defaultOpen modal={false} swipeDirection="left">
@@ -221,16 +219,14 @@ describe('overlay and selection controls', () => {
     );
 
     expect(await screen.findByTestId('left-drawer')).toHaveClass(
-      'origin-left',
-      '[transform:translateX(var(--drawer-swipe-movement-x))_scale(1)]',
-      'data-[starting-style]:[transform:translateX(-2%)_scale(0.98)]',
-      'data-[ending-style]:[transform:translateX(-2%)_scale(0.98)]',
+      '[transform:translateX(var(--drawer-swipe-movement-x))]',
+      'data-[starting-style]:[transform:translateX(-100%)]',
+      'data-[ending-style]:[transform:translateX(-100%)]',
     );
     expect(screen.getByTestId('bottom-drawer')).toHaveClass(
-      'origin-bottom',
-      '[transform:translateY(var(--drawer-swipe-movement-y))_scale(1)]',
-      'data-[starting-style]:[transform:translateY(2%)_scale(0.98)]',
-      'data-[ending-style]:[transform:translateY(2%)_scale(0.98)]',
+      '[transform:translateY(var(--drawer-swipe-movement-y))]',
+      'data-[starting-style]:[transform:translateY(100%)]',
+      'data-[ending-style]:[transform:translateY(100%)]',
     );
   });
 

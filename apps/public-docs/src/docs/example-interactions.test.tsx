@@ -147,7 +147,7 @@ describe('documented component interactions', () => {
     expect(screen.getByRole('button', { name: 'left · sm' })).toBeVisible();
   });
 
-  it('names Fieldset controls and updates controlled Toggle state', async () => {
+  it('names Fieldset controls and keeps a controlled SegmentedControl selection', async () => {
     const user = userEvent.setup();
     const fieldset = await renderDocs(['/components/fieldset']);
 
@@ -162,15 +162,17 @@ describe('documented component interactions', () => {
     }
 
     fieldset.unmount();
-    await renderDocs(['/components/toggle']);
-    const controlled = screen.getByRole('button', { name: '제어됨: 해제' });
-    await user.click(controlled);
+    await renderDocs(['/components/segmented-control']);
+    const segmentedControl = screen.getByRole('region', { name: 'SegmentedControl' });
+    const grid = within(segmentedControl).getByRole('radio', { name: '격자' });
+    const list = within(segmentedControl).getByRole('radio', { name: '목록' });
+    const map = within(segmentedControl).getByRole('radio', { name: '지도' });
 
-    expect(screen.getByRole('button', { name: '제어됨: 선택' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
-    expect(screen.getByRole('button', { name: '비활성 토글' })).toBeDisabled();
+    await user.click(list);
+
+    expect(grid).toHaveAttribute('aria-checked', 'false');
+    expect(list).toHaveAttribute('aria-checked', 'true');
+    expect(map).toHaveAttribute('data-disabled');
   });
 
   it('renders every declared Progress shape, status and size combination', async () => {

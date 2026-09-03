@@ -13,12 +13,12 @@ const meta = {
     docs: {
       description: {
         component:
-          'ToggleGroup groups related toggle choices. Provide an accessible group name with `aria-label` or `aria-labelledby`, and provide `aria-label` on icon-only items.',
+          'ToggleGroup groups related tool states that may be pressed or released. Use SegmentedControl when one option must always remain selected. Provide an accessible group name with `aria-label` or `aria-labelledby`, and provide `aria-label` on icon-only items.',
       },
     },
   },
   args: {
-    'aria-label': 'Text alignment',
+    'aria-label': 'Pinned column',
     defaultValue: ['left'],
   },
   argTypes: {
@@ -45,7 +45,6 @@ export const Single: Story = {
   render: (args) => (
     <ToggleGroup {...args}>
       <ToggleGroup.Item value="left">Left</ToggleGroup.Item>
-      <ToggleGroup.Item value="center">Center</ToggleGroup.Item>
       <ToggleGroup.Item value="right">Right</ToggleGroup.Item>
     </ToggleGroup>
   ),
@@ -94,39 +93,40 @@ export const IconOnly: Story = {
 
 export const Vertical: Story = {
   args: {
-    'aria-label': 'Sort direction',
-    defaultValue: ['ascending'],
+    'aria-label': 'Pinned panel',
+    defaultValue: ['top'],
     orientation: 'vertical',
   },
   render: (args) => (
     <ToggleGroup {...args}>
-      <ToggleGroup.Item value="ascending">Ascending</ToggleGroup.Item>
-      <ToggleGroup.Item value="descending">Descending</ToggleGroup.Item>
+      <ToggleGroup.Item value="top">Top</ToggleGroup.Item>
+      <ToggleGroup.Item value="bottom">Bottom</ToggleGroup.Item>
     </ToggleGroup>
   ),
 };
 
 export const Disabled: Story = {
   args: {
-    'aria-label': 'Disabled view mode',
-    defaultValue: ['grid'],
+    'aria-label': 'Disabled formatting tools',
+    defaultValue: ['bold'],
     disabled: true,
+    multiple: true,
   },
   render: (args) => (
     <ToggleGroup {...args}>
-      <ToggleGroup.Item value="grid">Grid</ToggleGroup.Item>
-      <ToggleGroup.Item value="list">List</ToggleGroup.Item>
+      <ToggleGroup.Item value="bold">Bold</ToggleGroup.Item>
+      <ToggleGroup.Item value="italic">Italic</ToggleGroup.Item>
     </ToggleGroup>
   ),
 };
 
 function ControlledExample() {
-  const [value, setValue] = useState<string[]>(['grid']);
+  const [value, setValue] = useState<string[]>(['left']);
 
   return (
-    <ToggleGroup aria-label="View mode" value={value} onValueChange={setValue}>
-      <ToggleGroup.Item value="grid">Grid</ToggleGroup.Item>
-      <ToggleGroup.Item value="list">List</ToggleGroup.Item>
+    <ToggleGroup aria-label="Pinned column" value={value} onValueChange={setValue}>
+      <ToggleGroup.Item value="left">Left</ToggleGroup.Item>
+      <ToggleGroup.Item value="right">Right</ToggleGroup.Item>
     </ToggleGroup>
   );
 }
@@ -135,12 +135,12 @@ export const KeyboardNavigation: Story = {
   render: () => <ControlledExample />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const grid = canvas.getByRole('button', { name: 'Grid' });
+    const left = canvas.getByRole('button', { name: 'Left' });
 
-    grid.focus();
+    left.focus();
     await userEvent.keyboard('[ArrowRight][Space]');
 
-    await expect(canvas.getByRole('button', { name: 'List' })).toHaveAttribute(
+    await expect(canvas.getByRole('button', { name: 'Right' })).toHaveAttribute(
       'aria-pressed',
       'true',
     );

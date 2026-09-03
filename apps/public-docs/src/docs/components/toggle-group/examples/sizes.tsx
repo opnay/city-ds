@@ -6,9 +6,15 @@ export default function ToggleGroupSizesExample() {
   return (
     <div className="city-docs-example-stack">
       {sizes.map((size) => (
-        <ToggleGroup aria-label={`${size} 보기`} defaultValue={['grid']} key={size} size={size}>
-          <ToggleGroup.Item value="grid">격자</ToggleGroup.Item>
-          <ToggleGroup.Item value="list">목록</ToggleGroup.Item>
+        <ToggleGroup
+          aria-label={`${size} 서식`}
+          defaultValue={['bold']}
+          key={size}
+          multiple
+          size={size}
+        >
+          <ToggleGroup.Item value="bold">굵게</ToggleGroup.Item>
+          <ToggleGroup.Item value="italic">기울임</ToggleGroup.Item>
         </ToggleGroup>
       ))}
     </div>

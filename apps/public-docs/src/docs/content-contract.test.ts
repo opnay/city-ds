@@ -17,7 +17,6 @@ const REQUIRED_COMBINATION_AXES = {
   skeleton: ['variant', 'size'],
   table: ['size', 'variant'],
   toast: ['tone'],
-  toggle: ['variant', 'pressed'],
   'toggle-group': ['variant', 'pressed'],
 } as const;
 

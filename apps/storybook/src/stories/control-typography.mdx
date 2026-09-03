@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Badge, Button, Input, Table, Toggle } from '@opnay/city-ds-react';
+import { Badge, Button, Input, SegmentedControl, Table } from '@opnay/city-ds-react';
 import { ComponentSpecimen } from '../docs/component-specimen';
 
 <Meta title="디자인 패턴/Typography/Control Text" />
@@ -42,11 +42,26 @@ Surface, tone, hover, pressed 같은 시각·상태 축은 텍스트 크기나 �
       <Button size="md">md · 저장</Button>
       <Button size="lg">lg · 저장</Button>
       <Button size="xlg">xlg · 저장</Button>
-      <Toggle size="xsm">xsm · 고정</Toggle>
-      <Toggle size="sm">sm · 고정</Toggle>
-      <Toggle size="md">md · 고정</Toggle>
-      <Toggle size="lg">lg · 고정</Toggle>
-      <Toggle size="xlg">xlg · 고정</Toggle>
+      <SegmentedControl aria-label="xsm 보기" defaultValue="grid" size="xsm">
+        <SegmentedControl.Item value="grid">격자</SegmentedControl.Item>
+        <SegmentedControl.Item value="list">목록</SegmentedControl.Item>
+      </SegmentedControl>
+      <SegmentedControl aria-label="sm 보기" defaultValue="grid" size="sm">
+        <SegmentedControl.Item value="grid">격자</SegmentedControl.Item>
+        <SegmentedControl.Item value="list">목록</SegmentedControl.Item>
+      </SegmentedControl>
+      <SegmentedControl aria-label="md 보기" defaultValue="grid" size="md">
+        <SegmentedControl.Item value="grid">격자</SegmentedControl.Item>
+        <SegmentedControl.Item value="list">목록</SegmentedControl.Item>
+      </SegmentedControl>
+      <SegmentedControl aria-label="lg 보기" defaultValue="grid" size="lg">
+        <SegmentedControl.Item value="grid">격자</SegmentedControl.Item>
+        <SegmentedControl.Item value="list">목록</SegmentedControl.Item>
+      </SegmentedControl>
+      <SegmentedControl aria-label="xlg 보기" defaultValue="grid" size="xlg">
+        <SegmentedControl.Item value="grid">격자</SegmentedControl.Item>
+        <SegmentedControl.Item value="list">목록</SegmentedControl.Item>
+      </SegmentedControl>
     </div>
     <div className="grid max-w-4xl gap-3 sm:grid-cols-2 xl:grid-cols-5">
       <Input aria-label="매우 작은 입력" defaultValue="xsm · 프로젝트" size="xsm" />
@@ -135,7 +150,7 @@ Surface, tone, hover, pressed 같은 시각·상태 축은 텍스트 크기나 �
 [Control Size](?path=/docs/디자인-패턴-density-control-size--docs) 계약을 참조합니다.
 
 - Badge의 label은 `medium`, count는 자릿수 인지를 위해 `semibold`를 사용합니다.
-- Button, Toggle, Input과 같은 Control 본문은 `medium` 또는 해당 컴포넌트의 기본 굵기를
+- Button, SegmentedControl, Input과 같은 Control 본문은 `medium` 또는 해당 컴포넌트의 기본 굵기를
   유지합니다.
 - 10px는 대비가 충분한 짧은 비상호작용 상태·수량·그룹 레이블에만 사용합니다. 사용자가
   조작하거나 문장으로 읽어야 하는 텍스트는 최소 12px를 사용합니다.

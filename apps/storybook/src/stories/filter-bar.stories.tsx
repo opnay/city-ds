@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button, FilterBar, Input, Select, ToggleGroup } from '@opnay/city-ds-react';
+import { Button, FilterBar, Input, SegmentedControl, Select } from '@opnay/city-ds-react';
 
 const statusItems = {
   all: 'All statuses',
@@ -69,16 +69,11 @@ export const ResponsiveFilters: Story = {
             </Select.Positioner>
           </Select.Portal>
         </Select.Root>
-        <ToggleGroup
-          aria-label="Project period"
-          defaultValue={['week']}
-          size="sm"
-          variant="outline"
-        >
-          <ToggleGroup.Item value="today">Today</ToggleGroup.Item>
-          <ToggleGroup.Item value="week">7 days</ToggleGroup.Item>
-          <ToggleGroup.Item value="month">30 days</ToggleGroup.Item>
-        </ToggleGroup>
+        <SegmentedControl aria-label="Project period" defaultValue="week" size="sm">
+          <SegmentedControl.Item value="today">Today</SegmentedControl.Item>
+          <SegmentedControl.Item value="week">7 days</SegmentedControl.Item>
+          <SegmentedControl.Item value="month">30 days</SegmentedControl.Item>
+        </SegmentedControl>
       </FilterBar>
     </div>
   ),

@@ -138,10 +138,6 @@
       "types": "./dist/components/table/index.d.ts",
       "import": "./dist/components/table/index.js"
     },
-    "./toggle": {
-      "types": "./dist/components/toggle/index.d.ts",
-      "import": "./dist/components/toggle/index.js"
-    },
     "./toggle-group": {
       "types": "./dist/components/toggle-group/index.d.ts",
       "import": "./dist/components/toggle-group/index.js"
@@ -172,6 +168,10 @@
     "./search-input": {
       "types": "./dist/components/search-input/index.d.ts",
       "import": "./dist/components/search-input/index.js"
+    },
+    "./segmented-control": {
+      "types": "./dist/components/segmented-control/index.d.ts",
+      "import": "./dist/components/segmented-control/index.js"
     },
     "./toolbar": {
       "types": "./dist/components/toolbar/index.d.ts",

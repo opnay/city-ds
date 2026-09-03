@@ -1,5 +1,13 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Badge, Button, Checkbox, Input, RadioGroup, Switch, Toggle } from '@opnay/city-ds-react';
+import {
+  Badge,
+  Button,
+  Checkbox,
+  Input,
+  RadioGroup,
+  Switch,
+  ToggleGroup,
+} from '@opnay/city-ds-react';
 import { ComponentSpecimen } from '../docs/component-specimen';
 
 <Meta title="디자인 패턴/Shape/Radius" />
@@ -30,7 +38,11 @@ padding·line-height·border는 최종 높이를 만드는 입력값입니다. �
   <div className="flex flex-wrap items-center gap-2">
     <Badge size="md">24px Badge</Badge>
     <Button size="xsm">24px Button</Button>
-    <Toggle size="lg">36px Toggle</Toggle>
+    <ToggleGroup aria-label="표시 도구">
+      <ToggleGroup.Item size="lg" value="labels">
+        36px ToggleGroup.Item
+      </ToggleGroup.Item>
+    </ToggleGroup>
   </div>
 </div>
 
@@ -71,7 +83,7 @@ padding·line-height·border는 최종 높이를 만드는 입력값입니다. �
       <code>--city-radius-sm</code> · 4px
     </dd>
     <dd className="text-city-muted-foreground text-xs">
-      Badge label, Button, Toggle, Outline Frame
+      Badge label, Button, ToggleGroup.Item, Outline Frame
     </dd>
   </div>
   <div className="border-city-border bg-city-surface-raised rounded-city-sm grid gap-1 border p-3">
@@ -90,7 +102,7 @@ padding·line-height·border는 최종 높이를 만드는 입력값입니다. �
 
 - Checkbox `14/16/20px`는 compact rectangle인 `xs`를 사용합니다.
 - Badge label `20/24/28px`는 각각 `xs/sm/sm`을 사용합니다.
-- Button·Toggle·Outline Frame `24/28/32/36/40px`는 모두 `sm`을 사용합니다.
+- Button·ToggleGroup.Item·Outline Frame `24/28/32/36/40px`는 모두 `sm`을 사용합니다.
 - Count·dot Badge, Radio, Switch는 형태 자체가 수량·선택·전환 상태를 나타내므로 `full`을
   사용합니다.
 

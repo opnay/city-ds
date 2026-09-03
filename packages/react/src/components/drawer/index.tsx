@@ -61,6 +61,14 @@ const popupSideClasses: Record<DrawerSide, string> = {
   bottom: 'w-full rounded-t-city-lg border-t',
 };
 
+const popupMotionClasses: Record<DrawerSide, string> = {
+  left: '[transform:translateX(var(--drawer-swipe-movement-x))] data-[starting-style]:[transform:translateX(-100%)] data-[ending-style]:[transform:translateX(-100%)]',
+  right:
+    '[transform:translateX(var(--drawer-swipe-movement-x))] data-[starting-style]:[transform:translateX(100%)] data-[ending-style]:[transform:translateX(100%)]',
+  bottom:
+    '[transform:translateY(var(--drawer-swipe-movement-y))] data-[starting-style]:[transform:translateY(100%)] data-[ending-style]:[transform:translateY(100%)]',
+};
+
 const popupSizeClasses: Record<DrawerSide, Record<DrawerSize, string>> = {
   left: {
     sm: 'w-[min(20rem,calc(100vw-2rem))]',
@@ -110,7 +118,10 @@ export const DrawerBackdrop = React.forwardRef<HTMLDivElement, DrawerBackdropPro
     <BaseDrawer.Backdrop
       {...props}
       ref={ref}
-      className={classes(className, 'bg-city-backdrop fixed inset-0 z-50')}
+      className={classes(
+        className,
+        'bg-city-backdrop fixed inset-0 z-50 opacity-[calc(1-var(--drawer-swipe-progress))] backdrop-blur-[8px] transition-opacity duration-(--city-duration-normal) ease-city-standard data-[swiping]:duration-0 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 data-[ending-style]:duration-[calc(var(--drawer-swipe-strength,1)*var(--city-duration-normal))] motion-reduce:transition-none',
+      )}
     />
   ),
 );
@@ -140,8 +151,9 @@ export const DrawerPopup = React.forwardRef<HTMLDivElement, DrawerPopupProps>(
       className={classes(
         className,
         cn(
-          'border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup flex flex-col outline-none',
+          'border-city-border bg-city-surface-raised text-city-foreground shadow-city-popup flex flex-col transition-transform duration-(--city-duration-normal) ease-city-standard outline-none data-[swiping]:duration-0 data-[swiping]:select-none data-[ending-style]:duration-[calc(var(--drawer-swipe-strength,1)*var(--city-duration-normal))] motion-reduce:transition-none',
           popupSideClasses[side],
+          popupMotionClasses[side],
           popupSizeClasses[side][size],
         ),
       )}

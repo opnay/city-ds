@@ -20,6 +20,7 @@ interface PreviewSettingsContextValue {
   resolvedPreviewTheme: ResolvedTheme;
   setPreviewDensity: (density: Density) => void;
   setPreviewGrid: (checked: boolean) => void;
+  setPreviewOptionsOpen: (open: boolean) => void;
   setPreviewTheme: (theme: CityTheme) => void;
 }
 
@@ -95,6 +96,7 @@ export function usePreviewSettings() {
 export function PreviewSettingsProvider({ children }: PreviewSettingsProviderProps) {
   const [previewDensity, setPreviewDensity] = useState<Density>(readStoredPreviewDensity);
   const [previewGrid, setPreviewGrid] = useState(readStoredPreviewGrid);
+  const [previewOptionsOpen, setPreviewOptionsOpen] = useState(true);
   const [previewTheme, setPreviewTheme] = useState<CityTheme>(readStoredPreviewTheme);
   const systemTheme = useSystemTheme();
   const resolvedPreviewTheme = previewTheme === 'system' ? systemTheme : previewTheme;
@@ -130,11 +132,12 @@ export function PreviewSettingsProvider({ children }: PreviewSettingsProviderPro
       value={{
         previewDensity,
         previewGrid,
-        previewOptionsOpen: true,
+        previewOptionsOpen,
         previewTheme,
         resolvedPreviewTheme,
         setPreviewDensity,
         setPreviewGrid,
+        setPreviewOptionsOpen,
         setPreviewTheme,
       }}
     >

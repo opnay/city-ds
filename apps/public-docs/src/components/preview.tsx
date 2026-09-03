@@ -1,5 +1,7 @@
+import { PanelRightClose, PanelRightOpen } from 'lucide-react';
 import type { ReactNode } from 'react';
 import type { CityTheme, Density } from '@opnay/city-ds-react';
+import { Button } from '@opnay/city-ds-react/button';
 import { DensityProvider } from '@opnay/city-ds-react/density-provider';
 import { SegmentedControl } from '@opnay/city-ds-react/segmented-control';
 import { Select } from '@opnay/city-ds-react/select';
@@ -23,6 +25,12 @@ interface PreviewProps {
   layout: 'center' | 'wide';
   options?: PreviewOptionsConfig | undefined;
   theme: ResolvedTheme;
+}
+
+interface PreviewSidebarButtonProps {
+  controls: string;
+  onOpenChange: (open: boolean) => void;
+  open: boolean;
 }
 
 function isBooleanOptionAxis(axis: OptionAxis) {
@@ -156,5 +164,25 @@ export function Preview({ children, density, layout, options, theme }: PreviewPr
       </div>
       {options ? <PreviewOptions {...options} /> : null}
     </div>
+  );
+}
+
+export function PreviewSidebarButton({ controls, onOpenChange, open }: PreviewSidebarButtonProps) {
+  const label = open ? '미리보기 옵션 닫기' : '미리보기 옵션 열기';
+  const Icon = open ? PanelRightClose : PanelRightOpen;
+
+  return (
+    <Button
+      aria-controls={controls}
+      aria-expanded={open}
+      aria-label={label}
+      iconOnly
+      onClick={() => onOpenChange(!open)}
+      size="sm"
+      type="button"
+      variant="outline"
+    >
+      <Icon aria-hidden="true" size={16} />
+    </Button>
   );
 }

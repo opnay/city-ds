@@ -455,15 +455,21 @@ describe('catalog and local UI state', () => {
     );
   });
 
-  it('opens the options panel by default across document pages', async () => {
+  it('shares direct options buttons state across document pages and defaults it to open', async () => {
+    const user = userEvent.setup();
     const { router } = await renderDocs(['/components/button']);
 
     expect(screen.getByRole('complementary', { name: '미리보기 옵션' })).toBeVisible();
+    await user.click(screen.getAllByRole('button', { name: '미리보기 옵션 닫기' })[0]!);
+    expect(screen.queryByRole('complementary', { name: '미리보기 옵션' })).toBeNull();
 
     await act(async () => {
       await router.navigate({ params: { slug: 'calendar' }, to: '/components/$slug' });
     });
     expect(await screen.findByRole('heading', { level: 1, name: 'Calendar' })).toBeVisible();
+    expect(screen.queryByRole('complementary', { name: '미리보기 옵션' })).toBeNull();
+
+    await user.click(screen.getAllByRole('button', { name: '미리보기 옵션 열기' })[0]!);
     expect(screen.getByRole('complementary', { name: '미리보기 옵션' })).toBeVisible();
   });
 

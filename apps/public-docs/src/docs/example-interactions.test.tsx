@@ -19,10 +19,13 @@ describe('documented component interactions', () => {
     const example = screen.getByRole('region', { name: 'Button' });
     const preview = example.querySelector('.city-docs-example-preview');
     const previewButton = within(example).getByRole('button', { name: '미리보기 버튼' });
+    const optionsTrigger = within(example).getByRole('button', { name: '미리보기 옵션 닫기' });
 
     expect(preview).not.toBeNull();
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     expect(preview).toContainElement(sidebar);
+    expect(optionsTrigger).toHaveAttribute('aria-controls', 'preview-options-button-playground');
+    expect(optionsTrigger).toHaveAttribute('aria-expanded', 'true');
     expect(within(sidebar).queryByText('옵션')).toBeNull();
     expect(Array.from(sidebar.querySelectorAll('code'), (label) => label.textContent)).toEqual([
       'size',
@@ -42,6 +45,13 @@ describe('documented component interactions', () => {
 
     await user.click(within(sidebar).getByRole('switch', { name: 'disabled' }));
     expect(previewButton).toBeDisabled();
+
+    await user.click(optionsTrigger);
+    expect(within(example).queryByRole('complementary', { name: '미리보기 옵션' })).toBeNull();
+    expect(document.getElementById('preview-options-button-playground')).toHaveAttribute('hidden');
+
+    await user.click(within(example).getByRole('button', { name: '미리보기 옵션 열기' }));
+    expect(within(example).getByRole('complementary', { name: '미리보기 옵션' })).toBeVisible();
 
     await user.click(within(example).getByRole('button', { name: '미리보기 설정' }));
     const settings = await screen.findByRole('menu', { name: '미리보기 설정' });

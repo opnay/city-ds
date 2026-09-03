@@ -24,7 +24,7 @@ import type {
   PreviewOptionValues,
 } from '../docs/types';
 import { CodeBlock, type CodeFile } from './code-block';
-import { Preview } from './preview';
+import { Preview, PreviewSidebarButton } from './preview';
 import { PreviewSettingsButton, usePreviewSettings } from './preview-settings';
 
 interface DocsMdxProviderProps {
@@ -104,7 +104,8 @@ function ExampleFrame({
   optionAxes = [],
   previewLayout = 'center',
 }: ExampleFrameProps) {
-  const { previewDensity, previewOptionsOpen, resolvedPreviewTheme } = usePreviewSettings();
+  const { previewDensity, previewOptionsOpen, resolvedPreviewTheme, setPreviewOptionsOpen } =
+    usePreviewSettings();
   const [previewOptionValues, setPreviewOptionValues] = useState(() =>
     createPreviewOptionValues(optionAxes),
   );
@@ -129,6 +130,13 @@ function ExampleFrame({
         actions={
           <>
             <PreviewSettingsButton />
+            {isConfigurable ? (
+              <PreviewSidebarButton
+                controls={previewOptionsId}
+                onOpenChange={setPreviewOptionsOpen}
+                open={previewOptionsOpen}
+              />
+            ) : null}
           </>
         }
         className="city-docs-example-heading"

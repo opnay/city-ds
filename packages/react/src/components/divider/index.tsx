@@ -21,12 +21,12 @@ export type DividerProps =
   | (DividerBaseProps & {
       children?: never;
       orientation?: BaseSeparatorState['orientation'];
-      plain?: never;
+      plain?: false;
     })
   | (DividerBaseProps & {
-      children: React.ReactNode;
+      children?: React.ReactNode;
       orientation?: 'horizontal';
-      plain?: boolean;
+      plain: true;
     });
 
 export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(function Divider(
@@ -36,14 +36,14 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(function D
     className,
     children,
     orientation,
-    plain,
+    plain = false,
     render,
     ...props
   },
   ref,
 ) {
-  const labeled = React.Children.count(children) > 0;
-  const resolvedOrientation = labeled ? 'horizontal' : (orientation ?? 'horizontal');
+  const labeled = plain && React.Children.count(children) > 0;
+  const resolvedOrientation = plain ? 'horizontal' : (orientation ?? 'horizontal');
   const labelId = React.useId();
   const resolvedAriaLabelledBy =
     ariaLabelledBy ?? (ariaLabel === undefined && labeled ? labelId : undefined);
@@ -58,7 +58,7 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(function D
       aria-orientation={resolvedOrientation}
       data-city-divider=""
       data-city-divider-labeled={labeled ? '' : undefined}
-      data-city-divider-plain={labeled && plain ? '' : undefined}
+      data-city-divider-plain={plain ? '' : undefined}
       orientation={resolvedOrientation}
       role="separator"
       className={(state) =>
@@ -81,10 +81,7 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(function D
           />
           <span
             id={resolvedAriaLabelledBy === labelId ? labelId : undefined}
-            className={cn(
-              'min-w-0 truncate text-xs leading-none text-city-muted-foreground',
-              plain ? 'font-normal' : 'font-medium',
-            )}
+            className="min-w-0 truncate text-xs leading-none font-medium text-city-muted-foreground"
             data-city-divider-label=""
           >
             {children}

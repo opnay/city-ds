@@ -64,7 +64,7 @@ describe('documented component interactions', () => {
     expect(within(settings).queryByRole('menuitemcheckbox', { name: '옵션 패널' })).toBeNull();
   });
 
-  it('switches the Divider Preview between horizontal labels and vertical separators', async () => {
+  it('uses plain to enable horizontal labels regardless of the selected normal orientation', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/divider']);
 
@@ -74,7 +74,8 @@ describe('documented component interactions', () => {
     const vertical = within(sidebar).getByRole('radio', { name: 'vertical' });
 
     expect(horizontal).toBeChecked();
-    expect(within(example).getByRole('separator', { name: '섹션 구분' })).toHaveAttribute(
+    expect(within(example).queryByText('섹션 구분')).toBeNull();
+    expect(within(example).getByRole('separator')).toHaveAttribute(
       'aria-orientation',
       'horizontal',
     );
@@ -84,20 +85,30 @@ describe('documented component interactions', () => {
     expect(within(example).queryByText('섹션 구분')).toBeNull();
     expect(within(example).getByRole('separator')).toHaveAttribute('aria-orientation', 'vertical');
 
-    await user.click(horizontal);
+    const plain = within(sidebar).getByRole('switch', { name: 'plain' });
+    await user.click(plain);
 
+    expect(plain).toBeChecked();
+    expect(vertical).toBeChecked();
     expect(within(example).getByText('섹션 구분')).toBeVisible();
     expect(within(example).getByRole('separator', { name: '섹션 구분' })).toHaveAttribute(
       'aria-orientation',
       'horizontal',
     );
 
-    const plain = within(sidebar).getByRole('switch', { name: 'plain' });
-    await user.click(plain);
-    expect(plain).toBeChecked();
     expect(within(example).getByRole('separator', { name: '섹션 구분' })).toHaveAttribute(
       'data-city-divider-plain',
       '',
+    );
+
+    await user.click(plain);
+    expect(within(example).queryByText('섹션 구분')).toBeNull();
+    expect(within(example).getByRole('separator')).toHaveAttribute('aria-orientation', 'vertical');
+
+    await user.click(horizontal);
+    expect(within(example).getByRole('separator')).toHaveAttribute(
+      'aria-orientation',
+      'horizontal',
     );
   });
 

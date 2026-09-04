@@ -76,6 +76,10 @@ export function EmptyStatePreview({ density }: PreviewOptionProps) {
 }
 
 export function DividerPreview({ orientation, plain }: PreviewOptionProps) {
+  if (isEnabled(plain)) {
+    return <Divider plain>섹션 구분</Divider>;
+  }
+
   if (orientation === 'vertical') {
     return (
       <div className="city-docs-divider-vertical-height flex w-full items-stretch gap-4 text-sm">
@@ -86,7 +90,7 @@ export function DividerPreview({ orientation, plain }: PreviewOptionProps) {
     );
   }
 
-  return <Divider plain={isEnabled(plain)}>섹션 구분</Divider>;
+  return <Divider />;
 }
 
 export function ProgressPreview({ shape, size, status }: PreviewOptionProps) {

@@ -7,16 +7,18 @@ import { Divider, type DividerProps } from '../../src/components/divider';
 
 function assertDividerPropsContract() {
   const labeled: DividerProps = { children: '구분', plain: true };
-  const vertical: DividerProps = { orientation: 'vertical' };
+  const vertical: DividerProps = { orientation: 'vertical', plain: false };
+  const emptyPlain: DividerProps = { plain: true };
 
-  // @ts-expect-error Children force a horizontal divider.
-  const verticalWithChildren: DividerProps = { children: '구분', orientation: 'vertical' };
-  // @ts-expect-error Plain only lowers a label's emphasis.
+  // @ts-expect-error Children are only available in plain mode.
+  const childrenWithoutPlain: DividerProps = { children: '구분' };
+  // @ts-expect-error Plain mode is horizontal-only.
   const verticalWithPlain: DividerProps = { orientation: 'vertical', plain: true };
 
   void labeled;
   void vertical;
-  void verticalWithChildren;
+  void emptyPlain;
+  void childrenWithoutPlain;
   void verticalWithPlain;
 }
 
@@ -70,7 +72,7 @@ describe('Divider', () => {
 
   it('renders equal lines and a centered ReactNode label as its accessible name', () => {
     render(
-      <Divider>
+      <Divider plain>
         <strong>결제 수단</strong>
       </Divider>,
     );
@@ -101,26 +103,42 @@ describe('Divider', () => {
     );
   });
 
-  it('reduces only a label’s emphasis with plain', () => {
-    render(<Divider plain>선택 사항</Divider>);
+  it('forces plain mode to horizontal for untyped consumers', () => {
+    render(
+      // @ts-expect-error Plain rejects vertical orientation while protecting JavaScript callers.
+      <Divider plain orientation="vertical">
+        선택 사항
+      </Divider>,
+    );
 
     const divider = screen.getByRole('separator', { name: '선택 사항' });
     const label = divider.querySelector('[data-city-divider-label]');
 
     expect(divider).toHaveAttribute('aria-orientation', 'horizontal');
     expect(divider).toHaveAttribute('data-city-divider-plain', '');
-    expect(label).toHaveClass('font-normal', 'text-city-muted-foreground');
-    expect(label).not.toHaveClass('font-medium');
+    expect(label).toHaveClass('font-medium', 'text-city-muted-foreground');
+  });
+
+  it('keeps plain mode horizontal without children', () => {
+    render(<Divider plain />);
+
+    const divider = screen.getByRole('separator');
+
+    expect(divider).toHaveAttribute('aria-orientation', 'horizontal');
+    expect(divider).toHaveAttribute('data-city-divider-plain', '');
+    expect(divider).not.toHaveAttribute('data-city-divider-labeled');
+    expect(divider).toHaveClass('h-px', 'w-full');
   });
 
   it('prefers an explicit accessible name and lets aria-labelledby take precedence', () => {
     render(
       <>
         <span id="divider-reference">연결된 이름</span>
-        <Divider aria-label="명시된 이름" data-testid="explicit">
+        <Divider plain aria-label="명시된 이름" data-testid="explicit">
           표시 이름
         </Divider>
         <Divider
+          plain
           aria-label="무시되는 이름"
           aria-labelledby="divider-reference"
           data-testid="labelledby"
@@ -144,7 +162,7 @@ describe('Divider', () => {
     const ref = React.createRef<HTMLDivElement>();
 
     render(
-      <Divider ref={ref} render={<div data-composed="true" />}>
+      <Divider plain ref={ref} render={<div data-composed="true" />}>
         구성된 구분선
       </Divider>,
     );

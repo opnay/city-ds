@@ -1687,6 +1687,10 @@
     justify-items: stretch;
   }
 
+  .city-docs-divider-vertical-height {
+    height: 5rem;
+  }
+
   .city-docs-example-stack,
   .city-docs-example-matrix {
     display: grid;

@@ -78,7 +78,7 @@ export function EmptyStatePreview({ density }: PreviewOptionProps) {
 export function DividerPreview({ orientation, plain }: PreviewOptionProps) {
   if (orientation === 'vertical') {
     return (
-      <div className="flex h-[5rem] w-full items-stretch gap-4 text-sm">
+      <div className="city-docs-divider-vertical-height flex w-full items-stretch gap-4 text-sm">
         <div className="flex flex-1 items-center justify-end">첫 영역</div>
         <Divider orientation="vertical" />
         <div className="flex flex-1 items-center">다음 영역</div>

@@ -268,6 +268,7 @@ describe('public docs layout styles', () => {
     expect(styles).toMatch(
       /\.city-docs-example-preview-content\[data-city-docs-layout='wide'\]\s*{[^}]*width:\s*100%;[^}]*justify-items:\s*stretch;/s,
     );
+    expect(styles).toMatch(/\.city-docs-divider-vertical-height\s*{\s*height:\s*5rem;/);
   });
 
   it('keeps the options sidebar inside the preview grid', () => {

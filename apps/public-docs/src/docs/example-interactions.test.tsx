@@ -64,28 +64,39 @@ describe('documented component interactions', () => {
     expect(within(settings).queryByRole('menuitemcheckbox', { name: '옵션 패널' })).toBeNull();
   });
 
-  it('adds and removes the Divider label from the preview options', async () => {
+  it('switches the Divider Preview between horizontal labels and vertical separators', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/divider']);
 
     const example = screen.getByRole('region', { name: 'Divider' });
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
-    expect(within(sidebar).getByRole('radio', { name: 'section' })).toBeChecked();
+    const horizontal = within(sidebar).getByRole('radio', { name: 'horizontal' });
+    const vertical = within(sidebar).getByRole('radio', { name: 'vertical' });
+
+    expect(horizontal).toBeChecked();
     expect(within(example).getByRole('separator', { name: '섹션 구분' })).toHaveAttribute(
-      'data-city-divider-labeled',
-      '',
+      'aria-orientation',
+      'horizontal',
     );
 
-    await user.click(within(sidebar).getByRole('radio', { name: 'none' }));
+    await user.click(vertical);
 
     expect(within(example).queryByText('섹션 구분')).toBeNull();
-    expect(within(example).getByRole('separator')).not.toHaveAttribute('data-city-divider-labeled');
+    expect(within(example).getByRole('separator')).toHaveAttribute('aria-orientation', 'vertical');
 
-    await user.click(within(sidebar).getByRole('radio', { name: 'section' }));
+    await user.click(horizontal);
 
     expect(within(example).getByText('섹션 구분')).toBeVisible();
     expect(within(example).getByRole('separator', { name: '섹션 구분' })).toHaveAttribute(
-      'data-city-divider-labeled',
+      'aria-orientation',
+      'horizontal',
+    );
+
+    const plain = within(sidebar).getByRole('switch', { name: 'plain' });
+    await user.click(plain);
+    expect(plain).toBeChecked();
+    expect(within(example).getByRole('separator', { name: '섹션 구분' })).toHaveAttribute(
+      'data-city-divider-plain',
       '',
     );
   });

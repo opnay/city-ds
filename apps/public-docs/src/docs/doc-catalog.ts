@@ -525,9 +525,9 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Layout',
-    description: '콘텐츠 영역 사이의 수평 경계를 선 또는 가운데 레이블과 함께 표시합니다.',
+    description: '콘텐츠 영역 사이의 가로·세로 경계를 선 또는 가운데 라벨과 함께 표시합니다.',
     importPath: '@opnay/city-ds-react/divider',
-    keywords: ['구분선', '구분', '레이아웃', 'separator', '레이블'],
+    keywords: ['구분선', '가로', '세로', '레이아웃', 'separator', '라벨', 'plain'],
     load: () => import('./components/divider/index.mdx'),
     related: ['panel', 'fieldset'],
     selectionGuidance:

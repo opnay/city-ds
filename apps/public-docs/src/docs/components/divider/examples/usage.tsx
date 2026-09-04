@@ -4,7 +4,8 @@ export default function DividerUsageExample() {
   return (
     <div className="city-docs-example-stack w-full">
       <Divider />
-      <Divider label="섹션 구분" />
+      <Divider>섹션 구분</Divider>
+      <Divider plain>또는</Divider>
     </div>
   );
 }

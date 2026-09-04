@@ -75,8 +75,18 @@ export function EmptyStatePreview({ density }: PreviewOptionProps) {
   );
 }
 
-export function DividerPreview({ label }: PreviewOptionProps) {
-  return label === 'section' ? <Divider label="섹션 구분" /> : <Divider />;
+export function DividerPreview({ orientation, plain }: PreviewOptionProps) {
+  if (orientation === 'vertical') {
+    return (
+      <div className="flex h-20 w-full items-stretch gap-4 text-sm">
+        <div className="flex flex-1 items-center justify-end">첫 영역</div>
+        <Divider orientation="vertical" />
+        <div className="flex flex-1 items-center">다음 영역</div>
+      </div>
+    );
+  }
+
+  return <Divider plain={isEnabled(plain)}>섹션 구분</Divider>;
 }
 
 export function ProgressPreview({ shape, size, status }: PreviewOptionProps) {

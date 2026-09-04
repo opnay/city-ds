@@ -43,6 +43,7 @@ describe('component document catalog', () => {
       expect.arrayContaining(['checkbox', 'checkbox-group']),
     );
     expect(filterComponentDocs('구분선').map((entry) => entry.slug)).toContain('divider');
+    expect(filterComponentDocs('세로').map((entry) => entry.slug)).toContain('divider');
     expect(filterComponentDocs('', 'Overlays')).toHaveLength(5);
     expect(filterComponentDocs('존재하지 않는 검색어')).toEqual([]);
   });

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Alert } from '@opnay/city-ds-react/alert';
+import { Avatar } from '@opnay/city-ds-react/avatar';
 import { Breadcrumbs } from '@opnay/city-ds-react/breadcrumbs';
 import { Button } from '@opnay/city-ds-react/button';
 import { Divider } from '@opnay/city-ds-react/divider';
@@ -17,6 +18,8 @@ import { isControlled, isEnabled, toControlSize, type PreviewOptionProps } from 
 
 const ALERT_TONES = ['neutral', 'info', 'success', 'warning', 'destructive'] as const;
 const TOOLBAR_APPEARANCES = ['plain', 'band', 'outline'] as const;
+const AVATAR_IMAGE =
+  'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2080%2080%22%3E%3Crect%20width%3D%2280%22%20height%3D%2280%22%20fill%3D%22%23181818%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2230%22%20r%3D%2213%22%20fill%3D%22%23f7f7f7%22%2F%3E%3Cpath%20d%3D%22M20%2064c4-14%2036-14%2040%200%22%20fill%3D%22%23f7f7f7%22%2F%3E%3C%2Fsvg%3E';
 
 function isOneOf<Value extends string>(
   value: boolean | string | undefined,
@@ -72,6 +75,21 @@ export function EmptyStatePreview({ density }: PreviewOptionProps) {
         <Button>레코드 추가</Button>
       </EmptyState.Actions>
     </EmptyState.Root>
+  );
+}
+
+export function AvatarPreview({ content, shape, size }: PreviewOptionProps) {
+  const avatarContent = isOneOf(content, ['image', 'fallback'] as const, 'image');
+  const avatarShape = isOneOf(shape, ['circle', 'square'] as const, 'circle');
+
+  return (
+    <Avatar.Root shape={avatarShape} size={isOneOf(size, ['sm', 'md', 'lg'] as const, 'md')}>
+      {avatarContent === 'image' ? (
+        <Avatar.Image alt="김인섭의 프로필 사진" src={AVATAR_IMAGE} />
+      ) : (
+        <Avatar.Fallback>IS</Avatar.Fallback>
+      )}
+    </Avatar.Root>
   );
 }
 

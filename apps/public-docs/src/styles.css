@@ -1691,6 +1691,12 @@
     height: 5rem;
   }
 
+  .city-docs-avatar-row {
+    display: flex;
+    align-items: center;
+    gap: var(--city-space-3);
+  }
+
   .city-docs-example-stack,
   .city-docs-example-matrix {
     display: grid;

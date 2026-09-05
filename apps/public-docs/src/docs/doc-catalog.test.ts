@@ -14,21 +14,23 @@ import {
 const NON_COMPONENT_EXPORTS = new Set(['.', './package.json', './styles.css', './theme.css']);
 
 describe('component document catalog', () => {
-  it('matches all 40 public component subpaths exactly', () => {
+  it('matches public component subpaths exactly', () => {
     const exportedSlugs = Object.keys(reactPackage.exports)
       .filter((path) => !NON_COMPONENT_EXPORTS.has(path))
       .map((path) => path.slice(2))
       .sort();
     const documentedSlugs = COMPONENT_DOCS.map((entry) => entry.slug).sort();
 
-    expect(COMPONENT_DOCS).toHaveLength(40);
+    expect(COMPONENT_DOCS).toHaveLength(exportedSlugs.length);
     expect(documentedSlugs).toEqual(exportedSlugs);
   });
 
   it('keeps slug, import path and title unique and related slugs valid', () => {
-    expect(new Set(COMPONENT_DOCS.map((entry) => entry.slug)).size).toBe(40);
-    expect(new Set(COMPONENT_DOCS.map((entry) => entry.importPath)).size).toBe(40);
-    expect(new Set(COMPONENT_DOCS.map((entry) => entry.title)).size).toBe(40);
+    expect(new Set(COMPONENT_DOCS.map((entry) => entry.slug)).size).toBe(COMPONENT_DOCS.length);
+    expect(new Set(COMPONENT_DOCS.map((entry) => entry.importPath)).size).toBe(
+      COMPONENT_DOCS.length,
+    );
+    expect(new Set(COMPONENT_DOCS.map((entry) => entry.title)).size).toBe(COMPONENT_DOCS.length);
 
     for (const entry of COMPONENT_DOCS) {
       expect(entry.importPath).toBe(`@opnay/city-ds-react/${entry.slug}`);
@@ -72,8 +74,8 @@ describe('document page search', () => {
     );
 
     expect(STATIC_DOCS).toHaveLength(7);
-    expect(paths).toHaveLength(47);
-    expect(new Set(paths).size).toBe(47);
+    expect(paths).toHaveLength(STATIC_DOCS.length + COMPONENT_DOCS.length);
+    expect(new Set(paths).size).toBe(STATIC_DOCS.length + COMPONENT_DOCS.length);
   });
 
   it('searches page titles, descriptions, paths, categories and keywords', () => {

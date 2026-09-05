@@ -183,6 +183,21 @@
     transform: translate(-50%, -50%);
     width: var(--city-hit-target-min);
   }
+
+  [data-city-slider-control] {
+    min-height: var(--city-hit-target-min);
+    min-width: var(--city-hit-target-min);
+  }
+
+  [data-city-slider-thumb]::after {
+    content: '';
+    height: var(--city-hit-target-min);
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--city-hit-target-min);
+  }
 }
 
 @keyframes city-skeleton-shimmer {

@@ -54,6 +54,7 @@ const CONFIGURABLE_COMPONENTS = new Set([
   'segmented-control',
   'select',
   'skeleton',
+  'slider',
   'switch',
   'table',
   'tabs',

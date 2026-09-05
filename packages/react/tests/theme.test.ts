@@ -249,10 +249,16 @@ describe('theme contract', () => {
     );
   });
 
-  it('expands icon-only button hit areas without changing visual control sizes', () => {
+  it('expands icon-only button and slider hit areas without changing visual control sizes', () => {
     expect(themeCss).toContain('--city-hit-target-min: 2.75rem;');
     expect(stylesCss).toMatch(
       /@media \(pointer: coarse\) \{[\s\S]*?\.city-button\[data-city-icon-only]::after \{[\s\S]*?height: var\(--city-hit-target-min\);[\s\S]*?width: var\(--city-hit-target-min\);[\s\S]*?\n {2}}\n}/,
+    );
+    expect(stylesCss).toMatch(
+      /@media \(pointer: coarse\) \{[\s\S]*?\[data-city-slider-control\] \{[\s\S]*?min-height: var\(--city-hit-target-min\);[\s\S]*?min-width: var\(--city-hit-target-min\);/,
+    );
+    expect(stylesCss).toMatch(
+      /@media \(pointer: coarse\) \{[\s\S]*?\[data-city-slider-thumb\]::after \{[\s\S]*?height: var\(--city-hit-target-min\);[\s\S]*?width: var\(--city-hit-target-min\);/,
     );
   });
 

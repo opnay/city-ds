@@ -1692,6 +1692,14 @@
   }
 
   .city-docs-example-stack,
+  .city-docs-slider-horizontal {
+    width: min(100%, 28rem);
+  }
+
+  .city-docs-slider-vertical {
+    height: 10rem;
+  }
+
   .city-docs-example-matrix {
     display: grid;
     gap: var(--city-space-4);

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { ComponentPageData, DocModule } from './types';
+import { COMPONENT_DOCS } from './doc-catalog';
 
 const pageDataModules = import.meta.glob<{ pageData: ComponentPageData }>(
   './components/*/page-data.tsx',
@@ -44,11 +45,16 @@ function cartesianCombinations(
 
 describe('component document content', () => {
   it('provides page data and lazy MDX for every public component', () => {
-    expect(Object.keys(pageDataModules)).toHaveLength(40);
-    expect(Object.keys(documentModules)).toHaveLength(40);
-    expect(Object.keys(pageDataModules).map(slugFromPath).sort()).toEqual(
-      Object.keys(documentModules).map(slugFromPath).sort(),
-    );
+    const pageDataSlugs = Object.keys(pageDataModules).map(slugFromPath).sort();
+    const documentSlugs = Object.keys(documentModules).map(slugFromPath).sort();
+    const documentedSlugs = COMPONENT_DOCS.map((entry) => entry.slug).sort();
+
+    expect(pageDataSlugs).toHaveLength(COMPONENT_DOCS.length);
+    expect(documentSlugs).toHaveLength(COMPONENT_DOCS.length);
+    expect(new Set(pageDataSlugs).size).toBe(COMPONENT_DOCS.length);
+    expect(new Set(documentSlugs).size).toBe(COMPONENT_DOCS.length);
+    expect(pageDataSlugs).toEqual(documentSlugs);
+    expect(pageDataSlugs).toEqual(documentedSlugs);
   });
 
   it.each(Object.entries(pageDataModules))(
@@ -112,7 +118,7 @@ describe('component document content', () => {
   it('lazy-loads every MDX document module', async () => {
     const modules = await Promise.all(Object.values(documentModules).map((load) => load()));
 
-    expect(modules).toHaveLength(40);
+    expect(modules).toHaveLength(COMPONENT_DOCS.length);
     expect(modules.every((module) => typeof module.default === 'function')).toBe(true);
   });
 

@@ -16,6 +16,7 @@ import { RadioGroup } from '@opnay/city-ds-react/radio-group';
 import { SearchInput } from '@opnay/city-ds-react/search-input';
 import { SegmentedControl } from '@opnay/city-ds-react/segmented-control';
 import { Select } from '@opnay/city-ds-react/select';
+import { Slider } from '@opnay/city-ds-react/slider';
 import { Switch } from '@opnay/city-ds-react/switch';
 import { ToggleGroup } from '@opnay/city-ds-react/toggle-group';
 
@@ -452,6 +453,72 @@ export function SegmentedControlPreview({ disabled, mode, size }: PreviewOptionP
         지도
       </SegmentedControl.Item>
     </SegmentedControl>
+  );
+}
+
+export function SliderPreview({ disabled, mode, orientation, range, size }: PreviewOptionProps) {
+  const [singleValue, setSingleValue] = useState(40);
+  const [rangeValue, setRangeValue] = useState<readonly number[]>([25, 75]);
+  const controlled = isControlled(mode);
+  const isRange = range === 'range';
+  const isVertical = orientation === 'vertical';
+  const commonProps = {
+    'aria-label': '작업 우선순위',
+    disabled: isEnabled(disabled),
+    orientation: isVertical ? ('vertical' as const) : ('horizontal' as const),
+    size: toControlSize(size),
+    step: 5,
+  };
+  const wrapperClassName = isVertical ? 'city-docs-slider-vertical' : 'city-docs-slider-horizontal';
+
+  if (isRange) {
+    const valueProps = controlled
+      ? { onValueChange: setRangeValue, value: rangeValue }
+      : { defaultValue: [25, 75] };
+
+    return (
+      <div className={wrapperClassName}>
+        <Slider.Root
+          key={`${mode}-range-${orientation}`}
+          minStepsBetweenValues={1}
+          {...commonProps}
+          {...valueProps}
+        >
+          <Slider.Control>
+            <Slider.Track>
+              <Slider.Indicator />
+            </Slider.Track>
+            <Slider.Thumb
+              getAriaLabel={(index) => (index === 0 ? '최소 우선순위' : '최대 우선순위')}
+              index={0}
+            />
+            <Slider.Thumb
+              getAriaLabel={(index) => (index === 0 ? '최소 우선순위' : '최대 우선순위')}
+              index={1}
+            />
+          </Slider.Control>
+          <Slider.Value />
+        </Slider.Root>
+      </div>
+    );
+  }
+
+  const valueProps = controlled
+    ? { onValueChange: setSingleValue, value: singleValue }
+    : { defaultValue: 40 };
+
+  return (
+    <div className={wrapperClassName}>
+      <Slider.Root key={`${mode}-single-${orientation}`} {...commonProps} {...valueProps}>
+        <Slider.Control>
+          <Slider.Track>
+            <Slider.Indicator />
+          </Slider.Track>
+          <Slider.Thumb aria-label="우선순위" />
+        </Slider.Control>
+        <Slider.Value />
+      </Slider.Root>
+    </div>
   );
 }
 

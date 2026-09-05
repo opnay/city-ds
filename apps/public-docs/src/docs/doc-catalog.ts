@@ -337,6 +337,18 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Forms',
+    description: '단일 값 또는 두 값의 연속 범위를 키보드·포인터로 조절합니다.',
+    importPath: '@opnay/city-ds-react/slider',
+    keywords: ['슬라이더', '범위', '연속 값', '키보드', 'slider'],
+    load: () => import('./components/slider/index.mdx'),
+    related: ['number-input', 'field'],
+    selectionGuidance:
+      '정확한 수치 입력이나 단위가 중요하면 NumberInput을 사용하십시오. 이산적인 소수 선택지에는 RadioGroup이나 Select가 더 적합합니다.',
+    slug: 'slider',
+    title: 'Slider',
+  },
+  {
+    category: 'Forms',
     description: '저장 없이 즉시 적용되는 이진 설정을 켜고 끕니다.',
     importPath: '@opnay/city-ds-react/switch',
     keywords: ['스위치', '설정', '켜기', '끄기'],

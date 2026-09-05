@@ -44,7 +44,7 @@ function StatusSelect({
       <Select.Portal>
         <Select.Positioner>
           <Select.Popup>
-            <Select.List>
+            <Select.List aria-label="Status">
               <Select.Item value="backlog">
                 <Select.ItemIndicator />
                 <Select.ItemText>Backlog</Select.ItemText>
@@ -78,6 +78,7 @@ export const Default: Story = {
       await expect(trigger).toHaveAttribute('aria-expanded', 'true');
       await expect(icon).toHaveAttribute('data-popup-open');
     });
+    await expect(within(document.body).getByRole('listbox', { name: 'Status' })).toBeVisible();
     await userEvent.click(await within(document.body).findByRole('option', { name: 'Done' }));
 
     await expect(trigger).toHaveTextContent('Done');
@@ -125,7 +126,7 @@ export const Grouped: Story = {
       <Select.Portal>
         <Select.Positioner>
           <Select.Popup>
-            <Select.List>
+            <Select.List aria-label="Deployment region">
               <Select.Group>
                 <Select.GroupLabel>Asia Pacific</Select.GroupLabel>
                 <Select.Item value="seoul">

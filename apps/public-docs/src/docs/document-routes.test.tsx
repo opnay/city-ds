@@ -58,6 +58,7 @@ const CONFIGURABLE_COMPONENTS = new Set([
   'select',
   'scroll-area',
   'skeleton',
+  'slider',
   'switch',
   'table',
   'tabs',

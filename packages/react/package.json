@@ -138,6 +138,10 @@
       "types": "./dist/components/skeleton/index.d.ts",
       "import": "./dist/components/skeleton/index.js"
     },
+    "./slider": {
+      "types": "./dist/components/slider/index.d.ts",
+      "import": "./dist/components/slider/index.js"
+    },
     "./select": {
       "types": "./dist/components/select/index.d.ts",
       "import": "./dist/components/select/index.js"

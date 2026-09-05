@@ -17,8 +17,11 @@ type SearchInputState = {
   loading: boolean;
 };
 
+type SearchInputRootState = Record<never, never>;
+
 type SearchInputContextValue = {
   disabled: boolean;
+  inputRef: React.RefObject<HTMLElement | null>;
   invalid: boolean;
   loading: boolean;
   setValue: (value: string) => void;
@@ -39,20 +42,20 @@ function useSearchInputContext(component: string) {
 }
 
 export interface SearchInputRootProps extends Omit<
-  React.ComponentPropsWithoutRef<'form'>,
-  'onSubmit'
+  useRender.ComponentProps<'div', SearchInputRootState>,
+  'className'
 > {
+  className?: string;
   defaultValue?: string;
   disabled?: boolean;
   invalid?: boolean;
   loading?: boolean;
-  onSubmit?: (value: string, event?: React.FormEvent<HTMLFormElement>) => void;
   onValueChange?: (value: string) => void;
   size?: ControlSize;
   value?: string;
 }
 
-export const SearchInputRoot = React.forwardRef<HTMLFormElement, SearchInputRootProps>(
+export const SearchInputRoot = React.forwardRef<HTMLDivElement, SearchInputRootProps>(
   function SearchInputRoot(
     {
       children,
@@ -61,8 +64,8 @@ export const SearchInputRoot = React.forwardRef<HTMLFormElement, SearchInputRoot
       disabled = false,
       invalid = false,
       loading = false,
-      onSubmit,
       onValueChange,
+      render,
       size = 'md',
       value: valueProp,
       ...props
@@ -71,6 +74,7 @@ export const SearchInputRoot = React.forwardRef<HTMLFormElement, SearchInputRoot
   ) {
     const isControlled = valueProp !== undefined;
     const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValue);
+    const inputRef = React.useRef<HTMLElement | null>(null);
     const value = isControlled ? valueProp : uncontrolledValue;
     const setValue = React.useCallback(
       (nextValue: string) => {
@@ -83,23 +87,25 @@ export const SearchInputRoot = React.forwardRef<HTMLFormElement, SearchInputRoot
     );
 
     const context = React.useMemo<SearchInputContextValue>(
-      () => ({ disabled, invalid, loading, setValue, size, value }),
+      () => ({ disabled, inputRef, invalid, loading, setValue, size, value }),
       [disabled, invalid, loading, setValue, size, value],
     );
 
+    const state: SearchInputRootState = {};
+
     return (
       <SearchInputContext.Provider value={context}>
-        <form
-          {...props}
-          ref={ref}
-          className={cn('grid gap-1.5', className)}
-          onSubmit={(event) => {
-            event.preventDefault();
-            onSubmit?.(value, event);
-          }}
-        >
-          {children}
-        </form>
+        {useRender({
+          defaultTagName: 'div',
+          ref,
+          render,
+          state,
+          props: {
+            ...props,
+            children,
+            className: cn('grid gap-1.5', className),
+          },
+        })}
       </SearchInputContext.Provider>
     );
   },
@@ -141,14 +147,37 @@ export interface SearchInputInputProps extends Omit<
   size?: ControlSize;
 }
 
+type SearchInputInputRefCallback = (node: HTMLElement | null) => void | (() => void);
+
 export const SearchInputInput = React.forwardRef<HTMLElement, SearchInputInputProps>(
   function SearchInputInput({ className, onKeyDown, onValueChange, size, ...props }, forwardedRef) {
     const context = useSearchInputContext('SearchInput.Input');
+    const setRefs = React.useCallback(
+      (node: HTMLElement | null) => {
+        context.inputRef.current = node;
+
+        if (typeof forwardedRef === 'function') {
+          const cleanup = (forwardedRef as SearchInputInputRefCallback)(node);
+
+          if (typeof cleanup === 'function') {
+            return () => {
+              if (context.inputRef.current === node) {
+                context.inputRef.current = null;
+              }
+              cleanup();
+            };
+          }
+        } else if (forwardedRef) {
+          forwardedRef.current = node;
+        }
+      },
+      [context.inputRef, forwardedRef],
+    );
 
     return (
       <Input
         {...props}
-        ref={forwardedRef}
+        ref={setRefs}
         aria-invalid={context.invalid || props['aria-invalid'] || undefined}
         className={(state) =>
           cn(
@@ -208,15 +237,13 @@ export const SearchInputClear = React.forwardRef<HTMLElement, SearchInputClearPr
     const context = useSearchInputContext('SearchInput.Clear');
     const isEmpty = context.value.length === 0;
     const resolvedSize = size ?? context.size;
-
-    if (hideWhenEmpty && isEmpty) {
-      return null;
-    }
+    const hidden = hideWhenEmpty && isEmpty;
 
     return (
       <Button
         {...props}
         ref={ref}
+        aria-hidden={hidden ? true : props['aria-hidden']}
         aria-label={
           props['aria-label'] ?? (typeof children === 'string' ? children : 'Clear search')
         }
@@ -224,18 +251,20 @@ export const SearchInputClear = React.forwardRef<HTMLElement, SearchInputClearPr
           cn(
             'text-city-muted-foreground hover:text-city-foreground rounded-city-xs shrink-0',
             children == null && auxiliaryButtonSizeClasses[resolvedSize],
+            hidden && 'invisible',
             resolveClassName(className, state),
           )
         }
         disabled={context.disabled || props.disabled || isEmpty}
         onClick={(event) => {
-          context.setValue('');
-          event.currentTarget.form
-            ?.querySelector<HTMLInputElement>('input[type="search"]')
-            ?.focus();
           onClick?.(event);
+          if (event.defaultPrevented) return;
+
+          context.setValue('');
+          context.inputRef.current?.focus();
         }}
         size={resolvedSize}
+        tabIndex={hidden ? -1 : props.tabIndex}
         type="button"
         variant="ghost"
       >

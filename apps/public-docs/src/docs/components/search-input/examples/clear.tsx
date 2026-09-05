@@ -4,7 +4,7 @@ export default function SearchInputClearExample() {
   return (
     <div className="city-docs-example-stack">
       <div className="city-docs-example-variant">
-        <span className="city-docs-example-label">빈 검색어에서 숨김</span>
+        <span className="city-docs-example-label">빈 검색어에서 숨김·공간 유지</span>
         <SearchInput.Root>
           <SearchInput.Group>
             <SearchInput.Input aria-label="문서 검색" placeholder="기본 동작" />

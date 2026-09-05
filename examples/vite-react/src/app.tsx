@@ -288,27 +288,31 @@ function OperationsPage() {
             >
               <Field.Root className="city-ops-search-input">
                 <Field.Label className="city-sr-only">작업 검색</Field.Label>
-                <SearchInput.Root
-                  onSubmit={(value) => {
-                    setQuery(value);
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    setQuery(queryDraft);
                     setPage(1);
                   }}
-                  onValueChange={(value) => {
-                    setQueryDraft(value);
-                    if (value.length === 0) {
-                      setQuery('');
-                      setPage(1);
-                    }
-                  }}
-                  size="sm"
-                  value={queryDraft}
                 >
-                  <SearchInput.Group>
-                    <SearchInput.Input placeholder="작업 번호, 위치, 제목 검색" />
-                    <SearchInput.Clear aria-label="검색어 지우기" />
-                    <SearchInput.Submit aria-label="작업 검색 실행" />
-                  </SearchInput.Group>
-                </SearchInput.Root>
+                  <SearchInput.Root
+                    onValueChange={(value) => {
+                      setQueryDraft(value);
+                      if (value.length === 0) {
+                        setQuery('');
+                        setPage(1);
+                      }
+                    }}
+                    size="sm"
+                    value={queryDraft}
+                  >
+                    <SearchInput.Group>
+                      <SearchInput.Input name="query" placeholder="작업 번호, 위치, 제목 검색" />
+                      <SearchInput.Clear aria-label="검색어 지우기" />
+                      <SearchInput.Submit aria-label="작업 검색 실행" />
+                    </SearchInput.Group>
+                  </SearchInput.Root>
+                </form>
               </Field.Root>
 
               <Select.Root

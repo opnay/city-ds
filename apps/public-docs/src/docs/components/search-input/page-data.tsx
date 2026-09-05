@@ -14,11 +14,20 @@ export const pageData = {
   featuredExampleId: 'search-input-playground',
   api: [
     {
-      name: 'value / onValueChange',
+      name: 'SearchInput.Root value / onValueChange',
       type: 'string / callback',
       description: '검색어를 제어합니다.',
     },
-    { name: 'onSubmit', type: '(value) => void', description: '폼 제출을 처리합니다.' },
+    {
+      name: 'SearchInput.Root render',
+      type: 'React element / render function',
+      description: '기본 div 컨테이너를 소비자 요소로 교체합니다.',
+    },
+    {
+      name: 'SearchInput.Submit',
+      type: 'native submit button',
+      description: '외부 form의 제출을 실행합니다.',
+    },
     { name: 'loading', type: 'boolean', description: '로컬 검색 처리 중 상태입니다.' },
     { name: 'invalid / disabled', type: 'boolean', description: '오류와 비활성 상태입니다.' },
     {
@@ -31,7 +40,7 @@ export const pageData = {
       name: 'SearchInput.Clear hideWhenEmpty',
       type: 'boolean',
       defaultValue: 'true',
-      description: '빈 검색어에서도 지우기 버튼을 유지할지 정합니다.',
+      description: '빈 검색어에서 지우기 버튼을 보일지 정합니다. 숨겨도 버튼 공간은 유지합니다.',
     },
   ],
   examples: [
@@ -48,7 +57,7 @@ export const pageData = {
     {
       Component: SearchInputUsageExample,
       coverage: [{ axis: 'interaction', values: ['controlled', 'submit'] }],
-      description: '검색어와 제출 결과를 소비자 상태에서 제어합니다.',
+      description: '검색어를 제어하고 외부 form의 FormData에서 제출 결과를 읽습니다.',
       id: 'search-input-usage',
       filename: 'usage.tsx',
       source: usageSource,

@@ -205,6 +205,8 @@ CTA는 결과를 예측할 수 있게 쓰십시오. `확인`, `예`보다 `변�
 
 `Input`, `NumberInput`, `SearchInput`과 `DatePicker`는 입력·선택 제어만 소유합니다. 레이블, 설명, 오류가 필요한 경우 외부 `Field.Root` 안에서 `Field.Label`, 제어, `Field.Description`, `Field.Error`를 조합하십시오. 합성 입력의 `disabled`와 `invalid` 상태는 `Field.Root`와 입력 Root에 동일하게 전달하십시오.
 
+`SearchInput.Root`는 기본적으로 `div`를 렌더합니다. 검색 제출이 필요하면 소비처의 `<form onSubmit={...}>` 안에 배치하고, 값은 `onValueChange` 또는 이름을 지정한 입력의 `FormData`로 읽으십시오. `SearchInput.Submit`은 해당 소비처 form을 제출합니다. Form과 서버 오류 처리 정책은 소비처가 소유합니다.
+
 필수 여부, 형식, 단위, 제한은 입력 전에 알 수 있게 하십시오. 제출 후 오류만 보여주지 말고 가능하면 잘못된 필드 가까이에 원인과 수정 방법을 표시하십시오. 비활성 상태로 이유를 숨기기보다 필요한 조건을 설명하십시오.
 
 ### 탐색과 공개

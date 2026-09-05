@@ -9,6 +9,7 @@ import {
   type MeterRootProps,
   type MeterTrackProps,
   type MeterValueProps,
+  type MeterRange,
 } from '../../src/components/meter';
 
 function assertMeterPropsContract() {
@@ -42,6 +43,115 @@ function assertMeterPropsContract() {
 void assertMeterPropsContract;
 
 describe('Meter', () => {
+  const ranges = [
+    { from: 0, to: 20, label: '부족', color: 'var(--city-color-destructive)' },
+    { from: 20, to: 50, label: '보통', color: 'var(--city-color-warning)' },
+    { from: 50, to: 80, label: '충분', color: 'var(--city-color-info)' },
+    { from: 80, to: 100, label: '여유', color: 'var(--city-color-success)' },
+  ] as const satisfies readonly MeterRange[];
+
+  it('supports arbitrary stages and chooses the higher interval at a shared boundary', () => {
+    const view = (value: number) => (
+      <Meter.Root value={value} ranges={ranges} aria-label="배정 가능량">
+        <Meter.RangeLabel />
+        <Meter.Track>
+          <Meter.Indicator />
+        </Meter.Track>
+      </Meter.Root>
+    );
+    const { rerender } = render(view(19));
+    const meter = screen.getByRole('meter');
+    expect(screen.getByText('부족')).toBeVisible();
+    expect(meter).toHaveStyle('--city-meter-color: var(--city-color-destructive)');
+    rerender(view(20));
+    expect(screen.getByText('보통')).toBeVisible();
+    expect(meter).toHaveAttribute('aria-valuetext', '20%, 보통');
+    rerender(view(100));
+    expect(screen.getByText('여유')).toBeVisible();
+    expect(meter).toHaveStyle('--city-meter-color: var(--city-color-success)');
+    rerender(view(150));
+    expect(meter).toHaveAttribute('aria-valuenow', '100');
+    expect(screen.getByText('여유')).toBeVisible();
+  });
+
+  it('supports reversed colors, removed stages, gaps, and removing all ranges', () => {
+    const view = (value: number, configured: readonly MeterRange[]) => (
+      <Meter.Root value={value} ranges={configured} aria-label="사용량">
+        <Meter.RangeLabel />
+      </Meter.Root>
+    );
+    const reversed = ranges.map((range, index) => ({
+      ...range,
+      color: ranges[ranges.length - index - 1]?.color ?? range.color,
+    }));
+    const { rerender } = render(view(10, reversed));
+    const meter = screen.getByRole('meter');
+    expect(meter).toHaveStyle('--city-meter-color: var(--city-color-success)');
+    rerender(view(60, [ranges[0], ranges[3]]));
+    expect(meter).toHaveStyle('--city-meter-color: var(--city-color-primary)');
+    expect(meter.querySelector('[data-city-meter-range-label]')).toBeNull();
+    expect(meter).toHaveAttribute('aria-valuetext', '60%');
+    rerender(view(10, []));
+    expect(meter).toHaveStyle('--city-meter-color: var(--city-color-primary)');
+    expect(meter.querySelector('[data-city-meter-range-label]')).toBeNull();
+  });
+
+  it('uses actual min/max units, skips invalid intervals, and resolves overlaps by declaration order', () => {
+    render(
+      <Meter.Root
+        min={100}
+        max={300}
+        value={200}
+        aria-label="용량"
+        ranges={[
+          { from: NaN, to: 300, label: 'invalid', color: 'red' },
+          { from: 210, to: 100, label: 'backward', color: 'red' },
+          { from: 200, to: 200, label: 'empty', color: 'red' },
+          { from: 150, to: 250, label: '맞춤 구간', color: 'rebeccapurple' },
+          { from: 100, to: 300, label: '전체', color: 'blue' },
+        ]}
+      >
+        <Meter.RangeLabel />
+      </Meter.Root>,
+    );
+    const meter = screen.getByRole('meter');
+    expect(meter).toHaveAttribute('aria-valuetext', '50%, 맞춤 구간');
+    expect(meter).toHaveStyle('--city-meter-color: rebeccapurple');
+  });
+
+  it('preserves explicit value text, user styles, and RangeLabel render/ref composition', () => {
+    const ref = React.createRef<HTMLSpanElement>();
+    render(
+      <Meter.Root
+        value={30}
+        ranges={ranges}
+        aria-label="Custom"
+        getAriaValueText={() => '서른 개'}
+        style={() => ({ '--city-meter-color': 'orange' }) as React.CSSProperties}
+      >
+        <Meter.RangeLabel ref={ref} render={<strong data-testid="range-label" />} />
+      </Meter.Root>,
+    );
+    expect(screen.getByRole('meter')).toHaveAttribute('aria-valuetext', '서른 개');
+    expect(screen.getByRole('meter')).toHaveStyle('--city-meter-color: orange');
+    expect(screen.getByTestId('range-label').tagName).toBe('STRONG');
+    expect(ref.current).toBe(screen.getByTestId('range-label'));
+  });
+
+  it('does not leak a parent range color or label into an unconfigured nested meter', () => {
+    render(
+      <Meter.Root value={10} ranges={ranges} aria-label="Outer">
+        <Meter.Root value={50} aria-label="Inner">
+          <Meter.RangeLabel />
+        </Meter.Root>
+      </Meter.Root>,
+    );
+    const inner = screen.getByRole('meter', { name: 'Inner' });
+    expect(inner).toHaveStyle('--city-meter-color: var(--city-color-primary)');
+    expect(inner.querySelector('[data-city-meter-range-label]')).toBeNull();
+    expect(inner).toHaveAttribute('aria-valuetext', '50%');
+  });
+
   it('connects Label with the native meter role and exposes its selected range', () => {
     render(
       <Meter.Root max={256} min={64} size="lg" value={160}>

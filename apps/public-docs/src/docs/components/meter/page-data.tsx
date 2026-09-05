@@ -1,5 +1,7 @@
 import playgroundSource from './examples/playground.tsx?raw';
 import MeterPlayground from './examples/playground';
+import rangesSource from './examples/ranges.tsx?raw';
+import MeterRangesExample from './examples/ranges';
 import sizesSource from './examples/sizes.tsx?raw';
 import MeterSizesExample from './examples/sizes';
 import usageSource from './examples/usage.tsx?raw';
@@ -24,6 +26,18 @@ export const pageData = {
       type: 'number',
       defaultValue: '0 / 100',
       description: '측정 범위의 최솟값과 최댓값입니다.',
+    },
+    {
+      name: 'ranges',
+      type: 'readonly MeterRange[]',
+      description:
+        'from, to, label, color로 표시 구간을 정의합니다. 순서대로 처음 일치한 구간을 사용합니다.',
+    },
+    {
+      name: 'Meter.RangeLabel',
+      type: 'compound part',
+      description:
+        '현재 값이 구간에 속하면 label을 표시하고, 범위 밖이나 공백에서는 렌더링하지 않습니다.',
     },
     {
       name: 'format / locale',
@@ -51,12 +65,28 @@ export const pageData = {
     {
       Component: MeterPlayground,
       configurable: true,
-      coverage: [{ axis: 'preview', values: ['configurable'] }],
-      description: '사이드바에서 트랙 크기를 조절합니다.',
+      coverage: [
+        { axis: 'preview', values: ['configurable'] },
+        { axis: 'ranges', values: ['none', 'custom', 'reversed', 'gaps'] },
+        { axis: 'value', values: ['12', '38', '50', '62', '88'] },
+      ],
+      description: '사이드바에서 크기, 범위 순서와 현재 값을 바꾸어 색상과 레이블을 확인합니다.',
       id: 'meter-playground',
       filename: 'playground.tsx',
       source: playgroundSource,
       title: 'Preview',
+    },
+    {
+      Component: MeterRangesExample,
+      coverage: [
+        { axis: 'ranges', values: ['none', 'custom', 'reversed', 'gaps'] },
+        { axis: 'value', values: ['50', '62', '88'] },
+      ],
+      description: '네 단계, 높을수록 양호한 순서, 범위 없음과 구간 사이 공백을 비교합니다.',
+      id: 'meter-ranges',
+      filename: 'ranges.tsx',
+      source: rangesSource,
+      title: '범위와 색상',
     },
     {
       Component: MeterUsageExample,
@@ -64,6 +94,7 @@ export const pageData = {
         { axis: 'format', values: ['unit'] },
         { axis: 'locale', values: ['en-US'] },
         { axis: 'label', values: ['visible'] },
+        { axis: 'ranges', values: ['custom'] },
       ],
       description: '현재 저장 용량을 단위 형식으로 표시하고 Label로 이름을 연결합니다.',
       id: 'meter-usage',
@@ -87,6 +118,18 @@ export const pageData = {
       name: 'size',
       defaultValue: 'md',
       values: ['xsm', 'sm', 'md', 'lg', 'xlg'],
+    },
+    {
+      control: 'segmented',
+      name: 'ranges',
+      defaultValue: 'custom',
+      values: ['none', 'custom', 'reversed', 'gaps'],
+    },
+    {
+      control: 'select',
+      name: 'value',
+      defaultValue: '62',
+      values: ['12', '38', '50', '62', '88'],
     },
   ],
 } satisfies ComponentPageData;

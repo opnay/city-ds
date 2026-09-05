@@ -23,6 +23,7 @@ export * from './components/filter-bar';
 export * from './components/input';
 export * from './components/kbd';
 export * from './components/menu';
+export * from './components/meter';
 export * from './components/number-input';
 export * from './components/panel';
 export * from './components/pagination';

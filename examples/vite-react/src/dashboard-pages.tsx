@@ -26,6 +26,7 @@ import {
   Badge,
   DataTableRegion,
   EmptyState,
+  Meter,
   Progress,
   Table,
   type FeedbackTone,
@@ -649,15 +650,15 @@ function CrewsPage() {
                 </div>
                 <StatusBadge tone={crew.tone}>{crew.status}</StatusBadge>
               </div>
-              <Progress.Root aria-label={`${crew.name} 배정률`} size="sm" value={crew.capacity}>
+              <Meter.Root aria-label={`${crew.name} 배정률`} size="sm" value={crew.capacity}>
                 <div className="city-progress-heading">
-                  <Progress.Label>배정률</Progress.Label>
-                  <Progress.Value>{(_formattedValue, value) => `${value ?? 0}%`}</Progress.Value>
+                  <Meter.Label>배정률</Meter.Label>
+                  <Meter.Value />
                 </div>
-                <Progress.Track>
-                  <Progress.Indicator />
-                </Progress.Track>
-              </Progress.Root>
+                <Meter.Track>
+                  <Meter.Indicator />
+                </Meter.Track>
+              </Meter.Root>
               <dl className="city-inline-definition">
                 <div>
                   <dt>진행 작업</dt>

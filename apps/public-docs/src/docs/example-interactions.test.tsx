@@ -112,6 +112,36 @@ describe('documented component interactions', () => {
     );
   });
 
+  it('switches the ScrollArea preview between vertical and two-axis overflow', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/scroll-area']);
+
+    const example = screen.getByRole('region', { name: 'ScrollArea' });
+    const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
+    const vertical = within(sidebar).getByRole('radio', { name: 'vertical' });
+    const both = within(sidebar).getByRole('radio', { name: 'both' });
+
+    expect(vertical).toBeChecked();
+    expect(within(example).getByLabelText('배포 이벤트')).toHaveAttribute(
+      'data-city-scroll-area-viewport',
+      '',
+    );
+    expect(
+      Array.from(example.querySelectorAll('[data-city-scroll-area-scrollbar]'), (scrollbar) =>
+        scrollbar.getAttribute('data-orientation'),
+      ),
+    ).toEqual(['vertical']);
+
+    await user.click(both);
+
+    expect(both).toBeChecked();
+    expect(
+      Array.from(example.querySelectorAll('[data-city-scroll-area-scrollbar]'), (scrollbar) =>
+        scrollbar.getAttribute('data-orientation'),
+      ),
+    ).toEqual(['vertical', 'horizontal']);
+  });
+
   it('opens and closes an overlay example', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/dialog']);

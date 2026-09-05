@@ -537,6 +537,18 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Layout',
+    description: '넘치는 콘텐츠를 키보드 접근 가능한 세로·가로 스크롤 영역으로 구성합니다.',
+    importPath: '@opnay/city-ds-react/scroll-area',
+    keywords: ['스크롤', '스크롤바', '세로', '가로', 'overflow', 'scroll area', 'thumb'],
+    load: () => import('./components/scroll-area/index.mdx'),
+    related: ['table', 'data-table-region'],
+    selectionGuidance:
+      '단순한 페이지 전체 스크롤에는 사용하지 마십시오. 한정된 영역 안에서 긴 목록이나 넓은 콘텐츠를 탐색할 때 사용하십시오.',
+    slug: 'scroll-area',
+    title: 'ScrollArea',
+  },
+  {
+    category: 'Layout',
     description: '문맥·액션 Header와 임의의 Body 콘텐츠를 하나의 구조로 연결합니다.',
     importPath: '@opnay/city-ds-react/panel',
     keywords: ['패널', '헤더', '본문', '액션', '레이아웃'],

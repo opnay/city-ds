@@ -1,0 +1,12 @@
+import { pageData } from './page-data';
+
+<ComponentReference data={pageData} />
+
+## 접근성
+
+`Viewport`는 실제 스크롤 영역입니다. 주변 문맥만으로 목적을 알 수 없으면 `aria-label` 또는
+`aria-labelledby`로 이름을 제공하십시오. Base UI는 실제 넘침이 생긴 Viewport만 탭 순서에 넣으므로
+키보드로 초점을 이동한 뒤 기본 브라우저 스크롤 키를 사용할 수 있습니다.
+
+세로·가로 축마다 `Scrollbar`와 그 안의 `Thumb`를 함께 구성하십시오. 두 축이 모두 넘치면
+`Corner`를 추가합니다. 스크롤바는 hover와 스크롤·thumb drag 상태를 data attribute로 노출합니다.

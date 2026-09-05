@@ -177,6 +177,10 @@
       "types": "./dist/components/segmented-control/index.d.ts",
       "import": "./dist/components/segmented-control/index.js"
     },
+    "./scroll-area": {
+      "types": "./dist/components/scroll-area/index.d.ts",
+      "import": "./dist/components/scroll-area/index.js"
+    },
     "./toolbar": {
       "types": "./dist/components/toolbar/index.d.ts",
       "import": "./dist/components/toolbar/index.js"

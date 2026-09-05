@@ -43,6 +43,7 @@ const CONFIGURABLE_COMPONENTS = new Set([
   'file-upload',
   'filter-bar',
   'input',
+  'kbd',
   'number-input',
   'menu',
   'pagination',

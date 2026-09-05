@@ -116,6 +116,18 @@ export const COMPONENT_DOCS = [
     title: 'DensityProvider',
   },
   {
+    category: 'Foundations',
+    description: '키와 단축키를 native kbd 요소로 짧고 일관되게 표기합니다.',
+    importPath: '@opnay/city-ds-react/kbd',
+    keywords: ['키보드', '단축키', '키', 'kbd', 'shortcut'],
+    load: () => import('./components/kbd/index.mdx'),
+    related: ['button', 'tooltip'],
+    selectionGuidance:
+      'Kbd는 단축키 표기에만 사용하십시오. 실행 동작, 키 이벤트 처리, 운영체제별 자동 표기는 소비자 코드에서 결정하십시오.',
+    slug: 'kbd',
+    title: 'Kbd',
+  },
+  {
     category: 'Actions',
     description: '명령을 실행하거나 링크로 이동하는 주요 액션을 표현합니다.',
     importPath: '@opnay/city-ds-react/button',

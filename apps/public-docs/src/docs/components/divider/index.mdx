@@ -4,5 +4,9 @@ import { pageData } from './page-data';
 
 ## 접근성
 
-Divider는 항상 가로 `separator`로 노출됩니다. `label`은 가운데 보이는 텍스트를 표시하고 같은 값으로 접근 가능한 이름을 제공합니다.
+Divider는 기본 가로 `separator`이며 `orientation="vertical"`로 세로 구분선을 만듭니다.
+세로형은 부모 영역의 높이를 따르므로 높이가 정해진 레이아웃 안에 사용하십시오.
+
+`plain`을 켜면 가로 방향으로 고정되고 `children`을 가운데 라벨로 받습니다.
+라벨은 접근 가능한 이름으로도 사용합니다. 일반 구분선에는 children을 전달하지 마십시오.
 외부 제목으로 구분선을 설명하면 `aria-labelledby`로 연결하십시오.

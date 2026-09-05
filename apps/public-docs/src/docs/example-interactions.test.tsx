@@ -64,29 +64,51 @@ describe('documented component interactions', () => {
     expect(within(settings).queryByRole('menuitemcheckbox', { name: '옵션 패널' })).toBeNull();
   });
 
-  it('adds and removes the Divider label from the preview options', async () => {
+  it('uses plain to enable horizontal labels regardless of the selected normal orientation', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/divider']);
 
     const example = screen.getByRole('region', { name: 'Divider' });
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
-    expect(within(sidebar).getByRole('radio', { name: 'section' })).toBeChecked();
+    const horizontal = within(sidebar).getByRole('radio', { name: 'horizontal' });
+    const vertical = within(sidebar).getByRole('radio', { name: 'vertical' });
+
+    expect(horizontal).toBeChecked();
+    expect(within(example).queryByText('섹션 구분')).toBeNull();
+    expect(within(example).getByRole('separator')).toHaveAttribute(
+      'aria-orientation',
+      'horizontal',
+    );
+
+    await user.click(vertical);
+
+    expect(within(example).queryByText('섹션 구분')).toBeNull();
+    expect(within(example).getByRole('separator')).toHaveAttribute('aria-orientation', 'vertical');
+
+    const plain = within(sidebar).getByRole('switch', { name: 'plain' });
+    await user.click(plain);
+
+    expect(plain).toBeChecked();
+    expect(vertical).toBeChecked();
+    expect(within(example).getByText('섹션 구분')).toBeVisible();
     expect(within(example).getByRole('separator', { name: '섹션 구분' })).toHaveAttribute(
-      'data-city-divider-labeled',
+      'aria-orientation',
+      'horizontal',
+    );
+
+    expect(within(example).getByRole('separator', { name: '섹션 구분' })).toHaveAttribute(
+      'data-city-divider-plain',
       '',
     );
 
-    await user.click(within(sidebar).getByRole('radio', { name: 'none' }));
-
+    await user.click(plain);
     expect(within(example).queryByText('섹션 구분')).toBeNull();
-    expect(within(example).getByRole('separator')).not.toHaveAttribute('data-city-divider-labeled');
+    expect(within(example).getByRole('separator')).toHaveAttribute('aria-orientation', 'vertical');
 
-    await user.click(within(sidebar).getByRole('radio', { name: 'section' }));
-
-    expect(within(example).getByText('섹션 구분')).toBeVisible();
-    expect(within(example).getByRole('separator', { name: '섹션 구분' })).toHaveAttribute(
-      'data-city-divider-labeled',
-      '',
+    await user.click(horizontal);
+    expect(within(example).getByRole('separator')).toHaveAttribute(
+      'aria-orientation',
+      'horizontal',
     );
   });
 

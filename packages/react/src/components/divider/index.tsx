@@ -10,45 +10,64 @@ import {
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 
-export interface DividerProps extends Omit<
+interface DividerBaseProps extends Omit<
   BaseSeparatorProps,
   'aria-orientation' | 'children' | 'className' | 'orientation' | 'role'
 > {
   className?: StateClassName<BaseSeparatorState>;
-  label?: string;
 }
+
+export type DividerProps =
+  | (DividerBaseProps & {
+      children?: never;
+      orientation?: BaseSeparatorState['orientation'];
+      plain?: false;
+    })
+  | (DividerBaseProps & {
+      children?: React.ReactNode;
+      orientation?: 'horizontal';
+      plain: true;
+    });
 
 export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(function Divider(
   {
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     className,
-    label,
+    children,
+    orientation,
+    plain = false,
     render,
     ...props
   },
   ref,
 ) {
-  const labeled = label !== undefined;
-  const resolvedAriaLabel = ariaLabel ?? (ariaLabelledBy === undefined ? label : undefined);
+  const labeled = plain && React.Children.count(children) > 0;
+  const resolvedOrientation = plain ? 'horizontal' : (orientation ?? 'horizontal');
+  const labelId = React.useId();
+  const resolvedAriaLabelledBy =
+    ariaLabelledBy ?? (ariaLabel === undefined && labeled ? labelId : undefined);
 
   return (
     <BaseSeparator
       {...props}
       ref={ref}
       render={render}
-      aria-label={resolvedAriaLabel}
-      aria-labelledby={ariaLabelledBy}
-      aria-orientation="horizontal"
+      aria-label={ariaLabel}
+      aria-labelledby={resolvedAriaLabelledBy}
+      aria-orientation={resolvedOrientation}
       data-city-divider=""
       data-city-divider-labeled={labeled ? '' : undefined}
-      orientation="horizontal"
+      data-city-divider-plain={plain ? '' : undefined}
+      orientation={resolvedOrientation}
       role="separator"
       className={(state) =>
         cn(
           labeled
             ? 'flex w-full min-w-0 items-center gap-3'
-            : 'bg-city-border h-px w-full min-w-0 shrink-0',
+            : resolvedOrientation === 'vertical'
+              ? 'bg-city-border h-full min-h-0 w-px shrink-0 self-stretch'
+              : 'bg-city-border h-px w-full min-w-0 shrink-0',
           resolveClassName(className, state),
         )
       }
@@ -61,11 +80,11 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(function D
             data-city-divider-line=""
           />
           <span
-            aria-hidden="true"
+            id={resolvedAriaLabelledBy === labelId ? labelId : undefined}
             className="min-w-0 truncate text-xs leading-none font-medium text-city-muted-foreground"
             data-city-divider-label=""
           >
-            {label}
+            {children}
           </span>
           <span
             aria-hidden="true"

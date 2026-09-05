@@ -24,6 +24,7 @@ const CONFIGURABLE_COMPONENTS = new Set([
   'accordion',
   'alert',
   'alert-dialog',
+  'avatar',
   'badge',
   'button',
   'breadcrumbs',

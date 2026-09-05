@@ -288,14 +288,14 @@ export function AppShell({ children, navigate, onThemeChange, pathname, theme }:
                       <X aria-hidden="true" size={17} strokeWidth={1.8} />
                     </Drawer.Close>
                   </Drawer.Header>
-                  <Drawer.Body className="city-shell-mobile-nav-body">
+                  <Drawer.Content className="city-shell-mobile-nav-body">
                     <Navigation
                       label="모바일 주요 메뉴"
                       navigate={navigate}
                       onNavigate={() => setMobileNavigationOpen(false)}
                       pathname={pathname}
                     />
-                  </Drawer.Body>
+                  </Drawer.Content>
                 </Drawer.Popup>
               </Drawer.Viewport>
             </Drawer.Portal>

@@ -469,16 +469,23 @@ describe('form and display controls', () => {
     const onSubmit = vi.fn();
 
     render(
-      <Field.Root>
-        <Field.Label>Search projects</Field.Label>
-        <SearchInput.Root onSubmit={onSubmit}>
-          <SearchInput.Group data-testid="search-group">
-            <SearchInput.Input />
-            <SearchInput.Clear />
-            <SearchInput.Submit />
-          </SearchInput.Group>
-        </SearchInput.Root>
-      </Field.Root>,
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSubmit(new FormData(event.currentTarget).get('query'), event);
+        }}
+      >
+        <Field.Root>
+          <Field.Label>Search projects</Field.Label>
+          <SearchInput.Root>
+            <SearchInput.Group data-testid="search-group">
+              <SearchInput.Input name="query" />
+              <SearchInput.Clear />
+              <SearchInput.Submit />
+            </SearchInput.Group>
+          </SearchInput.Root>
+        </Field.Root>
+      </form>,
     );
 
     const input = screen.getByRole('searchbox', { name: 'Search projects' });

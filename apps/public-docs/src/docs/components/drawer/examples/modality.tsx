@@ -10,7 +10,7 @@ function DrawerContents() {
           <Drawer.Description>모달 동작을 문맥에 맞게 선택합니다.</Drawer.Description>
         </div>
       </Drawer.Header>
-      <Drawer.Body>작업 내용을 배치합니다.</Drawer.Body>
+      <Drawer.Content>작업 내용을 배치합니다.</Drawer.Content>
       <Drawer.Footer>
         <Drawer.Close render={<Button variant="secondary" />}>닫기</Drawer.Close>
       </Drawer.Footer>

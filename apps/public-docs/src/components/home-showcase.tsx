@@ -1,3 +1,4 @@
+import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { useMemo, useState } from 'react';
 import {
   Bell,
@@ -236,7 +237,7 @@ function OrdersCard() {
         </Select.Root>
         <span aria-live="polite">{selected.length} selected</span>
       </div>
-      <Table.ScrollArea aria-label="Scrollable orders" appearance="plain">
+      <DataTableRegion label="Scrollable orders" appearance="plain">
         <Table.Root aria-label="Orders" className="city-showcase-orders-table" size="sm">
           <Table.Header>
             <Table.Row>
@@ -301,7 +302,7 @@ function OrdersCard() {
             ))}
           </Table.Body>
         </Table.Root>
-      </Table.ScrollArea>
+      </DataTableRegion>
     </ShowcaseCard>
   );
 }

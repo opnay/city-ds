@@ -5,44 +5,11 @@ import { useRender } from '@base-ui/react/use-render';
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
 import { Checkbox } from '../checkbox';
 import { cn } from '../../lib/cn';
-import type { ControlSize, SurfaceAppearance } from '../../types';
+import type { ControlSize } from '../../types';
 
 export const TABLE_VARIANTS = ['line', 'surface'] as const;
 
 export type TableSortDirection = 'asc' | 'desc';
-
-export interface TableScrollAreaProps extends Omit<
-  React.ComponentPropsWithoutRef<'div'>,
-  'className'
-> {
-  appearance?: SurfaceAppearance;
-  className?: string;
-}
-
-const scrollAreaAppearanceClasses: Record<SurfaceAppearance, string> = {
-  plain: '',
-  band: 'border-city-border border-y',
-  outline: 'rounded-city-md border-city-border border',
-};
-
-export const TableScrollArea = React.forwardRef<HTMLDivElement, TableScrollAreaProps>(
-  ({ appearance = 'outline', className, tabIndex = 0, ...props }, ref) => (
-    <div
-      {...props}
-      ref={ref}
-      className={cn(
-        'focus-visible:ring-city-ring focus-visible:ring-offset-city-background w-full overflow-x-auto outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-        scrollAreaAppearanceClasses[appearance],
-        className,
-      )}
-      data-appearance={appearance}
-      data-city-table-scroll-area=""
-      tabIndex={tabIndex}
-    />
-  ),
-);
-
-TableScrollArea.displayName = 'Table.ScrollArea';
 
 export interface TableSortButtonProps extends Omit<
   React.ComponentPropsWithoutRef<'button'>,
@@ -451,7 +418,6 @@ export const Table = {
   Head: TableHead,
   Cell: TableCell,
   Caption: TableCaption,
-  ScrollArea: TableScrollArea,
   SortButton: TableSortButton,
   SelectionHead: TableSelectionHead,
   SelectionCell: TableSelectionCell,

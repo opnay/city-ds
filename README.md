@@ -75,6 +75,18 @@ ln -s node_modules/@opnay/city-ds-react/DESIGN.md ./DESIGN.md
 
 city-ds를 사용하는 프로젝트는 반복되는 업무 흐름에 맞는 프로젝트 패턴을 별도로 구축하십시오. `사용자 목표 > 프로젝트 패턴 선택·정의 > 컴포넌트 구성 > 레이아웃 구성 > 페이지 구현` 순서로 작업하고, 컴포넌트와 토큰만 나열한 화면을 프로젝트 패턴으로 취급하지 마십시오. 패턴의 사용자 목표, 적용 조건, 상태, spacing·density·반응형 계약은 프로젝트의 `DESIGN.md` 또는 패턴 문서가 소유합니다.
 
+## 컴포넌트 마이그레이션
+
+다음 공개 API 변경은 소비 코드 수정이 필요합니다.
+
+| 이전                                             | 변경 후                                                                                                                   |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `Drawer.Body` / `DrawerBody` / `DrawerBodyProps` | `Drawer.Content` / `DrawerContent` / `DrawerContentProps`                                                                 |
+| `Table.ScrollArea` / `TableScrollArea`           | `DataTableRegion`으로 표를 감싸고 `label` 지정. 기존 기본 테두리는 `appearance="outline"`로 유지                          |
+| `SearchInput.Root onSubmit={(value) => ...}`     | 외부 `<form onSubmit={...}>`이 제출을 소유. Root는 기본 `div`이며 입력의 `name`과 FormData 또는 제어 상태로 검색어를 읽음 |
+
+`SearchInput.Root`의 ref도 form 대신 기본 div를 가리킵니다. `DataTableRegion.className`은 바깥 컨테이너, `scrollAreaClassName`은 실제 스크롤 요소에 적용됩니다.
+
 ## 테마
 
 기본 상태에서는 운영체제 색상 설정을 따릅니다. 명시적인 테마가 필요하면 문서 루트의

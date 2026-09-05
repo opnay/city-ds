@@ -53,7 +53,7 @@ function DrawerExample({ side = 'right', modal = true }: { side?: DrawerSide; mo
                 </Drawer.Close>
               )}
             </Drawer.Header>
-            <Drawer.Body>
+            <Drawer.Content>
               <nav aria-label="Workspace" className="mt-5 grid gap-2 text-sm">
                 {['Overview', 'Projects', 'Deployments', 'Settings'].map((item) => (
                   <a key={item} className="rounded-city-sm px-3 py-2 hover:bg-city-accent" href="#">
@@ -61,7 +61,7 @@ function DrawerExample({ side = 'right', modal = true }: { side?: DrawerSide; mo
                   </a>
                 ))}
               </nav>
-            </Drawer.Body>
+            </Drawer.Content>
             {side === 'bottom' ? (
               <Drawer.Footer>
                 <Drawer.Close render={<Button variant="secondary" />}>Close</Drawer.Close>
@@ -158,7 +158,7 @@ export const LongBottomContent: Story = {
         <Drawer.Backdrop />
         <Drawer.Viewport side="bottom">
           <Drawer.Popup side="bottom">
-            <Drawer.Body>
+            <Drawer.Content>
               <Drawer.Title>Release checklist</Drawer.Title>
               <Drawer.Description>
                 Review every item before publishing the mobile build.
@@ -170,7 +170,7 @@ export const LongBottomContent: Story = {
                   </li>
                 ))}
               </ol>
-            </Drawer.Body>
+            </Drawer.Content>
             <Drawer.Footer>
               <Drawer.Close render={<Button variant="secondary" />}>Dismiss</Drawer.Close>
               <Drawer.Close render={<Button />}>Publish</Drawer.Close>

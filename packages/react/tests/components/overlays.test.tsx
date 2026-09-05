@@ -176,7 +176,7 @@ describe('overlay and selection controls', () => {
               <Drawer.Header>
                 <Drawer.Title>Asset details</Drawer.Title>
               </Drawer.Header>
-              <Drawer.Body>Asset health</Drawer.Body>
+              <Drawer.Content>Asset health</Drawer.Content>
               <Drawer.Footer>
                 <Drawer.Close>Close asset details</Drawer.Close>
               </Drawer.Footer>

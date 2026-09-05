@@ -7,6 +7,13 @@ import { pageData } from './page-data';
 SearchInput은 검색 입력과 관련 액션을 묶는 제어입니다. 레이블, 설명, 오류가 필요하면 외부
 `Field.Root`로 감싸고 `Field.Label`, `Field.Description`, `Field.Error`를 함께 배치하십시오.
 
+제출은 소비자가 소유한 네이티브 `<form>`에서 처리합니다. `SearchInput.Root`는 기본적으로
+`<div>`를 렌더링하며 검색어 상태만 관리합니다. `SearchInput.Input`에 `name`을 지정하고 외부
+폼의 `onSubmit`에서 `FormData`를 읽으십시오.
+
+`SearchInput.Root`의 기존 `onSubmit(value, event)`와 form 속성은 지원하지 않습니다. 기존
+제출 로직은 외부 `<form onSubmit>`으로 옮기고, `action`과 `method`도 해당 form에 지정하십시오.
+
 ## 접근성
 
-제출 버튼과 검색 입력에 명확한 이름을 제공하고 오류를 `Field.Error`로 연결하십시오.
+검색 입력과 제출 버튼에 명확한 이름을 제공하고 오류를 `Field.Error`로 연결하십시오.

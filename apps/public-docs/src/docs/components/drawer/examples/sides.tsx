@@ -23,7 +23,7 @@ export default function DrawerSidesExample() {
                       <Drawer.Description>{size} 크기의 보조 표면입니다.</Drawer.Description>
                     </div>
                   </Drawer.Header>
-                  <Drawer.Body>작업 내용을 배치합니다.</Drawer.Body>
+                  <Drawer.Content>작업 내용을 배치합니다.</Drawer.Content>
                   <Drawer.Footer>
                     <Drawer.Close render={<Button variant="secondary" />}>닫기</Drawer.Close>
                   </Drawer.Footer>

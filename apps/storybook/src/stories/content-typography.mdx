@@ -1,3 +1,4 @@
+import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Table } from '@opnay/city-ds-react';
 import { ComponentSpecimen } from '../docs/component-specimen';
@@ -27,9 +28,9 @@ Content Text는 페이지 제목, 섹션 제목, 문장과 문단처럼 컴포�
 </ComponentSpecimen>
 
 <ComponentSpecimen>
-  <Table.ScrollArea
+  <DataTableRegion
     appearance="outline"
-    aria-label="콘텐츠 텍스트 역할 계약 가로 스크롤 영역"
+    label="콘텐츠 텍스트 역할 계약 가로 스크롤 영역"
     className="my-6 max-w-3xl"
   >
     <Table.Root aria-label="콘텐츠 텍스트 역할 계약" size="sm">
@@ -108,7 +109,7 @@ Content Text는 페이지 제목, 섹션 제목, 문장과 문단처럼 컴포�
         </Table.Row>
       </Table.Body>
     </Table.Root>
-  </Table.ScrollArea>
+  </DataTableRegion>
 </ComponentSpecimen>
 
 `city-text-body`의 1.75rem 행간은 한글과 영문에 동일하게 적용합니다. 언어별 행간 분기는 만들지

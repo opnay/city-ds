@@ -7,13 +7,21 @@ export default function SearchInputUsageExample() {
 
   return (
     <div className="city-docs-example-stack">
-      <SearchInput.Root onSubmit={setSubmitted} onValueChange={setValue} value={value}>
-        <SearchInput.Group>
-          <SearchInput.Input aria-label="문서 검색" placeholder="컴포넌트 검색" />
-          <SearchInput.Clear />
-          <SearchInput.Submit aria-label="검색" />
-        </SearchInput.Group>
-      </SearchInput.Root>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          const query = new FormData(event.currentTarget).get('query');
+          setSubmitted(typeof query === 'string' ? query : '');
+        }}
+      >
+        <SearchInput.Root onValueChange={setValue} value={value}>
+          <SearchInput.Group>
+            <SearchInput.Input aria-label="문서 검색" name="query" placeholder="컴포넌트 검색" />
+            <SearchInput.Clear />
+            <SearchInput.Submit aria-label="검색" />
+          </SearchInput.Group>
+        </SearchInput.Root>
+      </form>
       <output className="city-text-caption">
         {value || '빈 검색어'}
         {submitted ? ` · 제출됨: ${submitted}` : ''}

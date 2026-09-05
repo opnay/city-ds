@@ -1,3 +1,4 @@
+import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Table } from '@opnay/city-ds-react/table';
 
 const appearances = ['plain', 'band', 'outline'] as const;
@@ -53,13 +54,13 @@ export default function TableOverflowExample() {
   return (
     <div className="city-docs-example-stack">
       {appearances.map((appearance) => (
-        <Table.ScrollArea
+        <DataTableRegion
           appearance={appearance}
-          aria-label={`${appearance} 표 스크롤 영역`}
+          label={`${appearance} 표 스크롤 영역`}
           key={appearance}
         >
           <WideTable />
-        </Table.ScrollArea>
+        </DataTableRegion>
       ))}
     </div>
   );

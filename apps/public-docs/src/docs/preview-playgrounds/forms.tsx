@@ -416,21 +416,23 @@ export function SearchInputPreview({
   const [value, setValue] = useState('city');
 
   return (
-    <SearchInput.Root
-      disabled={isEnabled(disabled)}
-      invalid={isEnabled(invalid)}
-      loading={isEnabled(loading)}
-      onValueChange={setValue}
-      size={toControlSize(size)}
-      value={value}
-    >
-      <SearchInput.Group>
-        <SearchInput.Input aria-label="문서 검색" placeholder="컴포넌트 검색" />
-        <SearchInput.Clear hideWhenEmpty={hideWhenEmpty !== false && hideWhenEmpty !== 'false'} />
-        <SearchInput.Loading>검색 중</SearchInput.Loading>
-        <SearchInput.Submit aria-label="검색" />
-      </SearchInput.Group>
-    </SearchInput.Root>
+    <form onSubmit={(event) => event.preventDefault()}>
+      <SearchInput.Root
+        disabled={isEnabled(disabled)}
+        invalid={isEnabled(invalid)}
+        loading={isEnabled(loading)}
+        onValueChange={setValue}
+        size={toControlSize(size)}
+        value={value}
+      >
+        <SearchInput.Group>
+          <SearchInput.Input aria-label="문서 검색" placeholder="컴포넌트 검색" />
+          <SearchInput.Clear hideWhenEmpty={hideWhenEmpty !== false && hideWhenEmpty !== 'false'} />
+          <SearchInput.Loading>검색 중</SearchInput.Loading>
+          <SearchInput.Submit aria-label="검색" />
+        </SearchInput.Group>
+      </SearchInput.Root>
+    </form>
   );
 }
 

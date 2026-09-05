@@ -48,6 +48,7 @@ const CONFIGURABLE_COMPONENTS = new Set([
   'kbd',
   'number-input',
   'menu',
+  'meter',
   'pagination',
   'panel',
   'popover',
@@ -232,7 +233,7 @@ describe('all component document routes', () => {
     expect(container.querySelector('.city-docs-example-narrow')).toBeNull();
     expect(overflowTables).toHaveLength(tableCount);
     for (const table of overflowTables) {
-      expect(table.closest('[data-city-table-scroll-area]')).not.toBeNull();
+      expect(table.closest('[data-city-data-table-scroll]')).not.toBeNull();
       expect(table.closest("[data-city-docs-layout='wide']")).not.toBeNull();
     }
   });

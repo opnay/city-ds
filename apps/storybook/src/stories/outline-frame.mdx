@@ -51,13 +51,15 @@ Outline Frame은 atom·molecule의 Surface 축에서 폼 사용자가 **값을
 
 <div className="grid min-w-0 gap-2">
   <span className="text-city-muted-foreground text-xs font-medium">SearchInput</span>
-  <SearchInput.Root defaultValue="city">
-    <SearchInput.Group>
-      <SearchInput.Input aria-label="프로젝트 검색" />
-      <SearchInput.Clear />
-      <SearchInput.Submit aria-label="검색" />
-    </SearchInput.Group>
-  </SearchInput.Root>
+  <form onSubmit={(event) => event.preventDefault()}>
+    <SearchInput.Root defaultValue="city">
+      <SearchInput.Group>
+        <SearchInput.Input aria-label="프로젝트 검색" />
+        <SearchInput.Clear />
+        <SearchInput.Submit aria-label="검색" />
+      </SearchInput.Group>
+    </SearchInput.Root>
+  </form>
 </div>
 
 <div className="grid min-w-0 gap-2">

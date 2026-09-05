@@ -90,8 +90,9 @@ export const pageData = {
       defaultValue: 'uncontrolled',
       values: ['controlled', 'uncontrolled'],
     },
-    { name: 'range', defaultValue: 'single', values: ['single', 'range'] },
+    { control: 'segmented', name: 'range', defaultValue: 'single', values: ['single', 'range'] },
     {
+      control: 'segmented',
       name: 'orientation',
       defaultValue: 'horizontal',
       values: ['horizontal', 'vertical'],

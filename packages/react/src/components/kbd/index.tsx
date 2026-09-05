@@ -44,7 +44,7 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(function Kbd(
       'data-city-size': size,
       className: cn(
         atomicRectShapeClasses.compact,
-        'inline-flex shrink-0 items-center justify-center border border-city-border bg-city-muted font-mono font-medium leading-none whitespace-nowrap text-city-foreground',
+        'inline-flex shrink-0 items-center justify-center border border-city-border bg-city-muted pt-px font-mono font-medium leading-none whitespace-nowrap text-city-foreground',
         kbdSizeClasses[size],
         compactStatusTextClasses[size],
         resolveClassName(className, state),

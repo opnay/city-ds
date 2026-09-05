@@ -40,11 +40,5 @@ export const Sizes: Story = {
 };
 
 export const Shortcut: Story = {
-  render: () => (
-    <div aria-label="명령 팔레트 단축키" className="flex items-center gap-1" role="group">
-      <Kbd>⌘</Kbd>
-      <span aria-hidden="true">+</span>
-      <Kbd>K</Kbd>
-    </div>
-  ),
+  render: () => <Kbd>⌘ K</Kbd>,
 };

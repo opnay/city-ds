@@ -5,17 +5,11 @@ export default function KbdShortcutsExample() {
     <div className="city-docs-kbd-shortcuts">
       <div className="city-docs-kbd-shortcut">
         <span>명령 팔레트</span>
-        <span aria-label="명령 팔레트 단축키" className="city-docs-kbd-keys" role="group">
-          <Kbd>⌘</Kbd>
-          <span aria-hidden="true">+</span>
-          <Kbd>K</Kbd>
-        </span>
+        <Kbd>⌘ K</Kbd>
       </div>
       <div className="city-docs-kbd-shortcut">
         <span>빠른 검색</span>
-        <span aria-label="빠른 검색 단축키" className="city-docs-kbd-keys" role="group">
-          <Kbd>/</Kbd>
-        </span>
+        <Kbd>/</Kbd>
       </div>
     </div>
   );

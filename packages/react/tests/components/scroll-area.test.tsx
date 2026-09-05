@@ -161,7 +161,7 @@ describe('ScrollArea', () => {
     expect(verticalThumb).toHaveAttribute('data-orientation', 'vertical');
     expect(horizontalThumb).toHaveAttribute('data-orientation', 'horizontal');
     await waitFor(() =>
-      expect(root.querySelector('[data-city-scroll-area-corner]')).toHaveClass('bg-city-accent'),
+      expect(root.querySelector('[data-city-scroll-area-corner]')).toHaveClass('bg-transparent'),
     );
 
     viewport.focus();

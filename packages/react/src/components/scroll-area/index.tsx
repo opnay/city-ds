@@ -128,7 +128,7 @@ export const ScrollAreaCorner = React.forwardRef<HTMLDivElement, ScrollAreaCorne
       {...props}
       ref={ref}
       data-city-scroll-area-corner=""
-      className={classes(className, 'bg-city-accent')}
+      className={classes(className, 'bg-transparent')}
     />
   ),
 );

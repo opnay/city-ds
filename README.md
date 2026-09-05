@@ -63,6 +63,10 @@ export function SaveButton() {
 스타일입니다. 애플리케이션 루트에서 한 번만 가져오십시오. 전역 리셋이나 컴포넌트 스타일
 없이 CSS 변수만 필요한 경우에는 `@opnay/city-ds-react/theme.css`를 가져올 수 있습니다.
 
+### SearchInput 제출 마이그레이션
+
+`SearchInput.Root`는 기본 `div`이며 form을 만들지 않습니다. 기존 `onSubmit(value, event)`와 form 전용 props는 소비처의 `<form onSubmit={...}>`으로 옮기십시오. 입력의 `name`과 `FormData` 또는 제어 상태로 검색어를 읽습니다. Root ref도 기본 div를 가리킵니다.
+
 ## 디자인 가이드
 
 설치된 패키지의 디자인 가이드를 프로젝트 루트에 심볼릭 링크로 연결하십시오.

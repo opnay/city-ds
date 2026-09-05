@@ -64,6 +64,31 @@ describe('documented component interactions', () => {
     expect(within(settings).queryByRole('menuitemcheckbox', { name: '옵션 패널' })).toBeNull();
   });
 
+  it('switches Avatar shape and content from the preview sidebar', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/avatar']);
+
+    const example = screen.getByRole('region', { name: 'Avatar' });
+    const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
+    const avatar = example.querySelector('[data-city-avatar]');
+
+    expect(avatar).toHaveAttribute('data-city-shape', 'circle');
+    expect(within(sidebar).getByRole('radiogroup', { name: 'shape' })).toBeVisible();
+    expect(within(sidebar).getByRole('radiogroup', { name: 'content' })).toBeVisible();
+
+    await user.click(within(sidebar).getByRole('radio', { name: 'square' }));
+    expect(avatar).toHaveAttribute('data-city-shape', 'square');
+    expect(avatar).toHaveClass('rounded-city-sm');
+
+    await user.click(within(sidebar).getByRole('radio', { name: 'fallback' }));
+    expect(within(sidebar).getByRole('radio', { name: 'fallback' })).toBeChecked();
+    expect(within(example).getByText('IS')).toBeVisible();
+
+    await user.click(within(sidebar).getByRole('radio', { name: 'image' }));
+    expect(within(sidebar).getByRole('radio', { name: 'image' })).toBeChecked();
+    expect(within(example).queryByText('IS')).toBeNull();
+  });
+
   it('uses plain to enable horizontal labels regardless of the selected normal orientation', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/divider']);

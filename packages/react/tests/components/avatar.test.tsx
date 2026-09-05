@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { Avatar as RootAvatar } from '../../src';
 import {
   AVATAR_SIZES,
+  AVATAR_SHAPES,
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -15,17 +16,20 @@ import {
 } from '../../src/components/avatar';
 
 function assertAvatarPropsContract() {
-  const root: AvatarRootProps = { size: 'sm' };
+  const root: AvatarRootProps = { shape: 'square', size: 'sm' };
   const image: AvatarImageProps = { alt: '프로필 사진', src: 'data:image/svg+xml,%3Csvg%2F%3E' };
   const fallback: AvatarFallbackProps = { delay: 100 };
 
   // @ts-expect-error Avatar sizes are limited to sm, md, and lg.
   const invalidSize: AvatarRootProps = { size: 'xlg' };
+  // @ts-expect-error Avatar shapes are limited to circle and square.
+  const invalidShape: AvatarRootProps = { shape: 'rounded' };
 
   void root;
   void image;
   void fallback;
   void invalidSize;
+  void invalidShape;
 }
 
 void assertAvatarPropsContract;
@@ -65,6 +69,7 @@ describe('Avatar', () => {
     expect(Avatar.Image).toBe(AvatarImage);
     expect(Avatar.Fallback).toBe(AvatarFallback);
     expect(AVATAR_SIZES).toEqual(['sm', 'md', 'lg']);
+    expect(AVATAR_SHAPES).toEqual(['circle', 'square']);
   });
 
   it('uses the Root size and circular surface while preserving Base UI render composition', () => {
@@ -82,8 +87,23 @@ describe('Avatar', () => {
     expect(avatar).toHaveAttribute('data-composed', 'true');
     expect(avatar).toHaveAttribute('data-city-avatar', '');
     expect(avatar).toHaveAttribute('data-city-size', 'lg');
+    expect(avatar).toHaveAttribute('data-city-shape', 'circle');
     expect(avatar).toHaveClass('size-12', 'overflow-hidden', 'rounded-full');
     expect(screen.getByText('IS')).toHaveAttribute('data-city-avatar-fallback', '');
+  });
+
+  it('uses the rectangular control radius for square avatars', () => {
+    render(
+      <Avatar.Root shape="square">
+        <Avatar.Fallback>IS</Avatar.Fallback>
+      </Avatar.Root>,
+    );
+
+    const avatar = screen.getByText('IS').parentElement;
+
+    expect(avatar).toHaveAttribute('data-city-shape', 'square');
+    expect(avatar).toHaveClass('rounded-city-sm');
+    expect(avatar).not.toHaveClass('rounded-full');
   });
 
   it('shows the Image and propagates loaded state after Base UI loads the source', async () => {

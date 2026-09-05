@@ -78,11 +78,17 @@ export function EmptyStatePreview({ density }: PreviewOptionProps) {
   );
 }
 
-export function AvatarPreview({ size }: PreviewOptionProps) {
+export function AvatarPreview({ content, shape, size }: PreviewOptionProps) {
+  const avatarContent = isOneOf(content, ['image', 'fallback'] as const, 'image');
+  const avatarShape = isOneOf(shape, ['circle', 'square'] as const, 'circle');
+
   return (
-    <Avatar.Root size={isOneOf(size, ['sm', 'md', 'lg'] as const, 'md')}>
-      <Avatar.Image alt="김인섭의 프로필 사진" src={AVATAR_IMAGE} />
-      <Avatar.Fallback>IS</Avatar.Fallback>
+    <Avatar.Root shape={avatarShape} size={isOneOf(size, ['sm', 'md', 'lg'] as const, 'md')}>
+      {avatarContent === 'image' ? (
+        <Avatar.Image alt="김인섭의 프로필 사진" src={AVATAR_IMAGE} />
+      ) : (
+        <Avatar.Fallback>IS</Avatar.Fallback>
+      )}
     </Avatar.Root>
   );
 }

@@ -18,6 +18,12 @@ export const pageData = {
       description: 'Avatar.Root의 가로·세로 크기를 함께 정합니다.',
     },
     {
+      name: 'shape',
+      type: "'circle' | 'square'",
+      defaultValue: "'circle'",
+      description: '원형 또는 모서리가 작은 사각형으로 표시합니다.',
+    },
+    {
       name: 'Avatar.Image',
       type: 'src, alt, onLoadingStatusChange',
       description: '이미지와 대체 텍스트를 제공하며 Base UI의 로딩 상태를 알립니다.',
@@ -38,7 +44,7 @@ export const pageData = {
       Component: AvatarPreview,
       configurable: true,
       coverage: [{ axis: 'preview', values: ['configurable'] }],
-      description: '사이드바에서 Avatar.Root 크기를 조절합니다.',
+      description: '사이드바에서 크기, 형태, 표시할 콘텐츠를 조절합니다.',
       id: 'avatar-playground',
       filename: 'playground.tsx',
       source: createPlaygroundSource('@opnay/city-ds-react/avatar', 'Avatar'),
@@ -46,7 +52,11 @@ export const pageData = {
     },
     {
       Component: AvatarUsageExample,
-      coverage: [{ axis: 'image', values: ['loaded'] }],
+      coverage: [
+        { axis: 'content', values: ['image'] },
+        { axis: 'image', values: ['loaded'] },
+        { axis: 'shape', values: ['circle'] },
+      ],
       description: '로컬 data URI 이미지를 Avatar.Image에 전달하고 alt를 제공합니다.',
       id: 'avatar-usage',
       filename: 'usage.tsx',
@@ -55,8 +65,12 @@ export const pageData = {
     },
     {
       Component: AvatarFallbackExample,
-      coverage: [{ axis: 'fallback', values: ['error'] }],
-      description: '이미지를 불러오지 못하면 Avatar.Fallback이 이니셜을 표시합니다.',
+      coverage: [
+        { axis: 'content', values: ['fallback'] },
+        { axis: 'fallback', values: ['error'] },
+        { axis: 'shape', values: ['square'] },
+      ],
+      description: '이미지를 불러오지 못하면 사각형 Avatar.Fallback이 이니셜을 표시합니다.',
       id: 'avatar-fallback',
       filename: 'fallback.tsx',
       source: fallbackSource,
@@ -78,6 +92,18 @@ export const pageData = {
       name: 'size',
       defaultValue: 'md',
       values: ['sm', 'md', 'lg'],
+    },
+    {
+      control: 'segmented',
+      name: 'shape',
+      defaultValue: 'circle',
+      values: ['circle', 'square'],
+    },
+    {
+      control: 'segmented',
+      name: 'content',
+      defaultValue: 'image',
+      values: ['image', 'fallback'],
     },
   ],
 } satisfies ComponentPageData;

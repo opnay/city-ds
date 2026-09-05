@@ -106,9 +106,10 @@ export const STATIC_DOCS: readonly StaticDocEntry[] = [
 export const COMPONENT_DOCS = [
   {
     category: 'Data display',
-    description: '프로필 이미지와 로딩 실패 시 이니셜 등 대체 콘텐츠를 원형으로 표시합니다.',
+    description:
+      '프로필 이미지와 로딩 실패 시 이니셜 등 대체 콘텐츠를 원형 또는 사각형으로 표시합니다.',
     importPath: '@opnay/city-ds-react/avatar',
-    keywords: ['아바타', '프로필', '이미지', '이니셜', 'fallback'],
+    keywords: ['아바타', '프로필', '이미지', '이니셜', 'fallback', '원형', '사각형'],
     load: () => import('./components/avatar/index.mdx'),
     related: ['skeleton'],
     selectionGuidance:

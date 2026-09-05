@@ -3,16 +3,20 @@
 import * as React from 'react';
 import { Avatar as BaseAvatar } from '@base-ui/react/avatar';
 
+import { atomicRectShapeClasses } from '../../lib/atomic-shape';
 import { cn } from '../../lib/cn';
 import { resolveClassName, type StateClassName } from '../../lib/resolve-class-name';
 
 export const AVATAR_SIZES = ['sm', 'md', 'lg'] as const;
+export const AVATAR_SHAPES = ['circle', 'square'] as const;
 
 export type AvatarSize = (typeof AVATAR_SIZES)[number];
+export type AvatarShape = (typeof AVATAR_SHAPES)[number];
 
 export interface AvatarRootProps extends Omit<BaseAvatar.Root.Props, 'className'> {
   className?: StateClassName<BaseAvatar.Root.State>;
   size?: AvatarSize;
+  shape?: AvatarShape;
 }
 
 export interface AvatarImageProps extends Omit<BaseAvatar.Image.Props, 'className'> {
@@ -29,8 +33,13 @@ const avatarSizeClasses: Record<AvatarSize, string> = {
   lg: 'size-12',
 };
 
+const avatarShapeClasses: Record<AvatarShape, string> = {
+  circle: 'rounded-full',
+  square: atomicRectShapeClasses.control,
+};
+
 export const AvatarRoot = React.forwardRef<HTMLSpanElement, AvatarRootProps>(function AvatarRoot(
-  { className, size = 'md', ...props },
+  { className, shape = 'circle', size = 'md', ...props },
   ref,
 ) {
   return (
@@ -39,10 +48,12 @@ export const AvatarRoot = React.forwardRef<HTMLSpanElement, AvatarRootProps>(fun
       ref={ref}
       data-city-avatar=""
       data-city-size={size}
+      data-city-shape={shape}
       className={(state) =>
         cn(
-          'group inline-flex shrink-0 overflow-hidden rounded-full bg-city-muted text-city-muted-foreground',
+          'group inline-flex shrink-0 overflow-hidden bg-city-muted text-city-muted-foreground',
           avatarSizeClasses[size],
+          avatarShapeClasses[shape],
           resolveClassName(className, state),
         )
       }

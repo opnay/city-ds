@@ -30,6 +30,7 @@ export * from './components/popover';
 export * from './components/progress';
 export * from './components/radio-group';
 export * from './components/select';
+export * from './components/scroll-area';
 export * from './components/search-input';
 export * from './components/segmented-control';
 export * from './components/skeleton';

@@ -1728,6 +1728,39 @@
     color: var(--city-color-muted-foreground);
   }
 
+  .city-docs-scroll-area {
+    width: min(100%, 28rem);
+    height: 13rem;
+  }
+
+  .city-docs-scroll-area-content {
+    display: grid;
+    min-width: 100%;
+    min-height: 26rem;
+    gap: var(--city-space-2);
+    padding: var(--city-space-4);
+  }
+
+  .city-docs-scroll-area-wide-content {
+    min-width: 48rem;
+  }
+
+  .city-docs-scroll-area-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(10rem, 1fr));
+    gap: var(--city-space-2);
+  }
+
+  .city-docs-scroll-area-item {
+    padding: var(--city-space-2);
+    border: 1px solid var(--city-color-border);
+    border-radius: var(--city-radius-sm);
+    background: var(--city-color-surface);
+    color: var(--city-color-foreground);
+    font-size: var(--city-font-size-sm);
+    line-height: var(--city-line-height-sm);
+  }
+
   .city-docs-example-overflow-table {
     min-width: 64rem;
   }

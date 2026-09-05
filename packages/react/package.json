@@ -118,6 +118,10 @@
       "types": "./dist/components/menu/index.d.ts",
       "import": "./dist/components/menu/index.js"
     },
+    "./meter": {
+      "types": "./dist/components/meter/index.d.ts",
+      "import": "./dist/components/meter/index.js"
+    },
     "./pagination": {
       "types": "./dist/components/pagination/index.d.ts",
       "import": "./dist/components/pagination/index.js"

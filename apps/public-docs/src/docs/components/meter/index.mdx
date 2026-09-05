@@ -1,0 +1,14 @@
+import { pageData } from './page-data';
+
+<ComponentReference data={pageData} />
+
+## 사용 시점
+
+Meter는 저장 용량, 점수, 할당량처럼 정해진 범위 안의 현재 측정값을 표시합니다.
+작업의 진행 상태나 완료 예상 시간을 나타낼 때는 Progress를 사용하십시오.
+
+## 접근성
+
+의미 있는 Meter에는 `Meter.Label`을 두거나 `aria-label`을 제공하십시오.
+`format`, `locale`, `getAriaValueText`로 화면에 보이는 값과 스크린 리더의 설명을
+같은 측정 단위로 맞출 수 있습니다.

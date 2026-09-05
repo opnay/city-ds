@@ -1741,6 +1741,37 @@
     overflow-x: auto;
   }
 
+  .city-docs-kbd-shortcuts {
+    display: grid;
+    width: min(100%, 24rem);
+    gap: var(--city-space-2);
+  }
+
+  .city-docs-kbd-shortcut {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--city-space-3);
+    padding-block: var(--city-space-2);
+    border-bottom: 1px solid var(--city-color-border);
+  }
+
+  .city-docs-kbd-shortcut:last-child {
+    border-bottom: 0;
+  }
+
+  .city-docs-kbd-sizes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--city-space-1);
+  }
+
+  .city-docs-kbd-sizes {
+    gap: var(--city-space-2);
+  }
+
   .city-docs-example-code {
     min-width: 0;
     border-top: 1px solid var(--city-color-border);

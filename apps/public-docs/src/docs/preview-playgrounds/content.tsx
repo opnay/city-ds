@@ -6,6 +6,7 @@ import { Breadcrumbs } from '@opnay/city-ds-react/breadcrumbs';
 import { Button } from '@opnay/city-ds-react/button';
 import { Divider } from '@opnay/city-ds-react/divider';
 import { EmptyState } from '@opnay/city-ds-react/empty-state';
+import { Kbd } from '@opnay/city-ds-react/kbd';
 import { Menu } from '@opnay/city-ds-react/menu';
 import { Pagination } from '@opnay/city-ds-react/pagination';
 import { Progress } from '@opnay/city-ds-react/progress';
@@ -109,6 +110,10 @@ export function DividerPreview({ orientation, plain }: PreviewOptionProps) {
   }
 
   return <Divider />;
+}
+
+export function KbdPreview({ size }: PreviewOptionProps) {
+  return <Kbd size={isOneOf(size, ['sm', 'md', 'lg'] as const, 'md')}>⌘ K</Kbd>;
 }
 
 export function ProgressPreview({ shape, size, status }: PreviewOptionProps) {

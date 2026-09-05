@@ -136,6 +136,10 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 
 보기 모드나 기간처럼 현재 값을 항상 하나 유지해야 하면 `SegmentedControl`을 사용하십시오.
 
+### Drawer 본문 마이그레이션
+
+`Drawer.Body` / `DrawerBody` / `DrawerBodyProps`는 제거했습니다. 같은 본문에는 `Drawer.Content` / `DrawerContent` / `DrawerContentProps`를 사용하십시오.
+
 ### Storybook 브라우저 테스트
 
 Storybook 스토리는 Vitest 브라우저 모드에서 Chromium으로 렌더링 검사를 실행합니다.

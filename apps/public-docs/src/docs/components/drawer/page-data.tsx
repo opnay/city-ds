@@ -10,6 +10,11 @@ export const pageData = {
   featuredExampleId: 'drawer-playground',
   api: [
     {
+      name: 'Content',
+      type: 'compound part',
+      description: '스크롤 가능한 본문입니다. 이전 Body 대신 Content를 사용합니다.',
+    },
+    {
       name: 'side',
       type: "'left' | 'right' | 'bottom'",
       defaultValue: "'right'",

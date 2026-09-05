@@ -37,7 +37,6 @@ export type DrawerTitleProps = BaseDrawerTitleProps;
 export type DrawerDescriptionProps = BaseDrawerDescriptionProps;
 export type DrawerCloseProps = BaseDrawerCloseProps;
 export type DrawerContentProps = BaseDrawerContentProps;
-export type DrawerBodyProps = DrawerContentProps;
 export type DrawerSwipeAreaProps = BaseDrawerSwipeAreaProps;
 export type DrawerHeaderProps = React.ComponentPropsWithoutRef<'div'>;
 export type DrawerFooterProps = React.ComponentPropsWithoutRef<'div'>;
@@ -192,8 +191,6 @@ export const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps
 
 DrawerContent.displayName = 'Drawer.Content';
 
-export const DrawerBody = DrawerContent;
-
 export const DrawerFooter = React.forwardRef<HTMLDivElement, DrawerFooterProps>(
   ({ className, ...props }, ref) => (
     <div
@@ -265,7 +262,6 @@ export const Drawer = {
   Viewport: DrawerViewport,
   Popup: DrawerPopup,
   Header: DrawerHeader,
-  Body: DrawerBody,
   Footer: DrawerFooter,
   Content: DrawerContent,
   SwipeArea: DrawerSwipeArea,

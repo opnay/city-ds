@@ -83,7 +83,7 @@ export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetail
             </Drawer.Close>
           </Drawer.Header>
 
-          <Drawer.Body className="city-ops-drawer-body">
+          <Drawer.Content className="city-ops-drawer-body">
             {order.blocker ? (
               <Alert.Root tone="warning">
                 <Alert.Title level={3}>다음 단계 확인이 필요합니다.</Alert.Title>
@@ -160,7 +160,7 @@ export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetail
                 </Alert.Description>
               </Alert.Root>
             ) : null}
-          </Drawer.Body>
+          </Drawer.Content>
 
           <Drawer.Footer className="city-ops-drawer-footer">
             <Drawer.Close render={<Button variant="outline" />}>닫기</Drawer.Close>

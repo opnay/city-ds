@@ -559,7 +559,7 @@ export function DocsShell() {
                       <X aria-hidden="true" size={17} />
                     </Drawer.Close>
                   </Drawer.Header>
-                  <Drawer.Body className="city-docs-mobile-nav-body">
+                  <Drawer.Content className="city-docs-mobile-nav-body">
                     <DocsNavigation
                       mode={navigationMode}
                       onModeChange={setNavigationMode}
@@ -567,7 +567,7 @@ export function DocsShell() {
                       query={query}
                       setQuery={setQuery}
                     />
-                  </Drawer.Body>
+                  </Drawer.Content>
                 </Drawer.Popup>
               </Drawer.Viewport>
             </Drawer.Portal>

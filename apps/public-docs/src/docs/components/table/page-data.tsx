@@ -49,7 +49,7 @@ export const pageData = {
     },
     {
       description: '가로 넘침을 키보드로 스크롤하며 표면 경계를 정합니다.',
-      name: 'Table.ScrollArea',
+      name: 'DataTableRegion (별도 컴포넌트)',
       type: "appearance: 'plain' | 'band' | 'outline'",
     },
   ],

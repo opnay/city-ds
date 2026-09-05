@@ -236,48 +236,6 @@ describe('Table', () => {
     expect(onRowChange).toHaveBeenCalledWith(true);
   });
 
-  it('keeps horizontal scroll areas keyboard accessible', async () => {
-    const user = userEvent.setup();
-
-    render(
-      <Table.ScrollArea data-testid="table-scroll-area">
-        <Table.Root aria-label="Wide projects">
-          <Table.Body>
-            <Table.Row>
-              <Table.Cell>Beacon</Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table.Root>
-      </Table.ScrollArea>,
-    );
-
-    const scrollArea = screen.getByTestId('table-scroll-area');
-
-    expect(scrollArea).toHaveAttribute('tabindex', '0');
-    await user.tab();
-    expect(scrollArea).toHaveFocus();
-  });
-
-  it('supports plain and band scroll areas while preserving outline defaults', () => {
-    render(
-      <>
-        <Table.ScrollArea appearance="plain" data-testid="plain-scroll" />
-        <Table.ScrollArea appearance="band" data-testid="band-scroll" />
-        <Table.ScrollArea data-testid="outline-scroll" />
-      </>,
-    );
-
-    const plain = screen.getByTestId('plain-scroll');
-    const band = screen.getByTestId('band-scroll');
-    const outline = screen.getByTestId('outline-scroll');
-
-    expect(plain).toHaveAttribute('data-appearance', 'plain');
-    expect(plain).not.toHaveClass('border');
-    expect(band).toHaveClass('border-y');
-    expect(outline).toHaveAttribute('data-appearance', 'outline');
-    expect(outline).toHaveClass('rounded-city-md', 'border');
-  });
-
   it('renders empty and loading state rows across all columns', () => {
     render(
       <Table.Root aria-label="Projects">

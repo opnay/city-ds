@@ -1,3 +1,4 @@
+import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Table } from '@opnay/city-ds-react';
 import { ComponentSpecimen } from '../docs/component-specimen';
@@ -16,9 +17,9 @@ Layout Spacing은 페이지, 섹션, grid처럼 컴포넌트 밖의 공간 관�
 ## 기본 계약
 
 <ComponentSpecimen>
-  <Table.ScrollArea
+  <DataTableRegion
     appearance="outline"
-    aria-label="Layout Spacing 기본 계약 가로 스크롤 영역"
+    label="Layout Spacing 기본 계약 가로 스크롤 영역"
     className="my-6 max-w-3xl"
   >
     <Table.Root aria-label="Layout Spacing 기본 계약" size="sm">
@@ -69,7 +70,7 @@ Layout Spacing은 페이지, 섹션, grid처럼 컴포넌트 밖의 공간 관�
         </Table.Row>
       </Table.Body>
     </Table.Root>
-  </Table.ScrollArea>
+  </DataTableRegion>
 </ComponentSpecimen>
 
 값은 기본 시작점입니다. 정보 구조나 작업 공간의 성격이 다르면 같은 scale 안에서 조정할 수

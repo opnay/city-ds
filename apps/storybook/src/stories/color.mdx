@@ -1,3 +1,4 @@
+import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Alert, Badge, Button, Table } from '@opnay/city-ds-react';
 import { ComponentSpecimen } from '../docs/component-specimen';
@@ -14,9 +15,9 @@ Color는 장식용 팔레트가 아니라 **정보 의미, 액션 우선순위�
 ## 토큰 계층
 
 <ComponentSpecimen>
-  <Table.ScrollArea
+  <DataTableRegion
     appearance="outline"
-    aria-label="색상 토큰 계층 가로 스크롤 영역"
+    label="색상 토큰 계층 가로 스크롤 영역"
     className="my-6 max-w-3xl"
   >
     <Table.Root aria-label="색상 토큰 계층" className="min-w-2xl" size="sm">
@@ -58,7 +59,7 @@ Color는 장식용 팔레트가 아니라 **정보 의미, 액션 우선순위�
         </Table.Row>
       </Table.Body>
     </Table.Root>
-  </Table.ScrollArea>
+  </DataTableRegion>
 </ComponentSpecimen>
 
 city-ds 컴포넌트 안에서는 원시 팔레트를 직접 사용하지 않습니다. 소비 제품에서 새로운 의미가
@@ -77,9 +78,9 @@ city-ds 컴포넌트 안에서는 원시 팔레트를 직접 사용하지 않습
 ## 의미 역할
 
 <ComponentSpecimen>
-  <Table.ScrollArea
+  <DataTableRegion
     appearance="outline"
-    aria-label="의미 색상 역할 가로 스크롤 영역"
+    label="의미 색상 역할 가로 스크롤 영역"
     className="my-6 max-w-3xl"
   >
     <Table.Root aria-label="의미 색상 역할" className="min-w-2xl" size="sm">
@@ -138,7 +139,7 @@ city-ds 컴포넌트 안에서는 원시 팔레트를 직접 사용하지 않습
         </Table.Row>
       </Table.Body>
     </Table.Root>
-  </Table.ScrollArea>
+  </DataTableRegion>
 </ComponentSpecimen>
 
 `foreground`는 기본 텍스트, `*-foreground`는 해당 solid fill 위 콘텐츠입니다. 예를 들어
@@ -155,9 +156,9 @@ Tone은 의미이고 Appearance는 면의 강도입니다. 같은 tone은 컴포
 유지해야 합니다.
 
 <ComponentSpecimen>
-  <Table.ScrollArea
+  <DataTableRegion
     appearance="outline"
-    aria-label="Color tone 의미 가로 스크롤 영역"
+    label="Color tone 의미 가로 스크롤 영역"
     className="my-6 max-w-3xl"
   >
     <Table.Root aria-label="Color tone 의미" className="min-w-2xl" size="sm">
@@ -206,13 +207,13 @@ Tone은 의미이고 Appearance는 면의 강도입니다. 같은 tone은 컴포
         </Table.Row>
       </Table.Body>
     </Table.Root>
-  </Table.ScrollArea>
+  </DataTableRegion>
 </ComponentSpecimen>
 
 <ComponentSpecimen>
-  <Table.ScrollArea
+  <DataTableRegion
     appearance="outline"
-    aria-label="Color appearance 가로 스크롤 영역"
+    label="Color appearance 가로 스크롤 영역"
     className="my-6 max-w-3xl"
   >
     <Table.Root aria-label="Color appearance" className="min-w-2xl" size="sm">
@@ -254,7 +255,7 @@ Tone은 의미이고 Appearance는 면의 강도입니다. 같은 tone은 컴포
         </Table.Row>
       </Table.Body>
     </Table.Root>
-  </Table.ScrollArea>
+  </DataTableRegion>
 </ComponentSpecimen>
 
 <ComponentSpecimen>

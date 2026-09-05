@@ -67,7 +67,7 @@ function InteractiveDataTable({ size, variant }: TableStoryArgs) {
   return (
     <div style={{ display: 'grid', gap: 12, maxWidth: 760, width: '100%' }}>
       <Input aria-label="Search projects" placeholder="Search projects..." />
-      <Table.ScrollArea>
+      <DataTableRegion appearance="outline" label="표 가로 스크롤">
         <Table.Root aria-label="Selectable projects" size={size} variant={variant}>
           <Table.Header>
             <Table.Row>
@@ -107,7 +107,7 @@ function InteractiveDataTable({ size, variant }: TableStoryArgs) {
             ))}
           </Table.Body>
         </Table.Root>
-      </Table.ScrollArea>
+      </DataTableRegion>
       <Pagination.Root onPageChange={() => {}} page={1} totalPages={4} />
     </div>
   );

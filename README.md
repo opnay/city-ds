@@ -128,6 +128,10 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 
 각 컴포넌트는 `@opnay/city-ds-react/button`과 같은 명시적인 subpath export도 제공합니다.
 
+### 표 스크롤 마이그레이션
+
+`Table.ScrollArea` / `TableScrollArea` 대신 `DataTableRegion`으로 표를 감싸고 `label`을 지정하십시오. 기존 기본 테두리는 `appearance="outline"`로 유지합니다. `DataTableRegion.className`은 바깥 컨테이너, `scrollAreaClassName`은 실제 스크롤 요소에 적용됩니다.
+
 ### ToggleGroup 접근성
 
 `ToggleGroup`은 서식이나 표시 도구처럼 다시 눌러 해제할 수 있는 토글 상태를 하나의

@@ -237,15 +237,13 @@ export const SearchInputClear = React.forwardRef<HTMLElement, SearchInputClearPr
     const context = useSearchInputContext('SearchInput.Clear');
     const isEmpty = context.value.length === 0;
     const resolvedSize = size ?? context.size;
-
-    if (hideWhenEmpty && isEmpty) {
-      return null;
-    }
+    const hidden = hideWhenEmpty && isEmpty;
 
     return (
       <Button
         {...props}
         ref={ref}
+        aria-hidden={hidden ? true : props['aria-hidden']}
         aria-label={
           props['aria-label'] ?? (typeof children === 'string' ? children : 'Clear search')
         }
@@ -253,6 +251,7 @@ export const SearchInputClear = React.forwardRef<HTMLElement, SearchInputClearPr
           cn(
             'text-city-muted-foreground hover:text-city-foreground rounded-city-xs shrink-0',
             children == null && auxiliaryButtonSizeClasses[resolvedSize],
+            hidden && 'invisible',
             resolveClassName(className, state),
           )
         }
@@ -265,6 +264,7 @@ export const SearchInputClear = React.forwardRef<HTMLElement, SearchInputClearPr
           context.inputRef.current?.focus();
         }}
         size={resolvedSize}
+        tabIndex={hidden ? -1 : props.tabIndex}
         type="button"
         variant="ghost"
       >

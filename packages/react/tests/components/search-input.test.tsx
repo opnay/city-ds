@@ -68,6 +68,102 @@ describe('SearchInput', () => {
     expect(secondInput).toHaveFocus();
   });
 
+  it('reserves Clear space while hiding an empty value from sight and the tab order', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <SearchInput.Root defaultValue="city">
+        <SearchInput.Group>
+          <SearchInput.Input aria-label="Search" />
+          <SearchInput.Clear data-testid="clear" />
+        </SearchInput.Group>
+      </SearchInput.Root>,
+    );
+
+    const clear = screen.getByTestId('clear');
+    const input = screen.getByRole('searchbox', { name: 'Search' });
+
+    expect(clear).toHaveClass('size-7');
+    await user.click(clear);
+
+    expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
+    expect(screen.getByTestId('clear')).toBe(clear);
+    expect(clear).toHaveClass('size-7', 'invisible');
+    expect(clear).toHaveAttribute('aria-hidden', 'true');
+    expect(clear).toHaveAttribute('tabindex', '-1');
+    expect(clear).toBeDisabled();
+
+    await user.type(input, 'city');
+
+    expect(screen.getByTestId('clear')).toBe(clear);
+    expect(clear).not.toHaveClass('invisible');
+    expect(clear).not.toHaveAttribute('aria-hidden');
+    expect(screen.getByRole('button', { name: 'Clear search' })).toBe(clear);
+  });
+
+  it('keeps default and custom Clear widths for every size while empty', () => {
+    const sizes = [
+      ['xsm', 'size-5'],
+      ['sm', 'size-6'],
+      ['md', 'size-7'],
+      ['lg', 'size-8'],
+      ['xlg', 'size-9'],
+    ] as const;
+
+    render(
+      <>
+        {sizes.map(([size]) => (
+          <SearchInput.Root key={size} size={size}>
+            <SearchInput.Group>
+              <SearchInput.Input aria-label={`Search ${size}`} />
+              <SearchInput.Clear data-testid={`clear-${size}`} />
+            </SearchInput.Group>
+          </SearchInput.Root>
+        ))}
+        <SearchInput.Root>
+          <SearchInput.Group>
+            <SearchInput.Input aria-label="Custom search" />
+            <SearchInput.Clear className="w-32" data-testid="custom-clear">
+              Clear query
+            </SearchInput.Clear>
+          </SearchInput.Group>
+        </SearchInput.Root>
+      </>,
+    );
+
+    for (const [size, sizeClass] of sizes) {
+      const clear = screen.getByTestId(`clear-${size}`);
+      expect(clear).toHaveClass(sizeClass, 'invisible');
+      expect(clear).toHaveAttribute('aria-hidden', 'true');
+      expect(clear).toHaveAttribute('tabindex', '-1');
+      expect(clear).toBeDisabled();
+    }
+
+    const customClear = screen.getByTestId('custom-clear');
+    expect(customClear).toHaveClass('w-32', 'invisible');
+    expect(customClear).toHaveAttribute('aria-hidden', 'true');
+    expect(customClear).toHaveAttribute('tabindex', '-1');
+    expect(customClear).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Clear query' })).not.toBeInTheDocument();
+  });
+
+  it('keeps Clear visible and disabled for an empty value when hideWhenEmpty is false', () => {
+    render(
+      <SearchInput.Root>
+        <SearchInput.Group>
+          <SearchInput.Input aria-label="Search" />
+          <SearchInput.Clear hideWhenEmpty={false} />
+        </SearchInput.Group>
+      </SearchInput.Root>,
+    );
+
+    const clear = screen.getByRole('button', { name: 'Clear search' });
+    expect(clear).not.toHaveClass('invisible');
+    expect(clear).not.toHaveAttribute('aria-hidden');
+    expect(clear).toBeDisabled();
+  });
+
   it('does not clear when the consumer cancels Clear onClick', async () => {
     const user = userEvent.setup();
     const onClearClick = vi.fn((event: React.MouseEvent<HTMLElement>) => event.preventDefault());

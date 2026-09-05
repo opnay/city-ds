@@ -40,7 +40,7 @@ export const pageData = {
       name: 'SearchInput.Clear hideWhenEmpty',
       type: 'boolean',
       defaultValue: 'true',
-      description: '빈 검색어에서도 지우기 버튼을 유지할지 정합니다.',
+      description: '빈 검색어에서 지우기 버튼을 보일지 정합니다. 숨겨도 버튼 공간은 유지합니다.',
     },
   ],
   examples: [

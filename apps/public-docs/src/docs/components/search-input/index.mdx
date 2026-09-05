@@ -14,6 +14,10 @@ SearchInput은 검색 입력과 관련 액션을 묶는 제어입니다. 레이�
 `SearchInput.Root`의 기존 `onSubmit(value, event)`와 form 속성은 지원하지 않습니다. 기존
 제출 로직은 외부 `<form onSubmit>`으로 옮기고, `action`과 `method`도 해당 form에 지정하십시오.
 
+기본 `SearchInput.Clear`는 빈 검색어에서 보이지 않고 탭 순서에서도 제외되지만, 입력 너비가
+바뀌지 않도록 해당 공간은 유지합니다. 빈 검색어에서도 지우기 버튼을 표시하려면
+`hideWhenEmpty={false}`를 사용하십시오.
+
 ## 접근성
 
 검색 입력과 제출 버튼에 명확한 이름을 제공하고 오류를 `Field.Error`로 연결하십시오.

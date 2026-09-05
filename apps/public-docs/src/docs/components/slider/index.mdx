@@ -12,7 +12,7 @@ import { pageData } from './page-data';
 
 ## 바로 선택 값
 
-`Track` 안에 `Indicator`와 함께 `<Slider.Anchor value={40} />`을 배치하면 40 위치에 작은 점이 표시됩니다. 클릭하거나 Enter·Space로 선택하면 해당 값으로 이동합니다. 범위 Slider에서는 가장 가까운 비활성화되지 않은 핸들이 이동하며, 핸들 사이 최소 간격을 위반하는 선택은 적용되지 않습니다.
+`Track` 안에 `Indicator`와 함께 `<Slider.Anchor value={40} />`을 배치하면 40 위치에 작은 점이 표시됩니다. 호버하거나 키보드로 포커스하면 지정 값을 확인할 수 있고, 클릭하거나 Enter·Space로 선택하면 해당 값으로 이동합니다. 범위 Slider에서는 가장 가까운 비활성화되지 않은 핸들이 이동하며, 핸들 사이 최소 간격을 위반하는 선택은 적용되지 않습니다.
 
 Anchor 값은 `min`부터 `max` 사이에서 `step`에 맞춰 지정하십시오. 범위를 벗어나거나 증감 단위에 맞지 않는 Anchor는 표시하지 않습니다. Anchor도 Base UI의 입력 경로를 사용하므로 `onValueChange`·`onValueCommitted`에는 `input-change` 사유가 전달됩니다.
 
@@ -20,7 +20,7 @@ Anchor 값은 `min`부터 `max` 사이에서 `step`에 맞춰 지정하십시오
 
 ## 값 툴팁
 
-각 Thumb은 호버·키보드 포커스·드래그 중 자신의 현재 값을 표시합니다. Root의 `format`·`locale`을 따르며, `tooltip={false}`로 생략할 수 있습니다.
+각 Thumb은 호버·키보드 포커스·드래그 중 자신의 현재 값을, Anchor는 호버·키보드 포커스 중 지정 값을 표시합니다. Root의 `format`·`locale`을 따르며, 각 `tooltip={false}`로 생략할 수 있습니다.
 
 ## 접근성
 

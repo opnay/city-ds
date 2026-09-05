@@ -22,14 +22,24 @@ export type SliderRootProps<Value extends number | readonly number[] = number> =
 const SliderSizeContext = React.createContext<ControlSize>('md');
 const SliderAlignmentContext =
   React.createContext<BaseSlider.Root.Props['thumbAlignment']>('center');
-const SliderStateContext = React.createContext<BaseSlider.Root.State | null>(null);
+interface SliderContextValue {
+  format: Intl.NumberFormatOptions | undefined;
+  locale: Intl.LocalesArgument | undefined;
+  state: BaseSlider.Root.State;
+}
+
+const SliderContext = React.createContext<SliderContextValue | null>(null);
 
 function SliderRootElement({
   elementProps,
+  format,
+  locale,
   render,
   state,
 }: {
   elementProps: React.ComponentPropsWithRef<'div'>;
+  format: Intl.NumberFormatOptions | undefined;
+  locale: Intl.LocalesArgument | undefined;
   render: BaseSlider.Root.Props['render'];
   state: BaseSlider.Root.State;
 }) {
@@ -37,13 +47,19 @@ function SliderRootElement({
     render: typeof render === 'function' ? (props) => render(props, state) : render,
     props: { ...elementProps },
   });
-  return <SliderStateContext.Provider value={state}>{element}</SliderStateContext.Provider>;
+  return (
+    <SliderContext.Provider value={{ format, locale, state }}>{element}</SliderContext.Provider>
+  );
+}
+
+function useSliderContext() {
+  const context = React.useContext(SliderContext);
+  if (!context) throw new Error('Slider parts must be used inside Slider.Root.');
+  return context;
 }
 
 function useSliderState() {
-  const state = React.useContext(SliderStateContext);
-  if (!state) throw new Error('Slider parts must be used inside Slider.Root.');
-  return state;
+  return useSliderContext().state;
 }
 
 const trackSizeClasses: Record<ControlSize, string> = {
@@ -81,7 +97,15 @@ const thumbLengths: Record<ControlSize, string> = {
 const SliderRootBase = React.forwardRef(function SliderRoot<
   Value extends number | readonly number[] = number,
 >(
-  { className, render, size = 'md', thumbAlignment = 'center', ...props }: SliderRootProps<Value>,
+  {
+    className,
+    format,
+    locale,
+    render,
+    size = 'md',
+    thumbAlignment = 'center',
+    ...props
+  }: SliderRootProps<Value>,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) {
   return (
@@ -89,10 +113,18 @@ const SliderRootBase = React.forwardRef(function SliderRoot<
       <SliderAlignmentContext.Provider value={thumbAlignment}>
         <BaseSlider.Root
           {...props}
+          format={format}
+          locale={locale}
           thumbAlignment={thumbAlignment}
           ref={ref}
           render={(elementProps, state) => (
-            <SliderRootElement elementProps={elementProps} render={render} state={state} />
+            <SliderRootElement
+              elementProps={elementProps}
+              format={format}
+              locale={locale}
+              render={render}
+              state={state}
+            />
           )}
           data-city-size={size}
           data-city-slider=""
@@ -298,6 +330,25 @@ SliderThumb.displayName = 'Slider.Thumb';
 export interface SliderAnchorProps extends Omit<BaseButton.Props, 'value'> {
   /** A preset value, within min/max and aligned to step. */
   value: number;
+  /** Displays the preset value on hover and keyboard focus. */
+  tooltip?: boolean;
+}
+
+function SliderAnchorSurface({
+  elementProps,
+  render,
+  state,
+}: {
+  elementProps: React.ComponentPropsWithRef<'button'>;
+  render: BaseButton.Props['render'];
+  state: BaseButton.State;
+}) {
+  const element = useRender({
+    defaultTagName: 'button',
+    render: typeof render === 'function' ? (props) => render(props, state) : render,
+    props: { ...elementProps },
+  });
+  return <Tooltip.Trigger id={elementProps.id} delay={0} render={element} closeOnClick={false} />;
 }
 
 export const SliderAnchor = React.forwardRef<HTMLElement, SliderAnchorProps>(function SliderAnchor(
@@ -309,15 +360,18 @@ export const SliderAnchor = React.forwardRef<HTMLElement, SliderAnchorProps>(fun
     onClick,
     onPointerDown,
     onTouchStartCapture,
+    render,
+    tooltip = true,
     children,
     ...props
   },
   ref,
 ) {
-  const state = useSliderState();
+  const { format, locale, state } = useSliderContext();
   const vertical = state.orientation === 'vertical';
   const size = React.useContext(SliderSizeContext);
   const alignment = React.useContext(SliderAlignmentContext);
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const position = ((value - state.min) / (state.max - state.min)) * 100;
   const offset =
     alignment === 'center'
@@ -332,7 +386,7 @@ export const SliderAnchor = React.forwardRef<HTMLElement, SliderAnchorProps>(fun
 
   if (!valid) return null;
 
-  return (
+  const anchor = (
     <BaseButton
       {...props}
       ref={ref}
@@ -341,6 +395,17 @@ export const SliderAnchor = React.forwardRef<HTMLElement, SliderAnchorProps>(fun
       disabled={disabled || state.disabled}
       data-city-slider-anchor=""
       data-value={value}
+      render={
+        tooltip
+          ? (elementProps, buttonState) => (
+              <SliderAnchorSurface
+                elementProps={elementProps}
+                render={render}
+                state={buttonState}
+              />
+            )
+          : render
+      }
       className={(buttonState) =>
         cn(
           'absolute flex size-6 items-center justify-center rounded-city-full bg-transparent text-city-muted-foreground hover:text-city-foreground focus-visible:ring-2 focus-visible:ring-city-ring outline-none disabled:pointer-events-none',
@@ -400,6 +465,22 @@ export const SliderAnchor = React.forwardRef<HTMLElement, SliderAnchorProps>(fun
         />
       )}
     </BaseButton>
+  );
+
+  if (!tooltip) return anchor;
+
+  return (
+    <Tooltip.Root open={!state.disabled && !disabled && tooltipOpen} onOpenChange={setTooltipOpen}>
+      {anchor}
+      <Tooltip.Portal>
+        <Tooltip.Positioner side={vertical ? 'right' : 'top'} sideOffset={8}>
+          <Tooltip.Popup className="tabular-nums">
+            {new Intl.NumberFormat(locale, format).format(value)}
+            <Tooltip.Arrow />
+          </Tooltip.Popup>
+        </Tooltip.Positioner>
+      </Tooltip.Portal>
+    </Tooltip.Root>
   );
 });
 

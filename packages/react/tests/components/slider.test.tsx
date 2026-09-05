@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -61,6 +61,38 @@ describe('Slider', () => {
     input.focus();
     await user.keyboard('[ArrowRight]');
     expect(await screen.findByRole('tooltip')).toHaveTextContent('36');
+  });
+
+  it('shows the formatted Anchor value on hover and focus without changing its render or ref target', async () => {
+    const user = userEvent.setup();
+    const ref = React.createRef<HTMLElement>();
+    render(
+      <Slider.Root defaultValue={20} format={{ minimumFractionDigits: 2 }} locale="de-DE">
+        <Slider.Control>
+          <Slider.Track>
+            <Slider.Anchor
+              id="priority-anchor"
+              ref={ref}
+              render={<button data-composed="true" />}
+              value={40}
+            />
+          </Slider.Track>
+          <Slider.Thumb aria-label="볼륨" />
+        </Slider.Control>
+      </Slider.Root>,
+    );
+    const anchor = screen.getByRole('button', { name: '40' });
+
+    expect(ref.current).toBe(anchor);
+    expect(anchor).toHaveAttribute('id', 'priority-anchor');
+    expect(anchor).toHaveAttribute('data-composed', 'true');
+    await user.hover(anchor);
+    expect(await screen.findByRole('tooltip')).toHaveTextContent('40,00');
+    await user.unhover(anchor);
+    anchor.focus();
+    expect(await screen.findByRole('tooltip')).toHaveTextContent('40,00');
+    await user.keyboard('[Escape]');
+    await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument());
   });
 
   it('applies Anchor presets through the native range input, including keyboard and form values', async () => {
@@ -178,7 +210,10 @@ describe('Slider', () => {
         </Slider.Control>
       </Slider.Root>,
     );
-    expect(screen.getByRole('button', { name: '40' })).toBeDisabled();
+    const disabledAnchor = screen.getByRole('button', { name: '40' });
+    expect(disabledAnchor).toBeDisabled();
+    await user.hover(disabledAnchor);
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
 
   it('exports the same compound API from the package root', () => {

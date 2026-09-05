@@ -51,6 +51,12 @@ export const pageData = {
         'Track 안에 배치하는 바로 선택 값입니다. min/max 범위와 step에 맞는 값만 표시하며, 범위 Slider에서는 가장 가까운 활성 핸들을 이동합니다.',
     },
     {
+      name: 'Anchor.tooltip',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: '호버·키보드 포커스 중 Anchor의 지정 값을 툴팁으로 표시합니다.',
+    },
+    {
       name: 'Thumb.tooltip',
       type: 'boolean',
       defaultValue: 'true',
@@ -72,7 +78,7 @@ export const pageData = {
       Component: SliderAnchorsExample,
       coverage: [{ axis: 'anchor', values: ['preset'] }],
       description:
-        '작은 점을 클릭하거나 Enter·Space로 선택하면 해당 값으로 이동합니다. 핸들에 포인터를 올리거나 키보드로 조작하면 현재 값이 표시됩니다.',
+        '작은 점에 포인터를 올리거나 키보드로 포커스하면 지정 값을 확인할 수 있고, 클릭하거나 Enter·Space로 선택하면 해당 값으로 이동합니다.',
       id: 'slider-anchors',
       filename: 'anchors.tsx',
       source: anchorsSource,

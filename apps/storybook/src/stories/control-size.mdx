@@ -1,3 +1,4 @@
+import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Button, Input, Table } from '@opnay/city-ds-react';
 import { ComponentSpecimen } from '../docs/component-specimen';
@@ -14,9 +15,9 @@ Surface가 달라도 같은 `size`는 같은 높이를 사용합니다. 카드·
 ## 크기 계약
 
 <ComponentSpecimen>
-  <Table.ScrollArea
+  <DataTableRegion
     appearance="outline"
-    aria-label="Control 크기 계약 가로 스크롤 영역"
+    label="Control 크기 계약 가로 스크롤 영역"
     className="my-6 max-w-xl"
   >
     <Table.Root aria-label="Control 크기 계약" size="sm">
@@ -51,7 +52,7 @@ Surface가 달라도 같은 `size`는 같은 높이를 사용합니다. 카드·
         </Table.Row>
       </Table.Body>
     </Table.Root>
-  </Table.ScrollArea>
+  </DataTableRegion>
 </ComponentSpecimen>
 
 border와 padding은 이 높이에 포함합니다. 내부 텍스트·아이콘·segment가 외곽 높이를 다시

@@ -1,3 +1,4 @@
+import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Accordion, Table } from '@opnay/city-ds-react';
 import { ComponentSpecimen } from '../docs/component-specimen';
@@ -12,9 +13,9 @@ Motion은 상태 변화의 방향, 결과와 공간 관계를 설명하는 패�
 ## Duration scale
 
 <ComponentSpecimen>
-  <Table.ScrollArea
+  <DataTableRegion
     appearance="outline"
-    aria-label="Motion duration scale 가로 스크롤 영역"
+    label="Motion duration scale 가로 스크롤 영역"
     className="my-6 max-w-3xl"
   >
     <Table.Root aria-label="Motion duration scale" size="sm">
@@ -53,7 +54,7 @@ Motion은 상태 변화의 방향, 결과와 공간 관계를 설명하는 패�
         </Table.Row>
       </Table.Body>
     </Table.Root>
-  </Table.ScrollArea>
+  </DataTableRegion>
 </ComponentSpecimen>
 
 기본 transition은 `--city-duration-normal`과 `--city-easing-standard: ease-in-out`을 사용합니다.

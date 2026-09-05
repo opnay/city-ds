@@ -5,7 +5,12 @@ import { ArrowLeftRight } from 'lucide-react';
 
 import { cn } from '../../lib/cn';
 import type { SurfaceAppearance } from '../../types';
-import { Table, type TableScrollAreaProps } from '../table';
+
+const scrollAppearanceClasses: Record<SurfaceAppearance, string> = {
+  plain: '',
+  band: 'border-city-border border-y',
+  outline: 'rounded-city-md border-city-border border',
+};
 
 export interface DataTableRegionProps extends Omit<
   React.ComponentPropsWithoutRef<'div'>,
@@ -17,7 +22,7 @@ export interface DataTableRegionProps extends Omit<
   hint?: React.ReactNode;
   hintId?: string;
   label: string;
-  scrollAreaClassName?: TableScrollAreaProps['className'];
+  scrollAreaClassName?: string;
   showHint?: boolean;
 }
 
@@ -57,15 +62,21 @@ export const DataTableRegion = React.forwardRef<HTMLDivElement, DataTableRegionP
             {hint}
           </p>
         ) : null}
-        <Table.ScrollArea
+        <div
           {...(hasVisibleHint ? { 'aria-describedby': resolvedHintId } : {})}
-          {...(scrollAreaClassName !== undefined ? { className: scrollAreaClassName } : {})}
-          appearance={appearance}
+          className={cn(
+            'focus-visible:ring-city-ring w-full overflow-x-auto outline-none focus-visible:ring-2 focus-visible:ring-inset',
+            scrollAppearanceClasses[appearance],
+            scrollAreaClassName,
+          )}
+          data-appearance={appearance}
+          data-city-data-table-scroll=""
           aria-label={label}
           role="region"
+          tabIndex={0}
         >
           {children}
-        </Table.ScrollArea>
+        </div>
       </div>
     );
   },

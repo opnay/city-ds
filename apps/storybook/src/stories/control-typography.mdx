@@ -1,3 +1,4 @@
+import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Badge, Button, Input, SegmentedControl, Table } from '@opnay/city-ds-react';
 import { ComponentSpecimen } from '../docs/component-specimen';
@@ -77,9 +78,9 @@ Surface, tone, hover, pressed 같은 시각·상태 축은 텍스트 크기나 �
 ## 역할별 텍스트 계약
 
 <ComponentSpecimen>
-  <Table.ScrollArea
+  <DataTableRegion
     appearance="outline"
-    aria-label="역할별 텍스트 계약 가로 스크롤 영역"
+    label="역할별 텍스트 계약 가로 스크롤 영역"
     className="my-6 max-w-3xl"
   >
     <Table.Root aria-label="역할별 텍스트 계약" size="sm">
@@ -143,7 +144,7 @@ Surface, tone, hover, pressed 같은 시각·상태 축은 텍스트 크기나 �
         </Table.Row>
       </Table.Body>
     </Table.Root>
-  </Table.ScrollArea>
+  </DataTableRegion>
 </ComponentSpecimen>
 
 텍스트 값은 `font-size / line-height` 순서입니다. Control의 외곽 높이는 공통

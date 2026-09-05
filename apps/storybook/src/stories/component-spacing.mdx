@@ -1,3 +1,4 @@
+import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Table } from '@opnay/city-ds-react';
 import { ComponentSpecimen } from '../docs/component-specimen';
@@ -17,9 +18,9 @@ Control 외곽 크기와 내부 padding은
 ## 역할 단계
 
 <ComponentSpecimen>
-  <Table.ScrollArea
+  <DataTableRegion
     appearance="outline"
-    aria-label="Component Spacing 역할 단계 가로 스크롤 영역"
+    label="Component Spacing 역할 단계 가로 스크롤 영역"
     className="my-6 max-w-3xl"
   >
     <Table.Root aria-label="Component Spacing 역할 단계" size="sm">
@@ -58,7 +59,7 @@ Control 외곽 크기와 내부 padding은
         </Table.Row>
       </Table.Body>
     </Table.Root>
-  </Table.ScrollArea>
+  </DataTableRegion>
 </ComponentSpecimen>
 
 2·4·6·10·14px는 indicator, title–meta, Control 내부 정렬 같은 미세 조정에만 사용하십시오.

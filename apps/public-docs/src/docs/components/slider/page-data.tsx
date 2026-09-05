@@ -2,6 +2,8 @@ import sizesSource from './examples/sizes.tsx?raw';
 import SliderSizesExample from './examples/sizes';
 import statesSource from './examples/states.tsx?raw';
 import SliderStatesExample from './examples/states';
+import anchorsSource from './examples/anchors.tsx?raw';
+import SliderAnchorsExample from './examples/anchors';
 import { SliderPreview } from '../../preview-playgrounds/forms';
 import { createPlaygroundSource } from '../../preview-playgrounds/source';
 import type { ComponentPageData } from '../../types';
@@ -10,7 +12,7 @@ export const pageData = {
   featuredExampleId: 'slider-playground',
   api: [
     {
-      name: 'Root / Control / Track / Indicator / Thumb / Value',
+      name: 'Root / Control / Track / Indicator / Anchor / Thumb / Value',
       type: 'compound parts',
       description: 'Root 안에서 상호작용 영역, 진행 표시, thumb과 읽기 값을 조합합니다.',
     },
@@ -42,6 +44,18 @@ export const pageData = {
       description: '트랙과 thumb의 시각 크기를 함께 정합니다.',
     },
     { name: 'disabled', type: 'boolean', description: '값 변경을 막습니다.' },
+    {
+      name: 'Anchor.value',
+      type: 'number',
+      description:
+        'Track 안에 배치하는 바로 선택 값입니다. min/max 범위와 step에 맞는 값만 표시하며, 범위 Slider에서는 가장 가까운 활성 핸들을 이동합니다.',
+    },
+    {
+      name: 'Thumb.tooltip',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: '호버·포커스·드래그 중 현재 값을 툴팁으로 표시합니다.',
+    },
   ],
   examples: [
     {
@@ -53,6 +67,16 @@ export const pageData = {
       filename: 'playground.tsx',
       source: createPlaygroundSource('@opnay/city-ds-react/slider', 'Slider'),
       title: 'Preview',
+    },
+    {
+      Component: SliderAnchorsExample,
+      coverage: [{ axis: 'anchor', values: ['preset'] }],
+      description:
+        '작은 점을 클릭하거나 Enter·Space로 선택하면 해당 값으로 이동합니다. 핸들에 포인터를 올리거나 키보드로 조작하면 현재 값이 표시됩니다.',
+      id: 'slider-anchors',
+      filename: 'anchors.tsx',
+      source: anchorsSource,
+      title: '바로 선택 값',
     },
     {
       Component: SliderSizesExample,

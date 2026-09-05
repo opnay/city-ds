@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -47,6 +47,140 @@ function assertSliderPropsContract() {
 void assertSliderPropsContract;
 
 describe('Slider', () => {
+  it('shows the current thumb value on hover and keyboard focus', async () => {
+    const user = userEvent.setup();
+    render(
+      <Slider.Root defaultValue={35}>
+        <SliderParts />
+      </Slider.Root>,
+    );
+    const input = screen.getByRole('slider', { name: '볼륨' });
+    await user.hover(input.closest('[data-city-slider-thumb]')!);
+    expect(await screen.findByRole('tooltip')).toHaveTextContent('35');
+    await user.unhover(input.closest('[data-city-slider-thumb]')!);
+    input.focus();
+    await user.keyboard('[ArrowRight]');
+    expect(await screen.findByRole('tooltip')).toHaveTextContent('36');
+  });
+
+  it('applies Anchor presets through the native range input, including keyboard and form values', async () => {
+    const user = userEvent.setup();
+    const changed = vi.fn();
+    const committed = vi.fn();
+    render(
+      <form data-testid="form">
+        <Slider.Root
+          defaultValue={10}
+          name="volume"
+          onValueChange={changed}
+          onValueCommitted={committed}
+        >
+          <Slider.Control>
+            <Slider.Track>
+              <Slider.Indicator />
+              <Slider.Anchor value={40} />
+            </Slider.Track>
+            <Slider.Thumb aria-label="볼륨" />
+          </Slider.Control>
+        </Slider.Root>
+      </form>,
+    );
+    const preset = screen.getByRole('button', { name: '40' });
+    fireEvent.touchStart(preset, { changedTouches: [{ identifier: 1, clientX: 40, clientY: 10 }] });
+    expect(changed).not.toHaveBeenCalled();
+    await user.click(preset);
+    expect(screen.getByRole('slider')).toHaveValue('40');
+    expect(changed).toHaveBeenCalledExactlyOnceWith(
+      40,
+      expect.objectContaining({ reason: 'input-change', activeThumbIndex: 0 }),
+    );
+    expect(committed).toHaveBeenCalledExactlyOnceWith(
+      40,
+      expect.objectContaining({ reason: 'input-change' }),
+    );
+    expect(new FormData(screen.getByTestId('form') as HTMLFormElement).get('volume')).toBe('40');
+    screen.getByRole('slider').focus();
+    await user.keyboard('[ArrowLeft]');
+    preset.focus();
+    await user.keyboard('[Enter]');
+    expect(screen.getByRole('slider')).toHaveValue('40');
+  });
+
+  it('preserves controlled rejection and cancellation when choosing a preset', async () => {
+    const user = userEvent.setup();
+    const canceled = vi.fn((_, details) => details.cancel());
+    const committed = vi.fn();
+    const { rerender } = render(
+      <Slider.Root value={10}>
+        <Slider.Control>
+          <Slider.Track>
+            <Slider.Anchor value={40} />
+          </Slider.Track>
+          <Slider.Thumb aria-label="볼륨" />
+        </Slider.Control>
+      </Slider.Root>,
+    );
+    await user.click(screen.getByRole('button', { name: '40' }));
+    expect(screen.getByRole('slider')).toHaveValue('10');
+    rerender(
+      <Slider.Root value={10} onValueChange={canceled} onValueCommitted={committed}>
+        <Slider.Control>
+          <Slider.Track>
+            <Slider.Anchor value={40} />
+          </Slider.Track>
+          <Slider.Thumb aria-label="볼륨" />
+        </Slider.Control>
+      </Slider.Root>,
+    );
+    await user.click(screen.getByRole('button', { name: '40' }));
+    expect(canceled).toHaveBeenCalledOnce();
+    expect(committed).not.toHaveBeenCalled();
+    expect(screen.getByRole('slider')).toHaveValue('10');
+  });
+
+  it('moves the nearest range thumb and respects disabled and invalid presets', async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(
+      <Slider.Root
+        defaultValue={[20, 80]}
+        step={5}
+        minStepsBetweenValues={1}
+        orientation="vertical"
+      >
+        <Slider.Control>
+          <Slider.Track>
+            <Slider.Indicator />
+            <Slider.Anchor value={40} />
+            <Slider.Anchor value={65} />
+            <Slider.Anchor value={43} />
+            <Slider.Anchor value={110} />
+          </Slider.Track>
+          <Slider.Thumb index={0} aria-label="최소" />
+          <Slider.Thumb index={1} aria-label="최대" />
+        </Slider.Control>
+      </Slider.Root>,
+    );
+    expect(screen.queryByRole('button', { name: '43' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: '110' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '40' })).toHaveStyle({ bottom: '40%' });
+    await user.click(screen.getByRole('button', { name: '40' }));
+    expect(screen.getByRole('slider', { name: '최소' })).toHaveValue('40');
+    screen.getByRole('button', { name: '65' }).focus();
+    await user.keyboard(' ');
+    expect(screen.getByRole('slider', { name: '최대' })).toHaveValue('65');
+    rerender(
+      <Slider.Root key="disabled" disabled defaultValue={20}>
+        <Slider.Control>
+          <Slider.Track>
+            <Slider.Anchor value={40} />
+          </Slider.Track>
+          <Slider.Thumb aria-label="볼륨" />
+        </Slider.Control>
+      </Slider.Root>,
+    );
+    expect(screen.getByRole('button', { name: '40' })).toBeDisabled();
+  });
+
   it('exports the same compound API from the package root', () => {
     expect(RootSlider).toBe(Slider);
   });

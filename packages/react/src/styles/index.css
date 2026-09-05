@@ -189,7 +189,8 @@
     min-width: var(--city-hit-target-min);
   }
 
-  [data-city-slider-thumb]::after {
+  [data-city-slider-thumb]::after,
+  [data-city-slider-anchor]::after {
     content: '';
     height: var(--city-hit-target-min);
     left: 50%;

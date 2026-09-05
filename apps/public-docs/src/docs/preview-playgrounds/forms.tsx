@@ -487,6 +487,8 @@ export function SliderPreview({ disabled, mode, orientation, range, size }: Prev
           <Slider.Control>
             <Slider.Track>
               <Slider.Indicator />
+              <Slider.Anchor value={40} aria-label="우선순위 40" />
+              <Slider.Anchor value={60} aria-label="우선순위 60" />
             </Slider.Track>
             <Slider.Thumb
               getAriaLabel={(index) => (index === 0 ? '최소 우선순위' : '최대 우선순위')}
@@ -513,6 +515,9 @@ export function SliderPreview({ disabled, mode, orientation, range, size }: Prev
         <Slider.Control>
           <Slider.Track>
             <Slider.Indicator />
+            <Slider.Anchor value={20} aria-label="우선순위 20" />
+            <Slider.Anchor value={40} aria-label="우선순위 40" />
+            <Slider.Anchor value={80} aria-label="우선순위 80" />
           </Slider.Track>
           <Slider.Thumb aria-label="우선순위" />
         </Slider.Control>

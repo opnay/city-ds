@@ -258,7 +258,7 @@ describe('theme contract', () => {
       /@media \(pointer: coarse\) \{[\s\S]*?\[data-city-slider-control\] \{[\s\S]*?min-height: var\(--city-hit-target-min\);[\s\S]*?min-width: var\(--city-hit-target-min\);/,
     );
     expect(stylesCss).toMatch(
-      /@media \(pointer: coarse\) \{[\s\S]*?\[data-city-slider-thumb\]::after \{[\s\S]*?height: var\(--city-hit-target-min\);[\s\S]*?width: var\(--city-hit-target-min\);/,
+      /@media \(pointer: coarse\) \{[\s\S]*?\[data-city-slider-thumb\]::after,\s*\[data-city-slider-anchor\]::after \{[\s\S]*?height: var\(--city-hit-target-min\);[\s\S]*?width: var\(--city-hit-target-min\);/,
     );
   });
 

@@ -48,6 +48,7 @@ const CONFIGURABLE_COMPONENTS = new Set([
   'kbd',
   'number-input',
   'menu',
+  'meter',
   'pagination',
   'panel',
   'popover',

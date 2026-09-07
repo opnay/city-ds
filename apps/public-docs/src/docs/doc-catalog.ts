@@ -337,6 +337,18 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Forms',
+    description: '설명과 가격을 비교하고 카드 전체를 눌러 항목을 선택합니다.',
+    importPath: '@opnay/city-ds-react/selection-card',
+    keywords: ['선택 카드', '플랜', '가격', 'radio', 'checkbox'],
+    load: () => import('./components/selection-card/index.mdx'),
+    related: ['radio-group', 'checkbox', 'checkbox-group', 'switch'],
+    selectionGuidance:
+      '설명을 비교하는 선택에는 SelectionCard를, 짧은 선택 목록에는 RadioGroup이나 Select를 사용하십시오.',
+    slug: 'selection-card',
+    title: 'SelectionCard',
+  },
+  {
+    category: 'Forms',
     description: '단일 값 또는 두 값의 연속 범위를 키보드·포인터로 조절합니다.',
     importPath: '@opnay/city-ds-react/slider',
     keywords: ['슬라이더', '범위', '연속 값', '키보드', 'slider'],

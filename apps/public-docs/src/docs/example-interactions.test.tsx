@@ -12,6 +12,40 @@ afterEach(() => {
 });
 
 describe('documented component interactions', () => {
+  it('switches SelectionCard between radio, checkbox and switch previews', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/selection-card']);
+    const example = screen.getByRole('region', { name: 'SelectionCard' });
+    const preview = within(example);
+    const sidebar = within(preview.getByRole('complementary', { name: '미리보기 옵션' }));
+
+    expect(preview.getByRole('radio', { name: 'Pro' })).toBeChecked();
+    await user.click(sidebar.getByRole('radio', { name: 'checkbox' }));
+    expect(preview.queryByRole('radio', { name: 'Pro' })).toBeNull();
+    await user.click(preview.getByText('무료', { exact: true }));
+    expect(preview.getByRole('checkbox', { name: 'Starter' })).toBeChecked();
+    expect(preview.getByRole('checkbox', { name: 'Pro' })).toBeChecked();
+
+    await user.click(sidebar.getByRole('switch', { name: 'disabled' }));
+    await user.click(preview.getByText('무료', { exact: true }));
+    expect(preview.getByRole('checkbox', { name: 'Starter' })).toBeChecked();
+    expect(preview.getByRole('checkbox', { name: 'Starter' })).toHaveAttribute('data-disabled');
+
+    await user.click(sidebar.getByRole('radio', { name: 'radio' }));
+    expect(preview.queryByRole('checkbox', { name: 'Pro' })).toBeNull();
+    expect(preview.getByRole('radio', { name: 'Pro' })).toBeChecked();
+
+    await user.click(sidebar.getByRole('radio', { name: 'switch' }));
+    const notifications = preview.getByRole('switch', { name: '활동 알림' });
+    expect(notifications).toHaveAttribute('data-disabled');
+    await user.click(sidebar.getByRole('switch', { name: 'disabled' }));
+    await user.click(preview.getByText('활동 알림', { exact: true }));
+    expect(notifications).toBeChecked();
+    await user.keyboard('[Space]');
+    expect(notifications).not.toBeChecked();
+    expect(preview.getByRole('switch', { name: '보안 알림' })).toHaveAttribute('data-disabled');
+  });
+
   it('configures the Button preview from the global options sidebar', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/button']);

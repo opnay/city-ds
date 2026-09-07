@@ -146,6 +146,10 @@
       "types": "./dist/components/slider/index.d.ts",
       "import": "./dist/components/slider/index.js"
     },
+    "./selection-card": {
+      "types": "./dist/components/selection-card/index.d.ts",
+      "import": "./dist/components/selection-card/index.js"
+    },
     "./select": {
       "types": "./dist/components/select/index.d.ts",
       "import": "./dist/components/select/index.js"

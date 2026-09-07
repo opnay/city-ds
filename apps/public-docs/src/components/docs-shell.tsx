@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Collapsible } from '@base-ui/react/collapsible';
-import { ArrowRight, BookOpen, Menu as MenuIcon, Moon, Sun, X } from 'lucide-react';
+import {
+  ArrowRight,
+  BookOpen,
+  LayoutGrid,
+  Menu as MenuIcon,
+  Moon,
+  Sun,
+  UsersRound,
+  X,
+} from 'lucide-react';
 import { Link, Outlet, useLocation, type ErrorComponentProps } from '@tanstack/react-router';
 import type { CityTheme } from '@opnay/city-ds-react';
 import { Alert } from '@opnay/city-ds-react/alert';
@@ -136,6 +145,11 @@ function StaticNavigationLink({
           <span>{entry.label}</span>
           <small>{STATIC_SECTION_LABELS[entry.section]}</small>
         </span>
+      ) : entry.path === '/blocks' ? (
+        <span className="city-docs-nav-icon-label">
+          <LayoutGrid aria-hidden="true" size={16} strokeWidth={1.8} />
+          {entry.label}
+        </span>
       ) : (
         entry.label
       )}
@@ -208,7 +222,13 @@ function UserManagementNavigation({ onNavigate }: { onNavigate: () => void }) {
       defaultOpen={USER_MANAGEMENT_MENU.some((item) => pathname === `/blocks/${item.slug}`)}
     >
       <Collapsible.Trigger className="city-docs-block-group-trigger">
-        사용자 관리 <span aria-hidden="true">⌄</span>
+        <span className="city-docs-nav-icon-label">
+          <UsersRound aria-hidden="true" size={16} strokeWidth={1.8} />
+          사용자 관리
+        </span>
+        <span className="city-docs-block-group-chevron" aria-hidden="true">
+          ⌄
+        </span>
       </Collapsible.Trigger>
       <Collapsible.Panel>
         <ul className="city-docs-block-submenu">

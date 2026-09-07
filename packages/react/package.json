@@ -126,6 +126,10 @@
       "types": "./dist/components/pagination/index.d.ts",
       "import": "./dist/components/pagination/index.js"
     },
+    "./otp-input": {
+      "types": "./dist/components/otp-input/index.d.ts",
+      "import": "./dist/components/otp-input/index.js"
+    },
     "./panel": {
       "types": "./dist/components/panel/index.d.ts",
       "import": "./dist/components/panel/index.js"

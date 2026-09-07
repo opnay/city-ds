@@ -12,6 +12,28 @@ afterEach(() => {
 });
 
 describe('documented component interactions', () => {
+  it('configures OTP slots and submits a controlled code example', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/otp-input']);
+    const preview = within(screen.getByRole('region', { name: 'OtpInput' }));
+    const options = within(preview.getByRole('complementary', { name: '미리보기 옵션' }));
+    expect(preview.getAllByRole('textbox')).toHaveLength(6);
+    await user.click(options.getByRole('radio', { name: '4' }));
+    expect(preview.getAllByRole('textbox')).toHaveLength(4);
+    await user.click(options.getByRole('switch', { name: 'disabled' }));
+    expect(preview.getAllByRole('textbox')[0]).toBeDisabled();
+
+    const form = within(screen.getByRole('region', { name: '폼 입력' }));
+    await user.click(form.getAllByRole('textbox')[0]!);
+    await user.paste('012345');
+    await user.click(form.getByRole('button', { name: '입력 확인' }));
+    expect(form.getByText('6자리 코드가 입력되었습니다.')).toBeVisible();
+    await user.click(form.getByRole('button', { name: '다시 입력' }));
+    expect(
+      form.getAllByRole('textbox').every((input) => (input as HTMLInputElement).value === ''),
+    ).toBe(true);
+  });
+
   it('switches SelectionCard between radio, checkbox and switch previews', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/selection-card']);

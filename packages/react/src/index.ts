@@ -25,6 +25,7 @@ export * from './components/kbd';
 export * from './components/menu';
 export * from './components/meter';
 export * from './components/number-input';
+export * from './components/otp-input';
 export * from './components/panel';
 export * from './components/pagination';
 export * from './components/popover';

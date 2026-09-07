@@ -49,10 +49,7 @@ export function WorkOrderTable({
   sortDirection,
 }: WorkOrderTableProps) {
   return (
-    <DataTableRegion
-      hint="모든 열을 보려면 표를 가로로 스크롤하세요."
-      label="현장 작업 표 가로 스크롤 영역"
-    >
+    <DataTableRegion label="현장 작업 표 가로 스크롤 영역">
       <Table.Root
         aria-busy={isRefreshing}
         aria-label="현장 작업 목록"

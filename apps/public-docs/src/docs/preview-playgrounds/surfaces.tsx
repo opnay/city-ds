@@ -227,14 +227,9 @@ export function BadgePreview({ appearance, mode, size, tone }: PreviewOptionProp
   return <Badge {...commonProps}>알림</Badge>;
 }
 
-export function DataTableRegionPreview({ appearance, showHint }: PreviewOptionProps) {
+export function DataTableRegionPreview({ appearance }: PreviewOptionProps) {
   return (
-    <DataTableRegion
-      appearance={isOneOf(appearance, APPEARANCES, 'plain')}
-      hint="표를 가로로 스크롤해 나머지 열을 확인하십시오."
-      label="발행 기록"
-      showHint={isEnabled(showHint)}
-    >
+    <DataTableRegion appearance={isOneOf(appearance, APPEARANCES, 'plain')} label="발행 기록">
       <DemoTable />
     </DataTableRegion>
   );

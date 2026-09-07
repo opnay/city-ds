@@ -171,11 +171,7 @@ export const Loading: Story = {
 export const HorizontalOverflow: Story = {
   args: { size: 'md', variant: 'line' },
   render: (args) => (
-    <DataTableRegion
-      hint="Scroll horizontally to view every column."
-      label="Wide project inventory scroll area"
-      style={{ maxWidth: 420 }}
-    >
+    <DataTableRegion label="Wide project inventory scroll area" style={{ maxWidth: 420 }}>
       <Table.Root aria-label="Wide project inventory" size={args.size} variant={args.variant}>
         <Table.Header>
           <Table.Row>

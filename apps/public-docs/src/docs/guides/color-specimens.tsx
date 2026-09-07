@@ -146,7 +146,6 @@ export function FeedbackAppearanceMatrix() {
   return (
     <DataTableRegion
       className="city-docs-color-matrix-region"
-      hint="표를 가로로 스크롤하면 모든 appearance를 비교할 수 있습니다."
       label="Feedback tone과 appearance 비교"
     >
       <Table.Root size="sm">

@@ -269,11 +269,7 @@ export function ComponentDocScope({ children, title }: ComponentDocScopeProps) {
 
 export function ApiTable({ items }: ApiTableProps) {
   return (
-    <DataTableRegion
-      className="city-docs-api-table"
-      hint="표를 가로로 스크롤하면 모든 API 열을 확인할 수 있습니다."
-      label="주요 API"
-    >
+    <DataTableRegion className="city-docs-api-table" label="주요 API">
       <Table.Root>
         <Table.Header>
           <Table.Row>

@@ -7,7 +7,7 @@ import { COMPONENT_DOCS } from './doc-catalog';
 const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   alert: 2,
   badge: 1,
-  'data-table-region': 3,
+  'data-table-region': 2,
   divider: 3,
   'empty-state': 1,
   fieldset: 5,
@@ -224,7 +224,7 @@ describe('all component document routes', () => {
   });
 
   it.each([
-    { slug: 'data-table-region', tableCount: 6 },
+    { slug: 'data-table-region', tableCount: 4 },
     { slug: 'table', tableCount: 3 },
   ])('uses the full preview width before $slug tables overflow', async ({ slug, tableCount }) => {
     const { container } = await renderDocs([`/components/${slug}`]);

@@ -551,7 +551,7 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Data display',
-    description: '넓은 표에 접근 가능한 스크롤 영역과 좁은 화면 안내를 제공합니다.',
+    description: '넓은 표에 키보드로 접근 가능한 가로 스크롤 영역을 제공합니다.',
     importPath: '@opnay/city-ds-react/data-table-region',
     keywords: ['데이터 표', '가로 스크롤', '반응형 표'],
     load: () => import('./components/data-table-region/index.mdx'),

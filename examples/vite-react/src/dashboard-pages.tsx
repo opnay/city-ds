@@ -147,11 +147,7 @@ function TablePanel({
   return (
     <section aria-labelledby={id} className="city-surface-section">
       <SectionHeading description={description} id={id} title={title} />
-      <DataTableRegion
-        appearance="outline"
-        hint="표를 좌우로 움직여 모든 열을 확인할 수 있습니다."
-        label={`${title} 표 가로 스크롤 영역`}
-      >
+      <DataTableRegion appearance="outline" label={`${title} 표 가로 스크롤 영역`}>
         {children}
       </DataTableRegion>
     </section>

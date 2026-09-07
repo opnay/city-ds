@@ -228,6 +228,10 @@
   font-weight: 600;
   outline: none;
 }
+
+.city-block-step-content {
+  outline: none;
+}
 .city-block-qr {
   display: block;
   width: 192px;

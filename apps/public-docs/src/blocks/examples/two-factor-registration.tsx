@@ -4,7 +4,7 @@ import { Checkbox } from '@opnay/city-ds-react/checkbox';
 import { Field } from '@opnay/city-ds-react/field';
 import { OtpInput } from '@opnay/city-ds-react/otp-input';
 import { PasswordField, useAccountAction } from './user-management-shared';
-import { BlockCard } from './block-card';
+import { Panel } from '@opnay/city-ds-react/panel';
 import './blocks.css';
 
 export interface AuthenticatorEnrollment {
@@ -46,11 +46,11 @@ export function TwoFactorRegistration({
   const [recoveryCodes, setRecoveryCodes] = useState(initialRecoveryCodes);
   const [stored, setStored] = useState(false);
   const [notice, setNotice] = useState('');
-  const heading = useRef<HTMLHeadingElement>(null);
+  const content = useRef<HTMLElement>(null);
   const headingId = useId();
   const action = useAccountAction();
   useEffect(() => {
-    heading.current?.focus({ preventScroll: true });
+    content.current?.focus({ preventScroll: true });
   }, [step]);
 
   async function copy(value: string) {
@@ -88,9 +88,9 @@ export function TwoFactorRegistration({
   }
 
   return (
-    <BlockCard
-      title="인증 앱 등록"
-      description="로그인할 때 비밀번호와 인증 앱 코드를 함께 사용합니다."
+    <Panel.Root
+      className="city-block-form city-block-card"
+      aria-label="2차 인증 등록"
       render={<form />}
       onSubmit={async (event) => {
         event.preventDefault();
@@ -121,7 +121,7 @@ export function TwoFactorRegistration({
         }
       }}
     >
-      <ol className="city-block-steps" aria-label="2FA 등록 단계">
+      <ol className="city-block-steps" aria-label="2차 인증 등록 단계">
         {steps.map((label, index) => (
           <li
             key={label}
@@ -129,19 +129,18 @@ export function TwoFactorRegistration({
             data-complete={index < step ? '' : undefined}
           >
             <span className="city-block-step-number">{index + 1}</span>
-            <span>{label}</span>
+            <span id={`${headingId}-${index}`}>{label}</span>
           </li>
         ))}
       </ol>
-      <section className="city-block-section" aria-labelledby={headingId}>
-        <h4 ref={heading} tabIndex={-1} id={headingId} className="city-block-step-title">
-          {steps[step]}
-        </h4>
+      <section
+        ref={content}
+        tabIndex={-1}
+        className="city-block-section city-block-step-content"
+        aria-labelledby={`${headingId}-${step}`}
+      >
         {step === 0 && (
           <>
-            <p className="city-block-status">
-              보안 설정을 변경하려면 현재 비밀번호를 입력하십시오.
-            </p>
             <PasswordField
               label="현재 비밀번호"
               name="enrollment-password"
@@ -268,6 +267,6 @@ export function TwoFactorRegistration({
           {step === 3 ? '나중에 보관' : '등록 취소'}
         </Button>
       </div>
-    </BlockCard>
+    </Panel.Root>
   );
 }

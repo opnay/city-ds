@@ -64,7 +64,7 @@ export const BLOCK_DOCS = [
   },
   {
     slug: 'two-factor-management',
-    title: '2FA 관리',
+    title: '2차 인증',
     description: '인증 앱 관리와 네 단계 등록 폼, 복구 코드 보관·재발급을 구성합니다.',
     category: '사용자 관리',
     keywords: ['2FA', '인증 앱', '등록', '스텝 폼', '복구 코드', 'QR'],
@@ -160,7 +160,7 @@ export const USER_MANAGEMENT_MENU = [
   { title: '프로필 관리', slug: 'profile-management' },
   { title: '계정 관리', slug: 'account-management' },
   { title: '비밀번호 변경', slug: 'change-password' },
-  { title: '2FA 관리', slug: 'two-factor-management' },
+  { title: '2차 인증', slug: 'two-factor-management' },
   { title: '세션 기록', slug: 'session-history' },
 ] as const;
 

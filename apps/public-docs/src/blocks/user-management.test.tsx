@@ -195,7 +195,7 @@ describe('User management blocks', () => {
       'current-password',
     );
     await user.click(dialog.getByRole('button', { name: '인증 앱 해제' }));
-    expect(await screen.findByText('미등록')).toBeVisible();
+    expect(await screen.findByRole('button', { name: '인증 앱 등록' })).toBeVisible();
     expect(actions.disableTwoFactor).toHaveBeenCalledWith('current-password');
   });
 
@@ -209,7 +209,7 @@ describe('User management blocks', () => {
     await screen.findByText('PUBLICKEY');
     await user.click(screen.getByRole('button', { name: '등록 취소' }));
     expect(actions.cancelEnrollment).toHaveBeenCalledWith('enrollment-1');
-    expect(await screen.findByText('미등록')).toBeVisible();
+    expect(await screen.findByRole('button', { name: '인증 앱 등록' })).toBeVisible();
     expect(screen.queryByText('PUBLICKEY')).not.toBeInTheDocument();
   });
 

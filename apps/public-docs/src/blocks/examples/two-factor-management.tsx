@@ -43,7 +43,7 @@ export function TwoFactorManagement({
         onFinish={() => {
           setPendingRecovery([]);
           setSetup(false);
-          setNotice('2FA 설정을 완료했습니다.');
+          setNotice('2차 인증 설정을 완료했습니다.');
         }}
         onDeferRecovery={(codes) => {
           setPendingRecovery(codes);
@@ -55,23 +55,16 @@ export function TwoFactorManagement({
 
   return (
     <div className="city-block-form">
-      <header>
-        <h3 className="city-text-subsection-title">2FA 관리</h3>
-        <p className="city-block-description city-text-supporting">
-          비밀번호 외에 추가 인증으로 계정을 보호합니다.
-        </p>
-      </header>
       <BlockCard
-        title="인증 앱"
-        headingLevel={4}
+        title="2차 인증"
         description={
           <span className="city-block-label-row">
             <span>
               {registeredAt
                 ? `등록일 ${registeredAt}`
-                : '인증 앱의 일회용 코드로 로그인 시 본인을 확인합니다.'}
+                : '로그인 시 인증 앱의 코드를 추가로 확인합니다.'}
             </span>
-            <Badge>{registeredAt ? '사용 중' : '미등록'}</Badge>
+            {registeredAt && <Badge>사용 중</Badge>}
           </span>
         }
         actions={

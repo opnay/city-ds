@@ -4,6 +4,7 @@ import { Button } from '@opnay/city-ds-react/button';
 import { Field } from '@opnay/city-ds-react/field';
 import { Input } from '@opnay/city-ds-react/input';
 import { OtpInput } from '@opnay/city-ds-react/otp-input';
+import { BlockCard } from './block-card';
 import { AccountActionDialog, PasswordField, useAccountAction } from './user-management-shared';
 import './blocks.css';
 
@@ -41,10 +42,10 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
 
   if (deleted)
     return (
-      <section className="city-block-form">
-        <h3 className="city-text-subsection-title">계정이 탈퇴되었습니다</h3>
-        <p className="city-block-description">이 계정으로 더 이상 로그인할 수 없습니다.</p>
-      </section>
+      <BlockCard
+        title="계정이 탈퇴되었습니다"
+        description="이 계정으로 더 이상 로그인할 수 없습니다."
+      />
     );
 
   return (
@@ -55,14 +56,12 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
           로그인 이메일과 연결된 계정을 관리합니다.
         </p>
       </header>
-      <section className="city-block-section" aria-label="로그인 이메일">
-        <div className="city-block-split">
-          <div>
-            <h4 className="city-block-section-title">로그인 이메일</h4>
-            <p className="city-block-value">{email}</p>
-          </div>
-          <Badge>인증됨</Badge>
-        </div>
+      <BlockCard
+        title="로그인 이메일"
+        description={email}
+        headingLevel={4}
+        actions={<Badge>인증됨</Badge>}
+      >
         {!editing ? (
           <div>
             <Button
@@ -162,14 +161,12 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
             </div>
           </form>
         )}
-      </section>
-      <section className="city-block-section city-block-divider" aria-label="연결 계정">
-        <div>
-          <h4 className="city-block-section-title">연결 계정</h4>
-          <p className="city-block-description">
-            연결한 계정 또는 비밀번호로 로그인할 수 있습니다.
-          </p>
-        </div>
+      </BlockCard>
+      <BlockCard
+        title="연결 계정"
+        description="연결한 계정 또는 비밀번호로 로그인할 수 있습니다."
+        headingLevel={4}
+      >
         <ul className="city-block-list">
           {providers.map((provider) => (
             <li className="city-block-split" key={provider.name}>
@@ -207,7 +204,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
             </li>
           ))}
         </ul>
-      </section>
+      </BlockCard>
       {action.error && (
         <p role="alert" className="city-block-error">
           {action.error}
@@ -216,13 +213,11 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
       <output className="city-block-status" aria-live="polite">
         {notice}
       </output>
-      <section className="city-block-section city-block-divider" aria-label="계정 탈퇴">
-        <div>
-          <h4 className="city-block-section-title">계정 탈퇴</h4>
-          <p className="city-block-description">
-            계정과 개인 정보가 삭제됩니다. 탈퇴 후에는 복구할 수 없습니다.
-          </p>
-        </div>
+      <BlockCard
+        title="계정 탈퇴"
+        description="계정과 개인 정보가 삭제됩니다. 탈퇴 후에는 복구할 수 없습니다."
+        headingLevel={4}
+      >
         <div>
           <Button
             size="lg"
@@ -233,7 +228,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
             계정 탈퇴
           </Button>
         </div>
-      </section>
+      </BlockCard>
       <AccountActionDialog
         open={!!disconnect}
         onOpenChange={(open) => {

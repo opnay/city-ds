@@ -3,6 +3,7 @@ import { Button } from '@opnay/city-ds-react/button';
 import { Checkbox } from '@opnay/city-ds-react/checkbox';
 import { Field } from '@opnay/city-ds-react/field';
 import { PasswordField, useAccountAction } from './user-management-shared';
+import { BlockCard } from './block-card';
 import './blocks.css';
 
 export interface PasswordChange {
@@ -39,9 +40,10 @@ export function ChangePassword({
   }
 
   return (
-    <form
-      className="city-block-form"
-      noValidate
+    <BlockCard
+      title="비밀번호 변경"
+      description="다른 서비스에서 사용하지 않는 비밀번호를 설정하십시오."
+      render={<form noValidate />}
       onSubmit={async (event) => {
         event.preventDefault();
         setAttempted(true);
@@ -62,12 +64,6 @@ export function ChangePassword({
         }
       }}
     >
-      <header>
-        <h3 className="city-text-subsection-title">비밀번호 변경</h3>
-        <p className="city-block-description city-text-supporting">
-          다른 서비스에서 사용하지 않는 비밀번호를 설정하십시오.
-        </p>
-      </header>
       <PasswordField
         label="현재 비밀번호"
         name="current-password"
@@ -131,7 +127,7 @@ export function ChangePassword({
       <output className="city-block-status" aria-live="polite">
         {notice}
       </output>
-    </form>
+    </BlockCard>
   );
 }
 

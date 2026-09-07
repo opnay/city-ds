@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { ShieldCheck } from 'lucide-react';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
 import { AccountActionDialog } from './user-management-shared';
+import { BlockCard } from './block-card';
 import {
   TwoFactorRegistration,
   type AuthenticatorConfirmation,
@@ -61,19 +61,16 @@ export function TwoFactorManagement({
           비밀번호 외에 추가 인증으로 계정을 보호합니다.
         </p>
       </header>
-      <section className="city-block-section" aria-label="인증 앱">
-        <div className="city-block-split">
-          <div className="city-block-check-row">
-            <ShieldCheck aria-hidden="true" size={24} />
-            <h4 className="city-block-section-title">인증 앱</h4>
-          </div>
-          <Badge>{registeredAt ? '사용 중' : '미등록'}</Badge>
-        </div>
-        <p className="city-block-status">
-          {registeredAt
+      <BlockCard
+        title="인증 앱"
+        headingLevel={4}
+        description={
+          registeredAt
             ? `등록일 ${registeredAt}`
-            : '인증 앱의 일회용 코드로 로그인 시 본인을 확인합니다.'}
-        </p>
+            : '인증 앱의 일회용 코드로 로그인 시 본인을 확인합니다.'
+        }
+        actions={<Badge>{registeredAt ? '사용 중' : '미등록'}</Badge>}
+      >
         <div className="city-block-actions">
           {registeredAt ? (
             <Button size="lg" variant="outline" onClick={() => setConfirm('disable')}>
@@ -91,15 +88,17 @@ export function TwoFactorManagement({
             </Button>
           )}
         </div>
-      </section>
+      </BlockCard>
       {registeredAt && (
-        <section className="city-block-section city-block-divider" aria-label="복구 코드 관리">
-          <h4 className="city-block-section-title">복구 코드</h4>
-          <p className="city-block-status">
-            {pendingRecovery.length
+        <BlockCard
+          title="복구 코드"
+          headingLevel={4}
+          description={
+            pendingRecovery.length
               ? '등록한 인증 앱은 사용 중입니다. 복구 코드 보관을 마무리하십시오.'
-              : '인증 앱에 접근할 수 없을 때 사용합니다. 재발급하면 기존 복구 코드는 사용할 수 없습니다.'}
-          </p>
+              : '인증 앱에 접근할 수 없을 때 사용합니다. 재발급하면 기존 복구 코드는 사용할 수 없습니다.'
+          }
+        >
           <div className="city-block-actions">
             {pendingRecovery.length ? (
               <Button size="lg" onClick={() => setSetup(true)}>
@@ -111,7 +110,7 @@ export function TwoFactorManagement({
               </Button>
             )}
           </div>
-        </section>
+        </BlockCard>
       )}
       <output className="city-block-status" aria-live="polite">
         {notice}

@@ -4,6 +4,7 @@ import { Checkbox } from '@opnay/city-ds-react/checkbox';
 import { Field } from '@opnay/city-ds-react/field';
 import { OtpInput } from '@opnay/city-ds-react/otp-input';
 import { PasswordField, useAccountAction } from './user-management-shared';
+import { BlockCard } from './block-card';
 import './blocks.css';
 
 export interface AuthenticatorEnrollment {
@@ -87,8 +88,10 @@ export function TwoFactorRegistration({
   }
 
   return (
-    <form
-      className="city-block-form"
+    <BlockCard
+      title="인증 앱 등록"
+      description="로그인할 때 비밀번호와 인증 앱 코드를 함께 사용합니다."
+      render={<form />}
       onSubmit={async (event) => {
         event.preventDefault();
         if (action.busy) return;
@@ -118,12 +121,6 @@ export function TwoFactorRegistration({
         }
       }}
     >
-      <header>
-        <h3 className="city-text-subsection-title">인증 앱 등록</h3>
-        <p className="city-block-description city-text-supporting">
-          로그인할 때 비밀번호와 인증 앱 코드를 함께 사용합니다.
-        </p>
-      </header>
       <ol className="city-block-steps" aria-label="2FA 등록 단계">
         {steps.map((label, index) => (
           <li
@@ -271,6 +268,6 @@ export function TwoFactorRegistration({
           {step === 3 ? '나중에 보관' : '등록 취소'}
         </Button>
       </div>
-    </form>
+    </BlockCard>
   );
 }

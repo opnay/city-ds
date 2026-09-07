@@ -3,6 +3,7 @@ import { Avatar } from '@opnay/city-ds-react/avatar';
 import { Button } from '@opnay/city-ds-react/button';
 import { Field } from '@opnay/city-ds-react/field';
 import { Input, Textarea } from '@opnay/city-ds-react/input';
+import { BlockCard } from './block-card';
 import './blocks.css';
 
 export interface ProfileValues {
@@ -54,9 +55,10 @@ export function ProfileManagement({
   }
 
   return (
-    <form
-      className="city-block-form"
-      noValidate
+    <BlockCard
+      title="프로필 관리"
+      description="다른 사람에게 표시되는 사진과 소개를 관리합니다."
+      render={<form noValidate />}
       onSubmit={async (event) => {
         event.preventDefault();
         if (pending.current || !dirty) return;
@@ -80,12 +82,6 @@ export function ProfileManagement({
         }
       }}
     >
-      <div>
-        <h3 className="city-text-subsection-title">프로필 관리</h3>
-        <p className="city-block-description city-text-supporting">
-          다른 사람에게 표시되는 사진과 소개를 관리합니다.
-        </p>
-      </div>
       <Field.Root invalid={!!imageError} disabled={saving}>
         <Field.Label className="city-text-supporting" htmlFor={imageId}>
           프로필 이미지
@@ -197,7 +193,7 @@ export function ProfileManagement({
       <output className="city-block-status" aria-live="polite">
         {message || (saving ? '프로필을 저장하고 있습니다.' : '')}
       </output>
-    </form>
+    </BlockCard>
   );
 }
 

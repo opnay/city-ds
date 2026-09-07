@@ -4,6 +4,7 @@ import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
 import { SegmentedControl } from '@opnay/city-ds-react/segmented-control';
 import { AccountActionDialog } from './user-management-shared';
+import { BlockCard } from './block-card';
 import './blocks.css';
 
 export interface SessionRecord {
@@ -79,13 +80,10 @@ export function SessionHistory({
   const otherActive = sessions.filter((session) => !session.current && session.status === 'active');
   const visible = sessions.filter((session) => filter === 'all' || session.status === 'active');
   return (
-    <section aria-label="로그인 세션" className="city-block-form">
-      <header>
-        <h3 className="city-text-subsection-title">세션 기록</h3>
-        <p className="city-block-description city-text-supporting">
-          로그인한 기기를 확인하고 사용하지 않는 세션을 종료합니다.
-        </p>
-      </header>
+    <BlockCard
+      title="세션 기록"
+      description="로그인한 기기를 확인하고 사용하지 않는 세션을 종료합니다."
+    >
       <div className="city-block-split">
         <SegmentedControl size="lg" aria-label="세션 보기" value={filter} onValueChange={setFilter}>
           <SegmentedControl.Item value="active">로그인 중</SegmentedControl.Item>
@@ -170,7 +168,7 @@ export function SessionHistory({
           setNotice(`${ids.length}개 세션을 종료했습니다.`);
         }}
       />
-    </section>
+    </BlockCard>
   );
 }
 

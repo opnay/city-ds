@@ -8,6 +8,14 @@ async function sharedSource() {
   };
 }
 
+async function cardSource() {
+  return {
+    filename: 'block-card.tsx',
+    source: (await import('./examples/block-card.tsx?raw')).default,
+    language: 'tsx',
+  };
+}
+
 export const BLOCK_DOCS = [
   {
     slug: 'profile-management',
@@ -15,12 +23,13 @@ export const BLOCK_DOCS = [
     description: '프로필 이미지, 표시 이름과 자기소개를 수정하고 저장·취소합니다.',
     category: '사용자 관리',
     keywords: ['사용자', '프로필', '이미지', '자기소개', '저장', '취소'],
-    components: ['avatar', 'field', 'input', 'button'],
+    components: ['panel', 'avatar', 'field', 'input', 'button'],
     guidance:
       'ProfileManagement의 onSave에 이미지 업로드와 프로필 저장 요청을 연결하십시오. 미리보기의 변경 사항은 현재 화면에만 반영됩니다.',
     load: async () => ({
       Component: (await import('./examples/profile-management')).default,
       source: (await import('./examples/profile-management.tsx?raw')).default,
+      extraFiles: [await cardSource()],
     }),
   },
   {
@@ -29,13 +38,13 @@ export const BLOCK_DOCS = [
     description: '로그인 이메일을 변경하고 연결 계정과 계정 탈퇴를 관리합니다.',
     category: '사용자 관리',
     keywords: ['계정', '이메일', '연결 계정', '탈퇴'],
-    components: ['field', 'input', 'otp-input', 'badge', 'button', 'dialog'],
+    components: ['panel', 'field', 'input', 'otp-input', 'badge', 'button', 'dialog'],
     guidance:
       'actions에 이메일 변경 요청·코드 검증·외부 계정 연결·탈퇴 API를 연결하십시오. 연결 해제 시 남은 로그인 수단을 서버에서 검증해야 합니다. 미리보기의 기본 콜백은 통신 없이 화면 상태만 변경합니다.',
     load: async () => ({
       Component: (await import('./examples/account-management')).default,
       source: (await import('./examples/account-management.tsx?raw')).default,
-      extraFiles: [await sharedSource()],
+      extraFiles: [await cardSource(), await sharedSource()],
     }),
   },
   {
@@ -44,13 +53,13 @@ export const BLOCK_DOCS = [
     description: '현재 비밀번호 확인과 새 비밀번호 입력, 다른 기기 로그아웃을 구성합니다.',
     category: '사용자 관리',
     keywords: ['비밀번호', '변경', '확인', '로그아웃'],
-    components: ['field', 'input', 'checkbox', 'button'],
+    components: ['panel', 'field', 'input', 'checkbox', 'button'],
     guidance:
       'onChangePassword에 재인증·비밀번호 변경·다른 세션 종료를 연결하십시오. minLength는 서비스 정책에 맞게 설정하고 서버에서도 검증하십시오. 미리보기의 기본 콜백은 비밀번호를 저장하거나 전송하지 않습니다.',
     load: async () => ({
       Component: (await import('./examples/change-password')).default,
       source: (await import('./examples/change-password.tsx?raw')).default,
-      extraFiles: [await sharedSource()],
+      extraFiles: [await cardSource(), await sharedSource()],
     }),
   },
   {
@@ -59,13 +68,14 @@ export const BLOCK_DOCS = [
     description: '인증 앱 관리와 네 단계 등록 폼, 복구 코드 보관·재발급을 구성합니다.',
     category: '사용자 관리',
     keywords: ['2FA', '인증 앱', '등록', '스텝 폼', '복구 코드', 'QR'],
-    components: ['field', 'input', 'otp-input', 'checkbox', 'badge', 'button', 'dialog'],
+    components: ['panel', 'field', 'input', 'otp-input', 'checkbox', 'badge', 'button', 'dialog'],
     guidance:
       'TwoFactorRegistration은 독립적으로 사용할 수 있는 등록 스텝 폼입니다. 실제 설정 키·QR·복구 코드는 서버에서 제공하고 코드 검증 성공 시 2FA를 활성화하십시오. 이후 보관을 중단해도 활성 상태를 유지합니다. 미리보기 QR은 공개 예제 키이며 기본 콜백은 실제 재인증·TOTP 검증을 수행하지 않습니다.',
     load: async () => ({
       Component: (await import('./examples/two-factor-management')).default,
       source: (await import('./examples/two-factor-management.tsx?raw')).default,
       extraFiles: [
+        await cardSource(),
         await sharedSource(),
         {
           filename: 'two-factor-registration.tsx',
@@ -86,13 +96,13 @@ export const BLOCK_DOCS = [
     description: '로그인 기기와 최근 활동을 확인하고 다른 세션을 개별 또는 일괄 종료합니다.',
     category: '사용자 관리',
     keywords: ['세션', '기기', '접속', '기록', '로그아웃'],
-    components: ['segmented-control', 'badge', 'button', 'dialog'],
+    components: ['panel', 'segmented-control', 'badge', 'button', 'dialog'],
     guidance:
       'initialSessions에 서버에서 조회한 세션을 전달하고 onRevoke에 종료 요청을 연결하십시오. 현재 세션을 제외한 ID만 전달하며 성공한 뒤 목록을 갱신합니다. 서버는 계정 소유권과 세션 유효성을 검증해야 합니다. 미리보기 데이터는 샘플입니다.',
     load: async () => ({
       Component: (await import('./examples/session-history')).default,
       source: (await import('./examples/session-history.tsx?raw')).default,
-      extraFiles: [await sharedSource()],
+      extraFiles: [await cardSource(), await sharedSource()],
     }),
   },
   {

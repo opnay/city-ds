@@ -41,13 +41,16 @@ export function RadioGroupRoot<Value>({
 
 RadioGroupRoot.displayName = 'RadioGroup.Root';
 
-export interface RadioGroupItemProps<Value = unknown> extends Omit<
+export interface RadioGroupControlProps<Value = unknown> extends Omit<
   BaseRadio.Root.Props<Value>,
   'className'
 > {
   className?: StateClassName<BaseRadio.Root.State>;
-  labelClassName?: string;
   size?: ControlSize;
+}
+
+export interface RadioGroupItemProps<Value = unknown> extends RadioGroupControlProps<Value> {
+  labelClassName?: string;
 }
 
 const radioSizeClasses: Record<ControlSize, string> = {
@@ -66,13 +69,46 @@ const radioIndicatorSizeClasses: Record<ControlSize, string> = {
   xlg: 'size-2.5',
 };
 
+const RadioGroupControlBase = React.forwardRef(function RadioGroupControl(
+  { children, className, size: sizeProp, ...props }: RadioGroupControlProps,
+  ref: React.ForwardedRef<HTMLElement>,
+) {
+  const rootSize = React.useContext(RadioGroupSizeContext);
+  const size = sizeProp ?? rootSize;
+
+  return (
+    <BaseRadio.Root
+      {...props}
+      data-city-size={size}
+      ref={ref}
+      className={(state) =>
+        cn(
+          atomicRoundShapeClass,
+          'border-city-input bg-city-background focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:border-city-primary grid shrink-0 place-items-center border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed',
+          radioSizeClasses[size],
+          resolveClassName(className, state),
+        )
+      }
+    >
+      <BaseRadio.Indicator
+        className={cn('bg-city-primary', atomicRoundShapeClass, radioIndicatorSizeClasses[size])}
+      />
+      {children}
+    </BaseRadio.Root>
+  );
+});
+
+RadioGroupControlBase.displayName = 'RadioGroup.Control';
+
+export const RadioGroupControl = RadioGroupControlBase as <Value>(
+  props: RadioGroupControlProps<Value> & React.RefAttributes<HTMLElement>,
+) => React.JSX.Element;
+
 const RadioGroupItemBase = React.forwardRef(function RadioGroupItem(
-  { children, className, labelClassName, size: sizeProp, ...props }: RadioGroupItemProps,
+  { children, labelClassName, ...props }: RadioGroupItemProps,
   ref: React.ForwardedRef<HTMLElement>,
 ) {
   const labelId = React.useId();
-  const rootSize = React.useContext(RadioGroupSizeContext);
-  const size = sizeProp ?? rootSize;
 
   return (
     <label
@@ -81,24 +117,11 @@ const RadioGroupItemBase = React.forwardRef(function RadioGroupItem(
         labelClassName,
       )}
     >
-      <BaseRadio.Root
+      <RadioGroupControl
         {...props}
         aria-labelledby={props['aria-labelledby'] ?? labelId}
-        data-city-size={size}
         ref={ref}
-        className={(state) =>
-          cn(
-            atomicRoundShapeClass,
-            'border-city-input bg-city-background focus-visible:ring-city-ring focus-visible:ring-offset-city-background data-[checked]:border-city-primary grid shrink-0 place-items-center border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed',
-            radioSizeClasses[size],
-            resolveClassName(className, state),
-          )
-        }
-      >
-        <BaseRadio.Indicator
-          className={cn('bg-city-primary', atomicRoundShapeClass, radioIndicatorSizeClasses[size])}
-        />
-      </BaseRadio.Root>
+      />
       <span id={labelId}>{children}</span>
     </label>
   );
@@ -112,4 +135,5 @@ export const RadioGroupItem = RadioGroupItemBase as <Value>(
 
 export const RadioGroup = Object.assign(RadioGroupRoot, {
   Item: RadioGroupItem,
+  Control: RadioGroupControl,
 });

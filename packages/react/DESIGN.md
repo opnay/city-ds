@@ -205,6 +205,8 @@ CTA는 결과를 예측할 수 있게 쓰십시오. `확인`, `예`보다 `변�
 
 `Input`, `NumberInput`, `SearchInput`과 `DatePicker`는 입력·선택 제어만 소유합니다. 레이블, 설명, 오류가 필요한 경우 외부 `Field.Root` 안에서 `Field.Label`, 제어, `Field.Description`, `Field.Error`를 조합하십시오. 합성 입력의 `disabled`와 `invalid` 상태는 `Field.Root`와 입력 Root에 동일하게 전달하십시오.
 
+`SelectionCard`는 플랜처럼 설명을 비교하며 선택하는 항목의 label 표면입니다. 카드마다 `RadioGroup.Control` 또는 `Checkbox` 하나를 합성하고 선택 값과 이벤트는 입력이나 그룹에 두십시오. `RadioGroup.Item`은 자체 label을 포함하므로 카드 안에 중첩하지 마십시오. 제목은 `aria-labelledby`, 보충 설명은 `aria-describedby`로 입력과 연결하십시오. 링크·버튼·다른 label은 카드 밖에 두고 실제 입력의 선택·포커스·disabled 상태를 카드 표면에 반영하십시오.
+
 `SearchInput.Root`는 기본적으로 `div`를 렌더합니다. 검색 제출이 필요하면 소비처의 `<form onSubmit={...}>` 안에 배치하고, 값은 `onValueChange` 또는 이름을 지정한 입력의 `FormData`로 읽으십시오. `SearchInput.Submit`은 해당 소비처 form을 제출합니다. Form과 서버 오류 처리 정책은 소비처가 소유합니다.
 
 필수 여부, 형식, 단위, 제한은 입력 전에 알 수 있게 하십시오. 제출 후 오류만 보여주지 말고 가능하면 잘못된 필드 가까이에 원인과 수정 방법을 표시하십시오. 비활성 상태로 이유를 숨기기보다 필요한 조건을 설명하십시오.

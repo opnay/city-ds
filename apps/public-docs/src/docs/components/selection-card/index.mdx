@@ -1,0 +1,19 @@
+import { pageData } from './page-data';
+
+<ComponentReference data={pageData} />
+
+## 접근성
+
+카드마다 `RadioGroup.Control` 또는 `Checkbox` 하나를 넣으십시오. 단일 선택은 `RadioGroup`,
+복수 선택은 `CheckboxGroup`으로 묶고 그룹 이름을 제공하십시오. 카드 자체에는 `role`,
+`tabIndex`, 선택 상태나 클릭 핸들러를 추가하지 마십시오.
+
+제목의 `id`를 입력의 `aria-labelledby`에, 설명의 `id`를 `aria-describedby`에 연결하십시오.
+가격이나 긴 기능 목록 전체가 입력의 이름으로 읽히지 않도록 제목을 짧게 유지하십시오.
+
+`RadioGroup.Item`은 자체 label을 포함하므로 카드 안에서 사용하지 마십시오. 카드 안에는
+별도 링크, 버튼, 다른 label을 넣지 마십시오. 신청이나 이동 액션이 필요하면 카드 바깥에
+버튼을 배치하십시오. `render`로 요소를 바꿀 때도 입력과 label의 연결을 유지하십시오.
+
+선택·부분 선택·포커스·비활성 표면은 내부 입력의 상태를 따릅니다. `disabled`는 카드가 아닌
+입력이나 입력 그룹에 지정하십시오. 좁은 화면에서는 소비 레이아웃에서 카드를 한 열로 배치하십시오.

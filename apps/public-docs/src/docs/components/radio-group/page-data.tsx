@@ -10,6 +10,12 @@ export const pageData = {
   featuredExampleId: 'radio-group-playground',
   api: [
     {
+      name: 'RadioGroup.Control',
+      type: 'Radio props + size',
+      description:
+        'label 없는 라디오 제어입니다. SelectionCard나 사용자 정의 label 안에서 사용하십시오.',
+    },
+    {
       name: 'value / onValueChange',
       type: 'Value / callback',
       description: '단일 선택을 제어합니다.',

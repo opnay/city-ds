@@ -234,6 +234,7 @@ export function TwoFactorRegistration({
       <div className="city-block-actions city-block-actions--separated">
         {step === 2 && (
           <Button
+            className="city-block-back-action"
             size="lg"
             type="button"
             variant="outline"

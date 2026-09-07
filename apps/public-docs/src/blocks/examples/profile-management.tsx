@@ -86,10 +86,6 @@ export function ProfileManagement({
           프로필 이미지
         </Field.Label>
         <div className="city-block-avatar-row">
-          <Avatar.Root size="lg">
-            <Avatar.Image src={imageUrl} alt="프로필 이미지 미리보기" />
-            <Avatar.Fallback>{profile.name.trim().slice(0, 2) || '사용자'}</Avatar.Fallback>
-          </Avatar.Root>
           <InputGroup.Root
             size="lg"
             role="group"
@@ -123,6 +119,10 @@ export function ProfileManagement({
               <X size={16} aria-hidden="true" />
             </Button>
           </InputGroup.Root>
+          <Avatar.Root size="lg">
+            <Avatar.Image src={imageUrl} alt="프로필 이미지 미리보기" />
+            <Avatar.Fallback>{profile.name.trim().slice(0, 2) || '사용자'}</Avatar.Fallback>
+          </Avatar.Root>
         </div>
         <input
           ref={fileInput}

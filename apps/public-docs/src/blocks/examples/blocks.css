@@ -117,9 +117,14 @@
 
 .city-block-avatar-row {
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--city-space-4);
+}
+
+.city-block-back-action {
+  margin-inline-end: auto;
 }
 
 .city-block-error {

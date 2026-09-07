@@ -25,7 +25,7 @@ export const BLOCK_DOCS = [
     keywords: ['사용자', '프로필', '이미지', '자기소개', '저장', '취소'],
     components: ['panel', 'avatar', 'field', 'input', 'button', 'toast'],
     guidance:
-      'ProfileManagement의 onSave에 이미지 업로드와 프로필 저장 요청을 연결하십시오. 미리보기의 변경 사항은 현재 화면에만 반영됩니다.',
+      'ProfileManagement의 onSave에 이미지 업로드와 프로필 저장 요청을 연결하십시오. 이미지 선택은 InputGroup 안의 변경 버튼과 iconOnly 제거 버튼으로 합성하며, Avatar는 행의 반대편에 배치합니다. 미리보기의 변경 사항은 현재 화면에만 반영됩니다.',
     load: async () => ({
       Component: (await import('./examples/profile-management')).default,
       source: (await import('./examples/profile-management.tsx?raw')).default,

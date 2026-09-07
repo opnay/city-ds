@@ -85,7 +85,7 @@ export function SessionHistory({
       description="로그인한 기기를 확인하고 사용하지 않는 세션을 종료합니다."
     >
       <div className="city-block-split">
-        <SegmentedControl size="lg" aria-label="세션 보기" value={filter} onValueChange={setFilter}>
+        <SegmentedControl size="md" aria-label="세션 보기" value={filter} onValueChange={setFilter}>
           <SegmentedControl.Item value="active">로그인 중</SegmentedControl.Item>
           <SegmentedControl.Item value="all">전체 기록</SegmentedControl.Item>
         </SegmentedControl>

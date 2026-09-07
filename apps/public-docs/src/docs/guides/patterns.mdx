@@ -151,13 +151,13 @@ import { Button } from '@opnay/city-ds-react/button';
 import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Table } from '@opnay/city-ds-react/table';
 
-<DataTableRegion hint="표를 가로로 스크롤하면 모든 열을 확인할 수 있습니다." label="프로젝트 목록">
+<DataTableRegion label="프로젝트 목록">
   <Table.Root>{/* Header, Body, Row, Cell */}</Table.Root>
 </DataTableRegion>;
 ```
 
-`DataTableRegion`에는 고유한 `label`을 주고, 좁은 화면에서 가로 스크롤 가능하다는
-힌트를 제공하십시오. 로딩, 빈 결과, 오류, overflow 상태도 기본 목록과 함께 확인해야
+`DataTableRegion`에는 고유한 `label`을 제공하십시오. 스크롤 안내 문구는 사용하는
+프로젝트에서 필요에 따라 구성하십시오. 로딩, 빈 결과, 오류, overflow 상태도 기본 목록과 함께 확인해야
 합니다.
 
 `FilterBar`와 Table을 한 데이터 영역에 배치할 때는 첫·마지막 열의 16px inline gutter를

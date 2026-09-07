@@ -45,12 +45,7 @@ export default function DataTableRegionOverflowExample() {
   return (
     <div className="city-docs-example-stack">
       {appearances.map((appearance) => (
-        <DataTableRegion
-          appearance={appearance}
-          hint="표를 가로로 스크롤해 나머지 열을 확인하십시오."
-          key={appearance}
-          label={`${appearance} 발행 기록`}
-        >
+        <DataTableRegion appearance={appearance} key={appearance} label={`${appearance} 발행 기록`}>
           <ReleaseTable />
         </DataTableRegion>
       ))}

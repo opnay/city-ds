@@ -65,14 +65,17 @@ export function TwoFactorManagement({
         title="인증 앱"
         headingLevel={4}
         description={
-          registeredAt
-            ? `등록일 ${registeredAt}`
-            : '인증 앱의 일회용 코드로 로그인 시 본인을 확인합니다.'
+          <span className="city-block-label-row">
+            <span>
+              {registeredAt
+                ? `등록일 ${registeredAt}`
+                : '인증 앱의 일회용 코드로 로그인 시 본인을 확인합니다.'}
+            </span>
+            <Badge>{registeredAt ? '사용 중' : '미등록'}</Badge>
+          </span>
         }
-        actions={<Badge>{registeredAt ? '사용 중' : '미등록'}</Badge>}
-      >
-        <div className="city-block-actions">
-          {registeredAt ? (
+        actions={
+          registeredAt ? (
             <Button size="lg" variant="outline" onClick={() => setConfirm('disable')}>
               인증 앱 해제
             </Button>
@@ -86,9 +89,9 @@ export function TwoFactorManagement({
             >
               인증 앱 등록
             </Button>
-          )}
-        </div>
-      </BlockCard>
+          )
+        }
+      />
       {registeredAt && (
         <BlockCard
           title="복구 코드"
@@ -98,9 +101,8 @@ export function TwoFactorManagement({
               ? '등록한 인증 앱은 사용 중입니다. 복구 코드 보관을 마무리하십시오.'
               : '인증 앱에 접근할 수 없을 때 사용합니다. 재발급하면 기존 복구 코드는 사용할 수 없습니다.'
           }
-        >
-          <div className="city-block-actions">
-            {pendingRecovery.length ? (
+          actions={
+            pendingRecovery.length ? (
               <Button size="lg" onClick={() => setSetup(true)}>
                 복구 코드 보관 계속
               </Button>
@@ -108,9 +110,9 @@ export function TwoFactorManagement({
               <Button size="lg" variant="outline" onClick={() => setConfirm('regenerate')}>
                 복구 코드 재발급
               </Button>
-            )}
-          </div>
-        </BlockCard>
+            )
+          }
+        />
       )}
       <output className="city-block-status" aria-live="polite">
         {notice}

@@ -3,7 +3,7 @@
   display: grid;
   width: 100%;
   min-width: 0;
-  gap: var(--city-space-6);
+  gap: var(--city-space-4);
 }
 
 .city-block-form {
@@ -16,7 +16,7 @@
 }
 
 .city-block-card {
-  padding: var(--city-space-6);
+  padding: var(--city-space-5);
   border: 1px solid var(--city-color-border);
   border-radius: var(--city-radius-md);
   background: var(--city-color-background);
@@ -24,10 +24,10 @@
 }
 
 .city-block-card-header {
-  align-items: flex-start;
+  align-items: center;
 }
 .city-block-card-header > [data-city-panel-header-content] {
-  flex: 1 1 12rem;
+  flex: 1 1 10rem;
 }
 .city-block-card-heading {
   display: grid;
@@ -43,7 +43,7 @@
 }
 .city-block-card-body {
   display: grid;
-  gap: var(--city-space-6);
+  gap: var(--city-space-4);
 }
 @media (max-width: 480px) {
   .city-block-card {
@@ -71,6 +71,20 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--city-space-2);
+  justify-content: flex-end;
+}
+
+.city-block-label-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--city-space-2);
+}
+.city-block-avatar-row > .city-block-actions {
+  margin-inline-start: auto;
+}
+.city-block-split > button {
+  margin-inline-start: auto;
 }
 
 .city-block-actions--separated {
@@ -114,10 +128,14 @@
 }
 
 .city-block-password-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--city-space-1);
-  align-items: center;
+  width: 100%;
+}
+.city-block-password-row[data-invalid] {
+  border-color: var(--city-color-destructive);
+}
+.city-block-password-toggle {
+  width: var(--city-control-sm);
+  padding-inline: 0;
 }
 
 .city-block-section-title {
@@ -243,6 +261,6 @@
 @media (max-width: 480px) {
   .city-block-session > button {
     grid-column: 2 / -1;
-    justify-self: start;
+    justify-self: end;
   }
 }

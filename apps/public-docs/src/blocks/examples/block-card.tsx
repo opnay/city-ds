@@ -4,7 +4,7 @@ import './blocks.css';
 
 interface BlockCardProps extends Omit<PanelRootProps, 'title' | 'children'> {
   title: string;
-  description?: string;
+  description?: ReactNode;
   actions?: ReactNode;
   headingLevel?: 3 | 4;
   children?: ReactNode;
@@ -43,7 +43,9 @@ export function BlockCard({
           )}
         </div>
       </Panel.Header>
-      {children != null && <Panel.Body className="city-block-card-body">{children}</Panel.Body>}
+      {children != null && children !== false && (
+        <Panel.Body className="city-block-card-body">{children}</Panel.Body>
+      )}
     </Panel.Root>
   );
 }

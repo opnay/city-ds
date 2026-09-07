@@ -58,12 +58,15 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
       </header>
       <BlockCard
         title="로그인 이메일"
-        description={email}
+        description={
+          <span className="city-block-label-row">
+            <span>{email}</span>
+            <Badge>인증됨</Badge>
+          </span>
+        }
         headingLevel={4}
-        actions={<Badge>인증됨</Badge>}
-      >
-        {!editing ? (
-          <div>
+        actions={
+          !editing ? (
             <Button
               size="lg"
               variant="outline"
@@ -75,8 +78,10 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
             >
               이메일 변경
             </Button>
-          </div>
-        ) : (
+          ) : undefined
+        }
+      >
+        {editing && (
           <form
             className="city-block-section"
             onSubmit={async (event) => {
@@ -217,8 +222,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
         title="계정 탈퇴"
         description="계정과 개인 정보가 삭제됩니다. 탈퇴 후에는 복구할 수 없습니다."
         headingLevel={4}
-      >
-        <div>
+        actions={
           <Button
             size="lg"
             variant="destructive"
@@ -227,8 +231,8 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
           >
             계정 탈퇴
           </Button>
-        </div>
-      </BlockCard>
+        }
+      />
       <AccountActionDialog
         open={!!disconnect}
         onOpenChange={(open) => {

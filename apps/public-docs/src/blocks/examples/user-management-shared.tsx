@@ -3,7 +3,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@opnay/city-ds-react/button';
 import { Dialog } from '@opnay/city-ds-react/dialog';
 import { Field } from '@opnay/city-ds-react/field';
-import { Input } from '@opnay/city-ds-react/input';
+import { Input, InputGroup } from '@opnay/city-ds-react/input';
 
 export function useAccountAction() {
   const lock = useRef(false);
@@ -55,7 +55,11 @@ export function PasswordField({
   return (
     <Field.Root disabled={disabled} invalid={!!error}>
       <Field.Label className="city-text-supporting">{label}</Field.Label>
-      <div className="city-block-password-row">
+      <InputGroup.Root
+        size="lg"
+        className="city-block-password-row"
+        data-invalid={error ? '' : undefined}
+      >
         <Input
           size="lg"
           name={name}
@@ -65,18 +69,25 @@ export function PasswordField({
           value={value}
           onChange={(event) => onChange(event.target.value)}
         />
-        <Button
-          size="lg"
-          type="button"
-          variant="ghost"
-          disabled={disabled}
-          aria-label={`${label} ${visible ? '숨기기' : '보기'}`}
-          aria-pressed={visible}
-          onClick={() => setVisible(!visible)}
-        >
-          {visible ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
-        </Button>
-      </div>
+        <InputGroup.Addon position="trailing">
+          <Button
+            size="sm"
+            className="city-block-password-toggle"
+            type="button"
+            variant="ghost"
+            disabled={disabled}
+            aria-label={`${label} ${visible ? '숨기기' : '보기'}`}
+            aria-pressed={visible}
+            onClick={() => setVisible(!visible)}
+          >
+            {visible ? (
+              <EyeOff size={16} aria-hidden="true" />
+            ) : (
+              <Eye size={16} aria-hidden="true" />
+            )}
+          </Button>
+        </InputGroup.Addon>
+      </InputGroup.Root>
       {description && !error && <Field.Description>{description}</Field.Description>}
       {error && <Field.Error match>{error}</Field.Error>}
     </Field.Root>

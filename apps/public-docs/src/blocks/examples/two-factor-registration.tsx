@@ -166,7 +166,7 @@ export function TwoFactorRegistration({
             <div className="city-block-section">
               <span className="city-block-section-title">설정 키</span>
               <code className="city-block-secret">{enrollment.secret}</code>
-              <div>
+              <div className="city-block-actions">
                 <Button
                   size="lg"
                   type="button"

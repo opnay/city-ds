@@ -104,7 +104,7 @@ export function SessionHistory({
               )}
             </div>
             <div className="city-block-session-info">
-              <div className="city-block-actions">
+              <div className="city-block-label-row">
                 <strong className="city-block-section-title">{session.device}</strong>
                 {session.current && <Badge>현재 세션</Badge>}
                 {session.status === 'ended' && <Badge>종료됨</Badge>}

@@ -11,8 +11,14 @@ describe('Blocks', () => {
     await renderDocs(['/blocks']);
     const main = within(screen.getByRole('main'));
     expect(screen.getByRole('combobox', { name: '문서 영역' })).toHaveTextContent('Blocks');
-    await user.click(main.getByRole('link', { name: /계정 설정/ }));
-    expect(await screen.findByRole('heading', { level: 1, name: '계정 설정' })).toBeVisible();
+    await user.click(main.getByRole('link', { name: /프로필 관리/ }));
+    expect(await screen.findByRole('heading', { level: 1, name: '프로필 관리' })).toBeVisible();
+    const group = screen.getByRole('button', { name: '사용자 관리' });
+    expect(group).toHaveAttribute('aria-expanded', 'true');
+    await user.click(group);
+    expect(group).toHaveAttribute('aria-expanded', 'false');
+    await user.click(group);
+    expect(screen.getByText('비밀번호 변경')).toBeVisible();
     expect(
       within(screen.getByRole('navigation', { name: '현재 위치' })).getByRole('link', {
         name: '블록',
@@ -20,7 +26,7 @@ describe('Blocks', () => {
     ).toHaveAttribute('href', '/blocks');
     await user.click(screen.getByRole('button', { name: '코드 보기' }));
     expect(await screen.findByLabelText('미리보기 예제 소스 코드')).toHaveTextContent(
-      'export default function AccountSettings',
+      'export function ProfileManagement',
     );
     expect(
       filterDocumentPages('팀원').some(

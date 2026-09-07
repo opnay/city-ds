@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Collapsible } from '@base-ui/react/collapsible';
 import { ArrowRight, BookOpen, Menu as MenuIcon, Moon, Sun, X } from 'lucide-react';
 import { Link, Outlet, useLocation, type ErrorComponentProps } from '@tanstack/react-router';
 import type { CityTheme } from '@opnay/city-ds-react';
@@ -23,7 +24,7 @@ import {
   getComponentDoc,
   getStaticDoc,
 } from '../docs/doc-catalog';
-import { BLOCK_DOCS, getBlockDoc } from '../blocks/block-catalog';
+import { USER_MANAGEMENT_MENU, getBlockDoc } from '../blocks/block-catalog';
 import type {
   BlockDocEntry,
   ComponentDocEntry,
@@ -198,6 +199,37 @@ function BlockNavigationLink({
   );
 }
 
+function UserManagementNavigation({ onNavigate }: { onNavigate: () => void }) {
+  const pathname = useLocation().pathname;
+  return (
+    <Collapsible.Root
+      key={pathname}
+      render={<li />}
+      defaultOpen={pathname === '/blocks/profile-management'}
+    >
+      <Collapsible.Trigger className="city-docs-block-group-trigger">
+        사용자 관리 <span aria-hidden="true">⌄</span>
+      </Collapsible.Trigger>
+      <Collapsible.Panel>
+        <ul className="city-docs-block-submenu">
+          {USER_MANAGEMENT_MENU.map((item) => (
+            <li key={item.title}>
+              {item.slug ? (
+                <BlockNavigationLink entry={getBlockDoc(item.slug)!} onNavigate={onNavigate} />
+              ) : (
+                <span className="city-docs-block-pending" aria-disabled="true">
+                  {item.title}
+                  <small>준비 중</small>
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </Collapsible.Panel>
+    </Collapsible.Root>
+  );
+}
+
 function SearchResultLink({
   onNavigate,
   result,
@@ -333,11 +365,7 @@ function DocsNavigation({ mode, onModeChange, onNavigate, query, setQuery }: Doc
               <li>
                 <StaticNavigationLink entry={BLOCK_INDEX_DOC} onNavigate={handleNavigate} />
               </li>
-              {BLOCK_DOCS.map((entry) => (
-                <li key={entry.slug}>
-                  <BlockNavigationLink entry={entry} onNavigate={handleNavigate} />
-                </li>
-              ))}
+              <UserManagementNavigation onNavigate={handleNavigate} />
             </ul>
           </section>
         ) : (

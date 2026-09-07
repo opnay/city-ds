@@ -14,8 +14,9 @@ export function BlockCatalog() {
       eyebrow="Blocks"
       description="여러 컴포넌트를 조합한 실사용 화면입니다. 동작을 확인하고 코드를 가져가 프로젝트에 맞게 수정하십시오."
     >
+      <h2 className="city-text-section-title">사용자 관리</h2>
       <div className="city-docs-component-grid">
-        {BLOCK_DOCS.map((entry) => (
+        {BLOCK_DOCS.filter((entry) => entry.category === '사용자 관리').map((entry) => (
           <Link key={entry.slug} to="/blocks/$slug" params={{ slug: entry.slug }}>
             <span>
               <span className="city-text-caption">{entry.category}</span>

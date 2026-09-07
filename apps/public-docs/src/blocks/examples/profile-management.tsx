@@ -1,0 +1,213 @@
+import { useEffect, useId, useRef, useState } from 'react';
+import { Avatar } from '@opnay/city-ds-react/avatar';
+import { Button } from '@opnay/city-ds-react/button';
+import { Checkbox } from '@opnay/city-ds-react/checkbox';
+import { Field } from '@opnay/city-ds-react/field';
+import { Input, Textarea } from '@opnay/city-ds-react/input';
+import './blocks.css';
+
+export interface ProfileValues {
+  name: string;
+  bio: string;
+  image: File | null;
+}
+
+const initialProfile: ProfileValues = {
+  name: '김서연',
+  bio: '함께 일하기 좋은 제품을 만듭니다.',
+  image: null,
+};
+
+export function ProfileManagement({
+  onSave,
+}: {
+  onSave: (profile: ProfileValues) => Promise<void>;
+}) {
+  const [saved, setSaved] = useState(initialProfile);
+  const [profile, setProfile] = useState(initialProfile);
+  const [saving, setSaving] = useState(false);
+  const pending = useRef(false);
+  const fileInput = useRef<HTMLInputElement>(null);
+  const [imageUrl, setImageUrl] = useState<string>();
+  const [imageError, setImageError] = useState('');
+  const [saveError, setSaveError] = useState('');
+  const [message, setMessage] = useState('');
+  const [attempted, setAttempted] = useState(false);
+  const imageId = useId();
+  const nameError = attempted && !profile.name.trim();
+  const dirty =
+    profile.name !== saved.name || profile.bio !== saved.bio || profile.image !== saved.image;
+
+  useEffect(() => {
+    if (!profile.image) {
+      setImageUrl(undefined);
+      return;
+    }
+    const url = URL.createObjectURL(profile.image);
+    setImageUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [profile.image]);
+
+  function edit(update: Partial<ProfileValues>) {
+    setProfile((current) => ({ ...current, ...update }));
+    setMessage('');
+    setSaveError('');
+  }
+
+  return (
+    <form
+      className="city-block-form"
+      noValidate
+      onSubmit={async (event) => {
+        event.preventDefault();
+        if (pending.current || !dirty) return;
+        setAttempted(true);
+        if (!profile.name.trim() || profile.bio.length > 160) return;
+        pending.current = true;
+        setSaving(true);
+        setSaveError('');
+        setMessage('');
+        const next = { ...profile, name: profile.name.trim() };
+        try {
+          await onSave(next);
+          setSaved(next);
+          setProfile(next);
+          setMessage('프로필을 저장했습니다.');
+        } catch {
+          setSaveError('저장하지 못했습니다. 입력한 내용은 유지됩니다. 다시 시도하십시오.');
+        } finally {
+          pending.current = false;
+          setSaving(false);
+        }
+      }}
+    >
+      <div>
+        <h3 className="city-block-title">프로필 관리</h3>
+        <p className="city-block-description">다른 사람에게 표시되는 사진과 소개를 관리합니다.</p>
+      </div>
+      <Field.Root invalid={!!imageError} disabled={saving}>
+        <Field.Label htmlFor={imageId}>프로필 이미지</Field.Label>
+        <div className="city-block-avatar-row">
+          <Avatar.Root size="lg">
+            <Avatar.Image src={imageUrl} alt="프로필 이미지 미리보기" />
+            <Avatar.Fallback>{profile.name.trim().slice(0, 2) || '사용자'}</Avatar.Fallback>
+          </Avatar.Root>
+          <div className="city-block-actions">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={saving}
+              onClick={() => fileInput.current?.click()}
+            >
+              이미지 변경
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={saving || !profile.image}
+              onClick={() => {
+                edit({ image: null });
+                setImageError('');
+              }}
+            >
+              이미지 제거
+            </Button>
+          </div>
+        </div>
+        <input
+          ref={fileInput}
+          id={imageId}
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          className="city-block-sr-only"
+          disabled={saving}
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            event.target.value = '';
+            if (!file) return;
+            if (
+              !['image/png', 'image/jpeg', 'image/webp'].includes(file.type) ||
+              file.size > 5 * 1024 * 1024
+            ) {
+              setImageError('5MB 이하의 PNG, JPG, WebP 이미지를 선택하십시오.');
+              return;
+            }
+            setImageError('');
+            edit({ image: file });
+          }}
+        />
+        <Field.Description>PNG, JPG, WebP · 최대 5MB</Field.Description>
+        {imageError && <Field.Error match>{imageError}</Field.Error>}
+      </Field.Root>
+      <Field.Root invalid={nameError} disabled={saving}>
+        <Field.Label>표시 이름</Field.Label>
+        <Input
+          name="name"
+          autoComplete="nickname"
+          required
+          maxLength={50}
+          value={profile.name}
+          onChange={(event) => edit({ name: event.target.value })}
+        />
+        {nameError && <Field.Error match>표시 이름을 입력하십시오.</Field.Error>}
+      </Field.Root>
+      <Field.Root disabled={saving}>
+        <Field.Label>자기소개</Field.Label>
+        <Textarea
+          name="bio"
+          rows={3}
+          maxLength={160}
+          value={profile.bio}
+          onChange={(event) => edit({ bio: event.target.value })}
+        />
+        <Field.Description>{profile.bio.length} / 160자 · 선택 입력</Field.Description>
+      </Field.Root>
+      {saveError && (
+        <p role="alert" className="city-block-error">
+          {saveError}
+        </p>
+      )}
+      <div className="city-block-actions city-block-actions--separated">
+        <Button type="submit" disabled={!dirty || saving}>
+          {saving ? '저장 중…' : '변경 사항 저장'}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          disabled={!dirty || saving}
+          onClick={() => {
+            setProfile(saved);
+            setAttempted(false);
+            setImageError('');
+            setSaveError('');
+            setMessage('변경 사항을 되돌렸습니다.');
+          }}
+        >
+          취소
+        </Button>
+      </div>
+      <output className="city-block-status" aria-live="polite">
+        {message || (saving ? '프로필을 저장하고 있습니다.' : '')}
+      </output>
+    </form>
+  );
+}
+
+export default function ProfileManagementExample() {
+  const [fail, setFail] = useState(false);
+  return (
+    <div className="city-block-section">
+      <Field.Root>
+        <Field.Label>저장 실패 체험</Field.Label>
+        <Checkbox checked={fail} onCheckedChange={setFail} />
+        <Field.Description>예제의 실패·재시도 동작을 확인합니다.</Field.Description>
+      </Field.Root>
+      <ProfileManagement
+        onSave={async () => {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          if (fail) throw new Error('Demo save failure');
+        }}
+      />
+    </div>
+  );
+}

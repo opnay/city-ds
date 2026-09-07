@@ -21,6 +21,43 @@
 }
 
 @layer city-docs {
+  .city-docs-block-group-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: var(--city-radius-sm);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+  .city-docs-block-group-trigger:hover {
+    background: var(--city-color-accent);
+  }
+  .city-docs-block-group-trigger:focus-visible {
+    outline: 2px solid var(--city-color-ring);
+    outline-offset: -2px;
+  }
+  .city-docs-block-group-trigger[data-panel-open] > span {
+    transform: rotate(180deg);
+  }
+  .city-docs-nav-section .city-docs-block-submenu {
+    margin-inline-start: var(--city-space-4);
+  }
+  .city-docs-block-pending {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--city-space-2);
+    padding: 10px 12px;
+    color: var(--city-color-muted-foreground);
+  }
+  .city-docs-block-pending small {
+    white-space: nowrap;
+  }
   .city-docs-sr-only {
     position: absolute;
     width: 1px;

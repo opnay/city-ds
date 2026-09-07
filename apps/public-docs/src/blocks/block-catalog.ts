@@ -2,6 +2,20 @@ import type { BlockDocEntry } from '../docs/types';
 
 export const BLOCK_DOCS = [
   {
+    slug: 'profile-management',
+    title: '프로필 관리',
+    description: '프로필 이미지, 표시 이름과 자기소개를 수정하고 저장·취소합니다.',
+    category: '사용자 관리',
+    keywords: ['사용자', '프로필', '이미지', '자기소개', '저장', '취소'],
+    components: ['avatar', 'field', 'input', 'button'],
+    guidance:
+      '이미지 선택·제거, 저장 중·실패·재시도 상태를 확인할 수 있습니다. ProfileManagement의 onSave에 소비 앱의 저장 요청을 연결하십시오. 예제는 파일을 전송하지 않고 화면 안에서 저장을 시뮬레이션합니다.',
+    load: async () => ({
+      Component: (await import('./examples/profile-management')).default,
+      source: (await import('./examples/profile-management.tsx?raw')).default,
+    }),
+  },
+  {
     slug: 'account-settings',
     title: '계정 설정',
     description: '프로필 입력과 알림 설정을 한 폼에 묶고 변경 사항을 저장하거나 되돌립니다.',
@@ -51,6 +65,14 @@ export const BLOCK_DOCS = [
     }),
   },
 ] as const satisfies readonly BlockDocEntry[];
+
+export const USER_MANAGEMENT_MENU = [
+  { title: '프로필 관리', slug: 'profile-management' },
+  { title: '계정 관리', slug: null },
+  { title: '비밀번호 변경', slug: null },
+  { title: '2FA 관리', slug: null },
+  { title: '세션 기록', slug: null },
+] as const;
 
 export function getBlockDoc(slug: string): BlockDocEntry | undefined {
   return BLOCK_DOCS.find((entry) => entry.slug === slug);

@@ -26,12 +26,15 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 10px 12px;
-    border: 0;
+    min-height: var(--city-control-sm);
+    padding: var(--city-space-1-5) var(--city-space-2-5);
+    border: 1px solid transparent;
     border-radius: var(--city-radius-sm);
     background: transparent;
     color: inherit;
     font: inherit;
+    font-size: var(--city-font-size-sm);
+    line-height: var(--city-line-height-sm);
     text-align: start;
     cursor: pointer;
   }
@@ -52,7 +55,12 @@
     display: flex;
     justify-content: space-between;
     gap: var(--city-space-2);
-    padding: 10px 12px;
+    align-items: center;
+    min-height: var(--city-control-sm);
+    padding: var(--city-space-1-5) var(--city-space-2-5);
+    border: 1px solid transparent;
+    font-size: var(--city-font-size-sm);
+    line-height: var(--city-line-height-sm);
     color: var(--city-color-muted-foreground);
   }
   .city-docs-block-pending small {

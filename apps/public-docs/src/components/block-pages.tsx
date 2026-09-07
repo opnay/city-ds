@@ -42,7 +42,6 @@ export function BlockPage({
       eyebrow={`Blocks · ${entry.category}`}
       description={entry.description}
     >
-      <p>{entry.guidance}</p>
       <ExampleFrame
         featuredTitle="미리보기"
         previewLayout="wide"
@@ -69,6 +68,10 @@ export function BlockPage({
           ))}
         </div>
       </section>
+      <details>
+        <summary>구현 참고</summary>
+        <p>{entry.guidance}</p>
+      </details>
     </GuidePage>
   );
 }

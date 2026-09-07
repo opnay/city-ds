@@ -1,7 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { Avatar } from '@opnay/city-ds-react/avatar';
 import { Button } from '@opnay/city-ds-react/button';
-import { Checkbox } from '@opnay/city-ds-react/checkbox';
 import { Field } from '@opnay/city-ds-react/field';
 import { Input, Textarea } from '@opnay/city-ds-react/input';
 import './blocks.css';
@@ -82,11 +81,15 @@ export function ProfileManagement({
       }}
     >
       <div>
-        <h3 className="city-block-title">프로필 관리</h3>
-        <p className="city-block-description">다른 사람에게 표시되는 사진과 소개를 관리합니다.</p>
+        <h3 className="city-text-subsection-title">프로필 관리</h3>
+        <p className="city-block-description city-text-supporting">
+          다른 사람에게 표시되는 사진과 소개를 관리합니다.
+        </p>
       </div>
       <Field.Root invalid={!!imageError} disabled={saving}>
-        <Field.Label htmlFor={imageId}>프로필 이미지</Field.Label>
+        <Field.Label className="city-text-supporting" htmlFor={imageId}>
+          프로필 이미지
+        </Field.Label>
         <div className="city-block-avatar-row">
           <Avatar.Root size="lg">
             <Avatar.Image src={imageUrl} alt="프로필 이미지 미리보기" />
@@ -94,6 +97,7 @@ export function ProfileManagement({
           </Avatar.Root>
           <div className="city-block-actions">
             <Button
+              size="lg"
               type="button"
               variant="outline"
               disabled={saving}
@@ -102,6 +106,7 @@ export function ProfileManagement({
               이미지 변경
             </Button>
             <Button
+              size="lg"
               type="button"
               variant="ghost"
               disabled={saving || !profile.image}
@@ -140,8 +145,9 @@ export function ProfileManagement({
         {imageError && <Field.Error match>{imageError}</Field.Error>}
       </Field.Root>
       <Field.Root invalid={nameError} disabled={saving}>
-        <Field.Label>표시 이름</Field.Label>
+        <Field.Label className="city-text-supporting">표시 이름</Field.Label>
         <Input
+          size="lg"
           name="name"
           autoComplete="nickname"
           required
@@ -152,8 +158,9 @@ export function ProfileManagement({
         {nameError && <Field.Error match>표시 이름을 입력하십시오.</Field.Error>}
       </Field.Root>
       <Field.Root disabled={saving}>
-        <Field.Label>자기소개</Field.Label>
+        <Field.Label className="city-text-supporting">자기소개</Field.Label>
         <Textarea
+          size="lg"
           name="bio"
           rows={3}
           maxLength={160}
@@ -168,10 +175,11 @@ export function ProfileManagement({
         </p>
       )}
       <div className="city-block-actions city-block-actions--separated">
-        <Button type="submit" disabled={!dirty || saving}>
+        <Button size="lg" type="submit" disabled={!dirty || saving}>
           {saving ? '저장 중…' : '변경 사항 저장'}
         </Button>
         <Button
+          size="lg"
           type="button"
           variant="outline"
           disabled={!dirty || saving}
@@ -194,20 +202,5 @@ export function ProfileManagement({
 }
 
 export default function ProfileManagementExample() {
-  const [fail, setFail] = useState(false);
-  return (
-    <div className="city-block-section">
-      <Field.Root>
-        <Field.Label>저장 실패 체험</Field.Label>
-        <Checkbox checked={fail} onCheckedChange={setFail} />
-        <Field.Description>예제의 실패·재시도 동작을 확인합니다.</Field.Description>
-      </Field.Root>
-      <ProfileManagement
-        onSave={async () => {
-          await new Promise((resolve) => setTimeout(resolve, 500));
-          if (fail) throw new Error('Demo save failure');
-        }}
-      />
-    </div>
-  );
+  return <ProfileManagement onSave={async () => {}} />;
 }

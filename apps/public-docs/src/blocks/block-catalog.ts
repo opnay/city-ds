@@ -9,7 +9,7 @@ export const BLOCK_DOCS = [
     keywords: ['사용자', '프로필', '이미지', '자기소개', '저장', '취소'],
     components: ['avatar', 'field', 'input', 'button'],
     guidance:
-      '이미지 선택·제거, 저장 중·실패·재시도 상태를 확인할 수 있습니다. ProfileManagement의 onSave에 소비 앱의 저장 요청을 연결하십시오. 예제는 파일을 전송하지 않고 화면 안에서 저장을 시뮬레이션합니다.',
+      'ProfileManagement의 onSave에 이미지 업로드와 프로필 저장 요청을 연결하십시오. 미리보기의 변경 사항은 현재 화면에만 반영됩니다.',
     load: async () => ({
       Component: (await import('./examples/profile-management')).default,
       source: (await import('./examples/profile-management.tsx?raw')).default,

@@ -13,6 +13,7 @@ import { Skeleton } from '@opnay/city-ds-react/skeleton';
 import { SegmentedControl } from '@opnay/city-ds-react/segmented-control';
 
 import {
+  BLOCK_INDEX_DOC,
   CATEGORY_LABELS,
   COMPONENT_CATEGORIES,
   COMPONENT_DOCS,
@@ -22,20 +23,28 @@ import {
   getComponentDoc,
   getStaticDoc,
 } from '../docs/doc-catalog';
-import type { ComponentDocEntry, DocumentSearchResult, StaticDocEntry } from '../docs/types';
+import { BLOCK_DOCS, getBlockDoc } from '../blocks/block-catalog';
+import type {
+  BlockDocEntry,
+  ComponentDocEntry,
+  DocumentSearchResult,
+  StaticDocEntry,
+} from '../docs/types';
 import { GuidePage } from './doc-page';
 
 const THEME_STORAGE_KEY = 'city-docs-theme';
 const THEMES: readonly CityTheme[] = ['system', 'light', 'dark'];
 type ResolvedTheme = Exclude<CityTheme, 'system'>;
-type NavigationMode = 'guides' | 'components';
+type NavigationMode = 'guides' | 'components' | 'blocks';
 
 const NAVIGATION_MODE_ITEMS: Record<NavigationMode, string> = {
   guides: 'Guides',
   components: 'Components',
+  blocks: 'Blocks',
 };
 
 const STATIC_SECTION_LABELS = {
+  blocks: '블록',
   components: '컴포넌트',
   guides: '가이드',
   start: '홈',
@@ -74,16 +83,24 @@ function useSystemTheme(): ResolvedTheme {
 }
 
 function resolvePage(pathname: string) {
+  const blockMatch = /^\/blocks\/([^/]+)$/.exec(pathname);
+  const block = blockMatch?.[1] ? getBlockDoc(blockMatch[1]) : undefined;
+  if (block) return { component: undefined, block, title: block.title };
   const componentMatch = /^\/components\/([^/]+)$/.exec(pathname);
   if (componentMatch?.[1]) {
     const component = getComponentDoc(componentMatch[1]);
-    if (component) return { component, title: component.title };
+    if (component) return { component, block: undefined, title: component.title };
   }
 
-  return { component: undefined, title: getStaticDoc(pathname)?.title ?? '페이지 없음' };
+  return {
+    component: undefined,
+    block: undefined,
+    title: getStaticDoc(pathname)?.title ?? '페이지 없음',
+  };
 }
 
 function resolveNavigationMode(pathname: string): NavigationMode {
+  if (pathname === '/blocks' || pathname.startsWith('/blocks/')) return 'blocks';
   return pathname === '/components' || pathname.startsWith('/components/')
     ? 'components'
     : 'guides';
@@ -153,6 +170,34 @@ function ComponentNavigationLink({
   );
 }
 
+function BlockNavigationLink({
+  entry,
+  onNavigate,
+  showContext = false,
+}: {
+  entry: BlockDocEntry;
+  onNavigate: () => void;
+  showContext?: boolean;
+}) {
+  return (
+    <Link
+      to="/blocks/$slug"
+      params={{ slug: entry.slug }}
+      onClick={onNavigate}
+      activeProps={{ 'aria-current': 'page' }}
+    >
+      {showContext ? (
+        <span className="city-docs-nav-result-copy">
+          <span>{entry.title}</span>
+          <small>블록 · {entry.category}</small>
+        </span>
+      ) : (
+        entry.title
+      )}
+    </Link>
+  );
+}
+
 function SearchResultLink({
   onNavigate,
   result,
@@ -160,6 +205,8 @@ function SearchResultLink({
   onNavigate: () => void;
   result: DocumentSearchResult;
 }) {
+  if (result.kind === 'block')
+    return <BlockNavigationLink entry={result.entry} onNavigate={onNavigate} showContext />;
   return result.kind === 'static' ? (
     <StaticNavigationLink entry={result.entry} onNavigate={onNavigate} showContext />
   ) : (
@@ -178,7 +225,8 @@ function NavigationModeSelect({
     <Select.Root
       items={NAVIGATION_MODE_ITEMS}
       onValueChange={(nextValue) => {
-        if (nextValue === 'guides' || nextValue === 'components') onChange(nextValue);
+        if (nextValue === 'guides' || nextValue === 'components' || nextValue === 'blocks')
+          onChange(nextValue);
       }}
       size="sm"
       value={value}
@@ -247,7 +295,7 @@ function DocsNavigation({ mode, onModeChange, onNavigate, query, setQuery }: Doc
                   const key =
                     result.kind === 'static'
                       ? result.entry.path
-                      : `/components/${result.entry.slug}`;
+                      : `/${result.kind === 'block' ? 'blocks' : 'components'}/${result.entry.slug}`;
 
                   return (
                     <li key={key}>
@@ -275,6 +323,19 @@ function DocsNavigation({ mode, onModeChange, onNavigate, query, setQuery }: Doc
                       ))}
                     </ul>
                   )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : mode === 'blocks' ? (
+          <section className="city-docs-nav-section">
+            <ul>
+              <li>
+                <StaticNavigationLink entry={BLOCK_INDEX_DOC} onNavigate={handleNavigate} />
+              </li>
+              {BLOCK_DOCS.map((entry) => (
+                <li key={entry.slug}>
+                  <BlockNavigationLink entry={entry} onNavigate={handleNavigate} />
                 </li>
               ))}
             </ul>
@@ -408,6 +469,7 @@ function ProductHeader({
           <a href="#product-foundation">제품 기반</a>
           <a href="#product-contexts">사용 맥락</a>
           <Link to="/components">컴포넌트</Link>
+          <Link to="/blocks">블록</Link>
         </nav>
         <div className="city-docs-product-actions">
           <ThemeButtons onChange={onThemeChange} value={resolvedTheme} />
@@ -446,10 +508,12 @@ function CurrentBreadcrumbs({ pathname }: { pathname: string }) {
               <Breadcrumbs.Link render={<Link to="/" />}>홈</Breadcrumbs.Link>
               <Breadcrumbs.Separator />
             </Breadcrumbs.Item>
-            {isComponent ? (
+            {isComponent || page.block ? (
               <>
                 <Breadcrumbs.Item>
-                  <Breadcrumbs.Link render={<Link to="/components" />}>컴포넌트</Breadcrumbs.Link>
+                  <Breadcrumbs.Link render={<Link to={page.block ? '/blocks' : '/components'} />}>
+                    {page.block ? '블록' : '컴포넌트'}
+                  </Breadcrumbs.Link>
                   <Breadcrumbs.Separator />
                 </Breadcrumbs.Item>
                 <Breadcrumbs.Item>

@@ -30,13 +30,25 @@ export interface ComponentDocEntry {
   title: string;
 }
 
-export type StaticDocSection = 'components' | 'guides' | 'start';
+export interface BlockDocEntry {
+  slug: string;
+  title: string;
+  description: string;
+  category: string;
+  keywords: readonly string[];
+  components: readonly string[];
+  guidance: string;
+  load: () => Promise<{ Component: ComponentType; source: string }>;
+}
+
+export type StaticDocSection = 'components' | 'guides' | 'blocks' | 'start';
 
 export type StaticDocPath =
   | '/'
   | '/accessibility'
   | '/color'
   | '/components'
+  | '/blocks'
   | '/foundations'
   | '/getting-started'
   | '/patterns';
@@ -52,6 +64,7 @@ export interface StaticDocEntry {
 }
 
 export type DocumentSearchResult =
+  | { entry: BlockDocEntry; kind: 'block' }
   | { entry: ComponentDocEntry; kind: 'component' }
   | { entry: StaticDocEntry; kind: 'static' };
 

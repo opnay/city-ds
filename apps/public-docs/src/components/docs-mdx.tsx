@@ -98,7 +98,7 @@ function createPreviewProps(axes: readonly OptionAxis[], values: PreviewOptionVa
   );
 }
 
-function ExampleFrame({
+export function ExampleFrame({
   example,
   featuredTitle,
   optionAxes = [],

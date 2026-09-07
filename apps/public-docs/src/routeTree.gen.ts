@@ -11,11 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccessibilityRouteImport } from './routes/accessibility'
+import { Route as BlocksRouteImport } from './routes/blocks'
 import { Route as ColorRouteImport } from './routes/color'
 import { Route as ComponentsRouteImport } from './routes/components'
 import { Route as FoundationsRouteImport } from './routes/foundations'
 import { Route as GettingStartedRouteImport } from './routes/getting-started'
 import { Route as PatternsRouteImport } from './routes/patterns'
+import { Route as BlocksIndexRouteImport } from './routes/blocks.index'
+import { Route as BlocksSlugRouteImport } from './routes/blocks.$slug'
 import { Route as ComponentsIndexRouteImport } from './routes/components.index'
 import { Route as ComponentsSlugRouteImport } from './routes/components.$slug'
 
@@ -27,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
 const AccessibilityRoute = AccessibilityRouteImport.update({
   id: '/accessibility',
   path: '/accessibility',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlocksRoute = BlocksRouteImport.update({
+  id: '/blocks',
+  path: '/blocks',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ColorRoute = ColorRouteImport.update({
@@ -54,6 +62,16 @@ const PatternsRoute = PatternsRouteImport.update({
   path: '/patterns',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlocksIndexRoute = BlocksIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlocksRoute,
+} as any)
+const BlocksSlugRoute = BlocksSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlocksRoute,
+} as any)
 const ComponentsIndexRoute = ComponentsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -68,12 +86,15 @@ const ComponentsSlugRoute = ComponentsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accessibility': typeof AccessibilityRoute
+  '/blocks': typeof BlocksRouteWithChildren
   '/color': typeof ColorRoute
   '/components': typeof ComponentsRouteWithChildren
   '/foundations': typeof FoundationsRoute
   '/getting-started': typeof GettingStartedRoute
   '/patterns': typeof PatternsRoute
+  '/blocks/$slug': typeof BlocksSlugRoute
   '/components/$slug': typeof ComponentsSlugRoute
+  '/blocks/': typeof BlocksIndexRoute
   '/components/': typeof ComponentsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -83,19 +104,24 @@ export interface FileRoutesByTo {
   '/foundations': typeof FoundationsRoute
   '/getting-started': typeof GettingStartedRoute
   '/patterns': typeof PatternsRoute
+  '/blocks/$slug': typeof BlocksSlugRoute
   '/components/$slug': typeof ComponentsSlugRoute
+  '/blocks': typeof BlocksIndexRoute
   '/components': typeof ComponentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accessibility': typeof AccessibilityRoute
+  '/blocks': typeof BlocksRouteWithChildren
   '/color': typeof ColorRoute
   '/components': typeof ComponentsRouteWithChildren
   '/foundations': typeof FoundationsRoute
   '/getting-started': typeof GettingStartedRoute
   '/patterns': typeof PatternsRoute
+  '/blocks/$slug': typeof BlocksSlugRoute
   '/components/$slug': typeof ComponentsSlugRoute
+  '/blocks/': typeof BlocksIndexRoute
   '/components/': typeof ComponentsIndexRoute
 }
 export interface FileRouteTypes {
@@ -103,12 +129,15 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/accessibility'
+    | '/blocks'
     | '/color'
     | '/components'
     | '/foundations'
     | '/getting-started'
     | '/patterns'
+    | '/blocks/$slug'
     | '/components/$slug'
+    | '/blocks/'
     | '/components/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -118,24 +147,30 @@ export interface FileRouteTypes {
     | '/foundations'
     | '/getting-started'
     | '/patterns'
+    | '/blocks/$slug'
     | '/components/$slug'
+    | '/blocks'
     | '/components'
   id:
     | '__root__'
     | '/'
     | '/accessibility'
+    | '/blocks'
     | '/color'
     | '/components'
     | '/foundations'
     | '/getting-started'
     | '/patterns'
+    | '/blocks/$slug'
     | '/components/$slug'
+    | '/blocks/'
     | '/components/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccessibilityRoute: typeof AccessibilityRoute
+  BlocksRoute: typeof BlocksRouteWithChildren
   ColorRoute: typeof ColorRoute
   ComponentsRoute: typeof ComponentsRouteWithChildren
   FoundationsRoute: typeof FoundationsRoute
@@ -157,6 +192,13 @@ declare module '@tanstack/react-router' {
       path: '/accessibility'
       fullPath: '/accessibility'
       preLoaderRoute: typeof AccessibilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blocks': {
+      id: '/blocks'
+      path: '/blocks'
+      fullPath: '/blocks'
+      preLoaderRoute: typeof BlocksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/color': {
@@ -194,6 +236,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PatternsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blocks/': {
+      id: '/blocks/'
+      path: '/'
+      fullPath: '/blocks/'
+      preLoaderRoute: typeof BlocksIndexRouteImport
+      parentRoute: typeof BlocksRoute
+    }
+    '/blocks/$slug': {
+      id: '/blocks/$slug'
+      path: '/$slug'
+      fullPath: '/blocks/$slug'
+      preLoaderRoute: typeof BlocksSlugRouteImport
+      parentRoute: typeof BlocksRoute
+    }
     '/components/': {
       id: '/components/'
       path: '/'
@@ -210,6 +266,19 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface BlocksRouteChildren {
+  BlocksSlugRoute: typeof BlocksSlugRoute
+  BlocksIndexRoute: typeof BlocksIndexRoute
+}
+
+const BlocksRouteChildren: BlocksRouteChildren = {
+  BlocksSlugRoute: BlocksSlugRoute,
+  BlocksIndexRoute: BlocksIndexRoute,
+}
+
+const BlocksRouteWithChildren =
+  BlocksRoute._addFileChildren(BlocksRouteChildren)
 
 interface ComponentsRouteChildren {
   ComponentsSlugRoute: typeof ComponentsSlugRoute
@@ -228,6 +297,7 @@ const ComponentsRouteWithChildren = ComponentsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccessibilityRoute: AccessibilityRoute,
+  BlocksRoute: BlocksRouteWithChildren,
   ColorRoute: ColorRoute,
   ComponentsRoute: ComponentsRouteWithChildren,
   FoundationsRoute: FoundationsRoute,

@@ -13,6 +13,8 @@ describe('public docs routes and shell', () => {
     ['/patterns', '패턴'],
     ['/accessibility', '접근성'],
     ['/components', '컴포넌트'],
+    ['/blocks', '블록'],
+    ['/blocks/account-settings', '계정 설정'],
     ['/components/button', 'Button'],
   ])('renders %s', async (path, title) => {
     await renderDocs([path]);
@@ -23,7 +25,7 @@ describe('public docs routes and shell', () => {
     expect(screen.getByRole('navigation', { name: '현재 위치' })).toBeVisible();
   });
 
-  it.each(['/components/not-a-component', '/not-a-route'])(
+  it.each(['/components/not-a-component', '/blocks/not-a-block', '/not-a-route'])(
     'recovers unknown route %s',
     async (path) => {
       await renderDocs([path]);

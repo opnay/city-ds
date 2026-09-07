@@ -205,7 +205,7 @@ function UserManagementNavigation({ onNavigate }: { onNavigate: () => void }) {
     <Collapsible.Root
       key={pathname}
       render={<li />}
-      defaultOpen={pathname === '/blocks/profile-management'}
+      defaultOpen={USER_MANAGEMENT_MENU.some((item) => pathname === `/blocks/${item.slug}`)}
     >
       <Collapsible.Trigger className="city-docs-block-group-trigger">
         사용자 관리 <span aria-hidden="true">⌄</span>
@@ -214,14 +214,7 @@ function UserManagementNavigation({ onNavigate }: { onNavigate: () => void }) {
         <ul className="city-docs-block-submenu">
           {USER_MANAGEMENT_MENU.map((item) => (
             <li key={item.title}>
-              {item.slug ? (
-                <BlockNavigationLink entry={getBlockDoc(item.slug)!} onNavigate={onNavigate} />
-              ) : (
-                <span className="city-docs-block-pending" aria-disabled="true">
-                  {item.title}
-                  <small>준비 중</small>
-                </span>
-              )}
+              <BlockNavigationLink entry={getBlockDoc(item.slug)!} onNavigate={onNavigate} />
             </li>
           ))}
         </ul>

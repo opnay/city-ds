@@ -38,7 +38,7 @@ export interface BlockDocEntry {
   keywords: readonly string[];
   components: readonly string[];
   guidance: string;
-  load: () => Promise<{ Component: ComponentType; source: string }>;
+  load: () => Promise<{ Component: ComponentType; source: string; extraFiles?: DocCodeFile[] }>;
 }
 
 export type StaticDocSection = 'components' | 'guides' | 'blocks' | 'start';

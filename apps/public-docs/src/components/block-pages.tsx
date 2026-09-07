@@ -35,6 +35,7 @@ export function BlockPage({
   entry,
   Component,
   source,
+  extraFiles = [],
 }: { entry: BlockDocEntry } & Awaited<ReturnType<BlockDocEntry['load']>>) {
   return (
     <GuidePage
@@ -53,6 +54,7 @@ export function BlockPage({
           files: [
             { filename: `${entry.slug}.tsx`, source, language: 'tsx' },
             { filename: 'blocks.css', source: blockStyles, language: 'css' },
+            ...extraFiles,
           ],
           coverage: [],
         }}

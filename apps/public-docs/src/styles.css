@@ -51,21 +51,6 @@
   .city-docs-nav-section .city-docs-block-submenu {
     margin-inline-start: var(--city-space-4);
   }
-  .city-docs-block-pending {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--city-space-2);
-    align-items: center;
-    min-height: var(--city-control-sm);
-    padding: var(--city-space-1-5) var(--city-space-2-5);
-    border: 1px solid transparent;
-    font-size: var(--city-font-size-sm);
-    line-height: var(--city-line-height-sm);
-    color: var(--city-color-muted-foreground);
-  }
-  .city-docs-block-pending small {
-    white-space: nowrap;
-  }
   .city-docs-sr-only {
     position: absolute;
     width: 1px;

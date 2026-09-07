@@ -16,7 +16,7 @@ const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   popover: 1,
   progress: 1,
   'scroll-area': 3,
-  'selection-card': 2,
+  'selection-card': 3,
   skeleton: 1,
   table: 5,
   toast: 1,

@@ -1,3 +1,5 @@
+import settingsSource from './examples/settings.tsx?raw';
+import SettingsExample from './examples/settings';
 import plansSource from './examples/plans.tsx?raw';
 import PlansExample from './examples/plans';
 import addOnsSource from './examples/add-ons.tsx?raw';
@@ -6,6 +8,8 @@ import { isEnabled, type PreviewOptionProps } from '../../preview-playgrounds/ty
 import type { ComponentPageData } from '../../types';
 
 function SelectionCardPreview({ disabled, type }: PreviewOptionProps) {
+  if (type === 'switch') return <SettingsExample disabled={isEnabled(disabled)} />;
+
   return (
     <PlansExample
       disabled={isEnabled(disabled)}
@@ -16,7 +20,7 @@ function SelectionCardPreview({ disabled, type }: PreviewOptionProps) {
 
 export const pageData = {
   featuredExampleId: 'selection-card-plans',
-  widePreviewIds: ['selection-card-plans', 'selection-card-add-ons'],
+  widePreviewIds: ['selection-card-plans', 'selection-card-add-ons', 'selection-card-settings'],
   api: [
     {
       name: 'SelectionCard',
@@ -40,7 +44,7 @@ export const pageData = {
       description: '입력의 aria-describedby로 연결할 보충 설명입니다.',
     },
     {
-      name: 'RadioGroup.Control / Checkbox',
+      name: 'RadioGroup.Control / Checkbox / Switch',
       type: 'input component',
       description:
         '값, 변경 이벤트, disabled 등은 실제 입력에 지정합니다. RadioGroup.Item은 label을 포함하므로 카드 안에는 Control을 사용하십시오.',
@@ -52,14 +56,26 @@ export const pageData = {
       configurable: true,
       coverage: [
         { axis: 'disabled', values: ['false', 'true'] },
-        { axis: 'type', values: ['radio', 'checkbox'] },
+        { axis: 'type', values: ['radio', 'checkbox', 'switch'] },
       ],
       description:
-        '입력 종류와 비활성 상태를 조절하고 카드 전체를 눌러 단일·복수 선택을 비교합니다.',
+        '입력 종류와 비활성 상태를 조절하고 카드 전체를 눌러 단일·복수 선택과 설정 전환을 비교합니다.',
       id: 'selection-card-plans',
       filename: 'plans.tsx',
       source: plansSource,
       title: '플랜 선택',
+    },
+    {
+      Component: SettingsExample,
+      coverage: [
+        { axis: 'type', values: ['switch'] },
+        { axis: 'disabled', values: ['false', 'true'] },
+      ],
+      description: '저장 버튼 없이 켜고 끄는 설정을 카드 전체로 조작합니다.',
+      id: 'selection-card-settings',
+      filename: 'settings.tsx',
+      source: settingsSource,
+      title: '설정 전환',
     },
     {
       Component: AddOnsExample,
@@ -72,7 +88,12 @@ export const pageData = {
     },
   ],
   optionAxes: [
-    { name: 'type', control: 'segmented', defaultValue: 'radio', values: ['radio', 'checkbox'] },
+    {
+      name: 'type',
+      control: 'segmented',
+      defaultValue: 'radio',
+      values: ['radio', 'checkbox', 'switch'],
+    },
     { name: 'disabled', defaultValue: 'false', values: ['false', 'true'] },
   ],
 } satisfies ComponentPageData;

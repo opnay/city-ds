@@ -2,7 +2,7 @@ import { useId } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
-import { Checkbox, RadioGroup, SelectionCard } from '@opnay/city-ds-react';
+import { Checkbox, RadioGroup, SelectionCard, Switch } from '@opnay/city-ds-react';
 
 function PlanCards({ disabled = false }: { disabled?: boolean }) {
   const id = useId();
@@ -120,5 +120,56 @@ export const CheckboxStates: Story = {
     await expect(
       canvas.getByRole('checkbox', { name: 'Managed by your organization' }),
     ).toBeChecked();
+  },
+};
+
+export const SwitchSettings: Story = {
+  render: function SwitchCards() {
+    const id = useId();
+    return (
+      <div className="grid w-full max-w-md gap-3">
+        {[
+          { label: 'Activity notifications', description: 'Receive updates from your team.' },
+          {
+            label: 'Security alerts',
+            description: 'Managed by your organization.',
+            defaultChecked: true,
+            disabled: true,
+          },
+        ].map(({ label, description, ...props }, index) => (
+          <SelectionCard key={label}>
+            <SelectionCard.Content>
+              <SelectionCard.Title id={`${id}-${index}-title`}>{label}</SelectionCard.Title>
+              <SelectionCard.Description id={`${id}-${index}-description`}>
+                {description}
+              </SelectionCard.Description>
+            </SelectionCard.Content>
+            <Switch
+              {...props}
+              aria-labelledby={`${id}-${index}-title`}
+              aria-describedby={`${id}-${index}-description`}
+              className="mt-1"
+            />
+          </SelectionCard>
+        ))}
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const control = canvas.getByRole('switch', { name: 'Activity notifications' });
+    const card = control.closest('label')!;
+    const before = getComputedStyle(card).borderColor;
+    await userEvent.click(canvas.getByText('Receive updates from your team.'));
+    await expect(control).toBeChecked();
+    await waitFor(() => expect(getComputedStyle(card).borderColor).not.toBe(before));
+    await userEvent.keyboard('[Space]');
+    await expect(control).not.toBeChecked();
+    await expect(card.matches(':has(:focus-visible)')).toBe(true);
+    const locked = canvas.getByRole('switch', { name: 'Security alerts' });
+    await userEvent.click(canvas.getByText('Security alerts'));
+    await expect(locked).toBeChecked();
+    await expect(getComputedStyle(locked).opacity).toBe('1');
+    await expect(getComputedStyle(locked.closest('label')!).opacity).toBe('0.5');
   },
 };

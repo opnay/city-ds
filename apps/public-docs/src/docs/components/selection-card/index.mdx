@@ -4,8 +4,8 @@ import { pageData } from './page-data';
 
 ## 접근성
 
-카드마다 `RadioGroup.Control` 또는 `Checkbox` 하나를 넣으십시오. 단일 선택은 `RadioGroup`,
-복수 선택은 `CheckboxGroup`으로 묶고 그룹 이름을 제공하십시오. 카드 자체에는 `role`,
+카드마다 `RadioGroup.Control`, `Checkbox` 또는 `Switch` 하나를 넣으십시오. 단일 선택은 `RadioGroup`,
+복수 선택은 `CheckboxGroup`으로 묶고 그룹 이름을 제공하십시오. 저장 없이 켜고 끄는 설정은 `Switch`로 구성하십시오. 카드 자체에는 `role`,
 `tabIndex`, 선택 상태나 클릭 핸들러를 추가하지 마십시오.
 
 제목의 `id`를 입력의 `aria-labelledby`에, 설명의 `id`를 `aria-describedby`에 연결하십시오.

@@ -341,7 +341,7 @@ export const COMPONENT_DOCS = [
     importPath: '@opnay/city-ds-react/selection-card',
     keywords: ['선택 카드', '플랜', '가격', 'radio', 'checkbox'],
     load: () => import('./components/selection-card/index.mdx'),
-    related: ['radio-group', 'checkbox', 'checkbox-group'],
+    related: ['radio-group', 'checkbox', 'checkbox-group', 'switch'],
     selectionGuidance:
       '설명을 비교하는 선택에는 SelectionCard를, 짧은 선택 목록에는 RadioGroup이나 Select를 사용하십시오.',
     slug: 'selection-card',

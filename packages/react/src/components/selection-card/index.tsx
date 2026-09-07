@@ -21,7 +21,7 @@ export const SelectionCardRoot = React.forwardRef<HTMLLabelElement, SelectionCar
           'border-city-border bg-city-background text-city-foreground rounded-city-md flex w-full min-w-0 cursor-pointer items-start gap-3 border p-4 text-sm transition-colors',
           '[&:not(:has([data-disabled])):hover]:bg-city-muted has-[[aria-checked=true]]:border-city-primary has-[[aria-checked=true]]:bg-city-muted has-[[aria-checked=mixed]]:border-city-primary has-[[aria-checked=mixed]]:bg-city-muted',
           'has-[:focus-visible]:ring-city-ring has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-city-background has-data-[disabled]:cursor-not-allowed has-data-[disabled]:opacity-50',
-          '[&_[role=radio]]:focus-visible:ring-0 [&_[role=checkbox]]:focus-visible:ring-0 [&_[role=checkbox][data-disabled]]:opacity-100',
+          '[&_[role=radio]]:focus-visible:ring-0 [&_[role=checkbox]]:focus-visible:ring-0 [&_[role=switch]]:focus-visible:ring-0 [&_[role=checkbox][data-disabled]]:opacity-100 [&_[role=switch][data-disabled]]:opacity-100',
           className,
         ),
         'data-city-selection-card': '',

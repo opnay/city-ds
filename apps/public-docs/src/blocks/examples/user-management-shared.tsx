@@ -144,8 +144,10 @@ export function AccountActionDialog({
               }}
             >
               <Dialog.Header>
-                <Dialog.Title>{title}</Dialog.Title>
-                <Dialog.Description>{description}</Dialog.Description>
+                <div>
+                  <Dialog.Title>{title}</Dialog.Title>
+                  <Dialog.Description>{description}</Dialog.Description>
+                </div>
               </Dialog.Header>
               <Dialog.Body>
                 <div className="city-block-section">

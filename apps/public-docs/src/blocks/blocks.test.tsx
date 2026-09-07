@@ -6,6 +6,33 @@ import { filterDocumentPages, getComponentDoc } from '../docs/doc-catalog';
 import { BLOCK_DOCS } from './block-catalog';
 
 describe('Blocks', () => {
+  it('resets code and reference disclosure when navigating between blocks', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/blocks/profile-management']);
+    await user.click(screen.getByRole('button', { name: '코드 보기' }));
+    expect(screen.getByRole('button', { name: '코드 보기' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+    await user.click(screen.getByText('구현 참고'));
+    expect(screen.getByText('구현 참고').closest('details')).toHaveAttribute('open');
+    const nav = within(screen.getByRole('navigation', { name: '문서 탐색' }));
+    await user.click(nav.getByRole('link', { name: '계정 관리' }));
+    await screen.findByRole('heading', { level: 1, name: '계정 관리' });
+    expect(screen.getByRole('button', { name: '코드 보기' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
+    expect(screen.getByText('구현 참고').closest('details')).not.toHaveAttribute('open');
+    await user.click(screen.getByRole('button', { name: '코드 보기' }));
+    await user.click(nav.getByRole('link', { name: '프로필 관리' }));
+    await screen.findByRole('heading', { level: 1, name: '프로필 관리' });
+    expect(screen.getByRole('button', { name: '코드 보기' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
+  });
+
   it('connects the catalog, search, source and component references', async () => {
     const user = userEvent.setup();
     await renderDocs(['/blocks']);

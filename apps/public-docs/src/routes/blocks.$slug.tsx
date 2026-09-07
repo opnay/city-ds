@@ -12,5 +12,6 @@ export const Route = createFileRoute('/blocks/$slug')({
 });
 
 function BlockRoute() {
-  return <BlockPage {...Route.useLoaderData()} />;
+  const data = Route.useLoaderData();
+  return <BlockPage key={data.entry.slug} {...data} />;
 }

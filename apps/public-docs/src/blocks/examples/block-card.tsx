@@ -6,7 +6,7 @@ interface BlockCardProps extends Omit<PanelRootProps, 'title' | 'children'> {
   title: string;
   description?: ReactNode;
   actions?: ReactNode;
-  headingLevel?: 3 | 4;
+  titleAs?: 'h3' | 'h4' | 'span';
   children?: ReactNode;
 }
 
@@ -14,14 +14,13 @@ export function BlockCard({
   title,
   description,
   actions,
-  headingLevel = 3,
+  titleAs: Heading = 'h3',
   children,
   className,
   render,
   ...props
 }: BlockCardProps) {
   const titleId = useId();
-  const Heading = headingLevel === 4 ? 'h4' : 'h3';
   return (
     <Panel.Root
       {...props}
@@ -34,7 +33,13 @@ export function BlockCard({
         <div className="city-block-card-heading">
           <Heading
             id={titleId}
-            className={headingLevel === 4 ? 'city-block-step-title' : 'city-text-subsection-title'}
+            className={
+              Heading === 'span'
+                ? 'city-block-section-title'
+                : Heading === 'h4'
+                  ? 'city-block-step-title'
+                  : 'city-text-subsection-title'
+            }
           >
             {title}
           </Heading>

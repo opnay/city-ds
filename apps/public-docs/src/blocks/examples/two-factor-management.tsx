@@ -3,6 +3,7 @@ import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
 import { AccountActionDialog } from './user-management-shared';
 import { BlockCard } from './block-card';
+import { toast } from '@opnay/city-ds-react/toast';
 import {
   TwoFactorRegistration,
   type AuthenticatorConfirmation,
@@ -30,7 +31,7 @@ export function TwoFactorManagement({
   const [setup, setSetup] = useState(false);
   const [pendingRecovery, setPendingRecovery] = useState<string[]>([]);
   const [confirm, setConfirm] = useState<'regenerate' | 'disable' | null>(null);
-  const [notice, setNotice] = useState('');
+  const [completionMessage, setCompletionMessage] = useState('2차 인증 설정을 완료했습니다.');
 
   if (setup)
     return (
@@ -43,7 +44,7 @@ export function TwoFactorManagement({
         onFinish={() => {
           setPendingRecovery([]);
           setSetup(false);
-          setNotice('2차 인증 설정을 완료했습니다.');
+          toast.success(completionMessage);
         }}
         onDeferRecovery={(codes) => {
           setPendingRecovery(codes);
@@ -57,6 +58,7 @@ export function TwoFactorManagement({
     <div className="city-block-form">
       <BlockCard
         title="2차 인증"
+        titleAs="span"
         description={
           <span className="city-block-label-row">
             <span>
@@ -76,7 +78,7 @@ export function TwoFactorManagement({
             <Button
               size="lg"
               onClick={() => {
-                setNotice('');
+                setCompletionMessage('2차 인증 설정을 완료했습니다.');
                 setSetup(true);
               }}
             >
@@ -88,35 +90,32 @@ export function TwoFactorManagement({
       {registeredAt && (
         <BlockCard
           title="복구 코드"
-          headingLevel={4}
+          titleAs="h4"
           description={
             pendingRecovery.length
-              ? '등록한 인증 앱은 사용 중입니다. 복구 코드 보관을 마무리하십시오.'
-              : '인증 앱에 접근할 수 없을 때 사용합니다. 재발급하면 기존 복구 코드는 사용할 수 없습니다.'
+              ? '아직 보관을 마치지 않았습니다.'
+              : '인증 앱에 접근할 수 없을 때 사용합니다. 재발급하면 기존 코드는 사용할 수 없습니다.'
           }
           actions={
             pendingRecovery.length ? (
               <Button size="lg" onClick={() => setSetup(true)}>
-                복구 코드 보관 계속
+                보관 계속
               </Button>
             ) : (
               <Button size="lg" variant="outline" onClick={() => setConfirm('regenerate')}>
-                복구 코드 재발급
+                재발급
               </Button>
             )
           }
         />
       )}
-      <output className="city-block-status" aria-live="polite">
-        {notice}
-      </output>
       <AccountActionDialog
         open={confirm !== null}
         onOpenChange={(open) => {
           if (!open) setConfirm(null);
         }}
         requirePassword
-        destructive={confirm === 'disable'}
+        destructive
         title={
           confirm === 'disable' ? '인증 앱을 해제하시겠습니까?' : '복구 코드를 재발급하시겠습니까?'
         }
@@ -125,18 +124,18 @@ export function TwoFactorManagement({
             ? '로그인할 때 인증 앱 코드를 더 이상 요청하지 않습니다. 현재 비밀번호로 본인을 확인하십시오.'
             : '기존 복구 코드는 사용할 수 없게 됩니다. 현재 비밀번호로 본인을 확인하십시오.'
         }
-        confirmLabel={confirm === 'disable' ? '인증 앱 해제' : '복구 코드 재발급'}
+        confirmLabel={confirm === 'disable' ? '인증 앱 해제' : '재발급'}
         onConfirm={async (password) => {
           if (confirm === 'disable') {
             await actions.disableTwoFactor(password);
             setRegisteredAt(undefined);
             setPendingRecovery([]);
-            setNotice('인증 앱을 해제했습니다.');
+            toast.success('인증 앱을 해제했습니다.');
           } else {
             const codes = await actions.regenerateRecoveryCodes(password);
             setPendingRecovery(codes);
             setSetup(true);
-            setNotice('');
+            setCompletionMessage('복구 코드를 재발급했습니다.');
           }
         }}
       />

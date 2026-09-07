@@ -5,6 +5,7 @@ import { Field } from '@opnay/city-ds-react/field';
 import { OtpInput } from '@opnay/city-ds-react/otp-input';
 import { PasswordField, useAccountAction } from './user-management-shared';
 import { Panel } from '@opnay/city-ds-react/panel';
+import { toast } from '@opnay/city-ds-react/toast';
 import './blocks.css';
 
 export interface AuthenticatorEnrollment {
@@ -45,7 +46,6 @@ export function TwoFactorRegistration({
   const [code, setCode] = useState('');
   const [recoveryCodes, setRecoveryCodes] = useState(initialRecoveryCodes);
   const [stored, setStored] = useState(false);
-  const [notice, setNotice] = useState('');
   const content = useRef<HTMLElement>(null);
   const headingId = useId();
   const action = useAccountAction();
@@ -56,9 +56,9 @@ export function TwoFactorRegistration({
   async function copy(value: string) {
     try {
       await navigator.clipboard.writeText(value);
-      setNotice('복사했습니다.');
+      toast.success('복사했습니다.');
     } catch {
-      setNotice('복사하지 못했습니다. 코드를 직접 선택해 복사하십시오.');
+      toast.error('복사하지 못했습니다. 코드를 직접 선택해 복사하십시오.');
     }
   }
   function download() {
@@ -72,7 +72,7 @@ export function TwoFactorRegistration({
     link.click();
     link.remove();
     URL.revokeObjectURL(url);
-    setNotice('복구 코드 파일을 다운로드했습니다.');
+    toast.success('복구 코드 파일을 다운로드했습니다.');
   }
   async function leave() {
     if (action.busy) return;
@@ -95,7 +95,6 @@ export function TwoFactorRegistration({
       onSubmit={async (event) => {
         event.preventDefault();
         if (action.busy) return;
-        setNotice('');
         if (step === 0) {
           if (!password) return;
           const result = await action.run(() => onStart(password));
@@ -210,7 +209,7 @@ export function TwoFactorRegistration({
                 variant="outline"
                 onClick={() => copy(recoveryCodes.join('\n'))}
               >
-                복구 코드 복사
+                복사
               </Button>
               <Button size="lg" type="button" variant="outline" onClick={download}>
                 다운로드
@@ -232,22 +231,7 @@ export function TwoFactorRegistration({
           {action.error}
         </p>
       )}
-      <output className="city-block-status" aria-live="polite">
-        {notice}
-      </output>
       <div className="city-block-actions city-block-actions--separated">
-        <Button
-          size="lg"
-          type="submit"
-          disabled={
-            action.busy ||
-            (step === 0 && !password) ||
-            (step === 2 && code.length !== 6) ||
-            (step === 3 && !stored)
-          }
-        >
-          {action.busy ? '확인 중…' : ['다음', '앱 연결 완료', '코드 확인', '등록 마치기'][step]}
-        </Button>
         {step === 2 && (
           <Button
             size="lg"
@@ -265,6 +249,18 @@ export function TwoFactorRegistration({
         )}
         <Button size="lg" type="button" variant="ghost" disabled={action.busy} onClick={leave}>
           {step === 3 ? '나중에 보관' : '등록 취소'}
+        </Button>
+        <Button
+          size="lg"
+          type="submit"
+          disabled={
+            action.busy ||
+            (step === 0 && !password) ||
+            (step === 2 && code.length !== 6) ||
+            (step === 3 && !stored)
+          }
+        >
+          {action.busy ? '확인 중…' : ['다음', '앱 연결 완료', '코드 확인', '등록 마치기'][step]}
         </Button>
       </div>
     </Panel.Root>

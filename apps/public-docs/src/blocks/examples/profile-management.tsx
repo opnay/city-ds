@@ -2,8 +2,10 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { Avatar } from '@opnay/city-ds-react/avatar';
 import { Button } from '@opnay/city-ds-react/button';
 import { Field } from '@opnay/city-ds-react/field';
-import { Input, Textarea } from '@opnay/city-ds-react/input';
+import { Input, InputGroup, Textarea } from '@opnay/city-ds-react/input';
+import { X } from 'lucide-react';
 import { BlockCard } from './block-card';
+import { toast } from '@opnay/city-ds-react/toast';
 import './blocks.css';
 
 export interface ProfileValues {
@@ -31,7 +33,6 @@ export function ProfileManagement({
   const [imageUrl, setImageUrl] = useState<string>();
   const [imageError, setImageError] = useState('');
   const [saveError, setSaveError] = useState('');
-  const [message, setMessage] = useState('');
   const [attempted, setAttempted] = useState(false);
   const imageId = useId();
   const nameError = attempted && !profile.name.trim();
@@ -50,7 +51,6 @@ export function ProfileManagement({
 
   function edit(update: Partial<ProfileValues>) {
     setProfile((current) => ({ ...current, ...update }));
-    setMessage('');
     setSaveError('');
   }
 
@@ -67,13 +67,12 @@ export function ProfileManagement({
         pending.current = true;
         setSaving(true);
         setSaveError('');
-        setMessage('');
         const next = { ...profile, name: profile.name.trim() };
         try {
           await onSave(next);
           setSaved(next);
           setProfile(next);
-          setMessage('프로필을 저장했습니다.');
+          toast.success('프로필을 저장했습니다.');
         } catch {
           setSaveError('저장하지 못했습니다. 입력한 내용은 유지됩니다. 다시 시도하십시오.');
         } finally {
@@ -91,11 +90,18 @@ export function ProfileManagement({
             <Avatar.Image src={imageUrl} alt="프로필 이미지 미리보기" />
             <Avatar.Fallback>{profile.name.trim().slice(0, 2) || '사용자'}</Avatar.Fallback>
           </Avatar.Root>
-          <div className="city-block-actions">
+          <InputGroup.Root
+            size="lg"
+            role="group"
+            aria-label="프로필 이미지 선택"
+            data-disabled={saving ? '' : undefined}
+            className="city-block-image-control"
+          >
             <Button
               size="lg"
               type="button"
-              variant="outline"
+              variant="ghost"
+              className="city-block-image-trigger"
               disabled={saving}
               onClick={() => fileInput.current?.click()}
             >
@@ -103,6 +109,9 @@ export function ProfileManagement({
             </Button>
             <Button
               size="lg"
+              iconOnly
+              aria-label="이미지 제거"
+              className="city-block-image-remove focus-visible:ring-offset-0"
               type="button"
               variant="ghost"
               disabled={saving || !profile.image}
@@ -111,14 +120,15 @@ export function ProfileManagement({
                 setImageError('');
               }}
             >
-              이미지 제거
+              <X size={16} aria-hidden="true" />
             </Button>
-          </div>
+          </InputGroup.Root>
         </div>
         <input
           ref={fileInput}
           id={imageId}
           type="file"
+          tabIndex={-1}
           accept="image/png,image/jpeg,image/webp"
           className="city-block-sr-only"
           disabled={saving}
@@ -171,9 +181,6 @@ export function ProfileManagement({
         </p>
       )}
       <div className="city-block-actions city-block-actions--separated">
-        <Button size="lg" type="submit" disabled={!dirty || saving}>
-          {saving ? '저장 중…' : '변경 사항 저장'}
-        </Button>
         <Button
           size="lg"
           type="button"
@@ -184,15 +191,14 @@ export function ProfileManagement({
             setAttempted(false);
             setImageError('');
             setSaveError('');
-            setMessage('변경 사항을 되돌렸습니다.');
           }}
         >
           취소
         </Button>
+        <Button size="lg" type="submit" disabled={!dirty || saving}>
+          {saving ? '저장 중…' : '변경 사항 저장'}
+        </Button>
       </div>
-      <output className="city-block-status" aria-live="polite">
-        {message || (saving ? '프로필을 저장하고 있습니다.' : '')}
-      </output>
     </BlockCard>
   );
 }

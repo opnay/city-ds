@@ -26,6 +26,10 @@
 .city-block-card-header {
   align-items: center;
 }
+
+.city-block-card:has(> .city-block-card-header) {
+  row-gap: var(--city-space-5);
+}
 .city-block-card-header > [data-city-panel-header-content] {
   flex: 1 1 10rem;
 }
@@ -79,9 +83,6 @@
   align-items: center;
   flex-wrap: wrap;
   gap: var(--city-space-2);
-}
-.city-block-avatar-row > .city-block-actions {
-  margin-inline-start: auto;
 }
 .city-block-split > button {
   margin-inline-start: auto;
@@ -137,6 +138,29 @@
   border-inline-start: 1px solid var(--city-color-border);
 }
 
+.city-block-image-control {
+  width: auto;
+  max-width: 100%;
+  gap: 0;
+}
+.city-block-image-control[data-disabled] > button:disabled {
+  opacity: 1;
+}
+.city-block-image-trigger,
+.city-block-image-remove {
+  height: 100%;
+  align-self: stretch;
+  border-radius: 0;
+}
+.city-block-image-remove {
+  border-inline-start: 1px solid var(--city-color-border);
+}
+.city-block-session-meta {
+  font-size: var(--city-font-size-xs);
+  line-height: var(--city-line-height-xs);
+  color: var(--city-color-muted-foreground);
+}
+
 .city-block-section-title {
   margin: 0;
   font-size: var(--city-font-size-sm);
@@ -183,6 +207,7 @@
 .city-block-session-info .city-block-description {
   margin-top: var(--city-space-1);
   font-size: var(--city-font-size-xs);
+  line-height: var(--city-line-height-xs);
 }
 .city-block-steps {
   display: grid;
@@ -262,6 +287,9 @@
   font-size: var(--city-font-size-sm);
 }
 @media (max-width: 480px) {
+  .city-block-session {
+    grid-template-columns: 24px minmax(0, 1fr);
+  }
   .city-block-session > button {
     grid-column: 2 / -1;
     justify-self: end;

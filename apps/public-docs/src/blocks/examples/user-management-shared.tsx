@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@opnay/city-ds-react/button';
 import { Dialog } from '@opnay/city-ds-react/dialog';
+import { AlertDialog } from '@opnay/city-ds-react/alert-dialog';
 import { Field } from '@opnay/city-ds-react/field';
 import { Input, InputGroup } from '@opnay/city-ds-react/input';
 
@@ -114,6 +115,7 @@ export function AccountActionDialog({
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
   const action = useAccountAction();
+  const Modal = destructive ? AlertDialog : Dialog;
   useEffect(() => {
     if (!open) {
       setPassword('');
@@ -121,7 +123,7 @@ export function AccountActionDialog({
     }
   }, [open]);
   return (
-    <Dialog.Root
+    <Modal.Root
       open={open}
       onOpenChange={(next) => {
         if (!action.busy) {
@@ -130,10 +132,10 @@ export function AccountActionDialog({
         }
       }}
     >
-      <Dialog.Portal>
-        <Dialog.Backdrop />
-        <Dialog.Viewport>
-          <Dialog.Popup>
+      <Modal.Portal>
+        <Modal.Backdrop />
+        <Modal.Viewport>
+          <Modal.Popup>
             <form
               className="city-block-section"
               onSubmit={async (event) => {
@@ -152,8 +154,8 @@ export function AccountActionDialog({
             >
               <Dialog.Header>
                 <div>
-                  <Dialog.Title>{title}</Dialog.Title>
-                  <Dialog.Description>{description}</Dialog.Description>
+                  <Modal.Title>{title}</Modal.Title>
+                  <Modal.Description>{description}</Modal.Description>
                 </div>
               </Dialog.Header>
               <Dialog.Body>
@@ -212,9 +214,9 @@ export function AccountActionDialog({
                 </Button>
               </Dialog.Footer>
             </form>
-          </Dialog.Popup>
-        </Dialog.Viewport>
-      </Dialog.Portal>
-    </Dialog.Root>
+          </Modal.Popup>
+        </Modal.Viewport>
+      </Modal.Portal>
+    </Modal.Root>
   );
 }

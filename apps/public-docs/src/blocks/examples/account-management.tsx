@@ -5,6 +5,7 @@ import { Field } from '@opnay/city-ds-react/field';
 import { Input } from '@opnay/city-ds-react/input';
 import { OtpInput } from '@opnay/city-ds-react/otp-input';
 import { BlockCard } from './block-card';
+import { toast } from '@opnay/city-ds-react/toast';
 import { AccountActionDialog, PasswordField, useAccountAction } from './user-management-shared';
 import './blocks.css';
 
@@ -29,7 +30,6 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
   const [disconnect, setDisconnect] = useState<string>();
   const [deleting, setDeleting] = useState(false);
   const [deleted, setDeleted] = useState(false);
-  const [notice, setNotice] = useState('');
   const action = useAccountAction();
   const resetEmail = () => {
     setEditing(false);
@@ -64,7 +64,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
             <Badge>인증됨</Badge>
           </span>
         }
-        headingLevel={4}
+        titleAs="h4"
         actions={
           !editing ? (
             <Button
@@ -73,7 +73,6 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
               disabled={action.busy}
               onClick={() => {
                 setEditing(true);
-                setNotice('');
               }}
             >
               이메일 변경
@@ -92,7 +91,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
                 if (result.ok) {
                   setEmail(result.value);
                   resetEmail();
-                  setNotice('로그인 이메일을 변경했습니다.');
+                  toast.success('로그인 이메일을 변경했습니다.');
                 }
               } else {
                 if (
@@ -142,6 +141,15 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
             <div className="city-block-actions">
               <Button
                 size="lg"
+                type="button"
+                variant="outline"
+                disabled={action.busy}
+                onClick={resetEmail}
+              >
+                취소
+              </Button>
+              <Button
+                size="lg"
                 type="submit"
                 disabled={
                   action.busy ||
@@ -154,15 +162,6 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
               >
                 {action.busy ? '확인 중…' : challenge ? '이메일 변경 완료' : '확인 코드 보내기'}
               </Button>
-              <Button
-                size="lg"
-                type="button"
-                variant="outline"
-                disabled={action.busy}
-                onClick={resetEmail}
-              >
-                취소
-              </Button>
             </div>
           </form>
         )}
@@ -170,7 +169,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
       <BlockCard
         title="연결 계정"
         description="연결한 계정 또는 비밀번호로 로그인할 수 있습니다."
-        headingLevel={4}
+        titleAs="h4"
       >
         <ul className="city-block-list">
           {providers.map((provider) => (
@@ -200,7 +199,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
                         item.name === provider.name ? { ...item, connected: true } : item,
                       ),
                     );
-                    setNotice(`${provider.name} 계정을 연결했습니다.`);
+                    toast.success(`${provider.name} 계정을 연결했습니다.`);
                   }
                 }}
               >
@@ -215,13 +214,10 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
           {action.error}
         </p>
       )}
-      <output className="city-block-status" aria-live="polite">
-        {notice}
-      </output>
       <BlockCard
         title="계정 탈퇴"
         description="계정과 개인 정보가 삭제됩니다. 탈퇴 후에는 복구할 수 없습니다."
-        headingLevel={4}
+        titleAs="h4"
         actions={
           <Button
             size="lg"
@@ -234,6 +230,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
         }
       />
       <AccountActionDialog
+        destructive
         open={!!disconnect}
         onOpenChange={(open) => {
           if (!open) setDisconnect(undefined);
@@ -249,7 +246,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
               item.name === disconnect ? { ...item, connected: false } : item,
             ),
           );
-          setNotice('로그인 연결을 해제했습니다.');
+          toast.success('로그인 연결을 해제했습니다.');
         }}
       />
       <AccountActionDialog
@@ -263,6 +260,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
         destructive
         onConfirm={async (value) => {
           await actions.deleteAccount(value);
+          toast.success('계정이 탈퇴되었습니다.');
           setDeleted(true);
         }}
       />

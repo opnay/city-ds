@@ -73,6 +73,9 @@ export function BlockPage({
       <details>
         <summary>구현 참고</summary>
         <p>{entry.guidance}</p>
+        {entry.components.includes('toast') && (
+          <p>완료 알림을 표시하려면 앱 루트에 Toaster를 한 번 배치하십시오.</p>
+        )}
       </details>
     </GuidePage>
   );

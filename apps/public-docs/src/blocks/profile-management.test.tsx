@@ -1,9 +1,16 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { toast } from '@opnay/city-ds-react/toast';
 import { ProfileManagement } from './examples/profile-management';
 
-afterEach(() => vi.unstubAllGlobals());
+beforeEach(() => {
+  vi.spyOn(toast, 'success').mockReturnValue(0);
+});
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
+});
 
 describe('Profile management block', () => {
   it('rejects whitespace names and preserves edits after a failed save', async () => {
@@ -20,9 +27,10 @@ describe('Profile management block', () => {
     await user.type(name, '김민수');
     await user.click(screen.getByRole('button', { name: '변경 사항 저장' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('저장하지 못했습니다');
+    expect(toast.success).not.toHaveBeenCalled();
     expect(name).toHaveValue('김민수');
     await user.click(screen.getByRole('button', { name: '변경 사항 저장' }));
-    expect(await screen.findByText('프로필을 저장했습니다.')).toBeVisible();
+    await waitFor(() => expect(toast.success).toHaveBeenCalledWith('프로필을 저장했습니다.'));
     await user.type(name, ' 수정');
     await user.click(screen.getByRole('button', { name: '취소' }));
     expect(name).toHaveValue('김민수');
@@ -65,7 +73,7 @@ describe('Profile management block', () => {
     fireEvent.change(input, { target: { files: [file] } });
     expect(create).toHaveBeenCalledWith(file);
     await user.click(screen.getByRole('button', { name: '변경 사항 저장' }));
-    await screen.findByText('프로필을 저장했습니다.');
+    await waitFor(() => expect(toast.success).toHaveBeenCalledWith('프로필을 저장했습니다.'));
     await user.click(screen.getByRole('button', { name: '이미지 제거' }));
     expect(revoke).toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: '취소' }));

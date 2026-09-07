@@ -5,6 +5,7 @@ import { Button } from '@opnay/city-ds-react/button';
 import { SegmentedControl } from '@opnay/city-ds-react/segmented-control';
 import { AccountActionDialog } from './user-management-shared';
 import { BlockCard } from './block-card';
+import { toast } from '@opnay/city-ds-react/toast';
 import './blocks.css';
 
 export interface SessionRecord {
@@ -76,7 +77,6 @@ export function SessionHistory({
   const [sessions, setSessions] = useState(initialSessions);
   const [filter, setFilter] = useState<'active' | 'all'>('active');
   const [targets, setTargets] = useState<string[]>([]);
-  const [notice, setNotice] = useState('');
   const otherActive = sessions.filter((session) => !session.current && session.status === 'active');
   const visible = sessions.filter((session) => filter === 'all' || session.status === 'active');
   return (
@@ -106,14 +106,13 @@ export function SessionHistory({
             <div className="city-block-session-info">
               <div className="city-block-label-row">
                 <strong className="city-block-section-title">{session.device}</strong>
+                <span className="city-block-session-meta">{session.browser}</span>
                 {session.current && <Badge>현재 세션</Badge>}
                 {session.status === 'ended' && <Badge>종료됨</Badge>}
               </div>
-              <p className="city-block-description">{session.browser}</p>
               <p className="city-block-description">
-                {session.location} · {session.ip}
+                {session.location} · {session.ip} · {session.lastActive}
               </p>
-              <p className="city-block-description">{session.lastActive}</p>
             </div>
             {!session.current && session.status === 'active' && (
               <Button
@@ -138,9 +137,6 @@ export function SessionHistory({
           다른 세션 모두 종료
         </Button>
       </div>
-      <output className="city-block-status" aria-live="polite">
-        {notice}
-      </output>
       <AccountActionDialog
         open={targets.length > 0}
         onOpenChange={(open) => {
@@ -165,7 +161,7 @@ export function SessionHistory({
                 : session,
             ),
           );
-          setNotice(`${ids.length}개 세션을 종료했습니다.`);
+          toast.success(`${ids.length}개 세션을 종료했습니다.`);
         }}
       />
     </BlockCard>

@@ -1,12 +1,18 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { toast } from '@opnay/city-ds-react/toast';
 import { AccountManagement } from './examples/account-management';
 import { ChangePassword } from './examples/change-password';
 import { TwoFactorManagement, type TwoFactorActions } from './examples/two-factor-management';
 import { SessionHistory, exampleSessions } from './examples/session-history';
 import { renderDocs } from '../test/render-docs';
 import { USER_MANAGEMENT_MENU } from './block-catalog';
+
+beforeEach(() => {
+  vi.spyOn(toast, 'success').mockReturnValue(0);
+});
+afterEach(() => vi.restoreAllMocks());
 
 function twoFactorActions(): TwoFactorActions {
   return {
@@ -67,12 +73,13 @@ describe('User management blocks', () => {
     expect(actions.confirmEmailChange).toHaveBeenCalledWith('challenge-1', '123456');
     expect(await screen.findByText('new@example.com')).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Google 연결 해제' }));
-    const disconnect = within(screen.getByRole('dialog'));
+    const disconnect = within(screen.getByRole('alertdialog'));
     await user.click(disconnect.getByRole('button', { name: '연결 해제' }));
-    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument());
     expect(actions.setProviderConnected).toHaveBeenCalledWith('Google', false);
+    expect(toast.success).toHaveBeenLastCalledWith('로그인 연결을 해제했습니다.');
     await user.click(screen.getByRole('button', { name: '계정 탈퇴' }));
-    const removal = within(screen.getByRole('dialog'));
+    const removal = within(screen.getByRole('alertdialog'));
     expect(removal.getByRole('button', { name: '계정 탈퇴' })).toBeDisabled();
     await user.type(
       removal.getByLabelText('현재 비밀번호', { selector: 'input' }),
@@ -105,7 +112,7 @@ describe('User management blocks', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('처리하지 못했습니다');
     expect(next).toHaveValue('new-password-123');
     await user.click(screen.getByRole('button', { name: '비밀번호 변경' }));
-    await screen.findByText('비밀번호를 변경했습니다.');
+    await waitFor(() => expect(toast.success).toHaveBeenCalledWith('비밀번호를 변경했습니다.'));
     expect(change).toHaveBeenLastCalledWith({
       currentPassword: 'old-password',
       newPassword: 'new-password-123',
@@ -141,7 +148,7 @@ describe('User management blocks', () => {
     expect(change).toHaveBeenCalledTimes(1);
     expect(screen.getByLabelText('새 비밀번호', { selector: 'input' })).toBeDisabled();
     resolve();
-    await screen.findByText('비밀번호를 변경했습니다.');
+    await waitFor(() => expect(toast.success).toHaveBeenCalledWith('비밀번호를 변경했습니다.'));
   });
 
   it('retains activation when recovery storage is deferred, resumes and regenerates codes, then disables 2FA', async () => {
@@ -170,18 +177,18 @@ describe('User management blocks', () => {
     expect(screen.getByRole('button', { name: '등록 마치기' })).toBeDisabled();
     await user.click(screen.getByRole('button', { name: '나중에 보관' }));
     expect(screen.getByText('사용 중')).toBeVisible();
-    await user.click(screen.getByRole('button', { name: '복구 코드 보관 계속' }));
+    await user.click(screen.getByRole('button', { name: '보관 계속' }));
     await user.click(
       screen.getByRole('checkbox', { name: '복구 코드를 안전한 곳에 보관했습니다' }),
     );
     await user.click(screen.getByRole('button', { name: '등록 마치기' }));
-    await user.click(screen.getByRole('button', { name: '복구 코드 재발급' }));
-    let dialog = within(screen.getByRole('dialog'));
+    await user.click(screen.getByRole('button', { name: '재발급' }));
+    let dialog = within(screen.getByRole('alertdialog'));
     await user.type(
       dialog.getByLabelText('현재 비밀번호', { selector: 'input' }),
       'current-password',
     );
-    await user.click(dialog.getByRole('button', { name: '복구 코드 재발급' }));
+    await user.click(dialog.getByRole('button', { name: '재발급' }));
     expect(await screen.findByText('NEW-1111')).toBeVisible();
     expect(screen.queryByText('CODE-1111')).not.toBeInTheDocument();
     await user.click(
@@ -189,7 +196,7 @@ describe('User management blocks', () => {
     );
     await user.click(screen.getByRole('button', { name: '등록 마치기' }));
     await user.click(screen.getByRole('button', { name: '인증 앱 해제' }));
-    dialog = within(screen.getByRole('dialog'));
+    dialog = within(screen.getByRole('alertdialog'));
     await user.type(
       dialog.getByLabelText('현재 비밀번호', { selector: 'input' }),
       'current-password',
@@ -197,6 +204,7 @@ describe('User management blocks', () => {
     await user.click(dialog.getByRole('button', { name: '인증 앱 해제' }));
     expect(await screen.findByRole('button', { name: '인증 앱 등록' })).toBeVisible();
     expect(actions.disableTwoFactor).toHaveBeenCalledWith('current-password');
+    expect(toast.success).toHaveBeenLastCalledWith('인증 앱을 해제했습니다.');
   });
 
   it('cancels an unverified enrollment without activating 2FA', async () => {
@@ -218,18 +226,20 @@ describe('User management blocks', () => {
     const revoke = vi.fn().mockRejectedValueOnce(new Error('network')).mockResolvedValue(undefined);
     render(<SessionHistory initialSessions={exampleSessions} onRevoke={revoke} />);
     await user.click(screen.getByRole('button', { name: 'iPhone 세션 종료' }));
-    let dialog = within(screen.getByRole('dialog'));
+    let dialog = within(screen.getByRole('alertdialog'));
     await user.click(dialog.getByRole('button', { name: '세션 종료' }));
     expect(await screen.findByRole('alert')).toBeVisible();
     expect(revoke).toHaveBeenCalledWith(['phone']);
+    expect(toast.success).not.toHaveBeenCalled();
     await user.click(dialog.getByRole('button', { name: '세션 종료' }));
-    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument());
     expect(screen.queryByRole('button', { name: 'iPhone 세션 종료' })).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: '다른 세션 모두 종료' }));
-    dialog = within(screen.getByRole('dialog'));
+    dialog = within(screen.getByRole('alertdialog'));
     await user.click(dialog.getByRole('button', { name: '세션 종료' }));
-    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument());
     expect(revoke).toHaveBeenLastCalledWith(['desktop']);
+    expect(toast.success).toHaveBeenLastCalledWith('1개 세션을 종료했습니다.');
     expect(screen.getByText('현재 세션')).toBeVisible();
     expect(screen.getByRole('button', { name: '다른 세션 모두 종료' })).toBeDisabled();
     await user.click(screen.getByRole('radio', { name: '전체 기록' }));

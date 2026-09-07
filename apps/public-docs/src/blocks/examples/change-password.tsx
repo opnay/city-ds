@@ -4,6 +4,7 @@ import { Checkbox } from '@opnay/city-ds-react/checkbox';
 import { Field } from '@opnay/city-ds-react/field';
 import { PasswordField, useAccountAction } from './user-management-shared';
 import { BlockCard } from './block-card';
+import { toast } from '@opnay/city-ds-react/toast';
 import './blocks.css';
 
 export interface PasswordChange {
@@ -24,7 +25,6 @@ export function ChangePassword({
   const [confirmation, setConfirmation] = useState('');
   const [signOut, setSignOut] = useState(true);
   const [attempted, setAttempted] = useState(false);
-  const [notice, setNotice] = useState('');
   const action = useAccountAction();
   const nextError =
     next.length < minLength
@@ -35,7 +35,6 @@ export function ChangePassword({
   const confirmationError = next !== confirmation ? '새 비밀번호와 일치하지 않습니다.' : '';
   function edit(setter: (value: string) => void, value: string) {
     setter(value);
-    setNotice('');
     action.clearError();
   }
 
@@ -60,7 +59,7 @@ export function ChangePassword({
           setNext('');
           setConfirmation('');
           setAttempted(false);
-          setNotice('비밀번호를 변경했습니다.');
+          toast.success('비밀번호를 변경했습니다.');
         }
       }}
     >
@@ -104,9 +103,6 @@ export function ChangePassword({
         </p>
       )}
       <div className="city-block-actions city-block-actions--separated">
-        <Button size="lg" type="submit" disabled={action.busy}>
-          {action.busy ? '변경 중…' : '비밀번호 변경'}
-        </Button>
         <Button
           size="lg"
           type="button"
@@ -117,16 +113,15 @@ export function ChangePassword({
             setNext('');
             setConfirmation('');
             setAttempted(false);
-            setNotice('');
             action.clearError();
           }}
         >
           취소
         </Button>
+        <Button size="lg" type="submit" disabled={action.busy}>
+          {action.busy ? '변경 중…' : '비밀번호 변경'}
+        </Button>
       </div>
-      <output className="city-block-status" aria-live="polite">
-        {notice}
-      </output>
     </BlockCard>
   );
 }

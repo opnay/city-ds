@@ -130,12 +130,11 @@
 .city-block-password-row {
   width: 100%;
 }
-.city-block-password-row[data-invalid] {
-  border-color: var(--city-color-destructive);
-}
 .city-block-password-toggle {
-  width: var(--city-control-sm);
-  padding-inline: 0;
+  height: 100%;
+  align-self: stretch;
+  border-radius: 0;
+  border-inline-start: 1px solid var(--city-color-border);
 }
 
 .city-block-section-title {

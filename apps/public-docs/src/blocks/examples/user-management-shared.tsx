@@ -57,8 +57,9 @@ export function PasswordField({
       <Field.Label className="city-text-supporting">{label}</Field.Label>
       <InputGroup.Root
         size="lg"
-        className="city-block-password-row"
+        className="city-block-password-row data-[invalid]:border-city-destructive data-[invalid]:focus-within:ring-city-destructive [&>button:disabled]:opacity-100 [&>input:disabled]:opacity-100"
         data-invalid={error ? '' : undefined}
+        data-disabled={disabled ? '' : undefined}
       >
         <Input
           size="lg"
@@ -69,24 +70,19 @@ export function PasswordField({
           value={value}
           onChange={(event) => onChange(event.target.value)}
         />
-        <InputGroup.Addon position="trailing">
-          <Button
-            size="sm"
-            className="city-block-password-toggle"
-            type="button"
-            variant="ghost"
-            disabled={disabled}
-            aria-label={`${label} ${visible ? '숨기기' : '보기'}`}
-            aria-pressed={visible}
-            onClick={() => setVisible(!visible)}
-          >
-            {visible ? (
-              <EyeOff size={16} aria-hidden="true" />
-            ) : (
-              <Eye size={16} aria-hidden="true" />
-            )}
-          </Button>
-        </InputGroup.Addon>
+        <Button
+          size="lg"
+          iconOnly
+          className="city-block-password-toggle focus-visible:ring-offset-0"
+          type="button"
+          variant="ghost"
+          disabled={disabled}
+          aria-label={`${label} ${visible ? '숨기기' : '보기'}`}
+          aria-pressed={visible}
+          onClick={() => setVisible(!visible)}
+        >
+          {visible ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
+        </Button>
       </InputGroup.Root>
       {description && !error && <Field.Description>{description}</Field.Description>}
       {error && <Field.Error match>{error}</Field.Error>}

@@ -39,7 +39,7 @@ function SingleSlider({
 }
 
 const meta = {
-  title: 'Forms/Slider',
+  title: 'Inputs/Slider',
   component: SingleSlider,
   tags: ['autodocs'],
   argTypes: {

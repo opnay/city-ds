@@ -109,6 +109,7 @@ const preview: Preview = {
     layout: 'centered',
     options: {
       storySort: {
+        method: 'alphabetical',
         order: [
           '시작하기',
           '기초',
@@ -126,12 +127,16 @@ const preview: Preview = {
             'Shape',
             ['Radius'],
           ],
+          'Inputs',
+          'Selection',
+          'Dates',
+          'Form structure',
           'Actions',
-          'Forms',
           'Navigation',
           'Overlays',
-          'Feedback',
           'Data display',
+          'Feedback',
+          'Layout',
         ],
       },
     },

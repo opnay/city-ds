@@ -3,7 +3,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { Field, Select, type ControlSize } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Forms/Select',
+  title: 'Selection/Select',
   component: Select.Root,
   tags: ['autodocs'],
   parameters: {

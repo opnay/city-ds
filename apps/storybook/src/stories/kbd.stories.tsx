@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Kbd } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Foundations/Kbd',
+  title: 'Data display/Kbd',
   component: Kbd,
   tags: ['autodocs'],
   args: {

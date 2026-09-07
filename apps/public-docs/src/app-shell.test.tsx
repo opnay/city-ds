@@ -235,7 +235,7 @@ describe('public docs routes and shell', () => {
     expect(mode).toHaveTextContent('Components');
     expect(within(navigation).queryByRole('heading', { level: 2 })).not.toBeInTheDocument();
     expect(within(navigation).getByRole('link', { name: '전체 보기' })).toBeVisible();
-    expect(within(navigation).getByRole('heading', { level: 3, name: '폼' })).toBeVisible();
+    expect(within(navigation).getByRole('heading', { level: 3, name: '폼 구성' })).toBeVisible();
 
     await user.click(mode);
     await user.click(await screen.findByRole('option', { name: 'Guides' }));
@@ -244,7 +244,7 @@ describe('public docs routes and shell', () => {
     expect(within(navigation).queryByRole('heading')).not.toBeInTheDocument();
     expect(
       [...navigation.querySelectorAll('.city-docs-nav-scroll a')].map((link) => link.textContent),
-    ).toEqual(['시작하기', '기초', '색상', '패턴', '접근성']);
+    ).toEqual(['시작하기', '기초', 'DensityProvider', '색상', '패턴', '접근성']);
     expect(within(navigation).queryByRole('link', { name: '전체 보기' })).not.toBeInTheDocument();
 
     await user.type(search, '설치');
@@ -376,12 +376,14 @@ describe('catalog and local UI state', () => {
     const main = screen.getByRole('main');
 
     await user.click(within(main).getByRole('combobox', { name: '컴포넌트 범주' }));
-    await user.click(await screen.findByRole('option', { name: '폼' }));
+    await user.click(await screen.findByRole('option', { name: '폼 구성' }));
 
-    const formCount = COMPONENT_DOCS.filter((entry) => entry.category === 'Forms').length;
+    const formCount = COMPONENT_DOCS.filter((entry) => entry.category === 'Form structure').length;
     expect(within(main).getByText(`컴포넌트 ${formCount}개`)).toBeVisible();
     expect(within(main).getByRole('link', { name: /^Field외부 입력/ })).toBeVisible();
-    expect(within(main).getByRole('link', { name: /^SegmentedControl보기/ })).toBeVisible();
+    expect(
+      within(main).queryByRole('link', { name: /^SegmentedControl보기/ }),
+    ).not.toBeInTheDocument();
     expect(within(main).queryByRole('link', { name: /Button/ })).not.toBeInTheDocument();
   });
 

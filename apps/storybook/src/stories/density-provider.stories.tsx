@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DensityProvider, FileUpload, Pagination, Tabs } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Foundations/Density provider',
+  title: '기초/밀도/Density provider',
   component: DensityProvider,
   tags: ['autodocs'],
   parameters: {

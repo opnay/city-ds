@@ -123,12 +123,18 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 
 `@opnay/city-ds-react`의 대표 컴포넌트는 다음과 같습니다.
 
-- Actions: Button, ToggleGroup
-- Status: Badge, Progress, Toast
-- Forms: Field, Input·Textarea·InputGroup, Checkbox, RadioGroup, SegmentedControl, Switch, Select, FileUpload
-- Navigation: Tabs, Pagination
-- Overlays: Dialog, Tooltip
-- Data display: Table
+- 입력 · Inputs: Input·Textarea·InputGroup, SearchInput, NumberInput, OtpInput, Slider, FileUpload
+- 선택 · Selection: Checkbox, CheckboxGroup, RadioGroup, Select, Combobox, SegmentedControl, SelectionCard, Switch
+- 날짜 · Dates: Calendar, DatePicker
+- 폼 구성 · Form structure: Field, Fieldset
+- 액션 · Actions: Button, Menu, Toolbar, ToggleGroup
+- 탐색 · Navigation: Breadcrumbs, Pagination, Tabs
+- 오버레이 · Overlays: Dialog, AlertDialog, Drawer, Popover, Tooltip
+- 정보 표시 · Data display: Avatar, Badge, Kbd, Meter, Table, DataTableRegion
+- 피드백 · Feedback: Alert, Toast, Progress, Skeleton, EmptyState
+- 레이아웃 · Layout: Panel, Divider, ScrollArea, Accordion, FilterBar
+
+DensityProvider는 기초 가이드에서 밀도 설정 API로 다룹니다.
 
 각 컴포넌트는 `@opnay/city-ds-react/button`과 같은 명시적인 subpath export도 제공합니다.
 

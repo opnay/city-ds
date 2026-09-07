@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Checkbox, Field, Fieldset, Input, RadioGroup } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Forms/Fieldset',
+  title: 'Form structure/Fieldset',
   component: Fieldset.Root,
   tags: ['autodocs'],
 } satisfies Meta<typeof Fieldset.Root>;

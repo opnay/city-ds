@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CheckboxGroup, Field, type CheckboxGroupProps } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Forms/Checkbox group',
+  title: 'Selection/Checkbox group',
   component: CheckboxGroup,
   tags: ['autodocs'],
   argTypes: {

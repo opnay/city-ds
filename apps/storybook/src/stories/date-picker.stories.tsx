@@ -6,7 +6,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import { DatePicker, Field } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Forms/DatePicker',
+  title: 'Dates/DatePicker',
   component: DatePicker.Root,
   tags: ['autodocs'],
   parameters: {

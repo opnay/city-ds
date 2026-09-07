@@ -5,7 +5,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import { Toolbar } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Navigation/Toolbar',
+  title: 'Actions/Toolbar',
   component: Toolbar.Root,
   tags: ['autodocs'],
   argTypes: {

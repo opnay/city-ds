@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Input, InputGroup, Textarea } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Forms/Input',
+  title: 'Inputs/Input',
   component: Input,
   tags: ['autodocs'],
   args: {

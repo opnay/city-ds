@@ -6,23 +6,26 @@ import type {
 } from './types';
 
 export const COMPONENT_CATEGORIES: readonly ComponentCategory[] = [
-  'Foundations',
+  'Inputs',
+  'Selection',
+  'Dates',
+  'Form structure',
   'Actions',
-  'Disclosure',
-  'Forms',
-  'Feedback',
   'Navigation',
   'Overlays',
   'Data display',
+  'Feedback',
   'Layout',
 ];
 
 export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   Actions: '액션',
-  'Data display': '데이터 표시',
-  Disclosure: '펼침과 접힘',
+  'Data display': '정보 표시',
+  Dates: '날짜',
   Feedback: '피드백',
-  Forms: '폼',
+  Inputs: '입력',
+  Selection: '선택',
+  'Form structure': '폼 구성',
   Foundations: '기초',
   Layout: '레이아웃',
   Navigation: '탐색',
@@ -129,7 +132,7 @@ export const COMPONENT_DOCS = [
     title: 'DensityProvider',
   },
   {
-    category: 'Foundations',
+    category: 'Data display',
     description: '키와 단축키를 native kbd 요소로 짧고 일관되게 표기합니다.',
     importPath: '@opnay/city-ds-react/kbd',
     keywords: ['키보드', '단축키', '키', 'kbd', 'shortcut'],
@@ -165,7 +168,7 @@ export const COMPONENT_DOCS = [
     title: 'ToggleGroup',
   },
   {
-    category: 'Disclosure',
+    category: 'Layout',
     description: '보조 콘텐츠를 한 개 또는 여러 개 펼치고 접습니다.',
     importPath: '@opnay/city-ds-react/accordion',
     keywords: ['아코디언', '접기', '펼치기', 'disclosure'],
@@ -176,7 +179,7 @@ export const COMPONENT_DOCS = [
     title: 'Accordion',
   },
   {
-    category: 'Forms',
+    category: 'Dates',
     description: '날짜 선택을 위한 월 단위 달력 표면을 제공합니다.',
     importPath: '@opnay/city-ds-react/calendar',
     keywords: ['달력', '날짜', '월', 'calendar'],
@@ -187,7 +190,7 @@ export const COMPONENT_DOCS = [
     title: 'Calendar',
   },
   {
-    category: 'Forms',
+    category: 'Selection',
     description: '독립적인 동의나 복수 선택을 표현합니다.',
     importPath: '@opnay/city-ds-react/checkbox',
     keywords: ['체크박스', '선택', 'indeterminate'],
@@ -199,7 +202,7 @@ export const COMPONENT_DOCS = [
     title: 'Checkbox',
   },
   {
-    category: 'Forms',
+    category: 'Selection',
     description: '의미가 같은 여러 체크박스를 접근 가능한 하나의 그룹으로 묶습니다.',
     importPath: '@opnay/city-ds-react/checkbox-group',
     keywords: ['체크박스 그룹', '복수 선택', '폼'],
@@ -210,7 +213,7 @@ export const COMPONENT_DOCS = [
     title: 'CheckboxGroup',
   },
   {
-    category: 'Forms',
+    category: 'Selection',
     description: '검색 가능한 긴 목록에서 단일 또는 복수 값을 선택합니다.',
     importPath: '@opnay/city-ds-react/combobox',
     keywords: ['콤보박스', '검색 선택', '다중 선택'],
@@ -221,7 +224,7 @@ export const COMPONENT_DOCS = [
     title: 'Combobox',
   },
   {
-    category: 'Forms',
+    category: 'Dates',
     description: '직접 날짜를 입력하거나 달력 팝업에서 선택합니다.',
     importPath: '@opnay/city-ds-react/date-picker',
     keywords: ['데이트 피커', '날짜 입력', '날짜 선택', '달력 팝업', 'date input'],
@@ -232,7 +235,7 @@ export const COMPONENT_DOCS = [
     title: 'DatePicker',
   },
   {
-    category: 'Forms',
+    category: 'Form structure',
     description: '외부 입력에 레이블·설명·오류·상태 문맥을 연결합니다.',
     importPath: '@opnay/city-ds-react/field',
     keywords: ['필드', '레이블', '오류', '설명'],
@@ -243,7 +246,7 @@ export const COMPONENT_DOCS = [
     title: 'Field',
   },
   {
-    category: 'Forms',
+    category: 'Form structure',
     description: '관련된 여러 폼 필드를 legend와 함께 의미적으로 묶습니다.',
     importPath: '@opnay/city-ds-react/fieldset',
     keywords: ['필드셋', '폼 그룹', 'legend'],
@@ -255,7 +258,7 @@ export const COMPONENT_DOCS = [
     title: 'Fieldset',
   },
   {
-    category: 'Forms',
+    category: 'Inputs',
     description: '파일 선택과 선택된 파일 목록을 관리하며 업로드는 소비자가 소유합니다.',
     importPath: '@opnay/city-ds-react/file-upload',
     keywords: ['파일 업로드', '파일 선택', '첨부'],
@@ -267,7 +270,7 @@ export const COMPONENT_DOCS = [
     title: 'FileUpload',
   },
   {
-    category: 'Forms',
+    category: 'Inputs',
     description: '한 줄·여러 줄 텍스트와 접두·접미 요소가 있는 입력을 제공합니다.',
     importPath: '@opnay/city-ds-react/input',
     keywords: ['입력', '인풋', 'textarea', 'input group'],
@@ -278,7 +281,7 @@ export const COMPONENT_DOCS = [
     title: 'Input',
   },
   {
-    category: 'Forms',
+    category: 'Inputs',
     description: '외부 Field와 조합해 범위·증감·형식화된 숫자 값을 입력합니다.',
     importPath: '@opnay/city-ds-react/number-input',
     keywords: ['숫자 입력', '증감', '범위'],
@@ -290,7 +293,7 @@ export const COMPONENT_DOCS = [
     title: 'NumberInput',
   },
   {
-    category: 'Forms',
+    category: 'Inputs',
     description: '일회용 인증 코드를 슬롯에 입력하고 붙여넣기와 자동완성을 지원합니다.',
     importPath: '@opnay/city-ds-react/otp-input',
     keywords: ['OTP', '인증 코드', '일회용 비밀번호', '핀 코드'],
@@ -302,7 +305,7 @@ export const COMPONENT_DOCS = [
     title: 'OtpInput',
   },
   {
-    category: 'Forms',
+    category: 'Selection',
     description: '소수의 상호 배타적인 선택지를 한눈에 비교합니다.',
     importPath: '@opnay/city-ds-react/radio-group',
     keywords: ['라디오 그룹', '단일 선택', '옵션'],
@@ -314,7 +317,7 @@ export const COMPONENT_DOCS = [
     title: 'RadioGroup',
   },
   {
-    category: 'Forms',
+    category: 'Inputs',
     description: '검색어 입력·제출·초기화·로딩 상태를 함께 제공합니다.',
     importPath: '@opnay/city-ds-react/search-input',
     keywords: ['검색', '검색 입력', 'search input'],
@@ -325,7 +328,7 @@ export const COMPONENT_DOCS = [
     title: 'SearchInput',
   },
   {
-    category: 'Forms',
+    category: 'Selection',
     description: '보기·기간처럼 동등한 선택지 중 하나를 항상 유지합니다.',
     importPath: '@opnay/city-ds-react/segmented-control',
     keywords: ['세그먼트', '단일 선택', '보기 전환', '기간 선택'],
@@ -337,7 +340,7 @@ export const COMPONENT_DOCS = [
     title: 'SegmentedControl',
   },
   {
-    category: 'Forms',
+    category: 'Selection',
     description: '짧고 고정된 목록에서 하나의 값을 선택합니다.',
     importPath: '@opnay/city-ds-react/select',
     keywords: ['셀렉트', '선택 목록', '드롭다운'],
@@ -348,7 +351,7 @@ export const COMPONENT_DOCS = [
     title: 'Select',
   },
   {
-    category: 'Forms',
+    category: 'Selection',
     description: '설명과 가격을 비교하고 카드 전체를 눌러 항목을 선택합니다.',
     importPath: '@opnay/city-ds-react/selection-card',
     keywords: ['선택 카드', '플랜', '가격', 'radio', 'checkbox'],
@@ -360,7 +363,7 @@ export const COMPONENT_DOCS = [
     title: 'SelectionCard',
   },
   {
-    category: 'Forms',
+    category: 'Inputs',
     description: '단일 값 또는 두 값의 연속 범위를 키보드·포인터로 조절합니다.',
     importPath: '@opnay/city-ds-react/slider',
     keywords: ['슬라이더', '범위', '연속 값', '키보드', 'slider'],
@@ -372,7 +375,7 @@ export const COMPONENT_DOCS = [
     title: 'Slider',
   },
   {
-    category: 'Forms',
+    category: 'Selection',
     description: '저장 없이 즉시 적용되는 이진 설정을 켜고 끕니다.',
     importPath: '@opnay/city-ds-react/switch',
     keywords: ['스위치', '설정', '켜기', '끄기'],
@@ -462,7 +465,7 @@ export const COMPONENT_DOCS = [
     title: 'Breadcrumbs',
   },
   {
-    category: 'Navigation',
+    category: 'Actions',
     description: '명령·링크·체크·라디오 액션을 팝업 목록으로 제공합니다.',
     importPath: '@opnay/city-ds-react/menu',
     keywords: ['메뉴', '명령 목록', '컨텍스트 메뉴'],
@@ -495,7 +498,7 @@ export const COMPONENT_DOCS = [
     title: 'Tabs',
   },
   {
-    category: 'Navigation',
+    category: 'Actions',
     description: '반복 작업의 명령과 토글을 접근 가능한 도구 모음으로 묶습니다.',
     importPath: '@opnay/city-ds-react/toolbar',
     keywords: ['툴바', '도구 모음', '편집'],

@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { expect, fireEvent, userEvent, waitFor, within } from 'storybook/test';
 
 const meta = {
-  title: 'Navigation/Menu',
+  title: 'Actions/Menu',
   component: Menu.Root,
   tags: ['autodocs'],
   parameters: {

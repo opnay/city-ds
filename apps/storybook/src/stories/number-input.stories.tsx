@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Field, NumberInput } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Forms/NumberInput',
+  title: 'Inputs/NumberInput',
   component: NumberInput.Root,
   tags: ['autodocs'],
   args: {

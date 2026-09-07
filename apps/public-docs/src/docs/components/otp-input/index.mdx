@@ -1,0 +1,20 @@
+import { pageData } from './page-data';
+
+<ComponentReference data={pageData} />
+
+## 접근성
+
+`Field.Root` 안에서 `Field.Label`과 `Field.Description`을 연결하십시오. 독립적으로 사용할 때는
+보이는 label의 `htmlFor`와 `OtpInput.Root`의 `id`를 맞추십시오. Root의 id는 첫 번째 입력에 연결됩니다.
+첫 슬롯에 `aria-label`만 지정하는 방식은 사용하지 마십시오.
+
+입력 후 다음 슬롯으로 이동하며 방향키, Home, End와 Backspace로 코드를 수정할 수 있습니다.
+붙여넣기와 `autoComplete="one-time-code"`를 지원합니다. 모바일 인증 코드 자동완성은 브라우저와
+운영체제의 지원 여부에 따라 달라집니다.
+
+오류는 `Field.Root invalid`와 `Field.Error`로 설명하고 비활성 상태는 `Field.Root disabled` 또는
+`OtpInput.Root disabled`로 설정하십시오. `mask`는 표시만 가리며 코드 검증을 수행하지 않습니다.
+
+입력 완료와 인증 성공을 구분하십시오. 서버 검증, 재전송, 만료 시간과 시도 제한은 소비 프로젝트에서
+처리하십시오. 기본적으로 코드 완성만으로 form을 제출하지 않습니다. 명시적인 확인 버튼을 제공하고,
+자동 제출이 필요한 흐름에서만 `autoSubmit`을 사용하십시오.

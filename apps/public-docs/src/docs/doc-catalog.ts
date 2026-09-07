@@ -291,6 +291,18 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Forms',
+    description: '일회용 인증 코드를 슬롯에 입력하고 붙여넣기와 자동완성을 지원합니다.',
+    importPath: '@opnay/city-ds-react/otp-input',
+    keywords: ['OTP', '인증 코드', '일회용 비밀번호', '핀 코드'],
+    load: () => import('./components/otp-input/index.mdx'),
+    related: ['input', 'field'],
+    selectionGuidance:
+      '고정 길이 인증 코드에 사용하십시오. 일반 텍스트와 비밀번호에는 Input을 사용하십시오.',
+    slug: 'otp-input',
+    title: 'OtpInput',
+  },
+  {
+    category: 'Forms',
     description: '소수의 상호 배타적인 선택지를 한눈에 비교합니다.',
     importPath: '@opnay/city-ds-react/radio-group',
     keywords: ['라디오 그룹', '단일 선택', '옵션'],

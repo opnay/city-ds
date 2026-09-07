@@ -12,9 +12,12 @@ import { CATEGORY_LABELS, COMPONENT_CATEGORIES, filterComponentDocs } from '../d
 import type { ComponentCategory } from '../docs/types';
 import { GuidePage } from './doc-page';
 
-const CATEGORY_ITEMS: Record<ComponentCategory | 'all', string> = {
+const CATEGORY_ITEMS = {
   all: '모든 범주',
-  ...CATEGORY_LABELS,
+  ...Object.fromEntries(
+    COMPONENT_CATEGORIES.map((category) => [category, CATEGORY_LABELS[category]]),
+  ),
+  Foundations: CATEGORY_LABELS.Foundations,
 };
 
 export function ComponentCatalog() {
@@ -105,8 +108,10 @@ export function ComponentCatalog() {
         </EmptyState.Root>
       ) : (
         <div className="city-docs-component-groups">
-          {COMPONENT_CATEGORIES.map((group) => {
-            const entries = results.filter((entry) => entry.category === group);
+          {[...COMPONENT_CATEGORIES, 'Foundations' as const].map((group) => {
+            const entries = results
+              .filter((entry) => entry.category === group)
+              .sort((a, b) => a.title.localeCompare(b.title, 'en'));
             if (entries.length === 0) return null;
 
             return (

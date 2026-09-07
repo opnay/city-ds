@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Checkbox } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Forms/Checkbox',
+  title: 'Selection/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
   argTypes: {

@@ -3,9 +3,11 @@ import type { ComponentType } from 'react';
 export type ComponentCategory =
   | 'Actions'
   | 'Data display'
-  | 'Disclosure'
+  | 'Dates'
   | 'Feedback'
-  | 'Forms'
+  | 'Inputs'
+  | 'Selection'
+  | 'Form structure'
   | 'Foundations'
   | 'Layout'
   | 'Navigation'

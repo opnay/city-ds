@@ -4,7 +4,7 @@ import { expect, within } from 'storybook/test';
 import { Divider } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Foundations/Divider',
+  title: 'Layout/Divider',
   component: Divider,
   tags: ['autodocs'],
   parameters: {

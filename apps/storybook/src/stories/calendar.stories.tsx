@@ -6,7 +6,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import { Calendar } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Forms/Calendar',
+  title: 'Dates/Calendar',
   component: Calendar,
   tags: ['autodocs'],
   parameters: {

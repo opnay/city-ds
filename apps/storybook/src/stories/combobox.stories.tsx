@@ -5,7 +5,7 @@ const projects = ['Civic Portal', 'Transit Map', 'Permit Tracker', 'Budget Explo
 const owners = ['Ari Kim', 'Bo Park', 'Casey Lee', 'Dana Cho'];
 
 const meta = {
-  title: 'Forms/Combobox',
+  title: 'Selection/Combobox',
   component: Combobox.Root,
   tags: ['autodocs'],
   parameters: {

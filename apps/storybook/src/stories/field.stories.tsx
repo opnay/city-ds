@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Field, Input } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Forms/Field',
+  title: 'Form structure/Field',
   component: Field.Root,
   tags: ['autodocs'],
   argTypes: {

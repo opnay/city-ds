@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Field, SearchInput } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Forms/SearchInput',
+  title: 'Inputs/SearchInput',
   component: SearchInput.Root,
   tags: ['autodocs'],
 } satisfies Meta<typeof SearchInput.Root>;

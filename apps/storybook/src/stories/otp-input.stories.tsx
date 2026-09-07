@@ -20,7 +20,7 @@ function CodeInput({ invalid = false, disabled = false, ...props }: Props) {
 }
 
 const meta = {
-  title: 'Forms/Otp input',
+  title: 'Inputs/Otp input',
   component: CodeInput,
   tags: ['autodocs'],
   argTypes: {

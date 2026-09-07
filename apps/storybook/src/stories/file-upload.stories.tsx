@@ -44,7 +44,7 @@ function FileUploadExample({ accept, disabled, multiple, withFiles }: FileUpload
 }
 
 const meta = {
-  title: 'Forms/File upload',
+  title: 'Inputs/File upload',
   component: FileUploadExample,
   tags: ['autodocs'],
   parameters: {

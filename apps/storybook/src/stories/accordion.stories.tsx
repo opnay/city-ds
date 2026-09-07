@@ -3,7 +3,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import { Accordion } from '@opnay/city-ds-react';
 
 const meta = {
-  title: 'Disclosure/Accordion',
+  title: 'Layout/Accordion',
   component: Accordion.Root,
   tags: ['autodocs'],
   parameters: {

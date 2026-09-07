@@ -47,7 +47,7 @@ function PlanCards({ disabled = false }: { disabled?: boolean }) {
 }
 
 const meta = {
-  title: 'Forms/Selection card',
+  title: 'Selection/Selection card',
   component: PlanCards,
   tags: ['autodocs'],
   argTypes: { disabled: { control: 'boolean' } },

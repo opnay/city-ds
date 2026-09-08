@@ -9,18 +9,19 @@
 
 ## 구성과 위계
 
-| 기준      | 플랜 선택                                                              | 구독 관리                                                                       |
-| --------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| 표면      | BlockCard의 outline 안에 실제 선택 대상인 SelectionCard만 outline 사용 | 하나의 BlockCard, 상세는 dl 정렬로 구분                                         |
-| 제목·본문 | 블록 h3, 선택 이름은 컴포넌트 텍스트, 가격·기능은 supporting           | 블록 h3, 값·레이블은 supporting, 상태 안내는 Alert h4                           |
-| 폼        | 보이는 Fieldset.Legend와 plain 그룹, RadioGroup 상태·키보드 사용       | 예제 상태는 보이는 Select.Label 사용                                            |
-| 액션      | 선택을 제출하는 primary 하나, md 크기 유지                             | 플랜 이동은 실제 링크, 해지 예약 진입은 outline, 재시도·예약 취소는 primary     |
-| 확인창    | 없음, 소비 앱의 다음 단계로 전달                                       | 되돌릴 수 있는 예약 확인은 Dialog, Header·Body·Footer 사용, 실행은 destructive  |
-| 피드백    | 요청 오류는 destructive Alert, 빈 목록은 EmptyState                    | 실패는 destructive, 체험·예약은 warning Alert와 Badge, 일시적 성공 결과는 Toast |
+| 기준      | 플랜 선택                                                                                        | 구독 관리                                                                       |
+| --------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| 표면      | BlockCard의 outline 안에 실제 선택 대상인 SelectionCard만 outline 사용                           | 하나의 BlockCard, 상세는 dl 정렬로 구분                                         |
+| 제목·본문 | 블록 h3, 주요 옵션 이름은 h4/subsection-title, 가격·기능은 supporting                            | 블록 h3, 값·레이블은 supporting, 상태 안내는 Alert h4                           |
+| 폼        | 플랜은 Fieldset.Legend와 plain 그룹, 월간·연간은 접근성 이름만 유지, RadioGroup 상태·키보드 사용 | 예제 상태는 보이는 Select.Label 사용                                            |
+| 액션      | 선택을 제출하는 primary 하나, md 크기 유지                                                       | 플랜 이동은 실제 링크, 해지 예약 진입은 outline, 재시도·예약 취소는 primary     |
+| 확인창    | 없음, 소비 앱의 다음 단계로 전달                                                                 | 되돌릴 수 있는 예약 확인은 Dialog, Header·Body·Footer 사용, 실행은 destructive  |
+| 피드백    | 요청 오류는 destructive Alert, 빈 목록은 EmptyState                                              | 실패는 destructive, 체험·예약은 warning Alert와 Badge, 일시적 성공 결과는 Toast |
 
 ## 레이아웃과 상태
 
 - BlockCard가 20px padding, 20px header/body 간격, 16px 본문 그룹 간격을 소유합니다. 좁은 화면의 padding은 기존 16px 규칙을 따릅니다.
+- 결제 주기 제어는 내용 너비로 표시합니다. 무료 설명은 생략하고 유료 결제 조건은 해당 플랜 카드가 소유합니다.
 - 플랜 비교 영역은 최대 48rem, 카드는 16px 간격으로 가용 폭에 따라 한 열 또는 여러 열로 배치합니다. 카드 내부 콘텐츠 간격은 12px, 기능 목록은 8px입니다.
 - 구독 상세는 16px 간격의 레이블·값 열을 사용합니다. 긴 값은 줄바꿈하며 문서 DOM 순서를 바꾸지 않습니다.
 - 기본·선택·진행·성공·오류·비활성 상태를 제공합니다. 초기 조회는 loading/Skeleton, 빈 플랜은 EmptyState, 권한 부족은 canManage/Alert로 표현합니다. 로딩 완료 후 값이 바뀌면 소비자가 최신 데이터로 갱신합니다.

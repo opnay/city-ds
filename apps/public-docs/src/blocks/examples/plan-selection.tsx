@@ -19,20 +19,19 @@ export interface SubscriptionPlan {
   description: string;
   features: string[];
   prices: Record<BillingCycle, string>;
-  terms: Record<BillingCycle, string>;
+  terms?: Partial<Record<BillingCycle, string>>;
 }
 export const examplePlans: SubscriptionPlan[] = [
   {
     id: 'free',
-    name: 'Free',
+    name: 'FREE',
     description: '개인 프로젝트를 시작할 때',
     features: ['프로젝트 1개', '멤버 1명'],
     prices: { monthly: '무료', yearly: '무료' },
-    terms: { monthly: '결제 없이 바로 이용해요.', yearly: '결제 없이 바로 이용해요.' },
   },
   {
     id: 'pro',
-    name: 'Pro',
+    name: 'PRO',
     description: '팀과 함께 작업할 때',
     features: ['프로젝트 20개', '멤버 5명', '이메일 지원'],
     prices: { monthly: '월 29,000원', yearly: '연 290,000원' },
@@ -119,23 +118,20 @@ export function PlanSelection({
           <Alert.Description>변경이 필요하면 관리자에게 요청해 주세요.</Alert.Description>
         </Alert.Root>
       )}
-      <Fieldset.Root appearance="plain" disabled={busy || !canManage}>
-        <Fieldset.Legend>결제 주기</Fieldset.Legend>
-        <SegmentedControl
-          className="justify-self-start"
-          name={`${id}-cycle`}
-          aria-label="결제 주기"
-          value={cycle}
-          onValueChange={(value) => {
-            setCycle(value);
-            setError('');
-          }}
-          disabled={busy || !canManage}
-        >
-          <SegmentedControl.Item value="monthly">월간</SegmentedControl.Item>
-          <SegmentedControl.Item value="yearly">연간</SegmentedControl.Item>
-        </SegmentedControl>
-      </Fieldset.Root>
+      <SegmentedControl
+        className="city-block-billing-cycle"
+        name={`${id}-cycle`}
+        aria-label="결제 주기"
+        value={cycle}
+        onValueChange={(value) => {
+          setCycle(value);
+          setError('');
+        }}
+        disabled={busy || !canManage}
+      >
+        <SegmentedControl.Item value="monthly">월간</SegmentedControl.Item>
+        <SegmentedControl.Item value="yearly">연간</SegmentedControl.Item>
+      </SegmentedControl>
       <Fieldset.Root appearance="plain" disabled={busy || !canManage}>
         <Fieldset.Legend>플랜</Fieldset.Legend>
         <RadioGroup
@@ -151,9 +147,11 @@ export function PlanSelection({
         >
           {plans.map((plan) => (
             <SelectionCard key={plan.id}>
-              <SelectionCard.Content className="city-block-plan-content">
+              <div className="city-block-plan-content min-w-0 flex-1">
                 <div className="city-block-label-row">
-                  <SelectionCard.Title id={`${id}-${plan.id}`}>{plan.name}</SelectionCard.Title>
+                  <h4 className="city-text-subsection-title" id={`${id}-${plan.id}`}>
+                    {plan.name}
+                  </h4>
                   {plan.id === current.planId && cycle === current.cycle && (
                     <Badge appearance="outline">현재 플랜</Badge>
                   )}
@@ -169,7 +167,12 @@ export function PlanSelection({
                     <li key={feature}>{feature}</li>
                   ))}
                 </ul>
-              </SelectionCard.Content>
+                {plan.terms?.[cycle] && (
+                  <p id={`${id}-${plan.id}-terms`} className="city-text-supporting">
+                    {plan.terms[cycle]}
+                  </p>
+                )}
+              </div>
               <RadioGroup.Control
                 value={plan.id}
                 aria-labelledby={`${id}-${plan.id}`}
@@ -179,11 +182,6 @@ export function PlanSelection({
           ))}
         </RadioGroup>
       </Fieldset.Root>
-      {selected && (
-        <p id={`${id}-terms`} className="city-text-supporting" role="status">
-          {selected.terms[cycle]}
-        </p>
-      )}
       {error && (
         <Alert.Root tone="destructive" appearance="subtle">
           <Alert.Title level={4}>선택을 진행하지 못했어요.</Alert.Title>
@@ -193,7 +191,7 @@ export function PlanSelection({
       <div className="city-block-actions">
         <Button
           type="submit"
-          aria-describedby={selected ? `${id}-terms` : undefined}
+          aria-describedby={selected?.terms?.[cycle] ? `${id}-${selected.id}-terms` : undefined}
           disabled={busy || unchanged || !selected || !canManage}
         >
           {busy ? '진행 중…' : '선택한 플랜으로 계속'}

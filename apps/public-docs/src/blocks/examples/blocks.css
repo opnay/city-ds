@@ -349,3 +349,11 @@
   max-width: 32rem;
   margin-inline: auto;
 }
+
+.city-block-billing-cycle {
+  width: fit-content;
+  justify-self: start;
+}
+.city-block-plan-content h4 {
+  margin: 0;
+}

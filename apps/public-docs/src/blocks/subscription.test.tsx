@@ -42,7 +42,7 @@ describe('subscription blocks', () => {
       />,
     );
     expect(screen.getByRole('button', { name: '선택한 플랜으로 계속' })).toBeDisabled();
-    await user.click(screen.getByRole('radio', { name: 'Pro' }));
+    await user.click(screen.getByRole('radio', { name: 'PRO' }));
     await user.click(screen.getByText('연간', { exact: true }));
     expect(screen.getByText(/매년 290,000원을 한 번에/)).toBeVisible();
     expect(proceed).not.toHaveBeenCalled();

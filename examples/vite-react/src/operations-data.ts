@@ -45,7 +45,7 @@ export const DISTRICT_ITEMS = Object.fromEntries(
 export const STATUS_ITEMS: Record<StatusFilter, string> = {
   all: '전체 상태',
   attention: '조치 필요',
-  active: '진행 중',
+  active: '배정·진행 중',
   complete: '완료',
 };
 
@@ -64,7 +64,7 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
     blocker: '현장 조치를 시작하려면 담당팀을 배정해 주세요.',
     crew: null,
     description:
-      '종로3가 교차로 남측 1차로에 도로가 내려앉았어요. 차량이 지나가면 더 파손될 수 있어 먼저 통제해야 해요.',
+      '종로3가 교차로 남측 1차로의 도로가 내려앉았어요. 차량이 지나가면 더 파손될 수 있어 먼저 통제해야 해요.',
     district: '종로구',
     dueLabel: '24분 남음',
     dueMinutes: 24,

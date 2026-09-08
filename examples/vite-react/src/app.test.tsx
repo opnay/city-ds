@@ -265,7 +265,7 @@ describe('dashboard routing', () => {
   });
 
   it.each([
-    ['/', '처리 기한과 지연 사유를 확인해 주세요.'],
+    ['/', '성수 배수펌프장 정기 점검'],
     ['/maintenance', '시작 시간순'],
     ['/assets', 'AST-0842'],
     ['/crews', '강남대로 제어반 점검'],

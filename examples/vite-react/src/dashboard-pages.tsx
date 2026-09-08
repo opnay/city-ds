@@ -309,7 +309,7 @@ const ACTIVITY_ITEMS = [
   },
   {
     actor: '통합 관제',
-    description: '중구 환승 안내판 작업의 교체 부품 입고 지연을 등록했어요.',
+    description: '중구 환승 안내판의 교체 부품 도착이 늦어진다고 기록했어요.',
     label: '지연 사유',
     time: '09:31',
     tone: 'warning',
@@ -332,7 +332,7 @@ const ACTIVITY_ITEMS = [
 
 const SERVICE_ITEMS = [
   {
-    detail: '요청 접수와 상태 변경을 정상 처리하고 있어요. 최근 24시간 오류는 0건이에요.',
+    detail: '요청을 접수하고 상태 변경을 정상적으로 처리하고 있어요. 최근 24시간 오류는 0건이에요.',
     label: '작업 배차 채널',
     latency: '평균 응답 시간 182ms',
     value: 'dispatch',
@@ -396,7 +396,7 @@ function OverviewPage({ navigate }: { navigate: Navigate }) {
           value={`${activeOrders.length}건`}
         />
         <MetricCard
-          detail="기한 위험 또는 담당팀 미배정"
+          detail="기한 초과 위험 또는 담당팀 미배정"
           icon={Siren}
           label="조치 필요"
           value={`${attentionCount}건`}
@@ -419,7 +419,6 @@ function OverviewPage({ navigate }: { navigate: Navigate }) {
                 전체 보기
               </RouteButton>
             }
-            description="처리 기한과 지연 사유를 확인해 주세요."
             id="overview-priority-heading"
             title="우선 작업"
           />
@@ -452,7 +451,6 @@ function OverviewPage({ navigate }: { navigate: Navigate }) {
                 계획 보기
               </RouteButton>
             }
-            description="점검 시간과 야간 인계 일정을 확인해 주세요."
             id="overview-schedule-heading"
             title="오늘 일정"
           />
@@ -560,11 +558,7 @@ function AssetsPage() {
         <MetricCard detail="7일 이내 점검" icon={CircleAlert} label="점검 필요" value="42개" />
         <MetricCard detail="현장 확인 우선" icon={Siren} label="긴급 점검" value="16개" />
       </section>
-      <TablePanel
-        description="최근 점검 상태를 확인해 주세요."
-        id="asset-list-heading"
-        title="시설 상태"
-      >
+      <TablePanel id="asset-list-heading" title="시설 상태">
         <Table.Root
           className="city-dashboard-table"
           size="sm"
@@ -614,7 +608,7 @@ function CrewsPage() {
         title="현장팀"
       />
       <section aria-label="현장팀 지표" className="city-metric-grid city-metric-grid--three">
-        <MetricCard detail="총 6개 운영팀" icon={Users} label="즉시 배정 가능" value="4개 팀" />
+        <MetricCard detail="전체 6개 팀" icon={Users} label="즉시 배정 가능" value="4개 팀" />
         <MetricCard detail="현재 출동 또는 작업 중" icon={HardHat} label="현장 대응" value="8건" />
         <MetricCard detail="전체 계획 대비" icon={Gauge} label="평균 배정률" value="61%" />
       </section>

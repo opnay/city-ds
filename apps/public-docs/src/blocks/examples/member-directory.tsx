@@ -152,7 +152,7 @@ export function MemberManagement({
       )}
       <FilterBar
         aria-label="팀원 필터"
-        appearance="plain"
+        appearance="band"
         actions={
           <Button type="button" variant="outline" onClick={reset}>
             초기화
@@ -160,7 +160,7 @@ export function MemberManagement({
         }
       >
         <Field.Root>
-          <Field.Label>팀원 검색</Field.Label>
+          <Field.Label className="sr-only">팀원 검색</Field.Label>
           <SearchInput.Root value={query} onValueChange={setQuery}>
             <SearchInput.Group>
               <SearchInput.Input placeholder="이름 또는 이메일 검색" />
@@ -168,33 +168,31 @@ export function MemberManagement({
             </SearchInput.Group>
           </SearchInput.Root>
         </Field.Root>
-        <div className="min-w-0">
-          <Select.Root
-            items={statuses}
-            value={status}
-            onValueChange={(value) => setStatus(value ?? 'all')}
-          >
-            <Select.Label>팀원 상태</Select.Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Icon />
-            </Select.Trigger>
-            <Select.Portal>
-              <Select.Positioner>
-                <Select.Popup>
-                  <Select.List aria-label="팀원 상태">
-                    {Object.entries(statuses).map(([value, label]) => (
-                      <Select.Item key={value} value={value}>
-                        <Select.ItemText>{label}</Select.ItemText>
-                        <Select.ItemIndicator />
-                      </Select.Item>
-                    ))}
-                  </Select.List>
-                </Select.Popup>
-              </Select.Positioner>
-            </Select.Portal>
-          </Select.Root>
-        </div>
+        <Select.Root
+          items={statuses}
+          value={status}
+          onValueChange={(value) => setStatus(value ?? 'all')}
+        >
+          <Select.Label className="sr-only">팀원 상태</Select.Label>
+          <Select.Trigger>
+            <Select.Value />
+            <Select.Icon />
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Positioner>
+              <Select.Popup>
+                <Select.List aria-label="팀원 상태">
+                  {Object.entries(statuses).map(([value, label]) => (
+                    <Select.Item key={value} value={value}>
+                      <Select.ItemText>{label}</Select.ItemText>
+                      <Select.ItemIndicator />
+                    </Select.Item>
+                  ))}
+                </Select.List>
+              </Select.Popup>
+            </Select.Positioner>
+          </Select.Portal>
+        </Select.Root>
       </FilterBar>
       {loading ? (
         <Skeleton aria-label="팀원 불러오는 중" className="h-40 w-full" />

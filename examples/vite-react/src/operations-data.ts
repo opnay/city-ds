@@ -45,7 +45,7 @@ export const DISTRICT_ITEMS = Object.fromEntries(
 export const STATUS_ITEMS: Record<StatusFilter, string> = {
   all: '전체 상태',
   attention: '조치 필요',
-  active: '진행 중',
+  active: '배정·진행 중',
   complete: '완료',
 };
 
@@ -57,14 +57,14 @@ export const CREW_ITEMS = Object.fromEntries(CREWS.map((crew) => [crew, crew])) 
 export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   {
     activities: [
-      { at: '10:02', description: '도로 침하 범위 현장 사진 3장이 등록되었습니다.' },
-      { at: '09:54', description: '종로구 도로과가 긴급 작업을 요청했습니다.' },
-      { at: '09:47', description: '120 다산콜 신고로 작업이 생성되었습니다.' },
+      { at: '10:02', description: '도로 침하 범위를 찍은 현장 사진 3장을 등록했어요.' },
+      { at: '09:54', description: '종로구 도로과가 긴급 작업을 요청했어요.' },
+      { at: '09:47', description: '120 다산콜 신고를 접수해 작업을 만들었어요.' },
     ],
-    blocker: '담당팀을 배정해야 현장 조치와 완료 처리를 시작할 수 있습니다.',
+    blocker: '현장 조치를 시작하려면 담당팀을 배정해 주세요.',
     crew: null,
     description:
-      '종로3가 교차로 남측 1차로에 도로 침하가 발생했습니다. 차량 통행 중 추가 파손 위험이 있어 우선 통제가 필요합니다.',
+      '종로3가 교차로 남측 1차로의 도로가 내려앉았어요. 차량이 지나가면 더 파손될 수 있어 먼저 통제해야 해요.',
     district: '종로구',
     dueLabel: '24분 남음',
     dueMinutes: 24,
@@ -77,11 +77,11 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   },
   {
     activities: [
-      { at: '09:58', description: '현장팀이 가로등 분전함 점검을 시작했습니다.' },
-      { at: '09:31', description: '야간 순찰 점검 결과가 접수되었습니다.' },
+      { at: '09:58', description: '현장팀이 가로등 분전함 점검을 시작했어요.' },
+      { at: '09:31', description: '야간 순찰 점검 결과를 접수했어요.' },
     ],
     crew: '전기 대응팀',
-    description: '보행로 가로등 3기가 반복 점멸합니다. 전원 계통과 안정기 상태를 확인합니다.',
+    description: '보행로 가로등 3개가 계속 깜빡여요. 전원과 안정기 상태를 확인해요.',
     district: '성동구',
     dueLabel: '1시간 18분 남음',
     dueMinutes: 78,
@@ -94,11 +94,11 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   },
   {
     activities: [
-      { at: '09:46', description: '배수 대응팀 배정이 완료되었습니다.' },
-      { at: '09:20', description: '공원관리소가 배수 지연을 신고했습니다.' },
+      { at: '09:46', description: '배수 대응팀에 배정했어요.' },
+      { at: '09:20', description: '공원관리소가 배수 지연을 신고했어요.' },
     ],
     crew: '배수 대응팀',
-    description: '우천 후 산책로 배수구 2곳의 배수가 지연되어 유입구 막힘 여부를 확인합니다.',
+    description: '비가 온 뒤 산책로 배수구 2곳에서 물이 늦게 빠져요. 입구가 막혔는지 확인해요.',
     district: '영등포구',
     dueLabel: '1시간 42분 남음',
     dueMinutes: 102,
@@ -111,12 +111,12 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   },
   {
     activities: [
-      { at: '09:38', description: '시설관리소가 임시 안전띠를 설치했습니다.' },
-      { at: '09:12', description: '파손 신고가 작업 요청으로 전환되었습니다.' },
+      { at: '09:38', description: '시설관리소가 임시 안전띠를 설치했어요.' },
+      { at: '09:12', description: '파손 신고를 작업 요청으로 전환했어요.' },
     ],
-    blocker: '교체 부품 입고 예정 시각은 11:30입니다.',
+    blocker: '교체 부품은 11:30에 도착할 예정이에요.',
     crew: '도심 시설팀',
-    description: '환승센터 2층 연결 통로의 유리 안내판 모서리가 파손되어 교체가 필요합니다.',
+    description: '환승센터 2층 연결 통로의 유리 안내판 모서리가 파손되어 교체가 필요해요.',
     district: '중구',
     dueLabel: '2시간 6분 남음',
     dueMinutes: 126,
@@ -129,11 +129,11 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   },
   {
     activities: [
-      { at: '09:27', description: '도로 순찰팀이 난간 흔들림을 확인했습니다.' },
-      { at: '08:58', description: '시민 안전 신고가 접수되었습니다.' },
+      { at: '09:27', description: '도로 순찰팀이 난간 흔들림을 확인했어요.' },
+      { at: '08:58', description: '시민 안전 신고를 접수했어요.' },
     ],
     crew: '도심 도로팀',
-    description: '보행자 안전 난간 연결부 1곳이 느슨해져 고정 볼트와 지지부를 점검합니다.',
+    description: '보행자 안전 난간 연결부 1곳이 느슨해져 고정 볼트와 지지부를 점검해요.',
     district: '용산구',
     dueLabel: '2시간 38분 남음',
     dueMinutes: 158,
@@ -146,11 +146,11 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   },
   {
     activities: [
-      { at: '09:11', description: '시설 전원 차단 가능 시간을 확인했습니다.' },
-      { at: '08:42', description: '정기 점검에서 펌프 소음이 확인되었습니다.' },
+      { at: '09:11', description: '시설 전원 차단 가능 시간을 확인했어요.' },
+      { at: '08:42', description: '정기 점검에서 펌프 소음을 확인했어요.' },
     ],
     crew: '배수 대응팀',
-    description: '지하보도 배수 펌프에서 평소보다 큰 진동음이 발생해 베어링 상태를 확인합니다.',
+    description: '지하보도 배수 펌프의 진동음이 커져 베어링 상태를 확인해요.',
     district: '중구',
     dueLabel: '3시간 12분 남음',
     dueMinutes: 192,
@@ -163,11 +163,11 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   },
   {
     activities: [
-      { at: '08:52', description: '현장 확인 결과 사진과 교체 수량이 등록되었습니다.' },
-      { at: '08:18', description: '공원 순찰 점검이 접수되었습니다.' },
+      { at: '08:52', description: '현장 사진과 교체 수량을 등록했어요.' },
+      { at: '08:18', description: '공원 순찰 점검을 접수했어요.' },
     ],
     crew: null,
-    description: '공원 목재 벤치의 좌판 일부가 갈라져 교체 범위와 자재 수량을 확인합니다.',
+    description: '공원 목재 벤치의 앉는 부분이 갈라져 교체 범위와 자재 수량을 확인해요.',
     district: '성동구',
     dueLabel: '4시간 5분 남음',
     dueMinutes: 245,
@@ -180,11 +180,11 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   },
   {
     activities: [
-      { at: '08:41', description: '교체 작업 후 조도 측정이 완료되었습니다.' },
-      { at: '07:56', description: '전기 대응팀이 현장에 도착했습니다.' },
+      { at: '08:41', description: '교체 후 밝기 측정을 마쳤어요.' },
+      { at: '07:56', description: '전기 대응팀이 현장에 도착했어요.' },
     ],
     crew: '전기 대응팀',
-    description: '지하보도 출입구 비상 조명을 교체하고 정상 점등을 확인했습니다.',
+    description: '지하보도 출입구 비상 조명을 교체하고 정상 점등을 확인했어요.',
     district: '종로구',
     dueLabel: '기한 내 완료',
     dueMinutes: 310,
@@ -197,11 +197,11 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   },
   {
     activities: [
-      { at: '08:23', description: '신호 제어함 통신 상태가 정상으로 확인되었습니다.' },
-      { at: '07:48', description: '교통관제센터 점검 요청이 접수되었습니다.' },
+      { at: '08:23', description: '신호 제어함의 통신이 정상임을 확인했어요.' },
+      { at: '07:48', description: '교통관제센터의 점검 요청을 접수했어요.' },
     ],
     crew: '전기 대응팀',
-    description: '보행 신호 제어함의 원격 통신 지연을 확인하고 연결 상태를 점검합니다.',
+    description: '보행 신호 제어함의 원격 통신 지연을 확인하고 연결 상태를 점검해요.',
     district: '영등포구',
     dueLabel: '5시간 20분 남음',
     dueMinutes: 320,
@@ -214,11 +214,11 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   },
   {
     activities: [
-      { at: '08:10', description: '도심 시설팀이 교체 작업을 완료했습니다.' },
-      { at: '07:32', description: '현장 사진과 파손 위치가 등록되었습니다.' },
+      { at: '08:10', description: '도심 시설팀이 교체 작업을 완료했어요.' },
+      { at: '07:32', description: '현장 사진과 파손 위치를 등록했어요.' },
     ],
     crew: '도심 시설팀',
-    description: '공원 동측 진입로의 방향 안내판 지지대를 교체했습니다.',
+    description: '공원 동측 진입로의 방향 안내판 지지대를 교체했어요.',
     district: '용산구',
     dueLabel: '기한 내 완료',
     dueMinutes: 360,
@@ -231,11 +231,11 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   },
   {
     activities: [
-      { at: '07:58', description: '도로 보수 자재 수량을 확인했습니다.' },
-      { at: '07:21', description: '아침 순찰에서 보도블록 들뜸이 확인되었습니다.' },
+      { at: '07:58', description: '도로 보수 자재 수량을 확인했어요.' },
+      { at: '07:21', description: '아침 순찰에서 보도블록이 들뜬 곳을 확인했어요.' },
     ],
     crew: '도심 도로팀',
-    description: '버스정류장 앞 보도블록 6장이 들떠 보행 안전 조치 후 재시공합니다.',
+    description: '버스정류장 앞 보도블록 6장이 들떠 보행 안전 조치 후 다시 시공해요.',
     district: '중구',
     dueLabel: '6시간 18분 남음',
     dueMinutes: 378,
@@ -248,11 +248,11 @@ export const INITIAL_WORK_ORDERS: readonly WorkOrder[] = [
   },
   {
     activities: [
-      { at: '07:42', description: '청소 작업 후 배수 상태가 정상으로 확인되었습니다.' },
-      { at: '07:03', description: '새벽 순찰 결과가 등록되었습니다.' },
+      { at: '07:42', description: '청소 후 물이 정상적으로 빠지는 것을 확인했어요.' },
+      { at: '07:03', description: '새벽 순찰 결과를 등록했어요.' },
     ],
     crew: '배수 대응팀',
-    description: '빗물받이 주변 낙엽과 이물질을 제거하고 배수 상태를 확인했습니다.',
+    description: '빗물받이 주변 낙엽과 이물질을 제거하고 배수 상태를 확인했어요.',
     district: '성동구',
     dueLabel: '기한 내 완료',
     dueMinutes: 420,
@@ -330,10 +330,7 @@ export function assignCrew(
     order.id === workOrderId
       ? {
           ...order,
-          activities: [
-            { at: '10:07', description: `${crew} 배정이 완료되었습니다.` },
-            ...order.activities,
-          ],
+          activities: [{ at: '10:07', description: `${crew}에 배정했어요.` }, ...order.activities],
           blocker: undefined,
           crew,
           status: order.status === '접수' ? '배정됨' : order.status,

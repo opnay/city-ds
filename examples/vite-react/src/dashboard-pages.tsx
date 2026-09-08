@@ -147,7 +147,7 @@ function TablePanel({
   return (
     <section aria-labelledby={id} className="city-surface-section">
       <SectionHeading description={description} id={id} title={title} />
-      <DataTableRegion appearance="outline" label={`${title} 표 가로 스크롤 영역`}>
+      <DataTableRegion appearance="outline" label={title}>
         {children}
       </DataTableRegion>
     </section>
@@ -295,35 +295,35 @@ const DISTRICT_REPORTS = [
 const ACTIVITY_ITEMS = [
   {
     actor: '김도윤 · 도심 도로팀',
-    description: 'WO-3127 도로 침하 안전 조치의 현장 통제를 시작했습니다.',
+    description: 'WO-3127 도로 침하 안전 조치의 현장 통제를 시작했어요.',
     label: '작업 시작',
     time: '10:08',
     tone: 'info',
   },
   {
     actor: '박서진 · 수방 설비팀',
-    description: '성수 배수펌프장 2호기 정기 점검 준비를 완료했습니다.',
+    description: '성수 배수펌프장 2호기 정기 점검 준비를 완료했어요.',
     label: '정비 준비',
     time: '09:52',
     tone: 'success',
   },
   {
     actor: '통합 관제',
-    description: '중구 환승 안내판 작업의 교체 부품 입고 지연을 등록했습니다.',
-    label: '차단 요인',
+    description: '중구 환승 안내판의 교체 부품 도착이 늦어진다고 기록했어요.',
+    label: '지연 사유',
     time: '09:31',
     tone: 'warning',
   },
   {
     actor: '최유나 · 도로 전기팀',
-    description: '강남대로 가로등 제어반 원격 진단 결과를 첨부했습니다.',
+    description: '강남대로 가로등 제어반 원격 진단 결과를 첨부했어요.',
     label: '점검 기록',
     time: '09:12',
     tone: 'neutral',
   },
   {
     actor: '운영 관리자',
-    description: '마포구 집중호우 대비 순찰 인력을 2명 증원했습니다.',
+    description: '마포구 집중호우 대비 순찰 인력을 2명 늘렸어요.',
     label: '인력 변경',
     time: '08:44',
     tone: 'info',
@@ -332,25 +332,25 @@ const ACTIVITY_ITEMS = [
 
 const SERVICE_ITEMS = [
   {
-    detail: '작업 요청 접수와 상태 변경이 정상 처리되고 있습니다. 최근 24시간 오류 0건.',
+    detail: '요청을 접수하고 상태 변경을 정상적으로 처리하고 있어요. 최근 24시간 오류는 0건이에요.',
     label: '작업 배차 채널',
-    latency: '평균 응답 182ms',
+    latency: '평균 응답 시간 182ms',
     value: 'dispatch',
   },
   {
-    detail: '시설 센서 1,284개 중 1,276개가 정상 연결되어 있습니다. 8개는 계획 점검 중입니다.',
+    detail: '센서 1,284개 중 1,276개가 정상 연결 상태예요. 8개는 계획된 점검 중이에요.',
     label: '시설 관측 채널',
     latency: '수집 지연 24초',
     value: 'telemetry',
   },
   {
-    detail: '현장팀 알림과 비상 연락망이 모두 정상입니다. 마지막 전달 성공 시각은 10:06입니다.',
+    detail: '현장팀 알림과 비상 연락망이 정상이에요. 마지막 전달 성공 시각은 10:06이에요.',
     label: '현장 알림 채널',
     latency: '전달 성공률 99.98%',
     value: 'notification',
   },
   {
-    detail: '일일 운영 리포트 집계가 완료되었습니다. 다음 자동 집계는 11:00에 시작합니다.',
+    detail: '오늘 리포트 집계를 마쳤어요. 다음 자동 집계는 11:00에 시작해요.',
     label: '리포트 집계 채널',
     latency: '최근 집계 9분',
     value: 'reporting',
@@ -367,53 +367,48 @@ function OverviewPage({ navigate }: { navigate: Navigate }) {
       <PageHeading
         action={
           <RouteButton navigate={navigate} to="/work-orders">
-            작업 요청 열기
+            현장 작업 보기
           </RouteButton>
         }
-        description="현장 대응, 정비 일정, 시설 상태를 한눈에 확인하고 우선순위를 결정합니다."
+        description="먼저 조치할 작업과 오늘 일정을 확인해 주세요."
         eyebrow="2026년 8월 1일 토요일 · 주간 근무"
         title="운영 현황"
       />
 
       <Alert.Root appearance="subtle" tone="warning">
-        <Alert.Title level={2}>오전 우선 조치가 필요한 작업 {attentionCount}건</Alert.Title>
+        <Alert.Title level={2}>먼저 조치할 작업 {attentionCount}건</Alert.Title>
         <Alert.Description>
-          도로 침하 1건은 담당팀 배정 전이며, 대중교통 안내판 1건은 부품 입고를 기다리고 있습니다.
+          도로 침하 1건은 담당팀 배정이 필요해요. 안내판 교체 1건은 부품을 기다리고 있어요.
         </Alert.Description>
         <Alert.Action>
           <RouteButton navigate={navigate} to="/work-orders">
-            우선 작업 확인
+            현장 작업 보기
           </RouteButton>
         </Alert.Action>
       </Alert.Root>
 
       <section aria-label="핵심 운영 지표" className="city-metric-grid">
         <MetricCard
-          detail="현재 진행 또는 배정 대기"
+          detail="접수·배정·진행·대기 중"
           icon={Wrench}
-          label="활성 작업"
+          label="미완료 작업"
           trend="+2 "
           value={`${activeOrders.length}건`}
         />
         <MetricCard
-          detail="즉시 확인이 필요한 작업"
+          detail="기한 초과 위험 또는 담당팀 미배정"
           icon={Siren}
-          label="SLA 위험"
+          label="조치 필요"
           value={`${attentionCount}건`}
         />
         <MetricCard
-          detail="오늘 목표 24건의 75%"
+          detail="목표 24건의 75%"
           icon={CheckCircle2}
-          label="금일 완료"
+          label="오늘 완료"
           trend="+12% "
           value="18건"
         />
-        <MetricCard
-          detail="6개 팀 중 즉시 배정 가능"
-          icon={Users}
-          label="가용 현장팀"
-          value="4개 팀"
-        />
+        <MetricCard detail="전체 6개 팀" icon={Users} label="배정 가능한 팀" value="4개 팀" />
       </section>
 
       <div className="city-dashboard-split">
@@ -424,7 +419,6 @@ function OverviewPage({ navigate }: { navigate: Navigate }) {
                 전체 보기
               </RouteButton>
             }
-            description="기한과 차단 요인을 기준으로 정렬했습니다."
             id="overview-priority-heading"
             title="우선 작업"
           />
@@ -457,7 +451,6 @@ function OverviewPage({ navigate }: { navigate: Navigate }) {
                 계획 보기
               </RouteButton>
             }
-            description="오늘 예정된 점검과 운영 전환입니다."
             id="overview-schedule-heading"
             title="오늘 일정"
           />
@@ -497,8 +490,8 @@ function MaintenancePage() {
   return (
     <div className="city-dashboard-page">
       <PageHeading
-        description="예방 정비와 법정 점검 일정을 조율하고 작업 준비 상태를 확인합니다."
-        eyebrow="정비 주기 · 향후 7일"
+        description="점검 일정과 준비 상태를 확인해 주세요."
+        eyebrow="향후 7일"
         title="정비 계획"
       />
       <section aria-label="정비 계획 지표" className="city-metric-grid city-metric-grid--three">
@@ -507,16 +500,12 @@ function MaintenancePage() {
         <MetricCard detail="승인 또는 부품 대기" icon={CircleAlert} label="준비 지연" value="2건" />
       </section>
       <Alert.Root appearance="subtle" tone="warning">
-        <Alert.Title level={2}>계획 전 확인이 필요한 항목 2건</Alert.Title>
+        <Alert.Title level={2}>준비가 늦어진 정비 2건</Alert.Title>
         <Alert.Description>
-          부품 입고 1건과 도로 점용 승인 1건이 확정되지 않았습니다.
+          부품 입고와 도로 점용 승인을 각각 1건씩 기다리고 있어요.
         </Alert.Description>
       </Alert.Root>
-      <TablePanel
-        description="시작 시간이 가까운 순서입니다."
-        id="maintenance-list-heading"
-        title="예정 정비"
-      >
+      <TablePanel description="시작 시간순" id="maintenance-list-heading" title="예정 정비">
         <Table.Root
           className="city-dashboard-table"
           size="sm"
@@ -559,21 +548,17 @@ function AssetsPage() {
   return (
     <div className="city-dashboard-page">
       <PageHeading
-        description="도시 시설의 최신 상태와 점검 시각을 비교해 이상 자산을 선별합니다."
-        eyebrow="시설 기준정보 · 10:02 갱신"
+        description="이상이 있는 시설과 최근 점검 기록을 확인해 주세요."
+        eyebrow="10:02 업데이트"
         title="시설 자산"
       />
       <section aria-label="시설 자산 지표" className="city-metric-grid">
-        <MetricCard detail="등록된 관리 대상" icon={Building2} label="전체 자산" value="1,284개" />
+        <MetricCard detail="관리 대상 시설" icon={Building2} label="전체 자산" value="1,284개" />
         <MetricCard detail="최근 점검 기준" icon={ShieldCheck} label="정상" value="1,226개" />
-        <MetricCard detail="7일 이내 확인 필요" icon={CircleAlert} label="점검 필요" value="42개" />
+        <MetricCard detail="7일 이내 점검" icon={CircleAlert} label="점검 필요" value="42개" />
         <MetricCard detail="현장 확인 우선" icon={Siren} label="긴급 점검" value="16개" />
       </section>
-      <TablePanel
-        description="최근 점검 결과에 따라 위험도가 높은 자산을 먼저 표시합니다."
-        id="asset-list-heading"
-        title="시설 상태"
-      >
+      <TablePanel id="asset-list-heading" title="시설 상태">
         <Table.Root
           className="city-dashboard-table"
           size="sm"
@@ -618,20 +603,20 @@ function CrewsPage() {
   return (
     <div className="city-dashboard-page">
       <PageHeading
-        description="팀별 가용 인력과 작업 부하를 비교해 다음 작업의 배정 여력을 확인합니다."
-        eyebrow="현장 인력 · 10:02 갱신"
+        description="팀별 작업량과 배정 가능한 인력을 확인해 주세요."
+        eyebrow="10:02 업데이트"
         title="현장팀"
       />
       <section aria-label="현장팀 지표" className="city-metric-grid city-metric-grid--three">
-        <MetricCard detail="총 6개 운영팀" icon={Users} label="즉시 배정 가능" value="4개 팀" />
+        <MetricCard detail="전체 6개 팀" icon={Users} label="즉시 배정 가능" value="4개 팀" />
         <MetricCard detail="현재 출동 또는 작업 중" icon={HardHat} label="현장 대응" value="8건" />
         <MetricCard detail="전체 계획 대비" icon={Gauge} label="평균 배정률" value="61%" />
       </section>
       <section aria-labelledby="crew-capacity-heading" className="city-surface-section">
         <SectionHeading
-          description="배정률이 낮은 팀부터 신규 작업을 검토할 수 있습니다."
+          description="새 작업을 배정할 때 팀별 배정률과 다음 일정을 확인해 주세요."
           id="crew-capacity-heading"
-          title="팀별 가용 현황"
+          title="팀별 배정 현황"
         />
         <div className="city-crew-grid">
           {CREW_ITEMS.map((crew) => (
@@ -677,8 +662,8 @@ function ReportsPage() {
   return (
     <div className="city-dashboard-page">
       <PageHeading
-        description="이번 주 처리 성과와 자치구별 SLA 준수율을 비교해 운영 편차를 확인합니다."
-        eyebrow="주간 리포트 · 7월 27일–8월 1일"
+        description="이번 주 처리 결과와 자치구별 기한 준수율을 확인해 주세요."
+        eyebrow="7월 27일–8월 1일"
         title="운영 리포트"
       />
       <section aria-label="주간 운영 지표" className="city-metric-grid">
@@ -692,14 +677,14 @@ function ReportsPage() {
         <MetricCard
           detail="목표 96.0%"
           icon={ShieldCheck}
-          label="SLA 준수율"
+          label="기한 준수율"
           trend="+1.8%p "
           value="95.7%"
         />
         <MetricCard
           detail="접수부터 현장 도착"
           icon={Clock3}
-          label="평균 대응"
+          label="평균 대응 시간"
           trend="-8분 "
           value="42분"
         />
@@ -712,13 +697,13 @@ function ReportsPage() {
         />
       </section>
       <Alert.Root appearance="subtle" tone="info">
-        <Alert.Title level={2}>강남구 SLA 준수율이 목표보다 3.2%p 낮습니다.</Alert.Title>
+        <Alert.Title level={2}>강남구 기한 준수율 92.8% · 목표까지 3.2%p</Alert.Title>
         <Alert.Description>
-          야간 도로 전기 작업 4건의 부품 대기 시간이 주요 원인입니다.
+          야간 도로 전기 작업 4건에서 부품을 기다린 시간이 주요 원인이에요.
         </Alert.Description>
       </Alert.Root>
       <TablePanel
-        description="완료율은 이번 주 접수 건수 대비 완료 건수입니다."
+        description="완료율은 이번 주 접수 건수에 대한 완료 건수의 비율이에요."
         id="district-report-heading"
         title="자치구별 성과"
       >
@@ -733,7 +718,7 @@ function ReportsPage() {
               <Table.Head>자치구</Table.Head>
               <Table.Head>접수</Table.Head>
               <Table.Head>완료율</Table.Head>
-              <Table.Head>SLA 준수율</Table.Head>
+              <Table.Head>기한 준수율</Table.Head>
               <Table.Head>전주 대비</Table.Head>
             </Table.Row>
           </Table.Header>
@@ -788,13 +773,13 @@ function ActivityPage() {
   return (
     <div className="city-dashboard-page">
       <PageHeading
-        description="작업, 정비, 인력 배정에서 발생한 최근 변경을 시간 순서로 확인합니다."
-        eyebrow="감사 기록 · 오늘"
+        description="작업·정비·인력 배정의 변경 내역을 확인해 주세요."
+        eyebrow="오늘"
         title="활동 기록"
       />
       <section aria-labelledby="activity-feed-heading" className="city-surface-section">
         <SectionHeading
-          description="모든 시각은 한국 표준시(KST)입니다."
+          description="한국 시간(KST) 기준"
           id="activity-feed-heading"
           title="최근 활동"
         />
@@ -824,24 +809,24 @@ function ServiceStatusPage() {
   return (
     <div className="city-dashboard-page">
       <PageHeading
-        description="현장 운영에 연결된 채널의 가용성과 최근 처리 지연을 확인합니다."
-        eyebrow="시스템 상태 · 10:07 갱신"
+        description="채널별 연결 상태와 응답 시간을 확인해 주세요."
+        eyebrow="10:07 업데이트"
         title="서비스 상태"
       />
       <Alert.Root appearance="subtle" tone="success">
-        <Alert.Title level={2}>모든 운영 채널이 정상입니다.</Alert.Title>
+        <Alert.Title level={2}>모든 운영 채널이 정상이에요.</Alert.Title>
         <Alert.Description>
-          최근 24시간 동안 서비스 중단 또는 데이터 유실이 감지되지 않았습니다.
+          최근 24시간 동안 서비스 중단이나 데이터 유실을 감지하지 않았어요.
         </Alert.Description>
       </Alert.Root>
       <section aria-label="서비스 상태 지표" className="city-metric-grid city-metric-grid--three">
-        <MetricCard detail="최근 30일" icon={Radio} label="전체 가용성" value="99.98%" />
-        <MetricCard detail="작업 배차 기준" icon={Gauge} label="평균 응답" value="182ms" />
+        <MetricCard detail="최근 30일" icon={Radio} label="서비스 가동률" value="99.98%" />
+        <MetricCard detail="작업 배차 기준" icon={Gauge} label="평균 응답 시간" value="182ms" />
         <MetricCard detail="계획 점검 8개" icon={Building2} label="연결 시설" value="1,276개" />
       </section>
       <section aria-labelledby="service-channel-heading" className="city-surface-section">
         <SectionHeading
-          description="채널을 열어 상세 상태와 최근 측정값을 확인하십시오."
+          description="채널을 선택하면 최근 측정값을 볼 수 있어요."
           id="service-channel-heading"
           title="운영 채널"
         />
@@ -877,9 +862,9 @@ function NotFoundPage({ navigate }: { navigate: Navigate }) {
       <EmptyState.Icon>
         <SearchX />
       </EmptyState.Icon>
-      <EmptyState.Title level={1}>페이지를 찾을 수 없습니다.</EmptyState.Title>
+      <EmptyState.Title level={1}>페이지를 찾을 수 없어요.</EmptyState.Title>
       <EmptyState.Description>
-        주소를 다시 확인하거나 운영 현황으로 돌아가십시오.
+        주소를 확인하거나 운영 현황으로 이동해 주세요.
       </EmptyState.Description>
       <EmptyState.Actions>
         <RouteButton navigate={navigate} to="/">

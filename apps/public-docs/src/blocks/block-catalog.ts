@@ -248,9 +248,9 @@ export const BLOCK_DOCS = [
   },
   {
     slug: 'verification-code',
-    title: '인증 코드 확인',
+    title: 'OTP 인증',
     description: '코드 입력, 확인 버튼, 오류와 재입력 흐름을 하나의 인증 화면으로 구성합니다.',
-    category: '인증',
+    category: '보안',
     keywords: ['인증', 'OTP', '코드', '오류', '확인'],
     components: ['otp-input', 'field', 'alert', 'button'],
     guidance:
@@ -262,11 +262,21 @@ export const BLOCK_DOCS = [
   },
   {
     slug: 'member-directory',
-    title: '팀원 목록',
-    description: '검색과 상태 필터, 결과 개수, 테이블과 빈 결과를 연결한 관리 화면입니다.',
-    category: '데이터 관리',
-    keywords: ['팀원', '목록', '검색', '필터', '테이블', '빈 상태'],
+    title: '팀원 관리',
+    description: '팀원을 검색하고 초대하거나 역할을 변경하고 팀에서 내보냅니다.',
+    category: '사용자 관리',
+    keywords: ['팀원', '관리', '목록', '검색', '초대', '역할', '내보내기'],
     components: [
+      'panel',
+      'button',
+      'field',
+      'input',
+      'dialog',
+      'alert-dialog',
+      'alert',
+      'badge',
+      'skeleton',
+      'toast',
       'filter-bar',
       'search-input',
       'select',
@@ -275,10 +285,11 @@ export const BLOCK_DOCS = [
       'empty-state',
     ],
     guidance:
-      '이름·이메일 검색과 상태 필터를 함께 적용합니다. 예제는 메모리의 샘플 데이터를 사용합니다. 원격 목록에서는 데이터 조회와 페이지 이동을 소비 앱에 연결하십시오.',
+      'members에 팀원 목록을 전달하고 onInvite·onRoleChange·onRemove에 서버 요청을 연결하십시오. 성공 후 소비자가 목록을 갱신합니다. 권한, 마지막 관리자 보호, 초대 중복 및 팀 소유권은 서버에서 검증해야 합니다. currentUserId에 해당하는 본인의 관리 액션은 숨깁니다. loading·error·onRetry로 조회 상태를, canManage로 관리 가능 여부를 전달합니다. 미리보기는 화면의 샘플 데이터만 변경하며 이메일을 발송하지 않습니다.',
     load: async () => ({
       Component: (await import('./examples/member-directory')).default,
       source: (await import('./examples/member-directory.tsx?raw')).default,
+      extraFiles: [await cardSource()],
     }),
   },
 ] as const satisfies readonly BlockDocEntry[];
@@ -296,13 +307,10 @@ export const USER_MANAGEMENT_MENU = [
   { title: '비밀번호 변경', slug: 'change-password' },
   { title: '2차 인증', slug: 'two-factor-management' },
   { title: '세션 기록', slug: 'session-history' },
+  { title: '팀원 관리', slug: 'member-directory' },
 ] as const;
 
-export const AUTHENTICATION_MENU = [
-  { title: '인증 코드 확인', slug: 'verification-code' },
-] as const;
-
-export const DATA_MANAGEMENT_MENU = [{ title: '팀원 목록', slug: 'member-directory' }] as const;
+export const SECURITY_MENU = [{ title: 'OTP 인증', slug: 'verification-code' }] as const;
 
 export function getBlockDoc(slug: string): BlockDocEntry | undefined {
   return BLOCK_DOCS.find((entry) => entry.slug === slug);

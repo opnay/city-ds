@@ -4,7 +4,6 @@ import {
   ArrowRight,
   BookOpen,
   CreditCard,
-  Database,
   LayoutGrid,
   Menu as MenuIcon,
   Moon,
@@ -39,8 +38,7 @@ import {
 import {
   USER_MANAGEMENT_MENU,
   SUBSCRIPTION_MENU,
-  AUTHENTICATION_MENU,
-  DATA_MANAGEMENT_MENU,
+  SECURITY_MENU,
   getBlockDoc,
 } from '../blocks/block-catalog';
 import type {
@@ -400,15 +398,9 @@ function DocsNavigation({ mode, onModeChange, onNavigate, query, setQuery }: Doc
               />
               <BlockNavigationGroup
                 onNavigate={handleNavigate}
-                title="인증"
-                items={AUTHENTICATION_MENU}
+                title="보안"
+                items={SECURITY_MENU}
                 icon={ShieldCheck}
-              />
-              <BlockNavigationGroup
-                onNavigate={handleNavigate}
-                title="데이터 관리"
-                items={DATA_MANAGEMENT_MENU}
-                icon={Database}
               />
             </ul>
           </section>

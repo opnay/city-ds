@@ -15,6 +15,14 @@
   max-width: 24rem;
 }
 
+.city-block-form.city-block-members {
+  max-width: 64rem;
+}
+
+.city-block-member-table {
+  min-width: 48rem;
+}
+
 .city-block-card {
   padding: var(--city-space-5);
   border: 1px solid var(--city-color-border);

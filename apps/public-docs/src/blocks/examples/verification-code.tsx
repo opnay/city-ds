@@ -19,7 +19,7 @@ export default function VerificationCode() {
       }}
     >
       <div>
-        <h3 className="city-block-title">인증 코드 확인</h3>
+        <h3 className="city-block-title">OTP 인증</h3>
         <p className="city-block-description">받은 6자리 코드를 입력하십시오.</p>
       </div>
       <Field.Root invalid={result === 'error'}>

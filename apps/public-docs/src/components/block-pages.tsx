@@ -14,7 +14,7 @@ export function BlockCatalog() {
       eyebrow="Blocks"
       description="여러 컴포넌트를 조합한 실사용 화면입니다. 동작을 확인하고 코드를 가져가 프로젝트에 맞게 수정하십시오."
     >
-      {['사용자 관리', '구독·결제', '인증', '데이터 관리'].map((category) => (
+      {['사용자 관리', '구독·결제', '보안'].map((category) => (
         <section key={category}>
           <h2 className="city-text-section-title">{category}</h2>
           <div className="city-docs-component-grid">

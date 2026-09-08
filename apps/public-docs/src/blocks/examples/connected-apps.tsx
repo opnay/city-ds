@@ -75,8 +75,8 @@ export function ConnectedApps({
                   </Button>
                 )}
               </div>
-              <DataList.Root density="compact" className="[--city-data-list-label-width:5rem]">
-                <DataList.Item className="grid-cols-[5rem_minmax(0,1fr)] py-0.5">
+              <DataList.Root density="compact" className="city-block-connected-app-details">
+                <DataList.Item>
                   <DataList.Label>허용한 권한</DataList.Label>
                   <DataList.Value>
                     <ul className="m-0 flex list-none flex-wrap gap-x-3 gap-y-1 p-0">
@@ -86,7 +86,7 @@ export function ConnectedApps({
                     </ul>
                   </DataList.Value>
                 </DataList.Item>
-                <DataList.Item className="grid-cols-[5rem_minmax(0,1fr)] py-0.5">
+                <DataList.Item>
                   <DataList.Label>연결일</DataList.Label>
                   <DataList.Value>{app.connectedAt}</DataList.Value>
                 </DataList.Item>

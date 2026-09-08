@@ -381,3 +381,11 @@
   color: var(--city-color-muted-foreground);
   list-style: disc;
 }
+
+.city-block-connected-app-details {
+  --city-data-list-label-width: 5rem;
+}
+.city-block-connected-app-details > [data-city-data-list-item] {
+  grid-template-columns: var(--city-data-list-label-width) minmax(0, 1fr);
+  padding-block: var(--city-space-0-5);
+}

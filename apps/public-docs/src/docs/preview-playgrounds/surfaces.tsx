@@ -5,8 +5,7 @@ import { Button } from '@opnay/city-ds-react/button';
 import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Dialog } from '@opnay/city-ds-react/dialog';
 import { Drawer } from '@opnay/city-ds-react/drawer';
-import { FilterBar } from '@opnay/city-ds-react/filter-bar';
-import { Input } from '@opnay/city-ds-react/input';
+import FiltersExample from '../components/filter-bar/examples/filters';
 import { Panel } from '@opnay/city-ds-react/panel';
 import { Popover } from '@opnay/city-ds-react/popover';
 import { Table, type TableSortDirection } from '@opnay/city-ds-react/table';
@@ -365,16 +364,9 @@ export function PanelPreview({ actions }: PreviewOptionProps) {
 
 export function FilterBarPreview({ appearance, density }: PreviewOptionProps) {
   return (
-    <FilterBar
-      actions={
-        <Button size="sm" variant="outline">
-          적용
-        </Button>
-      }
+    <FiltersExample
       appearance={isOneOf(appearance, APPEARANCES, 'band')}
       density={density === 'compact' ? 'compact' : 'comfortable'}
-    >
-      <Input aria-label="검색" placeholder="필터 검색" />
-    </FilterBar>
+    />
   );
 }

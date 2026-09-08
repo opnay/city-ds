@@ -327,25 +327,14 @@ export function PaymentMethods({
   );
 }
 
-type Scenario = 'default' | 'empty' | 'loading' | 'error' | 'read-only';
-export default function PaymentMethodsExample({ scenario = 'default' }: { scenario?: Scenario }) {
-  return <PaymentMethodsScenario key={scenario} scenario={scenario} />;
-}
-function PaymentMethodsScenario({ scenario }: { scenario: Scenario }) {
-  const [methods, setMethods] = useState<readonly PaymentMethod[]>(
-    scenario === 'empty' ? [] : exampleMethods,
-  );
+export default function PaymentMethodsExample({ readOnly = false }: { readOnly?: boolean }) {
+  const [methods, setMethods] = useState<readonly PaymentMethod[]>(exampleMethods);
   const nextId = useRef(3);
-  function checkError() {
-    if (scenario === 'error') throw new Error('Example failure');
-  }
   return (
     <PaymentMethods
       methods={methods}
-      loading={scenario === 'loading'}
-      canManage={scenario !== 'read-only'}
+      canManage={!readOnly}
       onAdd={async (card) => {
-        checkError();
         const id = nextId.current++;
         setMethods((current) => [
           ...current,
@@ -359,13 +348,11 @@ function PaymentMethodsScenario({ scenario }: { scenario: Scenario }) {
         ]);
       }}
       onSetDefault={async (id) => {
-        checkError();
         setMethods((current) =>
           current.map((method) => ({ ...method, isDefault: method.id === id })),
         );
       }}
       onRemove={async (id) => {
-        checkError();
         setMethods((current) => current.filter((method) => method.id !== id));
       }}
     />

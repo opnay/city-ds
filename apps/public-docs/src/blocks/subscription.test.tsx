@@ -60,7 +60,14 @@ describe('subscription blocks', () => {
 
   it('preserves the payment method and confirmation on failure', async () => {
     const user = userEvent.setup();
-    render(<PaymentMethodsExample scenario="error" />);
+    render(
+      <PaymentMethods
+        methods={exampleMethods}
+        onAdd={vi.fn()}
+        onSetDefault={vi.fn()}
+        onRemove={vi.fn().mockRejectedValue(new Error('offline'))}
+      />,
+    );
     await user.click(screen.getByRole('button', { name: '현대카드 5678 삭제' }));
     await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: '삭제' }));
     expect(within(screen.getByRole('dialog')).getByRole('alert')).toHaveTextContent('다시 시도');

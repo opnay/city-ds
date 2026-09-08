@@ -38,14 +38,14 @@ export const BLOCK_DOCS = [
     ],
     optionAxes: [
       {
-        name: 'scenario',
-        control: 'select',
-        defaultValue: 'default',
-        values: ['default', 'empty', 'loading', 'error', 'read-only'],
+        name: 'readOnly',
+        control: 'switch',
+        defaultValue: 'false',
+        values: ['false', 'true'],
       },
     ],
     guidance:
-      'methods에는 마스킹된 결제 수단만 전달합니다. 등록 폼 제출 시 onAdd에 입력값을 전달하고, onSetDefault와 onRemove는 서버 요청 성공 후 methods를 갱신합니다. 기본 카드는 다른 카드를 기본으로 설정한 뒤 삭제하는 예제 정책입니다. 실제 삭제 가능 여부와 소유권은 서버에서 검증합니다. loading은 초기 조회, canManage는 관리 권한입니다. 등록 폼은 흐름을 확인하는 예제입니다. 서비스에서는 결제 제공사의 보안 입력 및 토큰화 흐름으로 교체합니다. 미리보기에서는 테스트 번호 4242 4242 4242 4242를 사용할 수 있으며 입력값 중 이름·마지막 네 자리·유효기간만 목록에 남습니다. error 옵션은 변경 요청 실패를 재현합니다.',
+      'methods에는 마스킹된 결제 수단만 전달합니다. 등록 폼 제출 시 onAdd에 입력값을 전달하고, onSetDefault와 onRemove는 서버 요청 성공 후 methods를 갱신합니다. 기본 카드는 다른 카드를 기본으로 설정한 뒤 삭제하는 예제 정책입니다. 실제 삭제 가능 여부와 소유권은 서버에서 검증합니다. loading은 초기 조회, canManage는 관리 권한입니다. 등록 폼은 흐름을 확인하는 예제입니다. 서비스에서는 결제 제공사의 보안 입력 및 토큰화 흐름으로 교체합니다. 미리보기에서는 테스트 번호 4242 4242 4242 4242를 사용할 수 있으며 입력값 중 이름·마지막 네 자리·유효기간만 목록에 남습니다. readOnly 옵션은 읽기 전용 맥락을 표현합니다.',
     load: async () => ({
       Component: (await import('./examples/payment-methods')).default,
       source: (await import('./examples/payment-methods.tsx?raw')).default,

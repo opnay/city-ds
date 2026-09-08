@@ -38,7 +38,13 @@ describe('subscription blocks', () => {
   it('changes the default method, confirms removal, and adds a sample card', async () => {
     const user = userEvent.setup();
     render(<PaymentMethodsExample />);
-    expect(screen.queryByRole('button', { name: '신한카드 1234 삭제' })).not.toBeInTheDocument();
+    const defaultDelete = screen.getByRole('button', { name: '신한카드 1234 삭제' });
+    expect(defaultDelete).toHaveAttribute('aria-disabled', 'true');
+    await user.hover(defaultDelete);
+    expect(await screen.findByRole('tooltip')).toHaveTextContent('다른 카드를 기본으로 설정한 뒤');
+    await user.click(defaultDelete);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    await user.unhover(defaultDelete);
     await user.click(screen.getByRole('button', { name: '현대카드 5678 기본으로 설정' }));
     await user.click(screen.getByRole('button', { name: '신한카드 1234 삭제' }));
     expect(screen.getByRole('dialog')).toHaveTextContent('신한카드 · 1234');

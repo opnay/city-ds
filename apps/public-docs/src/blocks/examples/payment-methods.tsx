@@ -8,6 +8,7 @@ import { Input } from '@opnay/city-ds-react/input';
 import { EmptyState } from '@opnay/city-ds-react/empty-state';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
 import { toast } from '@opnay/city-ds-react/toast';
+import { Tooltip } from '@opnay/city-ds-react/tooltip';
 import { BlockCard } from './block-card';
 import './blocks.css';
 
@@ -109,6 +110,34 @@ export function PaymentMethods({
                 </p>
               </div>
               <div className="city-block-actions">
+                {method.isDefault && (
+                  <Tooltip.Provider>
+                    <Tooltip.Root>
+                      <Tooltip.Trigger
+                        render={
+                          <Button
+                            type="button"
+                            variant="outline"
+                            disabled
+                            focusableWhenDisabled
+                            className="data-[disabled]:pointer-events-auto"
+                          />
+                        }
+                        aria-label={`${method.name} ${method.lastFour} 삭제`}
+                      >
+                        삭제
+                      </Tooltip.Trigger>
+                      <Tooltip.Portal>
+                        <Tooltip.Positioner side="top" sideOffset={8}>
+                          <Tooltip.Popup>
+                            다른 카드를 기본으로 설정한 뒤 삭제할 수 있어요.
+                            <Tooltip.Arrow />
+                          </Tooltip.Popup>
+                        </Tooltip.Positioner>
+                      </Tooltip.Portal>
+                    </Tooltip.Root>
+                  </Tooltip.Provider>
+                )}
                 {!method.isDefault && (
                   <>
                     <Button
@@ -252,11 +281,6 @@ export function PaymentMethods({
           </Dialog.Viewport>
         </Dialog.Portal>
       </Dialog.Root>
-      {methods.length > 0 && (
-        <p className="city-text-supporting text-city-muted-foreground">
-          기본 카드를 삭제하려면 다른 카드를 기본으로 설정해 주세요.
-        </p>
-      )}
       <Dialog.Root
         open={!!target}
         onOpenChange={(open) => {

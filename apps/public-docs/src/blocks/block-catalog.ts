@@ -34,6 +34,7 @@ export const BLOCK_DOCS = [
       'empty-state',
       'skeleton',
       'toast',
+      'tooltip',
     ],
     optionAxes: [
       {
@@ -60,7 +61,6 @@ export const BLOCK_DOCS = [
     components: [
       'panel',
       'data-table-region',
-      'scroll-area',
       'table',
       'badge',
       'empty-state',

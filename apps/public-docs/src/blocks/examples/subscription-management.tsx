@@ -1,3 +1,4 @@
+import { DataList } from '@opnay/city-ds-react/data-list';
 import { useRef, useState } from 'react';
 import { toast } from '@opnay/city-ds-react/toast';
 import { Button } from '@opnay/city-ds-react/button';
@@ -78,36 +79,36 @@ export function SubscriptionManagement({
     );
   return (
     <BlockCard title="구독 관리" description="현재 플랜과 다음 결제 일정을 확인해 주세요.">
-      <dl className="city-block-subscription-details city-text-supporting">
-        <div>
-          <dt>현재 플랜</dt>
-          <dd>{plan}</dd>
-        </div>
-        <div>
-          <dt>상태</dt>
-          <dd>
+      <DataList.Root density="compact" className="city-text-supporting">
+        <DataList.Item>
+          <DataList.Label>현재 플랜</DataList.Label>
+          <DataList.Value>{plan}</DataList.Value>
+        </DataList.Item>
+        <DataList.Item>
+          <DataList.Label>상태</DataList.Label>
+          <DataList.Value>
             <Badge tone={tone} appearance="subtle">
               {labels[status]}
             </Badge>
-          </dd>
-        </div>
-        <div>
-          <dt>{status === 'free' ? '이용 요금' : '결제 금액'}</dt>
-          <dd>{price}</dd>
-        </div>
+          </DataList.Value>
+        </DataList.Item>
+        <DataList.Item>
+          <DataList.Label>{status === 'free' ? '이용 요금' : '결제 금액'}</DataList.Label>
+          <DataList.Value>{price}</DataList.Value>
+        </DataList.Item>
         {status !== 'free' && (
-          <div>
-            <dt>
+          <DataList.Item>
+            <DataList.Label>
               {status === 'canceling' || status === 'past-due'
                 ? '이용 종료일'
                 : status === 'trial'
                   ? '체험 종료일'
                   : '다음 결제일'}
-            </dt>
-            <dd>{status === 'active' ? renewalDate : accessUntil}</dd>
-          </div>
+            </DataList.Label>
+            <DataList.Value>{status === 'active' ? renewalDate : accessUntil}</DataList.Value>
+          </DataList.Item>
         )}
-      </dl>
+      </DataList.Root>
       {(status === 'trial' || status === 'canceling' || status === 'past-due') && (
         <Alert.Root tone={tone} appearance="subtle">
           <Alert.Title level={4}>

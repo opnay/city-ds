@@ -22,6 +22,7 @@ export const BLOCK_DOCS = [
     title: '결제 수단 관리',
     description: '카드를 추가하고 기본 결제 수단을 변경하거나 등록한 카드를 삭제합니다.',
     category: '구독·결제',
+    scope: '사용자·팀',
     keywords: ['결제', '카드', '수단', '기본', '등록', '삭제'],
     components: [
       'panel',
@@ -57,6 +58,7 @@ export const BLOCK_DOCS = [
     title: '결제 기록',
     description: '결제일, 내역, 금액, 결제 수단과 처리 상태를 확인합니다.',
     category: '구독·결제',
+    scope: '사용자·팀',
     keywords: ['결제', '기록', '청구', '환불', '실패'],
     components: [
       'panel',
@@ -81,6 +83,7 @@ export const BLOCK_DOCS = [
     title: '플랜 선택',
     description: '월간·연간 가격과 기능을 비교하고 다음 단계로 진행합니다.',
     category: '구독·결제',
+    scope: '사용자·팀',
     keywords: ['구독', '결제', '플랜', '요금', '해지'],
     components: [
       'panel',
@@ -115,8 +118,9 @@ export const BLOCK_DOCS = [
     title: '구독 관리',
     description: '무료·구독·체험·결제 실패·해지 예약 상태와 다음 행동을 구성합니다.',
     category: '구독·결제',
+    scope: '사용자·팀',
     keywords: ['구독', '결제', '플랜', '요금', '해지'],
-    components: ['panel', 'badge', 'button', 'dialog', 'alert', 'skeleton', 'toast'],
+    components: ['data-list', 'panel', 'badge', 'button', 'dialog', 'alert', 'skeleton', 'toast'],
     guidance:
       'subscription에 서버의 최신 구독 상태·청구 금액·결제일·이용 종료일을 전달합니다. 미리보기의 플랜 선택·변경 버튼은 onPlanSelection 더미 콜백으로 처리합니다. 소비 앱은 planSelectionHref로 이동 경로를 연결하고 onAction은 해지 예약·예약 취소·결제 재시도를 처리합니다. loading과 canManage로 조회 및 권한 상태를 표현합니다. 요청 성공 후 서버가 반환한 상태로 subscription을 갱신합니다. 재청구는 서버에서 중복 요청을 방지합니다. 예제의 무료 전환·자동 결제 정책과 날짜는 샘플이므로 실제 정책에 맞게 안내를 수정합니다.',
     load: async () => ({
@@ -129,7 +133,8 @@ export const BLOCK_DOCS = [
     slug: 'profile-management',
     title: '프로필 관리',
     description: '프로필 이미지, 표시 이름과 자기소개를 수정하고 저장·취소합니다.',
-    category: '사용자 관리',
+    category: '계정 관리',
+    scope: '사용자',
     keywords: ['사용자', '프로필', '이미지', '자기소개', '저장', '취소'],
     components: ['panel', 'avatar', 'field', 'input', 'button', 'toast'],
     guidance:
@@ -144,7 +149,8 @@ export const BLOCK_DOCS = [
     slug: 'account-management',
     title: '계정 관리',
     description: '로그인 이메일을 변경하고 연결 계정과 계정 탈퇴를 관리합니다.',
-    category: '사용자 관리',
+    category: '계정 관리',
+    scope: '사용자',
     keywords: ['계정', '이메일', '연결 계정', '탈퇴'],
     components: [
       'panel',
@@ -168,7 +174,8 @@ export const BLOCK_DOCS = [
     slug: 'change-password',
     title: '비밀번호 변경',
     description: '현재 비밀번호 확인과 새 비밀번호 입력, 다른 기기 로그아웃을 구성합니다.',
-    category: '사용자 관리',
+    category: '계정 보안',
+    scope: '사용자',
     keywords: ['비밀번호', '변경', '확인', '로그아웃'],
     components: ['panel', 'field', 'input', 'checkbox', 'button', 'toast'],
     guidance:
@@ -183,7 +190,8 @@ export const BLOCK_DOCS = [
     slug: 'two-factor-management',
     title: '2차 인증',
     description: '인증 앱 관리와 네 단계 등록 폼, 복구 코드 보관·재발급을 구성합니다.',
-    category: '사용자 관리',
+    category: '계정 보안',
+    scope: '사용자',
     keywords: ['2FA', '인증 앱', '등록', '스텝 폼', '복구 코드', 'QR'],
     components: [
       'panel',
@@ -221,7 +229,8 @@ export const BLOCK_DOCS = [
     slug: 'session-history',
     title: '세션 기록',
     description: '로그인 기기와 최근 활동을 확인하고 다른 세션을 개별 또는 일괄 종료합니다.',
-    category: '사용자 관리',
+    category: '계정 보안',
+    scope: '사용자',
     keywords: ['세션', '기기', '접속', '기록', '로그아웃'],
     components: ['panel', 'segmented-control', 'badge', 'button', 'alert-dialog', 'toast'],
     guidance:
@@ -236,7 +245,9 @@ export const BLOCK_DOCS = [
     slug: 'account-settings',
     title: '계정 설정',
     description: '프로필 입력과 알림 설정을 한 폼에 묶고 변경 사항을 저장하거나 되돌립니다.',
-    category: '설정',
+    category: '계정 관리',
+    listed: false,
+    scope: '사용자',
     keywords: ['프로필', '계정', '설정', '저장', '취소'],
     components: ['field', 'input', 'switch', 'button'],
     guidance:
@@ -248,25 +259,38 @@ export const BLOCK_DOCS = [
   },
   {
     slug: 'verification-code',
-    title: '인증 코드 확인',
+    title: 'OTP 인증',
     description: '코드 입력, 확인 버튼, 오류와 재입력 흐름을 하나의 인증 화면으로 구성합니다.',
     category: '인증',
+    scope: '사용자',
     keywords: ['인증', 'OTP', '코드', '오류', '확인'],
-    components: ['otp-input', 'field', 'alert', 'button'],
+    components: ['panel', 'otp-input', 'field', 'alert', 'button'],
     guidance:
       '예제 코드 123456으로 일치 상태를 확인할 수 있습니다. 실제 인증은 서버에서 검증하고 만료·시도 제한을 적용하십시오. 이 예제는 인증이나 메시지 발송을 수행하지 않습니다.',
     load: async () => ({
       Component: (await import('./examples/verification-code')).default,
       source: (await import('./examples/verification-code.tsx?raw')).default,
+      extraFiles: [await cardSource()],
     }),
   },
   {
     slug: 'member-directory',
-    title: '팀원 목록',
-    description: '검색과 상태 필터, 결과 개수, 테이블과 빈 결과를 연결한 관리 화면입니다.',
-    category: '데이터 관리',
-    keywords: ['팀원', '목록', '검색', '필터', '테이블', '빈 상태'],
+    title: '팀원 관리',
+    description: '팀원을 검색하고 초대하거나 역할을 변경하고 팀에서 내보냅니다.',
+    category: '팀 관리',
+    scope: '팀',
+    keywords: ['팀원', '관리', '목록', '검색', '초대', '역할', '내보내기'],
     components: [
+      'panel',
+      'button',
+      'field',
+      'input',
+      'dialog',
+      'alert-dialog',
+      'alert',
+      'badge',
+      'skeleton',
+      'toast',
       'filter-bar',
       'search-input',
       'select',
@@ -275,28 +299,139 @@ export const BLOCK_DOCS = [
       'empty-state',
     ],
     guidance:
-      '이름·이메일 검색과 상태 필터를 함께 적용합니다. 예제는 메모리의 샘플 데이터를 사용합니다. 원격 목록에서는 데이터 조회와 페이지 이동을 소비 앱에 연결하십시오.',
+      'members에 팀원 목록을 전달하고 onInvite·onRoleChange·onRemove에 서버 요청을 연결하십시오. 성공 후 소비자가 목록을 갱신합니다. 권한, 마지막 관리자 보호, 초대 중복 및 팀 소유권은 서버에서 검증해야 합니다. currentUserId에 해당하는 본인의 관리 액션은 숨깁니다. loading·error·onRetry로 조회 상태를, canManage로 관리 가능 여부를 전달합니다. 미리보기는 화면의 샘플 데이터만 변경하며 이메일을 발송하지 않습니다.',
     load: async () => ({
       Component: (await import('./examples/member-directory')).default,
       source: (await import('./examples/member-directory.tsx?raw')).default,
+      extraFiles: [await cardSource()],
+    }),
+  },
+  {
+    slug: 'password-reset',
+    title: '비밀번호 재설정',
+    description: '계정 확인과 코드 검증을 거쳐 새 비밀번호를 설정하고 로그인으로 돌아갑니다.',
+    category: '인증',
+    scope: '사용자',
+    keywords: ['비밀번호', '분실', '복구', '재설정'],
+    components: ['panel', 'field', 'input', 'otp-input', 'button'],
+    guidance:
+      'actions.request는 계정 존재 여부와 관계없이 같은 응답 형태와 안내를 반환하십시오. 서버에서 코드 만료·재요청 및 시도 제한을 적용하고 verify가 반환한 일회용 resetToken으로만 reset을 허용하십시오. minLength와 유출 비밀번호 차단 등 비밀번호 정책은 서버에서도 검증해야 합니다. 비밀번호 재설정 후 기존 세션 폐기 정책을 적용하십시오. onSignIn은 로그인 경로에 연결합니다. 미리보기는 이메일을 발송하지 않으며 인증 코드는 123456입니다.',
+    load: async () => ({
+      Component: (await import('./examples/password-reset')).default,
+      source: (await import('./examples/password-reset.tsx?raw')).default,
+      extraFiles: [await cardSource(), await sharedSource()],
+    }),
+  },
+  {
+    slug: 'reauthentication',
+    title: '재인증',
+    description: '민감한 작업에서 비밀번호와 필요한 추가 인증을 확인하고 원래 작업으로 돌아갑니다.',
+    category: '인증',
+    scope: '사용자',
+    keywords: ['재인증', '본인 확인', '비밀번호', 'OTP'],
+    components: ['panel', 'field', 'input', 'otp-input', 'button'],
+    guidance:
+      'onPassword는 서버 판정에 따라 verified 또는 otp-required와 challengeId를 반환합니다. onCode에서 해당 챌린지를 검증하십시오. onContinue는 원래 작업으로 복귀시키며 권한을 부여하는 수단이 아닙니다. 서버는 재인증의 유효 시간과 작업 범위를 검증하고 민감한 작업 실행 시 다시 확인해야 합니다. 취소 시 onCancel로 복귀합니다. 미리보기 비밀번호는 preview-password, 인증 코드는 123456이며 실제 재인증을 수행하지 않습니다.',
+    load: async () => ({
+      Component: (await import('./examples/reauthentication')).default,
+      source: (await import('./examples/reauthentication.tsx?raw')).default,
+      extraFiles: [await cardSource(), await sharedSource()],
+    }),
+  },
+  {
+    slug: 'recovery-code-management',
+    title: '복구 코드 관리',
+    description: '복구 코드를 발급하고 복사·다운로드한 뒤 보관을 확인합니다.',
+    category: '계정 보안',
+    scope: '사용자',
+    keywords: ['복구 코드', '백업', '재발급', 'MFA'],
+    components: ['panel', 'button', 'checkbox', 'field', 'input', 'alert-dialog'],
+    guidance:
+      'remainingCount는 서버에서 확인한 사용 가능한 코드 수입니다. onGenerate에서 재인증과 기존 코드 폐기·새 코드 발급을 원자적으로 처리하고 새 코드 목록을 반환한 뒤 수량을 갱신하십시오. 코드는 서버에서 생성하고 안전하게 검증·보관하며 한 번만 사용할 수 있어야 합니다. 보관 완료 후 화면에서 원문을 제거합니다. 미리보기 비밀번호는 preview-password이며 DEMO 코드는 실제 로그인에 사용할 수 없습니다.',
+    load: async () => ({
+      Component: (await import('./examples/recovery-code-management')).default,
+      source: (await import('./examples/recovery-code-management.tsx?raw')).default,
+      extraFiles: [await cardSource(), await sharedSource()],
+    }),
+  },
+  {
+    slug: 'passkey-management',
+    title: '패스키 관리',
+    description: '패스키를 등록하고 이름을 변경하거나 더 이상 쓰지 않는 패스키를 삭제합니다.',
+    category: '계정 보안',
+    scope: '사용자',
+    keywords: ['패스키', 'WebAuthn', '기기', '로그인'],
+    components: ['panel', 'badge', 'button', 'dialog', 'alert-dialog', 'field', 'input'],
+    guidance:
+      'passkeys는 소비자가 소유합니다. onRegister에서 서버 챌린지 발급, WebAuthn 등록, 서버 검증을 처리하고 성공 후 목록을 갱신하십시오. onRename과 onRemove도 서버 성공 후 목록을 갱신합니다. 삭제 시 재인증·소유권·다른 로그인 수단 유무를 서버에서 확인하십시오. supported는 실제 소비 환경의 지원 여부, canManage는 관리 권한입니다. 브라우저 인증 창의 취소도 거절된 Promise로 전달할 수 있습니다. 미리보기는 기기 인증 창을 열거나 자격 증명을 만들지 않고 샘플 목록만 변경합니다.',
+    load: async () => ({
+      Component: (await import('./examples/passkey-management')).default,
+      source: (await import('./examples/passkey-management.tsx?raw')).default,
+      extraFiles: [await cardSource(), await sharedSource()],
+    }),
+  },
+  {
+    slug: 'connected-apps',
+    title: '연결된 앱 관리',
+    description: '외부 앱에 허용한 권한과 연결일을 확인하고 접근을 해제합니다.',
+    category: '앱 연동',
+    scope: '사용자',
+    keywords: ['앱', '연결', 'OAuth', '권한', '해제'],
+    components: ['data-list', 'panel', 'button', 'alert-dialog', 'skeleton'],
+    guidance:
+      'apps에 외부 앱의 이름, 허용한 권한과 연결일을 전달합니다. 소셜 로그인 연결과 달리 계정 데이터에 접근하는 앱을 관리합니다. onDisconnect는 서버에서 접근·갱신 토큰을 폐기하고 성공 후 소비자가 목록을 갱신합니다. 이미 전달된 데이터의 삭제를 보장하지 않으므로 해제 영향 안내를 유지하십시오. loading·error·onRetry는 조회 상태, canManage는 관리 권한입니다. 미리보기는 외부 앱에 요청하지 않습니다.',
+    load: async () => ({
+      Component: (await import('./examples/connected-apps')).default,
+      source: (await import('./examples/connected-apps.tsx?raw')).default,
+      extraFiles: [await cardSource(), await sharedSource()],
+    }),
+  },
+  {
+    slug: 'security-activity',
+    title: '보안 활동 기록',
+    description: '로그인과 인증 수단 변경 기록을 검색하고 성공·실패 결과로 좁힙니다.',
+    category: '활동 기록',
+    scope: '사용자',
+    keywords: ['보안', '활동', '로그', '기록', '실패'],
+    components: [
+      'panel',
+      'badge',
+      'button',
+      'field',
+      'filter-bar',
+      'search-input',
+      'select',
+      'skeleton',
+    ],
+    guidance:
+      'events에 서버에서 조회한 활동을 최신순으로 전달하십시오. 활동 검색과 결과 조건은 AND로 적용되며 전달된 기록 안에서만 검색합니다. 기간별 조회·페이지 이동·기록 보존·조회 권한은 소비 앱이 담당합니다. occurredAt은 시간대가 포함된 ISO 날짜이며 예제는 한국 시간으로 표시합니다. IP·기기 정보 노출은 서비스 정책에 맞추십시오. loading·error·onRetry로 조회 상태를 연결합니다. 미리보기는 문서용 IP와 샘플 기록입니다.',
+    load: async () => ({
+      Component: (await import('./examples/security-activity')).default,
+      source: (await import('./examples/security-activity.tsx?raw')).default,
+      extraFiles: [await cardSource()],
     }),
   },
 ] as const satisfies readonly BlockDocEntry[];
 
-export const SUBSCRIPTION_MENU = [
-  { title: '플랜 선택', slug: 'plan-selection' },
-  { title: '구독 관리', slug: 'subscription-management' },
-  { title: '결제 수단 관리', slug: 'payment-methods' },
-  { title: '결제 기록', slug: 'payment-history' },
+export const BLOCK_CATEGORIES = [
+  '인증',
+  '계정 관리',
+  '계정 보안',
+  '팀 관리',
+  '앱 연동',
+  '활동 기록',
+  '구독·결제',
 ] as const;
 
-export const USER_MANAGEMENT_MENU = [
-  { title: '프로필 관리', slug: 'profile-management' },
-  { title: '계정 관리', slug: 'account-management' },
-  { title: '비밀번호 변경', slug: 'change-password' },
-  { title: '2차 인증', slug: 'two-factor-management' },
-  { title: '세션 기록', slug: 'session-history' },
-] as const;
+export const BLOCK_GROUPS = BLOCK_CATEGORIES.map((title) => ({
+  title,
+  items: (BLOCK_DOCS as readonly BlockDocEntry[]).filter(
+    (entry) => entry.category === title && entry.listed !== false,
+  ),
+}));
+
+export const ACCOUNT_MENU = BLOCK_GROUPS.find((group) => group.title === '계정 관리')!.items;
+export const SUBSCRIPTION_MENU = BLOCK_GROUPS.find((group) => group.title === '구독·결제')!.items;
 
 export function getBlockDoc(slug: string): BlockDocEntry | undefined {
   return BLOCK_DOCS.find((entry) => entry.slug === slug);

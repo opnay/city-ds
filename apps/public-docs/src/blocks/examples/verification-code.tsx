@@ -3,25 +3,24 @@ import { Alert } from '@opnay/city-ds-react/alert';
 import { Button } from '@opnay/city-ds-react/button';
 import { Field } from '@opnay/city-ds-react/field';
 import { OtpInput } from '@opnay/city-ds-react/otp-input';
-import './blocks.css';
+import { BlockCard } from './block-card';
 
 export default function VerificationCode() {
   const [code, setCode] = useState('');
   const [result, setResult] = useState<'idle' | 'error' | 'matched'>('idle');
 
   return (
-    <form
-      className="city-block-form city-block-form--compact"
+    <BlockCard
+      title="OTP 인증"
+      description="받은 6자리 코드를 입력하십시오."
+      render={<form />}
+      className="city-block-form--compact"
       onSubmit={(event) => {
         event.preventDefault();
         if (code.length !== 6 || result === 'matched') return;
         setResult(code === '123456' ? 'matched' : 'error');
       }}
     >
-      <div>
-        <h3 className="city-block-title">인증 코드 확인</h3>
-        <p className="city-block-description">받은 6자리 코드를 입력하십시오.</p>
-      </div>
       <Field.Root invalid={result === 'error'}>
         <Field.Label>인증 코드</Field.Label>
         <OtpInput.Root
@@ -60,6 +59,6 @@ export default function VerificationCode() {
           다시 입력
         </Button>
       </div>
-    </form>
+    </BlockCard>
   );
 }

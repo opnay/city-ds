@@ -9,10 +9,8 @@ import { AccountActionDialog } from './user-management-shared';
 export interface ConnectedApp {
   id: string;
   name: string;
-  description: string;
   permissions: readonly string[];
   connectedAt: string;
-  lastUsedAt: string;
 }
 
 export function ConnectedApps({
@@ -65,7 +63,6 @@ export function ConnectedApps({
                 <strong className="break-all">{app.name}</strong>
                 <Badge appearance="subtle">연결됨</Badge>
               </div>
-              <p className="city-block-status">{app.description}</p>
               <DataList.Root density="compact">
                 <DataList.Item>
                   <DataList.Label>허용한 권한</DataList.Label>
@@ -80,10 +77,6 @@ export function ConnectedApps({
                 <DataList.Item>
                   <DataList.Label>연결일</DataList.Label>
                   <DataList.Value>{app.connectedAt}</DataList.Value>
-                </DataList.Item>
-                <DataList.Item>
-                  <DataList.Label>최근 사용</DataList.Label>
-                  <DataList.Value>{app.lastUsedAt}</DataList.Value>
                 </DataList.Item>
               </DataList.Root>
               {canManage && (
@@ -127,18 +120,14 @@ export const exampleConnectedApps: readonly ConnectedApp[] = [
   {
     id: 'calendar',
     name: '일정 도우미',
-    description: '팀 일정과 회의 시간을 동기화합니다.',
     permissions: ['기본 프로필 읽기', '일정 읽기 및 작성'],
     connectedAt: '2026. 9. 1.',
-    lastUsedAt: '오늘 09:30',
   },
   {
     id: 'reports',
     name: '리포트 내보내기',
-    description: '팀 활동을 보고서로 정리합니다.',
     permissions: ['기본 프로필 읽기', '팀 활동 읽기'],
     connectedAt: '2026. 8. 12.',
-    lastUsedAt: '2026. 9. 5.',
   },
 ];
 

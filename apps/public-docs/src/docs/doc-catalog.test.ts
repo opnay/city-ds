@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import reactPackage from '../../../../packages/react/package.json';
+import { BLOCK_DOCS } from '../blocks/block-catalog';
 import {
   COMPONENT_DOCS,
   GUIDE_DOCS,
@@ -70,12 +71,14 @@ describe('document page search', () => {
 
   it('indexes every static and component document path exactly once', () => {
     const paths = filterDocumentPages('').map((result) =>
-      result.kind === 'static' ? result.entry.path : `/components/${result.entry.slug}`,
+      result.kind === 'static'
+        ? result.entry.path
+        : `/${result.kind === 'block' ? 'blocks' : 'components'}/${result.entry.slug}`,
     );
 
-    expect(STATIC_DOCS).toHaveLength(7);
-    expect(paths).toHaveLength(STATIC_DOCS.length + COMPONENT_DOCS.length);
-    expect(new Set(paths).size).toBe(STATIC_DOCS.length + COMPONENT_DOCS.length);
+    expect(STATIC_DOCS).toHaveLength(8);
+    expect(paths).toHaveLength(STATIC_DOCS.length + COMPONENT_DOCS.length + BLOCK_DOCS.length);
+    expect(new Set(paths).size).toBe(paths.length);
   });
 
   it('searches page titles, descriptions, paths, categories and keywords', () => {

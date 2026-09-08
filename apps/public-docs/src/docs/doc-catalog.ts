@@ -1,3 +1,4 @@
+import { BLOCK_DOCS } from '../blocks/block-catalog';
 import type {
   ComponentCategory,
   ComponentDocEntry,
@@ -100,10 +101,21 @@ export const COMPONENT_INDEX_DOC = {
   title: '컴포넌트',
 } as const satisfies StaticDocEntry;
 
+export const BLOCK_INDEX_DOC = {
+  description: '실사용 화면을 구성하는 블록을 미리 보고 코드를 가져갑니다.',
+  englishTitle: 'Blocks',
+  keywords: ['블록', '조합', '실사용', '구현 예제'],
+  label: '전체 보기',
+  path: '/blocks',
+  section: 'blocks',
+  title: '블록',
+} as const satisfies StaticDocEntry;
+
 export const STATIC_DOCS: readonly StaticDocEntry[] = [
   HOME_DOC,
   ...GUIDE_DOCS,
   COMPONENT_INDEX_DOC,
+  BLOCK_INDEX_DOC,
 ];
 
 export const COMPONENT_DOCS = [
@@ -721,5 +733,21 @@ export function filterDocumentPages(query: string): readonly DocumentSearchResul
     ),
   ).map((entry) => ({ entry, kind: 'component' }));
 
-  return [...staticResults, ...componentResults];
+  const blockResults: DocumentSearchResult[] = BLOCK_DOCS.filter((entry) =>
+    includesSearchQuery(
+      [
+        entry.title,
+        entry.slug,
+        `/blocks/${entry.slug}`,
+        entry.description,
+        entry.category,
+        'Blocks',
+        '블록',
+        ...entry.keywords,
+      ],
+      normalizedQuery,
+    ),
+  ).map((entry) => ({ entry, kind: 'block' }));
+
+  return [...staticResults, ...componentResults, ...blockResults];
 }

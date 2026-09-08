@@ -62,7 +62,7 @@ export function ConnectedApps({
                 <strong className="break-all">{app.name}</strong>
                 {canManage && (
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     className="shrink-0"
                     aria-label={`${app.name} 연결 해제`}

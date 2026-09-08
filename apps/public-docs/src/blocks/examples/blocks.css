@@ -352,11 +352,32 @@
 }
 
 .city-block-plan-price {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
   gap: var(--city-space-1);
 }
 .city-block-plan-price > p {
   margin: 0;
+}
+.city-block-payment-method {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--city-space-4);
+}
+.city-block-payment-method h4,
+.city-block-payment-method p {
+  margin: 0;
+}
+.city-block-payment-method > .city-block-section {
+  width: auto;
+  flex: 1 1 12rem;
+  gap: var(--city-space-1);
+}
+.city-block-form.city-block-billing {
+  max-width: 48rem;
 }
 .city-block-plan-notices {
   display: grid;

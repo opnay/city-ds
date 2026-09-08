@@ -18,6 +18,61 @@ async function cardSource() {
 
 export const BLOCK_DOCS = [
   {
+    slug: 'payment-methods',
+    title: '결제 수단 관리',
+    description: '카드를 추가하고 기본 결제 수단을 변경하거나 등록한 카드를 삭제합니다.',
+    category: '구독·결제',
+    keywords: ['결제', '카드', '수단', '기본', '등록', '삭제'],
+    components: ['panel', 'badge', 'button', 'dialog', 'alert', 'empty-state', 'skeleton', 'toast'],
+    optionAxes: [
+      {
+        name: 'scenario',
+        control: 'select',
+        defaultValue: 'default',
+        values: ['default', 'empty', 'loading', 'error', 'read-only'],
+      },
+    ],
+    guidance:
+      'methods에는 마스킹된 결제 수단만 전달합니다. onAdd는 결제 제공사의 등록 화면을 연결하고, onSetDefault와 onRemove는 서버 요청 성공 후 methods를 갱신합니다. 기본 카드는 다른 카드를 기본으로 설정한 뒤 삭제하는 예제 정책입니다. 실제 삭제 가능 여부와 소유권은 서버에서 검증합니다. loading은 초기 조회, canManage는 관리 권한입니다. 미리보기의 카드 추가는 가상 카드를 추가하며 error 옵션은 변경 요청 실패를 재현합니다.',
+    load: async () => ({
+      Component: (await import('./examples/payment-methods')).default,
+      source: (await import('./examples/payment-methods.tsx?raw')).default,
+      extraFiles: [await cardSource()],
+    }),
+  },
+  {
+    slug: 'payment-history',
+    title: '결제 기록',
+    description: '결제일, 내역, 금액, 결제 수단과 처리 상태를 확인합니다.',
+    category: '구독·결제',
+    keywords: ['결제', '기록', '청구', '환불', '실패'],
+    components: [
+      'panel',
+      'data-table-region',
+      'table',
+      'badge',
+      'empty-state',
+      'skeleton',
+      'alert',
+      'button',
+    ],
+    optionAxes: [
+      {
+        name: 'scenario',
+        control: 'select',
+        defaultValue: 'default',
+        values: ['default', 'loading', 'empty', 'error'],
+      },
+    ],
+    guidance:
+      'records에 서버에서 조회한 기록을 최신순으로 전달합니다. 금액은 각 결제 시도의 금액이며 상태와 함께 읽습니다. loading은 초기 조회, error와 onRetry는 조회 실패와 재시도를 표현합니다. 조회 권한, 기간별 조회와 페이지 이동은 소비 프로젝트가 담당합니다. 미리보기 데이터와 재시도 결과는 샘플입니다.',
+    load: async () => ({
+      Component: (await import('./examples/payment-history')).default,
+      source: (await import('./examples/payment-history.tsx?raw')).default,
+      extraFiles: [await cardSource()],
+    }),
+  },
+  {
     slug: 'plan-selection',
     title: '플랜 선택',
     description: '월간·연간 가격과 기능을 비교하고 다음 단계로 진행합니다.',
@@ -227,6 +282,8 @@ export const BLOCK_DOCS = [
 export const SUBSCRIPTION_MENU = [
   { title: '플랜 선택', slug: 'plan-selection' },
   { title: '구독 관리', slug: 'subscription-management' },
+  { title: '결제 수단 관리', slug: 'payment-methods' },
+  { title: '결제 기록', slug: 'payment-history' },
 ] as const;
 
 export const USER_MANAGEMENT_MENU = [

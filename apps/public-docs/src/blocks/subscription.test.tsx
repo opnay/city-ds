@@ -4,6 +4,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { renderDocs } from '../test/render-docs';
 import { PlanSelection, examplePlans } from './examples/plan-selection';
 import { SubscriptionManagement } from './examples/subscription-management';
+import PaymentMethodsExample, { PaymentMethods, exampleMethods } from './examples/payment-methods';
+import PaymentHistoryExample, { PaymentHistory, examplePayments } from './examples/payment-history';
 
 const subscription = {
   status: 'active' as const,
@@ -14,7 +16,7 @@ const subscription = {
 };
 
 describe('subscription blocks', () => {
-  it('exposes both subscription blocks in navigation and links to their sources', async () => {
+  it('exposes subscription blocks in navigation and links to their sources', async () => {
     const user = userEvent.setup();
     await renderDocs(['/blocks/plan-selection']);
     const navigation = within(screen.getByRole('navigation', { name: '문서 탐색' }));
@@ -26,6 +28,71 @@ describe('subscription blocks', () => {
     expect(await screen.findByRole('heading', { level: 1, name: '구독 관리' })).toBeVisible();
     await user.click(screen.getByRole('button', { name: '코드 보기' }));
     expect(await screen.findByText('subscription-management.tsx', { exact: true })).toBeVisible();
+    await user.click(navigation.getByRole('link', { name: '결제 기록' }));
+    expect(await screen.findByRole('heading', { level: 1, name: '결제 기록' })).toBeVisible();
+    expect(await screen.findByRole('table')).toBeVisible();
+    await user.click(navigation.getByRole('link', { name: '결제 수단 관리' }));
+    expect(await screen.findByRole('heading', { level: 1, name: '결제 수단 관리' })).toBeVisible();
+  });
+
+  it('changes the default method, confirms removal, and adds a sample card', async () => {
+    const user = userEvent.setup();
+    render(<PaymentMethodsExample />);
+    expect(screen.queryByRole('button', { name: '신한카드 1234 삭제' })).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: '현대카드 5678 기본으로 설정' }));
+    await user.click(screen.getByRole('button', { name: '신한카드 1234 삭제' }));
+    expect(screen.getByRole('dialog')).toHaveTextContent('신한카드 · 1234');
+    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: '삭제' }));
+    expect(screen.queryByRole('heading', { name: '신한카드 · 1234' })).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: '카드 추가' }));
+    expect(screen.getByRole('heading', { name: '예제 카드 · 0003' })).toBeVisible();
+  });
+
+  it('preserves the payment method and confirmation on failure', async () => {
+    const user = userEvent.setup();
+    render(<PaymentMethodsExample scenario="error" />);
+    await user.click(screen.getByRole('button', { name: '현대카드 5678 삭제' }));
+    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: '삭제' }));
+    expect(within(screen.getByRole('dialog')).getByRole('alert')).toHaveTextContent('다시 시도');
+    expect(
+      screen.getByRole('heading', { name: '현대카드 · 5678', hidden: true }),
+    ).toBeInTheDocument();
+  });
+
+  it('blocks duplicate method mutations and restricted actions', async () => {
+    const user = userEvent.setup();
+    const add = vi.fn(() => new Promise<void>(() => {}));
+    const props = { methods: exampleMethods, onAdd: add, onSetDefault: vi.fn(), onRemove: vi.fn() };
+    const { rerender } = render(<PaymentMethods {...props} />);
+    await user.dblClick(screen.getByRole('button', { name: '카드 추가' }));
+    expect(add).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('button', { name: '현대카드 5678 삭제' })).toBeDisabled();
+    rerender(<PaymentMethods key="restricted" {...props} canManage={false} />);
+    expect(screen.getByRole('button', { name: '카드 추가' })).toBeDisabled();
+  });
+
+  it('distinguishes payment results and loading and empty states', () => {
+    const { rerender } = render(<PaymentHistory records={examplePayments} />);
+    expect(screen.getByText('결제 완료')).toBeVisible();
+    expect(screen.getByText('결제 실패')).toBeVisible();
+    expect(screen.getByText('환불 완료')).toBeVisible();
+    rerender(<PaymentHistory records={[]} loading />);
+    expect(screen.getByLabelText('결제 기록 불러오는 중')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+    rerender(<PaymentHistory records={[]} />);
+    expect(screen.getByText('결제 기록이 없어요.')).toBeVisible();
+  });
+
+  it('recovers from a preview query error and resets when the scenario changes', async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<PaymentHistoryExample scenario="error" />);
+    expect(screen.getByRole('alert')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: '다시 불러오기' }));
+    expect(screen.getByRole('table')).toBeVisible();
+    rerender(<PaymentHistoryExample scenario="empty" />);
+    expect(screen.getByText('결제 기록이 없어요.')).toBeVisible();
+    rerender(<PaymentHistoryExample scenario="error" />);
+    expect(screen.getByRole('alert')).toBeVisible();
   });
 
   it('submits the selected yearly plan and allows retry after failure', async () => {
@@ -45,7 +112,7 @@ describe('subscription blocks', () => {
     await user.click(screen.getByRole('radio', { name: 'PRO' }));
     await user.click(screen.getByText('연간', { exact: true }));
     expect(screen.getByText('연 290,000원')).toBeVisible();
-    expect(screen.getByText('월 약 4,833원 절약 · 연 58,000원')).toBeVisible();
+    expect(screen.getByText('(월 약 4,833원 절약)')).toBeVisible();
     expect(proceed).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: '선택한 플랜으로 계속' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('다시 시도');

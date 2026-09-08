@@ -35,7 +35,7 @@ export const examplePlans: SubscriptionPlan[] = [
     description: '팀과 함께 작업할 때',
     features: ['프로젝트 20개', '멤버 5명', '이메일 지원'],
     prices: { monthly: '월 29,000원', yearly: '연 290,000원' },
-    yearlySavings: '월 약 4,833원 절약 · 연 58,000원',
+    yearlySavings: '월 약 4,833원 절약',
   },
 ];
 
@@ -159,7 +159,7 @@ export function PlanSelection({
                 <p className="city-text-body font-semibold">{plan.prices[cycle]}</p>
                 {cycle === 'yearly' && plan.yearlySavings && (
                   <p className="city-text-supporting text-city-muted-foreground">
-                    {plan.yearlySavings}
+                    ({plan.yearlySavings})
                   </p>
                 )}
               </div>

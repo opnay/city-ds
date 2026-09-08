@@ -44,7 +44,8 @@ describe('subscription blocks', () => {
     expect(screen.getByRole('button', { name: '선택한 플랜으로 계속' })).toBeDisabled();
     await user.click(screen.getByRole('radio', { name: 'PRO' }));
     await user.click(screen.getByText('연간', { exact: true }));
-    expect(screen.getByText(/매년 290,000원을 한 번에/)).toBeVisible();
+    expect(screen.getByText('연 290,000원')).toBeVisible();
+    expect(screen.getByText('월 약 4,833원 절약 · 연 58,000원')).toBeVisible();
     expect(proceed).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: '선택한 플랜으로 계속' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('다시 시도');

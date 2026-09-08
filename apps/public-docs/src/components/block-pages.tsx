@@ -44,6 +44,8 @@ export function BlockPage({
       description={entry.description}
     >
       <ExampleFrame
+        key={entry.slug}
+        optionAxes={entry.optionAxes}
         featuredTitle="미리보기"
         previewLayout="wide"
         example={{
@@ -51,6 +53,7 @@ export function BlockPage({
           title: '미리보기',
           description: '화면에서 동작을 확인하고 아래 구현 코드를 복사하십시오.',
           Component,
+          configurable: !!entry.optionAxes?.length,
           files: [
             { filename: `${entry.slug}.tsx`, source, language: 'tsx' },
             { filename: 'blocks.css', source: blockStyles, language: 'css' },

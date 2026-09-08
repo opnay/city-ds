@@ -342,13 +342,6 @@
   margin: 0;
   overflow-wrap: anywhere;
 }
-.city-block-subscription-preview-control {
-  display: grid;
-  gap: var(--city-space-2);
-  width: 100%;
-  max-width: 32rem;
-  margin-inline: auto;
-}
 
 .city-block-billing-cycle {
   width: fit-content;
@@ -356,4 +349,22 @@
 }
 .city-block-plan-content h4 {
   margin: 0;
+}
+
+.city-block-plan-price {
+  display: grid;
+  gap: var(--city-space-1);
+}
+.city-block-plan-price > p {
+  margin: 0;
+}
+.city-block-plan-notices {
+  display: grid;
+  gap: var(--city-space-2);
+  margin: 0;
+  padding-block-start: var(--city-space-4);
+  padding-inline-start: var(--city-space-4);
+  border-top: 1px solid var(--city-color-border);
+  color: var(--city-color-muted-foreground);
+  list-style: disc;
 }

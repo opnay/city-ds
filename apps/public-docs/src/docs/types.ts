@@ -31,6 +31,7 @@ export interface ComponentDocEntry {
 }
 
 export interface BlockDocEntry {
+  optionAxes?: readonly OptionAxis[];
   slug: string;
   title: string;
   description: string;

@@ -25,7 +25,6 @@ export const BLOCK_DOCS = [
     keywords: ['구독', '결제', '플랜', '요금', '해지'],
     components: [
       'panel',
-      'fieldset',
       'selection-card',
       'radio-group',
       'segmented-control',
@@ -37,7 +36,7 @@ export const BLOCK_DOCS = [
       'toast',
     ],
     guidance:
-      'plans에 서버에서 확인한 가격·기능·적용 조건을 전달하고 onContinue에 결제 또는 변경 확인 화면을 연결합니다. current에는 현재 플랜과 결제 주기를 전달합니다. loading은 초기 조회, canManage는 관리 권한을 표현합니다. 가격 계산과 실제 청구는 소비 프로젝트가 담당합니다. 미리보기는 결제를 진행하지 않습니다.',
+      'plans에 서버에서 확인한 가격·기능·적용 조건을 전달하고 onContinue에 결제 또는 변경 확인 화면을 연결합니다. current에는 현재 플랜과 결제 주기를 전달합니다. loading은 초기 조회, canManage는 관리 권한을 표현합니다. yearlySavings는 월간 대비 절약액, notices는 블록 하단 공통 안내를 제공합니다. 가격 계산과 실제 청구는 소비 프로젝트가 담당합니다. 미리보기는 결제를 진행하지 않습니다.',
     load: async () => ({
       Component: (await import('./examples/plan-selection')).default,
       source: (await import('./examples/plan-selection.tsx?raw')).default,
@@ -46,11 +45,19 @@ export const BLOCK_DOCS = [
   },
   {
     slug: 'subscription-management',
+    optionAxes: [
+      {
+        name: 'scenario',
+        control: 'select',
+        defaultValue: 'active',
+        values: ['free', 'active', 'trial', 'past-due', 'canceling'],
+      },
+    ],
     title: '구독 관리',
     description: '무료·구독·체험·결제 실패·해지 예약 상태와 다음 행동을 구성합니다.',
     category: '구독·결제',
     keywords: ['구독', '결제', '플랜', '요금', '해지'],
-    components: ['panel', 'badge', 'button', 'dialog', 'select', 'alert', 'skeleton', 'toast'],
+    components: ['panel', 'badge', 'button', 'dialog', 'alert', 'skeleton', 'toast'],
     guidance:
       'subscription에 서버의 최신 구독 상태·청구 금액·결제일·이용 종료일을 전달합니다. planSelectionHref는 실제 플랜 선택 링크를 제공하고 onAction은 해지 예약·예약 취소·결제 재시도를 처리합니다. loading과 canManage로 조회 및 권한 상태를 표현합니다. 요청 성공 후 서버가 반환한 상태로 subscription을 갱신합니다. 재청구는 서버에서 중복 요청을 방지합니다. 예제의 무료 전환·자동 결제 정책과 날짜는 샘플이므로 실제 정책에 맞게 안내를 수정합니다.',
     load: async () => ({

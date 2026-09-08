@@ -4,7 +4,6 @@ import { Button } from '@opnay/city-ds-react/button';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Dialog } from '@opnay/city-ds-react/dialog';
 import { Alert } from '@opnay/city-ds-react/alert';
-import { Select } from '@opnay/city-ds-react/select';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
 import { BlockCard } from './block-card';
 import './blocks.css';
@@ -231,41 +230,18 @@ export function SubscriptionManagement({
   );
 }
 
-export default function SubscriptionManagementExample() {
-  const [scenario, setScenario] = useState<SubscriptionStatus>('active');
-  const [status, setStatus] = useState<SubscriptionStatus>('active');
+export default function SubscriptionManagementExample({
+  scenario = 'active',
+}: {
+  scenario?: SubscriptionStatus;
+}) {
+  return <SubscriptionScenario key={scenario} scenario={scenario} />;
+}
+
+function SubscriptionScenario({ scenario }: { scenario: SubscriptionStatus }) {
+  const [status, setStatus] = useState<SubscriptionStatus>(scenario);
   return (
     <div className="city-block-section">
-      <div className="city-block-subscription-preview-control">
-        <Select.Root
-          items={labels}
-          value={status}
-          onValueChange={(value) => {
-            if (!value) return;
-            setScenario(value);
-            setStatus(value);
-          }}
-        >
-          <Select.Label>예제 상태</Select.Label>
-          <Select.Trigger>
-            <Select.Value />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Popup>
-                <Select.List>
-                  {Object.entries(labels).map(([value, label]) => (
-                    <Select.Item key={value} value={value}>
-                      <Select.ItemText>{label}</Select.ItemText>
-                      <Select.ItemIndicator />
-                    </Select.Item>
-                  ))}
-                </Select.List>
-              </Select.Popup>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select.Root>
-      </div>
       <SubscriptionManagement
         key={scenario}
         subscription={{

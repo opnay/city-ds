@@ -5,7 +5,6 @@ import { RadioGroup } from '@opnay/city-ds-react/radio-group';
 import { SelectionCard } from '@opnay/city-ds-react/selection-card';
 import { SegmentedControl } from '@opnay/city-ds-react/segmented-control';
 import { Alert } from '@opnay/city-ds-react/alert';
-import { Fieldset } from '@opnay/city-ds-react/fieldset';
 import { EmptyState } from '@opnay/city-ds-react/empty-state';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
 import { Badge } from '@opnay/city-ds-react/badge';
@@ -20,6 +19,7 @@ export interface SubscriptionPlan {
   features: string[];
   prices: Record<BillingCycle, string>;
   terms?: Partial<Record<BillingCycle, string>>;
+  yearlySavings?: string;
 }
 export const examplePlans: SubscriptionPlan[] = [
   {
@@ -35,11 +35,7 @@ export const examplePlans: SubscriptionPlan[] = [
     description: '팀과 함께 작업할 때',
     features: ['프로젝트 20개', '멤버 5명', '이메일 지원'],
     prices: { monthly: '월 29,000원', yearly: '연 290,000원' },
-    terms: {
-      monthly: '선택 후 결제를 진행해요. 결제일부터 매월 29,000원을 결제해요. 부가세가 포함돼요.',
-      yearly:
-        '선택 후 결제를 진행해요. 결제일부터 매년 290,000원을 한 번에 결제해요. 부가세가 포함돼요.',
-    },
+    yearlySavings: '월 약 4,833원 절약 · 연 58,000원',
   },
 ];
 
@@ -49,7 +45,9 @@ export function PlanSelection({
   onContinue,
   loading = false,
   canManage = true,
+  notices = [],
 }: {
+  notices?: readonly string[];
   loading?: boolean;
   canManage?: boolean;
   plans: SubscriptionPlan[];
@@ -132,56 +130,58 @@ export function PlanSelection({
         <SegmentedControl.Item value="monthly">월간</SegmentedControl.Item>
         <SegmentedControl.Item value="yearly">연간</SegmentedControl.Item>
       </SegmentedControl>
-      <Fieldset.Root appearance="plain" disabled={busy || !canManage}>
-        <Fieldset.Legend>플랜</Fieldset.Legend>
-        <RadioGroup
-          name={`${id}-plan`}
-          aria-label="플랜"
-          value={planId}
-          onValueChange={(value) => {
-            setPlanId(value);
-            setError('');
-          }}
-          disabled={busy || !canManage}
-          className="city-block-plan-grid"
-        >
-          {plans.map((plan) => (
-            <SelectionCard key={plan.id}>
-              <div className="city-block-plan-content min-w-0 flex-1">
-                <div className="city-block-label-row">
-                  <h4 className="city-text-subsection-title" id={`${id}-${plan.id}`}>
-                    {plan.name}
-                  </h4>
-                  {plan.id === current.planId && cycle === current.cycle && (
-                    <Badge appearance="outline">현재 플랜</Badge>
-                  )}
-                </div>
-                <SelectionCard.Description id={`${id}-${plan.id}-description`}>
-                  {plan.description}
-                </SelectionCard.Description>
-                <p id={`${id}-${plan.id}-price`} className="city-text-supporting">
-                  {plan.prices[cycle]}
-                </p>
-                <ul className="city-block-plan-features city-text-supporting">
-                  {plan.features.map((feature) => (
-                    <li key={feature}>{feature}</li>
-                  ))}
-                </ul>
-                {plan.terms?.[cycle] && (
-                  <p id={`${id}-${plan.id}-terms`} className="city-text-supporting">
-                    {plan.terms[cycle]}
+      <RadioGroup
+        name={`${id}-plan`}
+        aria-label="플랜"
+        value={planId}
+        onValueChange={(value) => {
+          setPlanId(value);
+          setError('');
+        }}
+        disabled={busy || !canManage}
+        className="city-block-plan-grid"
+      >
+        {plans.map((plan) => (
+          <SelectionCard key={plan.id}>
+            <div className="city-block-plan-content min-w-0 flex-1">
+              <div className="city-block-label-row">
+                <h4 className="city-text-subsection-title" id={`${id}-${plan.id}`}>
+                  {plan.name}
+                </h4>
+                {plan.id === current.planId && cycle === current.cycle && (
+                  <Badge appearance="outline">현재 플랜</Badge>
+                )}
+              </div>
+              <SelectionCard.Description id={`${id}-${plan.id}-description`}>
+                {plan.description}
+              </SelectionCard.Description>
+              <div className="city-block-plan-price" id={`${id}-${plan.id}-price`}>
+                <p className="city-text-body font-semibold">{plan.prices[cycle]}</p>
+                {cycle === 'yearly' && plan.yearlySavings && (
+                  <p className="city-text-supporting text-city-muted-foreground">
+                    {plan.yearlySavings}
                   </p>
                 )}
               </div>
-              <RadioGroup.Control
-                value={plan.id}
-                aria-labelledby={`${id}-${plan.id}`}
-                aria-describedby={`${id}-${plan.id}-description ${id}-${plan.id}-price`}
-              />
-            </SelectionCard>
-          ))}
-        </RadioGroup>
-      </Fieldset.Root>
+              <ul className="city-block-plan-features city-text-supporting">
+                {plan.features.map((feature) => (
+                  <li key={feature}>{feature}</li>
+                ))}
+              </ul>
+              {plan.terms?.[cycle] && (
+                <p id={`${id}-${plan.id}-terms`} className="city-text-supporting">
+                  {plan.terms[cycle]}
+                </p>
+              )}
+            </div>
+            <RadioGroup.Control
+              value={plan.id}
+              aria-labelledby={`${id}-${plan.id}`}
+              aria-describedby={`${id}-${plan.id}-description ${id}-${plan.id}-price`}
+            />
+          </SelectionCard>
+        ))}
+      </RadioGroup>
       {error && (
         <Alert.Root tone="destructive" appearance="subtle">
           <Alert.Title level={4}>선택을 진행하지 못했어요.</Alert.Title>
@@ -197,6 +197,13 @@ export function PlanSelection({
           {busy ? '진행 중…' : '선택한 플랜으로 계속'}
         </Button>
       </div>
+      {notices.length > 0 && (
+        <ul aria-label="요금 안내" className="city-block-plan-notices city-text-supporting">
+          {notices.map((notice) => (
+            <li key={notice}>{notice}</li>
+          ))}
+        </ul>
+      )}
     </BlockCard>
   );
 }
@@ -206,6 +213,11 @@ export default function PlanSelectionExample() {
     <div className="city-block-section">
       <PlanSelection
         plans={examplePlans}
+        notices={[
+          '표시된 금액은 부가세를 포함해요.',
+          '유료 플랜은 결제일부터 선택한 주기에 따라 자동 갱신돼요.',
+          '연간 요금은 한 번에 결제해요. 절약액은 같은 플랜을 월간으로 12개월 이용할 때와 비교한 금액이에요.',
+        ]}
         current={{ planId: 'free', cycle: 'monthly' }}
         onContinue={async ({ planId, cycle }) => {
           toast.success(

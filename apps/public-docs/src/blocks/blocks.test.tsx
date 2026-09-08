@@ -45,7 +45,7 @@ describe('Blocks', () => {
     await user.click(group);
     expect(group).toHaveAttribute('aria-expanded', 'false');
     await user.click(group);
-    expect(screen.getByText('비밀번호 변경')).toBeVisible();
+    expect(screen.getByText('팀원 관리')).toBeVisible();
     expect(
       within(screen.getByRole('navigation', { name: '현재 위치' })).getByRole('link', {
         name: '블록',

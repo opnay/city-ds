@@ -4,9 +4,11 @@ import {
   ArrowRight,
   BookOpen,
   CreditCard,
+  Database,
   LayoutGrid,
   Menu as MenuIcon,
   Moon,
+  ShieldCheck,
   Sun,
   UsersRound,
   X,
@@ -34,7 +36,13 @@ import {
   getComponentDoc,
   getStaticDoc,
 } from '../docs/doc-catalog';
-import { USER_MANAGEMENT_MENU, SUBSCRIPTION_MENU, getBlockDoc } from '../blocks/block-catalog';
+import {
+  USER_MANAGEMENT_MENU,
+  SUBSCRIPTION_MENU,
+  AUTHENTICATION_MENU,
+  DATA_MANAGEMENT_MENU,
+  getBlockDoc,
+} from '../blocks/block-catalog';
 import type {
   BlockDocEntry,
   ComponentDocEntry,
@@ -389,6 +397,18 @@ function DocsNavigation({ mode, onModeChange, onNavigate, query, setQuery }: Doc
                 title="구독·결제"
                 items={SUBSCRIPTION_MENU}
                 icon={CreditCard}
+              />
+              <BlockNavigationGroup
+                onNavigate={handleNavigate}
+                title="인증"
+                items={AUTHENTICATION_MENU}
+                icon={ShieldCheck}
+              />
+              <BlockNavigationGroup
+                onNavigate={handleNavigate}
+                title="데이터 관리"
+                items={DATA_MANAGEMENT_MENU}
+                icon={Database}
               />
             </ul>
           </section>

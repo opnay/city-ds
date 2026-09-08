@@ -298,6 +298,12 @@ export const USER_MANAGEMENT_MENU = [
   { title: '세션 기록', slug: 'session-history' },
 ] as const;
 
+export const AUTHENTICATION_MENU = [
+  { title: '인증 코드 확인', slug: 'verification-code' },
+] as const;
+
+export const DATA_MANAGEMENT_MENU = [{ title: '팀원 목록', slug: 'member-directory' }] as const;
+
 export function getBlockDoc(slug: string): BlockDocEntry | undefined {
   return BLOCK_DOCS.find((entry) => entry.slug === slug);
 }

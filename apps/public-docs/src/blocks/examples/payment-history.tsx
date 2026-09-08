@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Alert } from '@opnay/city-ds-react/alert';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
@@ -119,20 +118,6 @@ export function PaymentHistory({
   );
 }
 
-type Scenario = 'default' | 'loading' | 'empty' | 'error';
-
-export default function PaymentHistoryExample({ scenario = 'default' }: { scenario?: Scenario }) {
-  return <PaymentHistoryScenario key={scenario} scenario={scenario} />;
-}
-
-function PaymentHistoryScenario({ scenario }: { scenario: Scenario }) {
-  const [recovered, setRecovered] = useState(false);
-  return (
-    <PaymentHistory
-      records={scenario === 'empty' ? [] : examplePayments}
-      loading={scenario === 'loading'}
-      error={scenario === 'error' && !recovered ? '잠시 후 다시 시도해 주세요.' : undefined}
-      onRetry={() => setRecovered(true)}
-    />
-  );
+export default function PaymentHistoryExample() {
+  return <PaymentHistory records={examplePayments} />;
 }

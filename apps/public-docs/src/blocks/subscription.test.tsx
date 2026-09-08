@@ -5,7 +5,7 @@ import { renderDocs } from '../test/render-docs';
 import { PlanSelection, examplePlans } from './examples/plan-selection';
 import { SubscriptionManagement } from './examples/subscription-management';
 import PaymentMethodsExample, { PaymentMethods, exampleMethods } from './examples/payment-methods';
-import PaymentHistoryExample, { PaymentHistory, examplePayments } from './examples/payment-history';
+import { PaymentHistory, examplePayments } from './examples/payment-history';
 
 const subscription = {
   status: 'active' as const,
@@ -105,16 +105,18 @@ describe('subscription blocks', () => {
     expect(screen.getByText('결제 기록이 없어요.')).toBeVisible();
   });
 
-  it('recovers from a preview query error and resets when the scenario changes', async () => {
+  it('requests a retry and displays records after the consumer clears the error', async () => {
     const user = userEvent.setup();
-    const { rerender } = render(<PaymentHistoryExample scenario="error" />);
+    const retry = vi.fn();
+    const { rerender } = render(
+      <PaymentHistory records={[]} error="다시 시도해 주세요." onRetry={retry} />,
+    );
     expect(screen.getByRole('alert')).toBeVisible();
     await user.click(screen.getByRole('button', { name: '다시 불러오기' }));
+    expect(retry).toHaveBeenCalledTimes(1);
+    rerender(<PaymentHistory records={examplePayments} />);
     expect(screen.getByRole('table')).toBeVisible();
-    rerender(<PaymentHistoryExample scenario="empty" />);
-    expect(screen.getByText('결제 기록이 없어요.')).toBeVisible();
-    rerender(<PaymentHistoryExample scenario="error" />);
-    expect(screen.getByRole('alert')).toBeVisible();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('submits the selected yearly plan and allows retry after failure', async () => {

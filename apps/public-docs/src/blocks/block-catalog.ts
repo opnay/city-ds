@@ -38,14 +38,14 @@ export const BLOCK_DOCS = [
     ],
     optionAxes: [
       {
-        name: 'readOnly',
-        control: 'switch',
-        defaultValue: 'false',
-        values: ['false', 'true'],
+        name: 'scenario',
+        control: 'select',
+        defaultValue: 'default',
+        values: ['default', 'read-only'],
       },
     ],
     guidance:
-      'methods에는 마스킹된 결제 수단만 전달합니다. 등록 폼 제출 시 onAdd에 입력값을 전달하고, onSetDefault와 onRemove는 서버 요청 성공 후 methods를 갱신합니다. 기본 카드는 다른 카드를 기본으로 설정한 뒤 삭제하는 예제 정책입니다. 실제 삭제 가능 여부와 소유권은 서버에서 검증합니다. loading은 초기 조회, canManage는 관리 권한입니다. 등록 폼은 흐름을 확인하는 예제입니다. 서비스에서는 결제 제공사의 보안 입력 및 토큰화 흐름으로 교체합니다. 미리보기에서는 테스트 번호 4242 4242 4242 4242를 사용할 수 있으며 입력값 중 이름·마지막 네 자리·유효기간만 목록에 남습니다. readOnly 옵션은 읽기 전용 맥락을 표현합니다.',
+      'methods에는 마스킹된 결제 수단만 전달합니다. 등록 폼 제출 시 onAdd에 입력값을 전달하고, onSetDefault와 onRemove는 서버 요청 성공 후 methods를 갱신합니다. 기본 카드는 다른 카드를 기본으로 설정한 뒤 삭제하는 예제 정책입니다. 실제 삭제 가능 여부와 소유권은 서버에서 검증합니다. loading은 초기 조회, canManage는 관리 권한입니다. 등록 폼은 흐름을 확인하는 예제입니다. 서비스에서는 결제 제공사의 보안 입력 및 토큰화 흐름으로 교체합니다. 미리보기에서는 테스트 번호 4242 4242 4242 4242를 사용할 수 있으며 입력값 중 이름·마지막 네 자리·유효기간만 목록에 남습니다. scenario의 read-only는 읽기 전용 맥락을 표현합니다.',
     load: async () => ({
       Component: (await import('./examples/payment-methods')).default,
       source: (await import('./examples/payment-methods.tsx?raw')).default,
@@ -68,16 +68,8 @@ export const BLOCK_DOCS = [
       'alert',
       'button',
     ],
-    optionAxes: [
-      {
-        name: 'scenario',
-        control: 'select',
-        defaultValue: 'default',
-        values: ['default', 'loading', 'empty', 'error'],
-      },
-    ],
     guidance:
-      'records에 서버에서 조회한 기록을 최신순으로 전달합니다. 금액은 각 결제 시도의 금액이며 상태와 함께 읽습니다. loading은 초기 조회, error와 onRetry는 조회 실패와 재시도를 표현합니다. 조회 권한, 기간별 조회와 페이지 이동은 소비 프로젝트가 담당합니다. 미리보기 데이터와 재시도 결과는 샘플입니다.',
+      'records에 서버에서 조회한 기록을 최신순으로 전달합니다. 금액은 각 결제 시도의 금액이며 상태와 함께 읽습니다. loading은 초기 조회, error와 onRetry는 조회 실패와 재시도를 표현합니다. 조회 권한, 기간별 조회와 페이지 이동은 소비 프로젝트가 담당합니다. 미리보기 데이터는 샘플입니다.',
     load: async () => ({
       Component: (await import('./examples/payment-history')).default,
       source: (await import('./examples/payment-history.tsx?raw')).default,

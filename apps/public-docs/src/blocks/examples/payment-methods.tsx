@@ -327,13 +327,17 @@ export function PaymentMethods({
   );
 }
 
-export default function PaymentMethodsExample({ readOnly = false }: { readOnly?: boolean }) {
+export default function PaymentMethodsExample({
+  scenario = 'default',
+}: {
+  scenario?: 'default' | 'read-only';
+}) {
   const [methods, setMethods] = useState<readonly PaymentMethod[]>(exampleMethods);
   const nextId = useRef(3);
   return (
     <PaymentMethods
       methods={methods}
-      canManage={!readOnly}
+      canManage={scenario !== 'read-only'}
       onAdd={async (card) => {
         const id = nextId.current++;
         setMethods((current) => [

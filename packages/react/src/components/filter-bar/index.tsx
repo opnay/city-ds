@@ -72,12 +72,18 @@ export const FilterBar = React.forwardRef<HTMLDivElement, FilterBarProps>(
           <>
             <div
               className={cn(
-                'grid min-w-0 flex-[1_1_24rem] grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))] items-end',
+                'flex min-w-0 flex-auto flex-wrap items-end',
                 contentDensityClasses[density],
               )}
               data-city-filter-bar-content=""
             >
-              {children}
+              {React.Children.map(children, (child) =>
+                child == null ? null : (
+                  <div className="max-w-full min-w-0" data-city-filter-bar-condition="">
+                    {child}
+                  </div>
+                ),
+              )}
             </div>
             {actions ? (
               <div

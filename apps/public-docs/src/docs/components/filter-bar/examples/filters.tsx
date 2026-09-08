@@ -46,11 +46,11 @@ export default function FiltersExample({
         }
       >
         <Field.Root>
-          <Field.Label>프로젝트 이름</Field.Label>
+          <Field.Label className="sr-only">프로젝트 이름</Field.Label>
           <Input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="이름 검색"
+            placeholder="프로젝트 이름 검색"
           />
         </Field.Root>
         <div className="min-w-0">
@@ -59,7 +59,7 @@ export default function FiltersExample({
             value={status}
             onValueChange={(value) => setStatus(value ?? 'all')}
           >
-            <Select.Label>상태</Select.Label>
+            <Select.Label className="sr-only">상태</Select.Label>
             <Select.Trigger>
               <Select.Value />
               <Select.Icon />

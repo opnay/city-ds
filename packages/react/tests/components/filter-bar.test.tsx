@@ -5,8 +5,32 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { DensityProvider } from '../../src/components/density-provider';
 import { FilterBar } from '../../src/components/filter-bar';
+import { Select } from '../../src/components/select';
 
 describe('FilterBar', () => {
+  it('keeps each compound label and control within one condition', () => {
+    render(
+      <FilterBar aria-label="Mixed conditions">
+        <input aria-label="Query" />
+        <Select.Root defaultValue="all" items={{ all: 'All' }}>
+          <Select.Label>Status</Select.Label>
+          <Select.Trigger>
+            <Select.Value />
+          </Select.Trigger>
+        </Select.Root>
+      </FilterBar>,
+    );
+    const queryCondition = screen
+      .getByRole('textbox', { name: 'Query' })
+      .closest('[data-city-filter-bar-condition]');
+    const selectCondition = screen
+      .getByRole('combobox', { name: 'Status' })
+      .closest('[data-city-filter-bar-condition]');
+    expect(queryCondition).not.toBe(selectCondition);
+    expect(selectCondition).toContainElement(screen.getByText('Status'));
+    expect(selectCondition?.parentElement).toBe(queryCondition?.parentElement);
+  });
+
   it('groups mixed filters without toolbar roving-focus semantics', async () => {
     const user = userEvent.setup();
     const onReset = vi.fn();

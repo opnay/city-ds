@@ -9,6 +9,11 @@ export const pageData = {
   widePreviewIds: ['filter-bar-playground', 'filter-bar-matrix'],
   api: [
     {
+      name: 'children',
+      type: 'ReactNode',
+      description: '직접 자식마다 하나의 조건을 배치합니다. 레이블과 제어는 함께 묶으십시오.',
+    },
+    {
       name: 'appearance',
       type: "'plain' | 'band' | 'outline'",
       defaultValue: "'band'",

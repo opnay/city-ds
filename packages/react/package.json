@@ -212,6 +212,10 @@
     "./checkbox-group": {
       "types": "./dist/components/checkbox-group/index.d.ts",
       "import": "./dist/components/checkbox-group/index.js"
+    },
+    "./data-list": {
+      "types": "./dist/components/data-list/index.d.ts",
+      "import": "./dist/components/data-list/index.js"
     }
   },
   "publishConfig": {

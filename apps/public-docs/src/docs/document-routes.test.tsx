@@ -7,6 +7,7 @@ import { COMPONENT_DOCS } from './doc-catalog';
 const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   alert: 2,
   badge: 1,
+  'data-list': 2,
   'data-table-region': 2,
   divider: 3,
   'empty-state': 1,
@@ -34,6 +35,7 @@ const CONFIGURABLE_COMPONENTS = new Set([
   'checkbox',
   'checkbox-group',
   'combobox',
+  'data-list',
   'date-picker',
   'data-table-region',
   'density-provider',

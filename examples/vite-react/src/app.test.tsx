@@ -60,7 +60,7 @@ describe('operations selectors', () => {
 
     expect(previous?.crew).toBeNull();
     expect(assigned).toMatchObject({ crew: '도심 도로팀', status: '배정됨' });
-    expect(assigned?.activities[0]?.description).toContain('배정이 완료되었습니다');
+    expect(assigned?.activities[0]?.description).toContain('배정했어요');
   });
 });
 
@@ -71,17 +71,15 @@ describe('Vite design-system consumer page', () => {
     expect(screen.getByRole('navigation', { name: '현재 위치' })).toBeVisible();
     expect(screen.getByRole('heading', { level: 1, name: '현장 작업' })).toBeVisible();
     expect(screen.getByRole('button', { name: '최우선 작업 열기' })).toBeVisible();
-    expect(
-      screen.getByRole('heading', { level: 2, name: /조치 확인이 필요한 작업/ }),
-    ).toBeVisible();
+    expect(screen.getByRole('heading', { level: 2, name: /조치가 필요한 작업/ })).toBeVisible();
     expect(screen.getByRole('group', { name: '현장 작업 필터' })).toBeVisible();
-    expect(screen.getByRole('region', { name: '현장 작업 표 가로 스크롤 영역' })).toBeVisible();
+    expect(screen.getByRole('region', { name: '현장 작업' })).toBeVisible();
     expect(screen.getByRole('table', { name: '현장 작업 목록' })).toBeVisible();
     expect(screen.getByRole('columnheader', { name: '자치구' })).toHaveClass(
       'city-ops-col-district',
     );
     expect(screen.getByRole('columnheader', { name: '담당팀' })).toHaveClass('city-ops-col-crew');
-    expect(screen.getByRole('columnheader', { name: 'SLA' })).toHaveClass('city-ops-col-sla');
+    expect(screen.getByRole('columnheader', { name: /처리 기한/ })).toHaveClass('city-ops-col-sla');
     expect(screen.getByRole('columnheader', { name: '상태' })).toHaveClass('city-ops-col-status');
     expect(screen.getByRole('navigation', { name: '현장 작업 페이지' })).toBeVisible();
   });
@@ -94,7 +92,7 @@ describe('Vite design-system consumer page', () => {
     await user.type(search, '없는 작업');
     await user.keyboard('{Enter}');
 
-    expect(screen.getByText('조건에 맞는 작업이 없습니다.')).toBeVisible();
+    expect(screen.getByText('조건에 맞는 작업이 없어요.')).toBeVisible();
     expect(screen.getByText('필터 결과 0건')).toBeVisible();
 
     await user.click(screen.getAllByRole('button', { name: '필터 초기화' })[0]!);
@@ -136,10 +134,10 @@ describe('Vite design-system consumer page', () => {
       'true',
     );
     expect(screen.getByRole('button', { name: /WO-3127 .* 상세 보기/ })).toBeVisible();
-    expect(screen.getByText('작업 목록 갱신 중 · 기존 데이터 유지')).toBeVisible();
+    expect(screen.getByText('새로고침 중…')).toBeVisible();
 
-    await waitFor(() => expect(screen.getByText('마지막 갱신 10:07')).toBeVisible());
-    expect(await screen.findByText('작업 목록을 갱신했습니다.')).toBeVisible();
+    await waitFor(() => expect(screen.getByText('마지막 업데이트 10:07')).toBeVisible());
+    expect(await screen.findByText('목록을 새로고쳤어요.')).toBeVisible();
   });
 
   it('opens row details, exposes a disabled reason and restores trigger focus', async () => {
@@ -156,7 +154,7 @@ describe('Vite design-system consumer page', () => {
 
     expect(completion).toBeDisabled();
     expect(reasonId).not.toBeNull();
-    expect(document.getElementById(reasonId!)).toHaveTextContent('담당팀을 배정해야');
+    expect(document.getElementById(reasonId!)).toHaveTextContent('먼저 담당팀을 배정해 주세요.');
 
     await user.keyboard('{Escape}');
     await waitFor(() =>
@@ -177,7 +175,9 @@ describe('Vite design-system consumer page', () => {
 
     expect(start).toBeDisabled();
     expect(reasonId).not.toBeNull();
-    expect(document.getElementById(reasonId!)).toHaveTextContent('교체 부품 입고 예정');
+    expect(document.getElementById(reasonId!)).toHaveTextContent(
+      '교체 부품은 11:30에 도착할 예정이에요.',
+    );
   });
 
   it('shows a field error instead of disabling a recoverable assignment', async () => {
@@ -188,12 +188,12 @@ describe('Vite design-system consumer page', () => {
     await user.click(await screen.findByRole('button', { name: '담당팀 배정' }));
 
     const dialog = await screen.findByRole('dialog', { name: '담당팀 배정' });
-    const save = within(dialog).getByRole('button', { name: '배정 저장' });
+    const save = within(dialog).getByRole('button', { name: '저장' });
     expect(save).toBeEnabled();
 
     await user.click(save);
 
-    expect(within(dialog).getByText('담당팀을 선택해야 배정을 저장할 수 있습니다.')).toBeVisible();
+    expect(within(dialog).getByText('팀을 선택해 주세요.')).toBeVisible();
   });
 
   it('uses the close reason to discard an assignment draft closed by Escape', async () => {
@@ -208,9 +208,7 @@ describe('Vite design-system consumer page', () => {
     await waitFor(() => expect(screen.queryByRole('dialog', { name: '담당팀 배정' })).toBeNull());
     await user.click(screen.getByRole('button', { name: '담당팀 배정' }));
 
-    expect(await screen.findByRole('combobox', { name: '담당팀' })).toHaveTextContent(
-      '담당팀 선택',
-    );
+    expect(await screen.findByRole('combobox', { name: '담당팀' })).toHaveTextContent('선택');
   });
 
   it('advances an urgent work order through assignment, start and completion', async () => {
@@ -220,18 +218,18 @@ describe('Vite design-system consumer page', () => {
     await user.click(screen.getByRole('button', { name: /WO-3127 .* 상세 보기/ }));
     await user.click(await screen.findByRole('button', { name: '담당팀 배정' }));
     await chooseOption(user, '담당팀', '도심 도로팀');
-    await user.click(screen.getByRole('button', { name: '배정 저장' }));
+    await user.click(screen.getByRole('button', { name: '저장' }));
 
-    expect(await screen.findByText('담당팀 배정 완료')).toBeVisible();
+    expect(await screen.findByText('WO-3127 작업을 도심 도로팀에 배정했어요.')).toBeVisible();
     expect(
       within(screen.getByRole('dialog', { name: '도로 침하 안전 조치' })).getByText('도심 도로팀'),
     ).toBeVisible();
 
     await user.click(screen.getByRole('button', { name: '작업 시작' }));
-    expect(await screen.findByText('현장 작업 시작')).toBeVisible();
+    expect(await screen.findByText('WO-3127 작업을 시작했어요.')).toBeVisible();
 
     await user.click(screen.getByRole('button', { name: '작업 완료' }));
-    expect(await screen.findByText('작업이 완료되었습니다.')).toBeVisible();
+    expect(await screen.findByText('작업을 완료했어요.')).toBeVisible();
     expect(screen.queryByRole('button', { name: '담당팀 변경' })).toBeNull();
   });
 
@@ -267,13 +265,13 @@ describe('dashboard routing', () => {
   });
 
   it.each([
-    ['/', '기한과 차단 요인을 기준으로 정렬했습니다.'],
-    ['/maintenance', '시작 시간이 가까운 순서입니다.'],
+    ['/', '처리 기한과 지연 사유를 확인해 주세요.'],
+    ['/maintenance', '시작 시간순'],
     ['/assets', 'AST-0842'],
     ['/crews', '강남대로 제어반 점검'],
-    ['/reports', '강남구 SLA 준수율이 목표보다 3.2%p 낮습니다.'],
-    ['/activity', 'WO-3127 도로 침하 안전 조치의 현장 통제를 시작했습니다.'],
-    ['/service-status', '최근 24시간 동안 서비스 중단 또는 데이터 유실이 감지되지 않았습니다.'],
+    ['/reports', '강남구 기한 준수율 92.8% · 목표까지 3.2%p'],
+    ['/activity', 'WO-3127 도로 침하 안전 조치의 현장 통제를 시작했어요.'],
+    ['/service-status', '최근 24시간 동안 서비스 중단이나 데이터 유실을 감지하지 않았어요.'],
   ])('restores meaningful content for %s', (pathname, content) => {
     renderAt(pathname);
 
@@ -284,7 +282,7 @@ describe('dashboard routing', () => {
     renderAt('/unknown');
 
     expect(
-      screen.getByRole('heading', { level: 1, name: '페이지를 찾을 수 없습니다.' }),
+      screen.getByRole('heading', { level: 1, name: '페이지를 찾을 수 없어요.' }),
     ).toBeVisible();
     expect(screen.getByRole('link', { name: '운영 현황으로' })).toHaveAttribute('href', '/');
   });
@@ -293,7 +291,7 @@ describe('dashboard routing', () => {
     const user = userEvent.setup();
     renderAt('/');
 
-    await user.click(screen.getByRole('link', { name: '작업 요청' }));
+    await user.click(screen.getByRole('link', { name: '현장 작업' }));
     expect(window.location.pathname).toBe('/work-orders');
     expect(screen.getByRole('heading', { level: 1, name: '현장 작업' })).toBeVisible();
 

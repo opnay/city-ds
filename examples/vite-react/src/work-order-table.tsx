@@ -49,7 +49,7 @@ export function WorkOrderTable({
   sortDirection,
 }: WorkOrderTableProps) {
   return (
-    <DataTableRegion label="현장 작업 표 가로 스크롤 영역">
+    <DataTableRegion label="현장 작업">
       <Table.Root
         aria-busy={isRefreshing}
         aria-label="현장 작업 목록"
@@ -73,8 +73,12 @@ export function WorkOrderTable({
               }
               className="city-ops-col-sla"
             >
-              <Table.SortButton direction={sortDirection} onDirectionChange={onSortDirectionChange}>
-                SLA
+              <Table.SortButton
+                aria-label={`처리 기한 (${sortDirection === 'asc' ? '짧은 순' : sortDirection === 'desc' ? '긴 순' : '정렬 안 함'})`}
+                direction={sortDirection}
+                onDirectionChange={onSortDirectionChange}
+              >
+                처리 기한
               </Table.SortButton>
             </Table.Head>
             <Table.Head className="city-ops-col-status">상태</Table.Head>
@@ -88,10 +92,8 @@ export function WorkOrderTable({
                 <EmptyState.Icon>
                   <SearchX aria-hidden="true" />
                 </EmptyState.Icon>
-                <EmptyState.Title level={3}>조건에 맞는 작업이 없습니다.</EmptyState.Title>
-                <EmptyState.Description>
-                  검색어나 필터를 바꾸면 다른 작업을 확인할 수 있습니다.
-                </EmptyState.Description>
+                <EmptyState.Title level={3}>조건에 맞는 작업이 없어요.</EmptyState.Title>
+                <EmptyState.Description>검색어나 필터를 바꿔 주세요.</EmptyState.Description>
                 <EmptyState.Actions>
                   <Button onClick={onResetFilters} size="sm" type="button" variant="outline">
                     필터 초기화

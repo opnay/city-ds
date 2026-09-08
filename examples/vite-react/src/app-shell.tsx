@@ -17,7 +17,7 @@ import { Breadcrumbs, Button, Drawer, Select, type CityTheme } from '@opnay/city
 
 export interface DashboardRoute {
   description: string;
-  group: '운영' | '리소스' | '분석';
+  group: '운영' | '시설·인력' | '분석';
   icon: LucideIcon;
   label: string;
   path: string;
@@ -25,56 +25,56 @@ export interface DashboardRoute {
 
 export const DASHBOARD_ROUTES: readonly DashboardRoute[] = [
   {
-    description: '오늘의 운영 우선순위와 위험 신호를 확인합니다.',
+    description: '먼저 조치할 작업과 오늘 일정을 확인해 주세요.',
     group: '운영',
     icon: LayoutDashboard,
     label: '운영 현황',
     path: '/',
   },
   {
-    description: '현장 작업의 배정과 진행 상태를 관리합니다.',
+    description: '담당팀을 배정하고 진행 상태를 확인해 주세요.',
     group: '운영',
     icon: ClipboardList,
-    label: '작업 요청',
+    label: '현장 작업',
     path: '/work-orders',
   },
   {
-    description: '예정된 정비와 점검 일정을 관리합니다.',
+    description: '점검 일정과 준비 상태를 확인해 주세요.',
     group: '운영',
     icon: CalendarRange,
     label: '정비 계획',
     path: '/maintenance',
   },
   {
-    description: '시설별 상태와 점검 이력을 추적합니다.',
-    group: '리소스',
+    description: '시설 상태와 최근 점검 기록을 확인해 주세요.',
+    group: '시설·인력',
     icon: Building2,
     label: '시설 자산',
     path: '/assets',
   },
   {
-    description: '현장팀의 배정 현황과 가용 인력을 확인합니다.',
-    group: '리소스',
+    description: '팀별 작업과 배정 가능한 인력을 확인해 주세요.',
+    group: '시설·인력',
     icon: Users,
     label: '현장팀',
     path: '/crews',
   },
   {
-    description: '운영 성과와 자치구별 추이를 비교합니다.',
+    description: '자치구별 작업 처리 결과를 확인해 주세요.',
     group: '분석',
     icon: ChartNoAxesColumnIncreasing,
     label: '운영 리포트',
     path: '/reports',
   },
   {
-    description: '최근 변경과 담당자 조치 기록을 확인합니다.',
+    description: '담당자별 조치 내역을 확인해 주세요.',
     group: '분석',
     icon: History,
     label: '활동 기록',
     path: '/activity',
   },
   {
-    description: '운영 채널과 연동 서비스의 상태를 확인합니다.',
+    description: '채널별 연결 상태와 응답 시간을 확인해 주세요.',
     group: '분석',
     icon: Activity,
     label: '서비스 상태',
@@ -82,7 +82,7 @@ export const DASHBOARD_ROUTES: readonly DashboardRoute[] = [
   },
 ];
 
-const ROUTE_GROUPS: readonly DashboardRoute['group'][] = ['운영', '리소스', '분석'];
+const ROUTE_GROUPS: readonly DashboardRoute['group'][] = ['운영', '시설·인력', '분석'];
 
 const THEME_ITEMS: Record<CityTheme, string> = {
   system: '시스템 테마',
@@ -280,7 +280,7 @@ export function AppShell({ children, navigate, onThemeChange, pathname, theme }:
                   <Drawer.Header>
                     <div>
                       <Drawer.Title>전체 메뉴</Drawer.Title>
-                      <Drawer.Description>도시운영 업무 화면으로 이동합니다.</Drawer.Description>
+                      <Drawer.Description>이동할 메뉴를 선택해 주세요.</Drawer.Description>
                     </div>
                     <Drawer.Close
                       render={<Button aria-label="메뉴 닫기" size="sm" variant="ghost" />}

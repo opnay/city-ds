@@ -67,7 +67,7 @@ export function App() {
           <DashboardPage navigate={navigate} pathname={pathname} />
         )}
       </AppShell>
-      <Toaster />
+      <Toaster containerAriaLabel="알림" toastOptions={{ closeButtonAriaLabel: '알림 닫기' }} />
     </>
   );
 }
@@ -140,17 +140,13 @@ function OperationsPage() {
       setLastUpdated('10:07');
       setIsRefreshing(false);
       refreshTimerRef.current = null;
-      toast.success('작업 목록을 갱신했습니다.', {
-        description: '표시 중인 작업과 필터는 그대로 유지했습니다.',
-      });
+      toast.success('목록을 새로고쳤어요.');
     }, 650);
   };
 
   const assignSelectedCrew = (workOrderId: string, crew: Crew) => {
     setOrders((currentOrders) => assignCrew(currentOrders, workOrderId, crew));
-    toast.success('담당팀 배정 완료', {
-      description: `${workOrderId} 작업을 ${crew}에 배정했습니다.`,
-    });
+    toast.success(`${workOrderId} 작업을 ${crew}에 배정했어요.`);
   };
 
   const advanceWorkOrder = (workOrderId: string) => {
@@ -176,8 +172,8 @@ function OperationsPage() {
                   at: '10:08',
                   description:
                     nextStatus === '진행 중'
-                      ? `${order.crew}이 현장 작업을 시작했습니다.`
-                      : '현장 조치와 확인을 마치고 작업을 완료했습니다.',
+                      ? `${order.crew}이 작업을 시작했어요.`
+                      : '현장 조치와 확인을 마쳤어요.',
                 },
                 ...order.activities,
               ],
@@ -191,12 +187,11 @@ function OperationsPage() {
       ),
     );
 
-    toast.success(nextStatus === '진행 중' ? '현장 작업 시작' : '작업 완료', {
-      description:
-        nextStatus === '진행 중'
-          ? `${workOrderId} 작업을 진행 상태로 변경했습니다.`
-          : `${workOrderId} 작업을 완료 처리했습니다.`,
-    });
+    toast.success(
+      nextStatus === '진행 중'
+        ? `${workOrderId} 작업을 시작했어요.`
+        : `${workOrderId} 작업을 완료했어요.`,
+    );
   };
 
   return (
@@ -210,7 +205,7 @@ function OperationsPage() {
           <div>
             <p className="city-ops-page-meta">2026년 8월 1일 토요일 · 주간 근무</p>
             <h1>현장 작업</h1>
-            <p>SLA 위험 작업을 먼저 확인하고, 담당팀 배정부터 완료까지 한 흐름에서 처리합니다.</p>
+            <p>기한이 촉박한 작업부터 확인하고 담당팀을 배정해 주세요.</p>
           </div>
           {firstPriorityOrder ? (
             <Drawer.Trigger
@@ -224,10 +219,10 @@ function OperationsPage() {
 
         {attentionCount > 0 ? (
           <Alert.Root appearance="subtle" tone="warning">
-            <Alert.Title level={2}>조치 확인이 필요한 작업 {attentionCount}건</Alert.Title>
+            <Alert.Title level={2}>조치가 필요한 작업 {attentionCount}건</Alert.Title>
             <Alert.Description>
-              SLA 위험 또는 담당팀 미배정 상태입니다. 위험 작업부터 담당 범위와 다음 단계를
-              확인하십시오.
+              기한을 넘길 위험이 있거나 담당팀이 없는 작업이에요. 처리 기한과 배정 상태를 확인해
+              주세요.
             </Alert.Description>
             <Alert.Action>
               <Button
@@ -253,9 +248,7 @@ function OperationsPage() {
             </div>
             <div className="city-ops-refresh-group">
               <span id="refresh-status">
-                {isRefreshing
-                  ? '작업 목록 갱신 중 · 기존 데이터 유지'
-                  : `마지막 갱신 ${lastUpdated}`}
+                {isRefreshing ? '새로고침 중…' : `마지막 업데이트 ${lastUpdated}`}
               </span>
               <Button
                 aria-describedby="refresh-status"
@@ -271,7 +264,7 @@ function OperationsPage() {
                   size={15}
                   strokeWidth={1.8}
                 />
-                {isRefreshing ? '갱신 중' : '새로고침'}
+                {isRefreshing ? '새로고침 중' : '새로고침'}
               </Button>
             </div>
           </div>

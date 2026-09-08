@@ -17,11 +17,11 @@ function getAdvanceLabel(order: WorkOrder): string | null {
 }
 
 function getCompletionReason(order: WorkOrder): string {
-  if (order.crew === null) return '담당팀을 배정해야 완료 처리를 준비할 수 있습니다.';
+  if (order.crew === null) return '먼저 담당팀을 배정해 주세요.';
   if (order.status === '배정됨' || order.status === '대기') {
-    return '현장팀이 작업을 시작한 뒤 완료 처리할 수 있습니다.';
+    return '현장 작업을 시작한 뒤 완료할 수 있어요.';
   }
-  return '현재 작업 상태에서는 완료 처리할 수 없습니다.';
+  return '작업을 진행 중 상태로 바꾼 뒤 완료해 주세요.';
 }
 
 export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetailsProps) {
@@ -86,7 +86,7 @@ export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetail
           <Drawer.Content className="city-ops-drawer-body">
             {order.blocker ? (
               <Alert.Root tone="warning">
-                <Alert.Title level={3}>다음 단계 확인이 필요합니다.</Alert.Title>
+                <Alert.Title level={3}>진행 전 확인해 주세요</Alert.Title>
                 <Alert.Description id={order.status === '대기' ? advanceReasonId : undefined}>
                   {order.blocker}
                 </Alert.Description>
@@ -111,7 +111,7 @@ export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetail
                 </div>
                 <div>
                   <dt>
-                    <Clock3 aria-hidden="true" size={15} strokeWidth={1.8} /> SLA
+                    <Clock3 aria-hidden="true" size={15} strokeWidth={1.8} /> 처리 기한
                   </dt>
                   <dd>{order.dueLabel}</dd>
                 </div>
@@ -154,10 +154,8 @@ export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetail
 
             {order.status === '완료' ? (
               <Alert.Root tone="success">
-                <Alert.Title level={3}>작업이 완료되었습니다.</Alert.Title>
-                <Alert.Description>
-                  최근 활동에서 완료 시각과 처리 내용을 확인할 수 있습니다.
-                </Alert.Description>
+                <Alert.Title level={3}>작업을 완료했어요.</Alert.Title>
+                <Alert.Description>처리 내역은 최근 활동에서 확인해 주세요.</Alert.Description>
               </Alert.Root>
             ) : null}
           </Drawer.Content>
@@ -186,9 +184,7 @@ export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetail
                   <Dialog.Viewport>
                     <Dialog.Popup size="sm">
                       <Dialog.Title>담당팀 {order.crew === null ? '배정' : '변경'}</Dialog.Title>
-                      <Dialog.Description>
-                        {order.id} 작업을 처리할 현장팀을 선택하십시오.
-                      </Dialog.Description>
+                      <Dialog.Description>작업 {order.id}</Dialog.Description>
                       <form className="city-ops-assignment-form" onSubmit={handleAssignmentSubmit}>
                         <Field.Root invalid={assignmentError}>
                           <Field.Label>담당팀</Field.Label>
@@ -201,7 +197,7 @@ export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetail
                             value={assignmentDraft || null}
                           >
                             <Select.Trigger className="city-ops-field-control">
-                              <Select.Value placeholder="담당팀 선택" />
+                              <Select.Value placeholder="선택" />
                               <Select.Icon />
                             </Select.Trigger>
                             <Select.Portal>
@@ -220,11 +216,9 @@ export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetail
                             </Select.Portal>
                           </Select.Root>
                           <Field.Description>
-                            작업 위치와 현재 대응 범위를 확인한 뒤 배정하십시오.
+                            위치와 팀의 담당 범위를 확인해 주세요.
                           </Field.Description>
-                          <Field.Error match={assignmentError}>
-                            담당팀을 선택해야 배정을 저장할 수 있습니다.
-                          </Field.Error>
+                          <Field.Error match={assignmentError}>팀을 선택해 주세요.</Field.Error>
                         </Field.Root>
                         <div className="city-ops-dialog-actions">
                           <Dialog.Close
@@ -233,7 +227,7 @@ export function WorkOrderDetails({ onAdvance, onAssign, order }: WorkOrderDetail
                           >
                             취소
                           </Dialog.Close>
-                          <Button type="submit">배정 저장</Button>
+                          <Button type="submit">저장</Button>
                         </div>
                       </form>
                     </Dialog.Popup>

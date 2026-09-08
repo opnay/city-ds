@@ -51,7 +51,8 @@ export type StaticDocPath =
   | '/blocks'
   | '/foundations'
   | '/getting-started'
-  | '/patterns';
+  | '/patterns'
+  | '/ux-writing';
 
 export interface StaticDocEntry {
   description: string;

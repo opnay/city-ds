@@ -9,6 +9,7 @@ describe('public docs routes and shell', () => {
   it.each([
     ['/getting-started', '시작하기'],
     ['/foundations', '기초'],
+    ['/ux-writing', 'UX Writing'],
     ['/color', '색상'],
     ['/patterns', '패턴'],
     ['/accessibility', '접근성'],
@@ -235,6 +236,7 @@ describe('public docs routes and shell', () => {
     );
     expect(within(sidebar).getByText('소비자 문서')).toBeVisible();
     expect(mode).toHaveTextContent('Components');
+    expect(within(navigation).getByRole('link', { name: 'DensityProvider' })).toBeVisible();
     expect(within(navigation).queryByRole('heading', { level: 2 })).not.toBeInTheDocument();
     expect(within(navigation).getByRole('link', { name: '전체 보기' })).toBeVisible();
     expect(within(navigation).getByRole('heading', { level: 3, name: '폼 구성' })).toBeVisible();
@@ -246,7 +248,7 @@ describe('public docs routes and shell', () => {
     expect(within(navigation).queryByRole('heading')).not.toBeInTheDocument();
     expect(
       [...navigation.querySelectorAll('.city-docs-nav-scroll a')].map((link) => link.textContent),
-    ).toEqual(['시작하기', '기초', 'DensityProvider', '색상', '패턴', '접근성']);
+    ).toEqual(['시작하기', '기초', '색상', '패턴', 'UX Writing', '접근성']);
     expect(within(navigation).queryByRole('link', { name: '전체 보기' })).not.toBeInTheDocument();
 
     await user.type(search, '설치');

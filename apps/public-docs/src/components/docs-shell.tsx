@@ -357,17 +357,6 @@ function DocsNavigation({ mode, onModeChange, onNavigate, query, setQuery }: Doc
               {GUIDE_DOCS.map((entry) => (
                 <li key={entry.path}>
                   <StaticNavigationLink entry={entry} onNavigate={handleNavigate} />
-                  {entry.path === '/foundations' && (
-                    <ul>
-                      {COMPONENT_DOCS.filter(
-                        (component) => component.category === 'Foundations',
-                      ).map((component) => (
-                        <li key={component.slug}>
-                          <ComponentNavigationLink entry={component} onNavigate={handleNavigate} />
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </li>
               ))}
             </ul>

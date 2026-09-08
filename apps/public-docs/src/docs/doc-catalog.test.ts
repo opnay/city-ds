@@ -64,6 +64,7 @@ describe('document page search', () => {
       '기초',
       '색상',
       '패턴',
+      'UX Writing',
       '접근성',
     ]);
     expect(GUIDE_DOCS.every((entry) => entry.section === 'guides')).toBe(true);
@@ -76,7 +77,7 @@ describe('document page search', () => {
         : `/${result.kind === 'block' ? 'blocks' : 'components'}/${result.entry.slug}`,
     );
 
-    expect(STATIC_DOCS).toHaveLength(8);
+    expect(STATIC_DOCS).toHaveLength(9);
     expect(paths).toHaveLength(STATIC_DOCS.length + COMPONENT_DOCS.length + BLOCK_DOCS.length);
     expect(new Set(paths).size).toBe(paths.length);
   });

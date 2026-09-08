@@ -81,6 +81,15 @@ export const GUIDE_DOCS = [
     title: '패턴',
   },
   {
+    description: '사용자 맥락에 맞게 중복을 줄이고 명확하고 자연스러운 UX 문구를 작성합니다.',
+    englishTitle: 'UX Writing',
+    keywords: ['UX Writing', '라이팅', '문구', '말투', '중복', '맞춤법'],
+    label: 'UX Writing',
+    path: '/ux-writing',
+    section: 'guides',
+    title: 'UX Writing',
+  },
+  {
     description: '이름, 설명, 키보드, 포커스, 상태와 작은 화면을 함께 점검합니다.',
     englishTitle: 'Accessibility',
     keywords: ['키보드', '포커스', '보조 기술', '작은 화면', 'a11y'],
@@ -133,7 +142,7 @@ export const COMPONENT_DOCS = [
     title: 'Avatar',
   },
   {
-    category: 'Foundations',
+    category: 'Layout',
     description: '한 영역의 정보 밀도를 comfortable 또는 compact로 일관되게 적용합니다.',
     importPath: '@opnay/city-ds-react/density-provider',
     keywords: ['밀도', '컴팩트', 'comfortable', 'compact'],

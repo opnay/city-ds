@@ -382,7 +382,7 @@ function OverviewPage({ navigate }: { navigate: Navigate }) {
         </Alert.Description>
         <Alert.Action>
           <RouteButton navigate={navigate} to="/work-orders">
-            우선 작업 확인
+            현장 작업 보기
           </RouteButton>
         </Alert.Action>
       </Alert.Root>

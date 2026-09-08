@@ -12,6 +12,24 @@ afterEach(() => {
 });
 
 describe('documented component interactions', () => {
+  it('combines filter conditions and resets them together', async () => {
+    const user = userEvent.setup();
+    await renderDocs(['/components/filter-bar']);
+    const preview = within(screen.getByRole('region', { name: 'FilterBar' }));
+    await user.type(preview.getByRole('textbox', { name: '프로젝트 이름' }), '공원');
+    expect(preview.getByRole('status')).toHaveTextContent('2개');
+    await user.click(preview.getByRole('combobox', { name: '상태' }));
+    await user.click(screen.getByRole('option', { name: '완료' }));
+    expect(preview.getByRole('status')).toHaveTextContent('1개 · 공원 안내판 교체');
+    await user.clear(preview.getByRole('textbox', { name: '프로젝트 이름' }));
+    await user.type(preview.getByRole('textbox', { name: '프로젝트 이름' }), '도로');
+    expect(preview.getByRole('status')).toHaveTextContent('조건에 맞는 프로젝트가 없어요.');
+    await user.click(preview.getByRole('button', { name: '초기화' }));
+    expect(preview.getByRole('textbox', { name: '프로젝트 이름' })).toHaveValue('');
+    expect(preview.getByRole('combobox', { name: '상태' })).toHaveTextContent('모든 상태');
+    expect(preview.getByRole('status')).toHaveTextContent('3개');
+  });
+
   it('configures OTP slots and submits a controlled code example', async () => {
     const user = userEvent.setup();
     await renderDocs(['/components/otp-input']);

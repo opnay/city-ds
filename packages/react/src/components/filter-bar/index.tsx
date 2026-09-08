@@ -72,17 +72,23 @@ export const FilterBar = React.forwardRef<HTMLDivElement, FilterBarProps>(
           <>
             <div
               className={cn(
-                'flex min-w-0 flex-1 flex-col items-stretch sm:flex-row sm:flex-wrap sm:items-center',
+                'flex min-w-0 flex-auto flex-wrap items-end',
                 contentDensityClasses[density],
               )}
               data-city-filter-bar-content=""
             >
-              {children}
+              {React.Children.map(children, (child) =>
+                child == null ? null : (
+                  <div className="max-w-full min-w-0" data-city-filter-bar-condition="">
+                    {child}
+                  </div>
+                ),
+              )}
             </div>
             {actions ? (
               <div
                 className={cn(
-                  'flex min-w-0 flex-wrap items-center justify-between sm:ml-auto sm:justify-end',
+                  'ml-auto flex min-w-0 flex-wrap items-center justify-end',
                   contentDensityClasses[density],
                 )}
                 data-city-filter-bar-actions=""
@@ -93,7 +99,7 @@ export const FilterBar = React.forwardRef<HTMLDivElement, FilterBarProps>(
           </>
         ),
         className: cn(
-          'text-city-foreground flex min-w-0 max-w-full flex-col items-stretch sm:flex-row sm:flex-wrap sm:items-center',
+          'text-city-foreground flex min-w-0 max-w-full flex-wrap items-end',
           appearanceClasses[appearance],
           densityClasses[density],
           resolveClassName(className, state),

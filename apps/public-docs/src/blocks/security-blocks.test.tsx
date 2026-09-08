@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { useState } from 'react';
 import { renderDocs } from '../test/render-docs';
-import { SECURITY_MENU } from './block-catalog';
+import { BLOCK_GROUPS } from './block-catalog';
 import { PasswordReset } from './examples/password-reset';
 import { Reauthentication } from './examples/reauthentication';
 import { RecoveryCodeManagement } from './examples/recovery-code-management';
@@ -16,17 +16,19 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe('Security block navigation', () => {
-  it.each(SECURITY_MENU)('opens $title in the security category', async ({ title, slug }) => {
-    await renderDocs([`/blocks/${slug}`]);
-    expect(screen.getByRole('heading', { level: 1, name: title })).toBeVisible();
-    expect(screen.getByRole('button', { name: '보안' })).toHaveAttribute('aria-expanded', 'true');
+describe('Block category navigation', () => {
+  it.each(BLOCK_GROUPS)('opens the $title category for its block', async ({ title, items }) => {
+    const entry = items[0]!;
+    await renderDocs([`/blocks/${entry.slug}`]);
+    expect(screen.getByRole('heading', { level: 1, name: entry.title })).toBeVisible();
+    expect(screen.getByRole('button', { name: title })).toHaveAttribute('aria-expanded', 'true');
     const navigation = within(screen.getByRole('navigation', { name: '문서 탐색' }));
-    for (const entry of SECURITY_MENU)
-      expect(navigation.getByRole('link', { name: entry.title })).toHaveAttribute(
+    for (const item of items)
+      expect(navigation.getByRole('link', { name: item.title })).toHaveAttribute(
         'href',
-        `/blocks/${entry.slug}`,
+        `/blocks/${item.slug}`,
       );
+    expect(within(screen.getByRole('main')).getByText(`적용 범위: ${entry.scope}`)).toBeVisible();
   });
 });
 

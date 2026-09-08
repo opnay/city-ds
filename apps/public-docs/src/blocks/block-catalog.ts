@@ -22,6 +22,7 @@ export const BLOCK_DOCS = [
     title: '결제 수단 관리',
     description: '카드를 추가하고 기본 결제 수단을 변경하거나 등록한 카드를 삭제합니다.',
     category: '구독·결제',
+    scope: '사용자·팀',
     keywords: ['결제', '카드', '수단', '기본', '등록', '삭제'],
     components: [
       'panel',
@@ -57,6 +58,7 @@ export const BLOCK_DOCS = [
     title: '결제 기록',
     description: '결제일, 내역, 금액, 결제 수단과 처리 상태를 확인합니다.',
     category: '구독·결제',
+    scope: '사용자·팀',
     keywords: ['결제', '기록', '청구', '환불', '실패'],
     components: [
       'panel',
@@ -81,6 +83,7 @@ export const BLOCK_DOCS = [
     title: '플랜 선택',
     description: '월간·연간 가격과 기능을 비교하고 다음 단계로 진행합니다.',
     category: '구독·결제',
+    scope: '사용자·팀',
     keywords: ['구독', '결제', '플랜', '요금', '해지'],
     components: [
       'panel',
@@ -115,6 +118,7 @@ export const BLOCK_DOCS = [
     title: '구독 관리',
     description: '무료·구독·체험·결제 실패·해지 예약 상태와 다음 행동을 구성합니다.',
     category: '구독·결제',
+    scope: '사용자·팀',
     keywords: ['구독', '결제', '플랜', '요금', '해지'],
     components: ['data-list', 'panel', 'badge', 'button', 'dialog', 'alert', 'skeleton', 'toast'],
     guidance:
@@ -129,7 +133,8 @@ export const BLOCK_DOCS = [
     slug: 'profile-management',
     title: '프로필 관리',
     description: '프로필 이미지, 표시 이름과 자기소개를 수정하고 저장·취소합니다.',
-    category: '사용자 관리',
+    category: '계정 관리',
+    scope: '사용자',
     keywords: ['사용자', '프로필', '이미지', '자기소개', '저장', '취소'],
     components: ['panel', 'avatar', 'field', 'input', 'button', 'toast'],
     guidance:
@@ -144,7 +149,8 @@ export const BLOCK_DOCS = [
     slug: 'account-management',
     title: '계정 관리',
     description: '로그인 이메일을 변경하고 연결 계정과 계정 탈퇴를 관리합니다.',
-    category: '사용자 관리',
+    category: '계정 관리',
+    scope: '사용자',
     keywords: ['계정', '이메일', '연결 계정', '탈퇴'],
     components: [
       'panel',
@@ -168,7 +174,8 @@ export const BLOCK_DOCS = [
     slug: 'change-password',
     title: '비밀번호 변경',
     description: '현재 비밀번호 확인과 새 비밀번호 입력, 다른 기기 로그아웃을 구성합니다.',
-    category: '보안',
+    category: '계정 보안',
+    scope: '사용자',
     keywords: ['비밀번호', '변경', '확인', '로그아웃'],
     components: ['panel', 'field', 'input', 'checkbox', 'button', 'toast'],
     guidance:
@@ -183,7 +190,8 @@ export const BLOCK_DOCS = [
     slug: 'two-factor-management',
     title: '2차 인증',
     description: '인증 앱 관리와 네 단계 등록 폼, 복구 코드 보관·재발급을 구성합니다.',
-    category: '보안',
+    category: '계정 보안',
+    scope: '사용자',
     keywords: ['2FA', '인증 앱', '등록', '스텝 폼', '복구 코드', 'QR'],
     components: [
       'panel',
@@ -221,7 +229,8 @@ export const BLOCK_DOCS = [
     slug: 'session-history',
     title: '세션 기록',
     description: '로그인 기기와 최근 활동을 확인하고 다른 세션을 개별 또는 일괄 종료합니다.',
-    category: '보안',
+    category: '계정 보안',
+    scope: '사용자',
     keywords: ['세션', '기기', '접속', '기록', '로그아웃'],
     components: ['panel', 'segmented-control', 'badge', 'button', 'alert-dialog', 'toast'],
     guidance:
@@ -236,7 +245,9 @@ export const BLOCK_DOCS = [
     slug: 'account-settings',
     title: '계정 설정',
     description: '프로필 입력과 알림 설정을 한 폼에 묶고 변경 사항을 저장하거나 되돌립니다.',
-    category: '설정',
+    category: '계정 관리',
+    listed: false,
+    scope: '사용자',
     keywords: ['프로필', '계정', '설정', '저장', '취소'],
     components: ['field', 'input', 'switch', 'button'],
     guidance:
@@ -250,7 +261,8 @@ export const BLOCK_DOCS = [
     slug: 'verification-code',
     title: 'OTP 인증',
     description: '코드 입력, 확인 버튼, 오류와 재입력 흐름을 하나의 인증 화면으로 구성합니다.',
-    category: '보안',
+    category: '인증',
+    scope: '사용자',
     keywords: ['인증', 'OTP', '코드', '오류', '확인'],
     components: ['otp-input', 'field', 'alert', 'button'],
     guidance:
@@ -264,7 +276,8 @@ export const BLOCK_DOCS = [
     slug: 'member-directory',
     title: '팀원 관리',
     description: '팀원을 검색하고 초대하거나 역할을 변경하고 팀에서 내보냅니다.',
-    category: '사용자 관리',
+    category: '팀 관리',
+    scope: '팀',
     keywords: ['팀원', '관리', '목록', '검색', '초대', '역할', '내보내기'],
     components: [
       'panel',
@@ -296,7 +309,8 @@ export const BLOCK_DOCS = [
     slug: 'password-reset',
     title: '비밀번호 재설정',
     description: '계정 확인과 코드 검증을 거쳐 새 비밀번호를 설정하고 로그인으로 돌아갑니다.',
-    category: '보안',
+    category: '인증',
+    scope: '사용자',
     keywords: ['비밀번호', '분실', '복구', '재설정'],
     components: ['panel', 'field', 'input', 'otp-input', 'button'],
     guidance:
@@ -311,7 +325,8 @@ export const BLOCK_DOCS = [
     slug: 'reauthentication',
     title: '재인증',
     description: '민감한 작업에서 비밀번호와 필요한 추가 인증을 확인하고 원래 작업으로 돌아갑니다.',
-    category: '보안',
+    category: '인증',
+    scope: '사용자',
     keywords: ['재인증', '본인 확인', '비밀번호', 'OTP'],
     components: ['panel', 'field', 'input', 'otp-input', 'button'],
     guidance:
@@ -326,7 +341,8 @@ export const BLOCK_DOCS = [
     slug: 'recovery-code-management',
     title: '복구 코드 관리',
     description: '복구 코드를 발급하고 복사·다운로드한 뒤 보관을 확인합니다.',
-    category: '보안',
+    category: '계정 보안',
+    scope: '사용자',
     keywords: ['복구 코드', '백업', '재발급', 'MFA'],
     components: ['panel', 'button', 'checkbox', 'field', 'input', 'alert-dialog'],
     guidance:
@@ -341,7 +357,8 @@ export const BLOCK_DOCS = [
     slug: 'passkey-management',
     title: '패스키 관리',
     description: '패스키를 등록하고 이름을 변경하거나 더 이상 쓰지 않는 패스키를 삭제합니다.',
-    category: '보안',
+    category: '계정 보안',
+    scope: '사용자',
     keywords: ['패스키', 'WebAuthn', '기기', '로그인'],
     components: ['panel', 'badge', 'button', 'dialog', 'alert-dialog', 'field', 'input'],
     guidance:
@@ -356,7 +373,8 @@ export const BLOCK_DOCS = [
     slug: 'connected-apps',
     title: '연결된 앱 관리',
     description: '외부 앱에 허용한 권한과 연결일을 확인하고 접근을 해제합니다.',
-    category: '보안',
+    category: '앱 연동',
+    scope: '사용자',
     keywords: ['앱', '연결', 'OAuth', '권한', '해제'],
     components: ['data-list', 'panel', 'button', 'alert-dialog', 'skeleton'],
     guidance:
@@ -371,7 +389,8 @@ export const BLOCK_DOCS = [
     slug: 'security-activity',
     title: '보안 활동 기록',
     description: '로그인과 인증 수단 변경 기록을 검색하고 성공·실패 결과로 좁힙니다.',
-    category: '보안',
+    category: '활동 기록',
+    scope: '사용자',
     keywords: ['보안', '활동', '로그', '기록', '실패'],
     components: [
       'panel',
@@ -393,31 +412,25 @@ export const BLOCK_DOCS = [
   },
 ] as const satisfies readonly BlockDocEntry[];
 
-export const SUBSCRIPTION_MENU = [
-  { title: '플랜 선택', slug: 'plan-selection' },
-  { title: '구독 관리', slug: 'subscription-management' },
-  { title: '결제 수단 관리', slug: 'payment-methods' },
-  { title: '결제 기록', slug: 'payment-history' },
+export const BLOCK_CATEGORIES = [
+  '인증',
+  '계정 관리',
+  '계정 보안',
+  '팀 관리',
+  '앱 연동',
+  '활동 기록',
+  '구독·결제',
 ] as const;
 
-export const USER_MANAGEMENT_MENU = [
-  { title: '프로필 관리', slug: 'profile-management' },
-  { title: '계정 관리', slug: 'account-management' },
-  { title: '팀원 관리', slug: 'member-directory' },
-] as const;
+export const BLOCK_GROUPS = BLOCK_CATEGORIES.map((title) => ({
+  title,
+  items: (BLOCK_DOCS as readonly BlockDocEntry[]).filter(
+    (entry) => entry.category === title && entry.listed !== false,
+  ),
+}));
 
-export const SECURITY_MENU = [
-  { title: 'OTP 인증', slug: 'verification-code' },
-  { title: '비밀번호 변경', slug: 'change-password' },
-  { title: '2차 인증', slug: 'two-factor-management' },
-  { title: '세션 기록', slug: 'session-history' },
-  { title: '비밀번호 재설정', slug: 'password-reset' },
-  { title: '재인증', slug: 'reauthentication' },
-  { title: '복구 코드 관리', slug: 'recovery-code-management' },
-  { title: '패스키 관리', slug: 'passkey-management' },
-  { title: '연결된 앱 관리', slug: 'connected-apps' },
-  { title: '보안 활동 기록', slug: 'security-activity' },
-] as const;
+export const ACCOUNT_MENU = BLOCK_GROUPS.find((group) => group.title === '계정 관리')!.items;
+export const SUBSCRIPTION_MENU = BLOCK_GROUPS.find((group) => group.title === '구독·결제')!.items;
 
 export function getBlockDoc(slug: string): BlockDocEntry | undefined {
   return BLOCK_DOCS.find((entry) => entry.slug === slug);

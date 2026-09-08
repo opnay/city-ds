@@ -7,7 +7,7 @@ import { ChangePassword } from './examples/change-password';
 import { TwoFactorManagement, type TwoFactorActions } from './examples/two-factor-management';
 import { SessionHistory, exampleSessions } from './examples/session-history';
 import { renderDocs } from '../test/render-docs';
-import { USER_MANAGEMENT_MENU } from './block-catalog';
+import { ACCOUNT_MENU } from './block-catalog';
 
 beforeEach(() => {
   vi.spyOn(toast, 'success').mockReturnValue(0);
@@ -30,17 +30,17 @@ function twoFactorActions(): TwoFactorActions {
 }
 
 describe('User management blocks', () => {
-  it.each(USER_MANAGEMENT_MENU)(
+  it.each(ACCOUNT_MENU)(
     'opens $title from its URL with the complete menu',
     async ({ title, slug }) => {
       await renderDocs([`/blocks/${slug}`]);
       expect(screen.getByRole('heading', { level: 1, name: title })).toBeVisible();
-      expect(screen.getByRole('button', { name: '사용자 관리' })).toHaveAttribute(
+      expect(screen.getByRole('button', { name: '계정 관리' })).toHaveAttribute(
         'aria-expanded',
         'true',
       );
       const navigation = screen.getByRole('navigation', { name: '문서 탐색' });
-      for (const item of USER_MANAGEMENT_MENU)
+      for (const item of ACCOUNT_MENU)
         expect(within(navigation).getByRole('link', { name: item.title })).toHaveAttribute(
           'href',
           `/blocks/${item.slug}`,

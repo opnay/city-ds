@@ -31,6 +31,8 @@ export interface ComponentDocEntry {
 }
 
 export interface BlockDocEntry {
+  scope: '사용자' | '팀' | '사용자·팀';
+  listed?: boolean;
   optionAxes?: readonly OptionAxis[];
   slug: string;
   title: string;

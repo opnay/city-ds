@@ -3,6 +3,10 @@ import { Collapsible } from '@base-ui/react/collapsible';
 import {
   ArrowRight,
   BookOpen,
+  Fingerprint,
+  UserRound,
+  Plug,
+  History,
   CreditCard,
   LayoutGrid,
   Menu as MenuIcon,
@@ -35,12 +39,7 @@ import {
   getComponentDoc,
   getStaticDoc,
 } from '../docs/doc-catalog';
-import {
-  USER_MANAGEMENT_MENU,
-  SUBSCRIPTION_MENU,
-  SECURITY_MENU,
-  getBlockDoc,
-} from '../blocks/block-catalog';
+import { BLOCK_GROUPS, getBlockDoc } from '../blocks/block-catalog';
 import type {
   BlockDocEntry,
   ComponentDocEntry,
@@ -211,7 +210,9 @@ function BlockNavigationLink({
       {showContext ? (
         <span className="city-docs-nav-result-copy">
           <span>{entry.title}</span>
-          <small>블록 · {entry.category}</small>
+          <small>
+            블록 · {entry.category} · {entry.scope}
+          </small>
         </span>
       ) : (
         entry.title
@@ -219,6 +220,16 @@ function BlockNavigationLink({
     </Link>
   );
 }
+
+const BLOCK_CATEGORY_ICONS = {
+  인증: Fingerprint,
+  '계정 관리': UserRound,
+  '계정 보안': ShieldCheck,
+  '팀 관리': UsersRound,
+  '앱 연동': Plug,
+  '활동 기록': History,
+  구독·결제: CreditCard,
+};
 
 function BlockNavigationGroup({
   onNavigate,
@@ -384,24 +395,15 @@ function DocsNavigation({ mode, onModeChange, onNavigate, query, setQuery }: Doc
               <li>
                 <StaticNavigationLink entry={BLOCK_INDEX_DOC} onNavigate={handleNavigate} />
               </li>
-              <BlockNavigationGroup
-                onNavigate={handleNavigate}
-                title="사용자 관리"
-                items={USER_MANAGEMENT_MENU}
-                icon={UsersRound}
-              />
-              <BlockNavigationGroup
-                onNavigate={handleNavigate}
-                title="구독·결제"
-                items={SUBSCRIPTION_MENU}
-                icon={CreditCard}
-              />
-              <BlockNavigationGroup
-                onNavigate={handleNavigate}
-                title="보안"
-                items={SECURITY_MENU}
-                icon={ShieldCheck}
-              />
+              {BLOCK_GROUPS.map((group) => (
+                <BlockNavigationGroup
+                  key={group.title}
+                  onNavigate={handleNavigate}
+                  title={group.title}
+                  items={group.items}
+                  icon={BLOCK_CATEGORY_ICONS[group.title]}
+                />
+              ))}
             </ul>
           </section>
         ) : (

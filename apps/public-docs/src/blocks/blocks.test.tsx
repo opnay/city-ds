@@ -3,9 +3,35 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { renderDocs } from '../test/render-docs';
 import { filterDocumentPages, getComponentDoc } from '../docs/doc-catalog';
-import { BLOCK_DOCS } from './block-catalog';
+import { BLOCK_DOCS, BLOCK_GROUPS } from './block-catalog';
 
 describe('Blocks', () => {
+  it('groups the catalog by function and exposes scope independently', async () => {
+    await renderDocs(['/blocks']);
+    const main = within(screen.getByRole('main'));
+    for (const group of BLOCK_GROUPS) {
+      const section = main.getByRole('region', { name: group.title });
+      expect(within(section).getByRole('heading', { level: 2, name: group.title })).toBeVisible();
+      for (const entry of group.items) {
+        const card = within(section).getByRole('link', { name: new RegExp(entry.title) });
+        expect(card).toHaveAttribute('href', `/blocks/${entry.slug}`);
+        expect(within(card).getByRole('heading', { level: 3, name: entry.title })).toBeVisible();
+        expect(within(card).getByText(`적용 범위: ${entry.scope}`)).toBeVisible();
+      }
+    }
+    expect(main.queryByRole('link', { name: /계정 설정/ })).not.toBeInTheDocument();
+    expect(
+      filterDocumentPages('사용자').some(
+        (result) => result.kind === 'block' && result.entry.slug === 'connected-apps',
+      ),
+    ).toBe(true);
+    expect(
+      filterDocumentPages('팀').some(
+        (result) => result.kind === 'block' && result.entry.slug === 'member-directory',
+      ),
+    ).toBe(true);
+  });
+
   it('resets code and reference disclosure when navigating between blocks', async () => {
     const user = userEvent.setup();
     await renderDocs(['/blocks/profile-management']);
@@ -40,11 +66,12 @@ describe('Blocks', () => {
     expect(screen.getByRole('combobox', { name: '문서 영역' })).toHaveTextContent('Blocks');
     await user.click(main.getByRole('link', { name: /프로필 관리/ }));
     expect(await screen.findByRole('heading', { level: 1, name: '프로필 관리' })).toBeVisible();
-    const group = screen.getByRole('button', { name: '사용자 관리' });
+    const group = screen.getByRole('button', { name: '계정 관리' });
     expect(group).toHaveAttribute('aria-expanded', 'true');
     await user.click(group);
     expect(group).toHaveAttribute('aria-expanded', 'false');
     await user.click(group);
+    await user.click(screen.getByRole('button', { name: '팀 관리' }));
     expect(screen.getByText('팀원 관리')).toBeVisible();
     expect(
       within(screen.getByRole('navigation', { name: '현재 위치' })).getByRole('link', {

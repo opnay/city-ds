@@ -763,6 +763,7 @@ export function filterDocumentPages(query: string): readonly DocumentSearchResul
         entry.description,
         entry.category,
         'Blocks',
+        entry.scope,
         '블록',
         ...entry.keywords,
       ],

@@ -190,7 +190,7 @@ export const AlertTitle = React.forwardRef<HTMLHeadingElement, AlertTitleProps>(
       ...props,
       id: id ?? context.titleId,
       className: cn(
-        'text-city-foreground font-medium leading-none',
+        'text-city-foreground font-medium leading-6',
         resolveClassName(className, state),
       ),
     },

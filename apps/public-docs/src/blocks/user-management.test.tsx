@@ -177,11 +177,13 @@ describe('User management blocks', () => {
     expect(screen.getByRole('button', { name: '등록 마치기' })).toBeDisabled();
     await user.click(screen.getByRole('button', { name: '나중에 보관' }));
     expect(screen.getByText('사용 중')).toBeVisible();
+    expect(screen.getByRole('button', { name: '보관 계속' })).toHaveFocus();
     await user.click(screen.getByRole('button', { name: '보관 계속' }));
     await user.click(
       screen.getByRole('checkbox', { name: '복구 코드를 안전한 곳에 보관했습니다' }),
     );
     await user.click(screen.getByRole('button', { name: '등록 마치기' }));
+    expect(screen.getByRole('button', { name: '재발급' })).toHaveFocus();
     await user.click(screen.getByRole('button', { name: '재발급' }));
     let dialog = within(screen.getByRole('alertdialog'));
     await user.type(
@@ -195,6 +197,7 @@ describe('User management blocks', () => {
       screen.getByRole('checkbox', { name: '복구 코드를 안전한 곳에 보관했습니다' }),
     );
     await user.click(screen.getByRole('button', { name: '등록 마치기' }));
+    expect(screen.getByRole('button', { name: '재발급' })).toHaveFocus();
     await user.click(screen.getByRole('button', { name: '인증 앱 해제' }));
     dialog = within(screen.getByRole('alertdialog'));
     await user.type(
@@ -219,6 +222,7 @@ describe('User management blocks', () => {
     expect(actions.cancelEnrollment).toHaveBeenCalledWith('enrollment-1');
     expect(await screen.findByRole('button', { name: '인증 앱 등록' })).toBeVisible();
     expect(screen.queryByText('PUBLICKEY')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '인증 앱 등록' })).toHaveFocus();
   });
 
   it('keeps sessions on a failed revocation and excludes the current session from bulk revocation', async () => {

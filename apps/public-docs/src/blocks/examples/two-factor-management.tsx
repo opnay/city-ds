@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
 import { AccountActionDialog } from './user-management-shared';
@@ -32,6 +32,13 @@ export function TwoFactorManagement({
   const [pendingRecovery, setPendingRecovery] = useState<string[]>([]);
   const [confirm, setConfirm] = useState<'regenerate' | 'disable' | null>(null);
   const [completionMessage, setCompletionMessage] = useState('2차 인증 설정을 완료했습니다.');
+  const returnFocus = useRef<HTMLButtonElement>(null);
+  const wasSetup = useRef(setup);
+
+  useEffect(() => {
+    if (wasSetup.current && !setup) returnFocus.current?.focus();
+    wasSetup.current = setup;
+  }, [setup]);
 
   if (setup)
     return (
@@ -76,6 +83,7 @@ export function TwoFactorManagement({
             </Button>
           ) : (
             <Button
+              ref={returnFocus}
               size="lg"
               onClick={() => {
                 setCompletionMessage('2차 인증 설정을 완료했습니다.');
@@ -98,11 +106,16 @@ export function TwoFactorManagement({
           }
           actions={
             pendingRecovery.length ? (
-              <Button size="lg" onClick={() => setSetup(true)}>
+              <Button ref={returnFocus} size="lg" onClick={() => setSetup(true)}>
                 보관 계속
               </Button>
             ) : (
-              <Button size="lg" variant="outline" onClick={() => setConfirm('regenerate')}>
+              <Button
+                ref={returnFocus}
+                size="lg"
+                variant="outline"
+                onClick={() => setConfirm('regenerate')}
+              >
                 재발급
               </Button>
             )

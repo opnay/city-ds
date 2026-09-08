@@ -20,10 +20,12 @@ export interface SubscriptionPlan {
   prices: Record<BillingCycle, string>;
   terms?: Partial<Record<BillingCycle, string>>;
   yearlySavings?: string;
+  hasBillingCycle?: boolean;
 }
 export const examplePlans: SubscriptionPlan[] = [
   {
     id: 'free',
+    hasBillingCycle: false,
     name: 'FREE',
     description: '개인 프로젝트를 시작할 때',
     features: ['프로젝트 1개', '멤버 1명'],
@@ -61,14 +63,18 @@ export function PlanSelection({
   const [error, setError] = useState('');
   const lock = useRef(false);
   const selected = plans.find((plan) => plan.id === planId);
-  const unchanged = planId === current.planId && cycle === current.cycle;
+  const unchanged =
+    planId === current.planId && (selected?.hasBillingCycle === false || cycle === current.cycle);
   async function submit() {
     if (lock.current || !selected || unchanged || !canManage || loading) return;
     lock.current = true;
     setBusy(true);
     setError('');
     try {
-      await onContinue({ planId, cycle });
+      await onContinue({
+        planId,
+        cycle: selected.hasBillingCycle === false ? current.cycle : cycle,
+      });
     } catch {
       setError('선택한 플랜은 유지했어요. 다시 시도해 주세요.');
     } finally {
@@ -148,9 +154,10 @@ export function PlanSelection({
                 <h4 className="city-text-subsection-title" id={`${id}-${plan.id}`}>
                   {plan.name}
                 </h4>
-                {plan.id === current.planId && cycle === current.cycle && (
-                  <Badge appearance="outline">현재 플랜</Badge>
-                )}
+                {plan.id === current.planId &&
+                  (plan.hasBillingCycle === false || cycle === current.cycle) && (
+                    <Badge appearance="outline">현재 플랜</Badge>
+                  )}
               </div>
               <SelectionCard.Description id={`${id}-${plan.id}-description`}>
                 {plan.description}

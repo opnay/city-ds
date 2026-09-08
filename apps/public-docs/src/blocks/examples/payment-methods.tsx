@@ -48,6 +48,7 @@ export function PaymentMethods({
 }) {
   const [target, setTarget] = useState<PaymentMethod | null>(null);
   const [registering, setRegistering] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const lock = useRef(false);
@@ -178,6 +179,7 @@ export function PaymentMethods({
           disabled={busy || loading || !canManage}
           onClick={() => {
             setError('');
+            setFieldErrors({});
             setRegistering(true);
           }}
         >
@@ -198,6 +200,7 @@ export function PaymentMethods({
           <Dialog.Viewport>
             <Dialog.Popup size="sm" finalFocus={addRef}>
               <form
+                noValidate
                 onSubmit={(event) => {
                   event.preventDefault();
                   const data = new FormData(event.currentTarget);
@@ -210,18 +213,20 @@ export function PaymentMethods({
                     number: value('cardNumber').replace(/\s/g, ''),
                     expiry: value('cardExpiry'),
                   };
-                  if (!card.name || !/^\d{13,19}$/.test(card.number)) {
-                    setError('카드 이름과 번호를 확인해 주세요.');
-                    return;
-                  }
+                  const errors: Record<string, string> = {};
+                  if (!card.name) errors.cardName = '카드 이름을 입력해 주세요.';
+                  if (!/^\d{13,19}$/.test(card.number))
+                    errors.cardNumber = '카드 번호를 13~19자리 숫자로 입력해 주세요.';
                   const [month, year] = card.expiry.split('/').map(Number);
-                  if (
-                    !month ||
-                    !year ||
-                    month > 12 ||
-                    new Date(2000 + year, month, 1) <= new Date()
-                  ) {
-                    setError('유효기간을 확인해 주세요.');
+                  if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(card.expiry))
+                    errors.cardExpiry = '유효기간을 월/년 형식으로 입력해 주세요. 예: 12/29';
+                  else if (new Date(2000 + year!, month!, 1) <= new Date())
+                    errors.cardExpiry = '유효기간이 지난 카드예요. 다른 카드를 등록해 주세요.';
+                  setFieldErrors(errors);
+                  if (Object.keys(errors).length) {
+                    event.currentTarget
+                      .querySelector<HTMLInputElement>(`[name="${Object.keys(errors)[0]}"]`)
+                      ?.focus();
                     return;
                   }
                   void run(() => onAdd(card), '결제 수단을 추가했어요.');
@@ -232,7 +237,7 @@ export function PaymentMethods({
                 </Dialog.Header>
                 <Dialog.Body className="city-block-section">
                   <Dialog.Description>카드 정보를 입력하고 등록해 주세요.</Dialog.Description>
-                  <Field.Root name="cardName">
+                  <Field.Root name="cardName" invalid={!!fieldErrors.cardName}>
                     <Field.Label>카드 이름</Field.Label>
                     <Input
                       name="cardName"
@@ -241,8 +246,11 @@ export function PaymentMethods({
                       placeholder="예: 신한카드"
                       disabled={busy}
                     />
+                    {fieldErrors.cardName && (
+                      <Field.Error match>{fieldErrors.cardName}</Field.Error>
+                    )}
                   </Field.Root>
-                  <Field.Root name="cardNumber">
+                  <Field.Root name="cardNumber" invalid={!!fieldErrors.cardNumber}>
                     <Field.Label>카드 번호</Field.Label>
                     <Input
                       name="cardNumber"
@@ -253,8 +261,11 @@ export function PaymentMethods({
                       placeholder="4242 4242 4242 4242"
                       disabled={busy}
                     />
+                    {fieldErrors.cardNumber && (
+                      <Field.Error match>{fieldErrors.cardNumber}</Field.Error>
+                    )}
                   </Field.Root>
-                  <Field.Root name="cardExpiry">
+                  <Field.Root name="cardExpiry" invalid={!!fieldErrors.cardExpiry}>
                     <Field.Label>유효기간</Field.Label>
                     <Input
                       name="cardExpiry"
@@ -265,6 +276,9 @@ export function PaymentMethods({
                       placeholder="MM/YY"
                       disabled={busy}
                     />
+                    {fieldErrors.cardExpiry && (
+                      <Field.Error match>{fieldErrors.cardExpiry}</Field.Error>
+                    )}
                   </Field.Root>
                   {feedback}
                 </Dialog.Body>

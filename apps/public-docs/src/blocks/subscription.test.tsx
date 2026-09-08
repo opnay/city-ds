@@ -16,6 +16,40 @@ const subscription = {
 };
 
 describe('subscription blocks', () => {
+  it('keeps the free plan current when switching billing cycles', async () => {
+    const user = userEvent.setup();
+    const proceed = vi.fn();
+    render(
+      <PlanSelection
+        plans={examplePlans}
+        current={{ planId: 'free', cycle: 'monthly' }}
+        onContinue={proceed}
+      />,
+    );
+    await user.click(screen.getByRole('radio', { name: '연간' }));
+    expect(screen.getByText('현재 플랜')).toBeVisible();
+    expect(screen.getByRole('button', { name: '선택한 플랜으로 계속' })).toBeDisabled();
+    expect(proceed).not.toHaveBeenCalled();
+  });
+
+  it('shows registration errors beside fields and focuses the first invalid input', async () => {
+    const user = userEvent.setup();
+    render(<PaymentMethodsExample />);
+    await user.click(screen.getByRole('button', { name: '카드 추가' }));
+    await user.click(screen.getByRole('button', { name: '등록' }));
+    expect(screen.getByText('카드 이름을 입력해 주세요.')).toBeVisible();
+    expect(screen.getByLabelText('카드 이름')).toHaveFocus();
+    await user.type(screen.getByLabelText('카드 이름'), '테스트');
+    await user.type(screen.getByLabelText('카드 번호'), '4242424242424242');
+    await user.type(screen.getByLabelText('유효기간'), '1229');
+    await user.click(screen.getByRole('button', { name: '등록' }));
+    expect(screen.getByText('유효기간을 월/년 형식으로 입력해 주세요. 예: 12/29')).toBeVisible();
+    expect(screen.getByLabelText('유효기간')).toHaveFocus();
+    await user.clear(screen.getByLabelText('유효기간'));
+    await user.type(screen.getByLabelText('유효기간'), '12/29');
+    await user.click(screen.getByRole('button', { name: '등록' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
   it('exposes subscription blocks in navigation and links to their sources', async () => {
     const user = userEvent.setup();
     await renderDocs(['/blocks/plan-selection']);

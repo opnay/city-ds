@@ -28,12 +28,14 @@ const labels: Record<SubscriptionStatus, string> = {
 export function SubscriptionManagement({
   subscription,
   planSelectionHref,
+  onPlanSelection,
   loading = false,
   canManage = true,
   onAction,
 }: {
   subscription: SubscriptionSnapshot;
   planSelectionHref: string;
+  onPlanSelection?: () => void;
   loading?: boolean;
   canManage?: boolean;
   onAction: (action: SubscriptionAction) => Promise<void>;
@@ -139,9 +141,10 @@ export function SubscriptionManagement({
       <div className="city-block-actions">
         {status !== 'past-due' && (
           <Button
-            nativeButton={false}
-            role="link"
-            render={<a href={planSelectionHref} />}
+            nativeButton={!!onPlanSelection}
+            role={onPlanSelection ? 'button' : 'link'}
+            render={onPlanSelection ? <button type="button" /> : <a href={planSelectionHref} />}
+            onClick={onPlanSelection}
             variant={
               status === 'free' || status === 'active' || status === 'trial' ? 'primary' : 'outline'
             }
@@ -252,6 +255,7 @@ function SubscriptionScenario({ scenario }: { scenario: SubscriptionStatus }) {
           accessUntil: '2026년 10월 7일',
         }}
         planSelectionHref="/blocks/plan-selection"
+        onPlanSelection={() => toast.info('플랜 변경 버튼을 눌렀어요.')}
         onAction={async (action) => {
           setStatus(
             action === 'cancel'

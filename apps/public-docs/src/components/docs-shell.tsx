@@ -3,6 +3,7 @@ import { Collapsible } from '@base-ui/react/collapsible';
 import {
   ArrowRight,
   BookOpen,
+  CreditCard,
   LayoutGrid,
   Menu as MenuIcon,
   Moon,
@@ -33,7 +34,7 @@ import {
   getComponentDoc,
   getStaticDoc,
 } from '../docs/doc-catalog';
-import { USER_MANAGEMENT_MENU, getBlockDoc } from '../blocks/block-catalog';
+import { USER_MANAGEMENT_MENU, SUBSCRIPTION_MENU, getBlockDoc } from '../blocks/block-catalog';
 import type {
   BlockDocEntry,
   ComponentDocEntry,
@@ -213,18 +214,28 @@ function BlockNavigationLink({
   );
 }
 
-function UserManagementNavigation({ onNavigate }: { onNavigate: () => void }) {
+function BlockNavigationGroup({
+  onNavigate,
+  title,
+  items,
+  icon: Icon,
+}: {
+  onNavigate: () => void;
+  title: string;
+  items: readonly { title: string; slug: string }[];
+  icon: typeof UsersRound;
+}) {
   const pathname = useLocation().pathname;
   return (
     <Collapsible.Root
       key={pathname}
       render={<li />}
-      defaultOpen={USER_MANAGEMENT_MENU.some((item) => pathname === `/blocks/${item.slug}`)}
+      defaultOpen={items.some((item) => pathname === `/blocks/${item.slug}`)}
     >
       <Collapsible.Trigger className="city-docs-block-group-trigger">
         <span className="city-docs-nav-icon-label">
-          <UsersRound aria-hidden="true" size={16} strokeWidth={1.8} />
-          사용자 관리
+          <Icon aria-hidden="true" size={16} strokeWidth={1.8} />
+          {title}
         </span>
         <span className="city-docs-block-group-chevron" aria-hidden="true">
           ⌄
@@ -232,7 +243,7 @@ function UserManagementNavigation({ onNavigate }: { onNavigate: () => void }) {
       </Collapsible.Trigger>
       <Collapsible.Panel>
         <ul className="city-docs-block-submenu">
-          {USER_MANAGEMENT_MENU.map((item) => (
+          {items.map((item) => (
             <li key={item.title}>
               <BlockNavigationLink entry={getBlockDoc(item.slug)!} onNavigate={onNavigate} />
             </li>
@@ -367,7 +378,18 @@ function DocsNavigation({ mode, onModeChange, onNavigate, query, setQuery }: Doc
               <li>
                 <StaticNavigationLink entry={BLOCK_INDEX_DOC} onNavigate={handleNavigate} />
               </li>
-              <UserManagementNavigation onNavigate={handleNavigate} />
+              <BlockNavigationGroup
+                onNavigate={handleNavigate}
+                title="사용자 관리"
+                items={USER_MANAGEMENT_MENU}
+                icon={UsersRound}
+              />
+              <BlockNavigationGroup
+                onNavigate={handleNavigate}
+                title="구독·결제"
+                items={SUBSCRIPTION_MENU}
+                icon={CreditCard}
+              />
             </ul>
           </section>
         ) : (

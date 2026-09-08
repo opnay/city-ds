@@ -18,6 +18,36 @@ async function cardSource() {
 
 export const BLOCK_DOCS = [
   {
+    slug: 'plan-selection',
+    title: '플랜 선택',
+    description: '월간·연간 가격과 기능을 비교하고 다음 단계로 진행합니다.',
+    category: '구독·결제',
+    keywords: ['구독', '결제', '플랜', '요금', '해지'],
+    components: ['panel', 'selection-card', 'radio-group', 'segmented-control', 'badge', 'button'],
+    guidance:
+      'plans에 서버에서 확인한 가격·기능·적용 조건을 전달하고 onContinue에 결제 또는 변경 확인 화면을 연결합니다. current에는 현재 플랜과 결제 주기를 전달합니다. 가격 계산과 실제 청구는 소비 프로젝트가 담당합니다. 미리보기는 결제를 진행하지 않습니다.',
+    load: async () => ({
+      Component: (await import('./examples/plan-selection')).default,
+      source: (await import('./examples/plan-selection.tsx?raw')).default,
+      extraFiles: [await cardSource()],
+    }),
+  },
+  {
+    slug: 'subscription-management',
+    title: '구독 관리',
+    description: '무료·구독·체험·결제 실패·해지 예약 상태와 다음 행동을 구성합니다.',
+    category: '구독·결제',
+    keywords: ['구독', '결제', '플랜', '요금', '해지'],
+    components: ['panel', 'badge', 'button', 'alert-dialog', 'segmented-control'],
+    guidance:
+      'subscription에 서버의 최신 구독 상태·청구 금액·결제일·이용 종료일을 전달합니다. onChoosePlan은 플랜 선택 화면으로 연결하고 onAction은 해지 예약·예약 취소·결제 재시도를 처리합니다. 요청 성공 후 서버가 반환한 상태로 subscription을 갱신합니다. 재청구는 서버에서 중복 요청을 방지합니다. 예제의 무료 전환·자동 결제 정책과 날짜는 샘플이므로 실제 정책에 맞게 안내를 수정합니다.',
+    load: async () => ({
+      Component: (await import('./examples/subscription-management')).default,
+      source: (await import('./examples/subscription-management.tsx?raw')).default,
+      extraFiles: [await cardSource()],
+    }),
+  },
+  {
     slug: 'profile-management',
     title: '프로필 관리',
     description: '프로필 이미지, 표시 이름과 자기소개를 수정하고 저장·취소합니다.',
@@ -174,6 +204,11 @@ export const BLOCK_DOCS = [
     }),
   },
 ] as const satisfies readonly BlockDocEntry[];
+
+export const SUBSCRIPTION_MENU = [
+  { title: '플랜 선택', slug: 'plan-selection' },
+  { title: '구독 관리', slug: 'subscription-management' },
+] as const;
 
 export const USER_MANAGEMENT_MENU = [
   { title: '프로필 관리', slug: 'profile-management' },

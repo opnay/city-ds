@@ -42,15 +42,10 @@ export const ResponsiveFilters: Story = {
           </Button>
         }
       >
-        <Input
-          aria-label="Search projects"
-          className="w-full sm:w-72"
-          placeholder="Search…"
-          size="sm"
-        />
+        <Input aria-label="Search projects" placeholder="Search…" size="sm" />
         <Select.Root defaultValue="all" items={statusItems} size="sm">
           <Select.Label className="city-sr-only">Project status</Select.Label>
-          <Select.Trigger className="w-full sm:w-40">
+          <Select.Trigger>
             <Select.Value />
             <Select.Icon />
           </Select.Trigger>

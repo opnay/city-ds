@@ -666,6 +666,18 @@ export const COMPONENT_DOCS = [
     slug: 'filter-bar',
     title: 'FilterBar',
   },
+  {
+    category: 'Data display',
+    description: '이름과 값을 의미 있는 목록으로 묶고 가로·세로로 배치합니다.',
+    importPath: '@opnay/city-ds-react/data-list',
+    keywords: ['데이터 목록', '정보', '이름', '값', 'dl', 'dt', 'dd'],
+    load: () => import('./components/data-list/index.mdx'),
+    related: ['table', 'panel'],
+    selectionGuidance:
+      '한 대상의 이름·값 정보에 사용하십시오. 여러 레코드의 열을 비교하려면 Table을 사용하십시오.',
+    slug: 'data-list',
+    title: 'DataList',
+  },
 ] as const satisfies readonly ComponentDocEntry[];
 
 export type ComponentSlug = (typeof COMPONENT_DOCS)[number]['slug'];

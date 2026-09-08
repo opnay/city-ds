@@ -14,19 +14,23 @@ export function BlockCatalog() {
       eyebrow="Blocks"
       description="여러 컴포넌트를 조합한 실사용 화면입니다. 동작을 확인하고 코드를 가져가 프로젝트에 맞게 수정하십시오."
     >
-      <h2 className="city-text-section-title">사용자 관리</h2>
-      <div className="city-docs-component-grid">
-        {BLOCK_DOCS.filter((entry) => entry.category === '사용자 관리').map((entry) => (
-          <Link key={entry.slug} to="/blocks/$slug" params={{ slug: entry.slug }}>
-            <span>
-              <span className="city-text-caption">{entry.category}</span>
-              <strong>{entry.title}</strong>
-              <span className="city-text-supporting">{entry.description}</span>
-            </span>
-            <ArrowRight aria-hidden="true" size={16} />
-          </Link>
-        ))}
-      </div>
+      {['사용자 관리', '구독·결제'].map((category) => (
+        <section key={category}>
+          <h2 className="city-text-section-title">{category}</h2>
+          <div className="city-docs-component-grid">
+            {BLOCK_DOCS.filter((entry) => entry.category === category).map((entry) => (
+              <Link key={entry.slug} to="/blocks/$slug" params={{ slug: entry.slug }}>
+                <span>
+                  <span className="city-text-caption">{entry.category}</span>
+                  <strong>{entry.title}</strong>
+                  <span className="city-text-supporting">{entry.description}</span>
+                </span>
+                <ArrowRight aria-hidden="true" size={16} />
+              </Link>
+            ))}
+          </div>
+        </section>
+      ))}
     </GuidePage>
   );
 }
@@ -44,6 +48,8 @@ export function BlockPage({
       description={entry.description}
     >
       <ExampleFrame
+        key={entry.slug}
+        optionAxes={entry.optionAxes}
         featuredTitle="미리보기"
         previewLayout="wide"
         example={{
@@ -51,6 +57,7 @@ export function BlockPage({
           title: '미리보기',
           description: '화면에서 동작을 확인하고 아래 구현 코드를 복사하십시오.',
           Component,
+          configurable: !!entry.optionAxes?.length,
           files: [
             { filename: `${entry.slug}.tsx`, source, language: 'tsx' },
             { filename: 'blocks.css', source: blockStyles, language: 'css' },

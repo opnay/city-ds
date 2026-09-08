@@ -300,3 +300,95 @@
     justify-self: end;
   }
 }
+
+.city-block-form.city-block-plan-selection {
+  max-width: 48rem;
+}
+.city-block-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--city-space-4);
+}
+.city-block-plan-content {
+  display: grid;
+  align-content: start;
+  gap: var(--city-space-3);
+  overflow-wrap: anywhere;
+}
+.city-block-plan-content > * {
+  margin: 0;
+}
+.city-block-plan-features {
+  display: grid;
+  gap: var(--city-space-2);
+  padding-inline-start: var(--city-space-4);
+  list-style: disc;
+}
+.city-block-subscription-details {
+  display: grid;
+  gap: var(--city-space-4);
+  margin: 0;
+}
+.city-block-subscription-details > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: var(--city-space-4);
+  align-items: start;
+}
+.city-block-subscription-details dt {
+  color: var(--city-color-muted-foreground);
+}
+.city-block-subscription-details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.city-block-billing-cycle {
+  width: fit-content;
+  justify-self: start;
+}
+.city-block-plan-content h4 {
+  margin: 0;
+}
+
+.city-block-plan-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--city-space-1);
+}
+.city-block-plan-price > p {
+  margin: 0;
+}
+.city-block-payment-method {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--city-space-4);
+}
+.city-block-payment-method h4,
+.city-block-payment-method p {
+  margin: 0;
+}
+.city-block-payment-method > .city-block-section {
+  width: auto;
+  flex: 1 1 12rem;
+  gap: var(--city-space-1);
+}
+.city-block-form.city-block-billing {
+  max-width: 48rem;
+}
+.city-block-payment-table {
+  min-width: 42rem;
+}
+.city-block-plan-notices {
+  display: grid;
+  gap: var(--city-space-2);
+  margin: 0;
+  padding-block-start: var(--city-space-4);
+  padding-inline-start: var(--city-space-4);
+  border-top: 1px solid var(--city-color-border);
+  color: var(--city-color-muted-foreground);
+  list-style: disc;
+}

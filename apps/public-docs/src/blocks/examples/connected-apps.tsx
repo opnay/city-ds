@@ -1,7 +1,6 @@
 import { DataList } from '@opnay/city-ds-react/data-list';
 import { useRef, useState } from 'react';
 import { Button } from '@opnay/city-ds-react/button';
-import { Badge } from '@opnay/city-ds-react/badge';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
 import { BlockCard } from './block-card';
 import { AccountActionDialog } from './user-management-shared';
@@ -58,31 +57,14 @@ export function ConnectedApps({
       ) : (
         <ul className="city-block-list">
           {apps.map((app) => (
-            <li key={app.id} className="city-block-section">
-              <div className="city-block-label-row">
+            <li key={app.id} className="grid min-w-0 gap-2">
+              <div className="flex items-center justify-between gap-3">
                 <strong className="break-all">{app.name}</strong>
-                <Badge appearance="subtle">연결됨</Badge>
-              </div>
-              <DataList.Root density="compact">
-                <DataList.Item>
-                  <DataList.Label>허용한 권한</DataList.Label>
-                  <DataList.Value>
-                    <ul className="m-0 list-disc pl-4">
-                      {app.permissions.map((permission) => (
-                        <li key={permission}>{permission}</li>
-                      ))}
-                    </ul>
-                  </DataList.Value>
-                </DataList.Item>
-                <DataList.Item>
-                  <DataList.Label>연결일</DataList.Label>
-                  <DataList.Value>{app.connectedAt}</DataList.Value>
-                </DataList.Item>
-              </DataList.Root>
-              {canManage && (
-                <div className="city-block-actions">
+                {canManage && (
                   <Button
-                    variant="outline"
+                    variant="ghost"
+                    size="sm"
+                    className="shrink-0"
                     aria-label={`${app.name} 연결 해제`}
                     onClick={() => {
                       setSelected(app);
@@ -91,8 +73,24 @@ export function ConnectedApps({
                   >
                     연결 해제
                   </Button>
-                </div>
-              )}
+                )}
+              </div>
+              <DataList.Root density="compact" className="[--city-data-list-label-width:5rem]">
+                <DataList.Item className="grid-cols-[5rem_minmax(0,1fr)] py-0.5">
+                  <DataList.Label>허용한 권한</DataList.Label>
+                  <DataList.Value>
+                    <ul className="m-0 flex list-none flex-wrap gap-x-3 gap-y-1 p-0">
+                      {app.permissions.map((permission) => (
+                        <li key={permission}>{permission}</li>
+                      ))}
+                    </ul>
+                  </DataList.Value>
+                </DataList.Item>
+                <DataList.Item className="grid-cols-[5rem_minmax(0,1fr)] py-0.5">
+                  <DataList.Label>연결일</DataList.Label>
+                  <DataList.Value>{app.connectedAt}</DataList.Value>
+                </DataList.Item>
+              </DataList.Root>
             </li>
           ))}
         </ul>

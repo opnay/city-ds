@@ -358,7 +358,7 @@ export const BLOCK_DOCS = [
     description: '외부 앱에 허용한 권한과 연결일을 확인하고 접근을 해제합니다.',
     category: '보안',
     keywords: ['앱', '연결', 'OAuth', '권한', '해제'],
-    components: ['data-list', 'panel', 'badge', 'button', 'alert-dialog', 'skeleton'],
+    components: ['data-list', 'panel', 'button', 'alert-dialog', 'skeleton'],
     guidance:
       'apps에 외부 앱의 이름, 허용한 권한과 연결일을 전달합니다. 소셜 로그인 연결과 달리 계정 데이터에 접근하는 앱을 관리합니다. onDisconnect는 서버에서 접근·갱신 토큰을 폐기하고 성공 후 소비자가 목록을 갱신합니다. 이미 전달된 데이터의 삭제를 보장하지 않으므로 해제 영향 안내를 유지하십시오. loading·error·onRetry는 조회 상태, canManage는 관리 권한입니다. 미리보기는 외부 앱에 요청하지 않습니다.',
     load: async () => ({

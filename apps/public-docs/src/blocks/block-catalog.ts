@@ -23,7 +23,18 @@ export const BLOCK_DOCS = [
     description: '카드를 추가하고 기본 결제 수단을 변경하거나 등록한 카드를 삭제합니다.',
     category: '구독·결제',
     keywords: ['결제', '카드', '수단', '기본', '등록', '삭제'],
-    components: ['panel', 'badge', 'button', 'dialog', 'alert', 'empty-state', 'skeleton', 'toast'],
+    components: [
+      'panel',
+      'badge',
+      'button',
+      'dialog',
+      'field',
+      'input',
+      'alert',
+      'empty-state',
+      'skeleton',
+      'toast',
+    ],
     optionAxes: [
       {
         name: 'scenario',
@@ -33,7 +44,7 @@ export const BLOCK_DOCS = [
       },
     ],
     guidance:
-      'methods에는 마스킹된 결제 수단만 전달합니다. onAdd는 결제 제공사의 등록 화면을 연결하고, onSetDefault와 onRemove는 서버 요청 성공 후 methods를 갱신합니다. 기본 카드는 다른 카드를 기본으로 설정한 뒤 삭제하는 예제 정책입니다. 실제 삭제 가능 여부와 소유권은 서버에서 검증합니다. loading은 초기 조회, canManage는 관리 권한입니다. 미리보기의 카드 추가는 가상 카드를 추가하며 error 옵션은 변경 요청 실패를 재현합니다.',
+      'methods에는 마스킹된 결제 수단만 전달합니다. 등록 폼 제출 시 onAdd에 입력값을 전달하고, onSetDefault와 onRemove는 서버 요청 성공 후 methods를 갱신합니다. 기본 카드는 다른 카드를 기본으로 설정한 뒤 삭제하는 예제 정책입니다. 실제 삭제 가능 여부와 소유권은 서버에서 검증합니다. loading은 초기 조회, canManage는 관리 권한입니다. 등록 폼은 흐름을 확인하는 예제입니다. 서비스에서는 결제 제공사의 보안 입력 및 토큰화 흐름으로 교체합니다. 미리보기에서는 테스트 번호 4242 4242 4242 4242를 사용할 수 있으며 입력값 중 이름·마지막 네 자리·유효기간만 목록에 남습니다. error 옵션은 변경 요청 실패를 재현합니다.',
     load: async () => ({
       Component: (await import('./examples/payment-methods')).default,
       source: (await import('./examples/payment-methods.tsx?raw')).default,
@@ -49,6 +60,7 @@ export const BLOCK_DOCS = [
     components: [
       'panel',
       'data-table-region',
+      'scroll-area',
       'table',
       'badge',
       'empty-state',

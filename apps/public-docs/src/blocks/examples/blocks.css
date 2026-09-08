@@ -379,6 +379,9 @@
 .city-block-form.city-block-billing {
   max-width: 48rem;
 }
+.city-block-payment-table {
+  min-width: 42rem;
+}
 .city-block-plan-notices {
   display: grid;
   gap: var(--city-space-2);

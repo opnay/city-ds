@@ -45,7 +45,11 @@ describe('subscription blocks', () => {
     await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: '삭제' }));
     expect(screen.queryByRole('heading', { name: '신한카드 · 1234' })).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: '카드 추가' }));
-    expect(screen.getByRole('heading', { name: '예제 카드 · 0003' })).toBeVisible();
+    await user.type(screen.getByLabelText('카드 이름'), '테스트 카드');
+    await user.type(screen.getByLabelText('카드 번호'), '4242424242424242');
+    await user.type(screen.getByLabelText('유효기간'), '12/29');
+    await user.click(screen.getByRole('button', { name: '등록' }));
+    expect(screen.getByRole('heading', { name: '테스트 카드 · 4242' })).toBeVisible();
   });
 
   it('preserves the payment method and confirmation on failure', async () => {
@@ -64,9 +68,14 @@ describe('subscription blocks', () => {
     const add = vi.fn(() => new Promise<void>(() => {}));
     const props = { methods: exampleMethods, onAdd: add, onSetDefault: vi.fn(), onRemove: vi.fn() };
     const { rerender } = render(<PaymentMethods {...props} />);
-    await user.dblClick(screen.getByRole('button', { name: '카드 추가' }));
+    await user.click(screen.getByRole('button', { name: '카드 추가' }));
+    expect(add).not.toHaveBeenCalled();
+    await user.type(screen.getByLabelText('카드 이름'), '테스트 카드');
+    await user.type(screen.getByLabelText('카드 번호'), '4242424242424242');
+    await user.type(screen.getByLabelText('유효기간'), '12/29');
+    await user.dblClick(screen.getByRole('button', { name: '등록' }));
     expect(add).toHaveBeenCalledTimes(1);
-    expect(screen.getByRole('button', { name: '현대카드 5678 삭제' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: '등록 중…' })).toBeDisabled();
     rerender(<PaymentMethods key="restricted" {...props} canManage={false} />);
     expect(screen.getByRole('button', { name: '카드 추가' })).toBeDisabled();
   });
@@ -112,7 +121,7 @@ describe('subscription blocks', () => {
     await user.click(screen.getByRole('radio', { name: 'PRO' }));
     await user.click(screen.getByText('연간', { exact: true }));
     expect(screen.getByText('연 290,000원')).toBeVisible();
-    expect(screen.getByText('(월 약 4,833원 절약)')).toBeVisible();
+    expect(screen.getByText('(월간보다 연 16% 절약)')).toBeVisible();
     expect(proceed).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: '선택한 플랜으로 계속' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('다시 시도');

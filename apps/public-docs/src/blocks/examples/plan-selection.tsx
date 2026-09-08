@@ -35,7 +35,7 @@ export const examplePlans: SubscriptionPlan[] = [
     description: '팀과 함께 작업할 때',
     features: ['프로젝트 20개', '멤버 5명', '이메일 지원'],
     prices: { monthly: '월 29,000원', yearly: '연 290,000원' },
-    yearlySavings: '월 약 4,833원 절약',
+    yearlySavings: `월간보다 연 ${Math.floor((1 - 290000 / (29000 * 12)) * 100)}% 절약`,
   },
 ];
 

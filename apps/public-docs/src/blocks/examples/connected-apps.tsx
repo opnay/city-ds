@@ -1,3 +1,4 @@
+import { DataList } from '@opnay/city-ds-react/data-list';
 import { useRef, useState } from 'react';
 import { Button } from '@opnay/city-ds-react/button';
 import { Badge } from '@opnay/city-ds-react/badge';
@@ -65,26 +66,26 @@ export function ConnectedApps({
                 <Badge appearance="subtle">연결됨</Badge>
               </div>
               <p className="city-block-status">{app.description}</p>
-              <dl className="city-block-subscription-details">
-                <div>
-                  <dt>허용한 권한</dt>
-                  <dd>
+              <DataList.Root density="compact">
+                <DataList.Item>
+                  <DataList.Label>허용한 권한</DataList.Label>
+                  <DataList.Value>
                     <ul className="m-0 list-disc pl-4">
                       {app.permissions.map((permission) => (
                         <li key={permission}>{permission}</li>
                       ))}
                     </ul>
-                  </dd>
-                </div>
-                <div>
-                  <dt>연결일</dt>
-                  <dd>{app.connectedAt}</dd>
-                </div>
-                <div>
-                  <dt>최근 사용</dt>
-                  <dd>{app.lastUsedAt}</dd>
-                </div>
-              </dl>
+                  </DataList.Value>
+                </DataList.Item>
+                <DataList.Item>
+                  <DataList.Label>연결일</DataList.Label>
+                  <DataList.Value>{app.connectedAt}</DataList.Value>
+                </DataList.Item>
+                <DataList.Item>
+                  <DataList.Label>최근 사용</DataList.Label>
+                  <DataList.Value>{app.lastUsedAt}</DataList.Value>
+                </DataList.Item>
+              </DataList.Root>
               {canManage && (
                 <div className="city-block-actions">
                   <Button

@@ -116,7 +116,7 @@ export const BLOCK_DOCS = [
     description: '무료·구독·체험·결제 실패·해지 예약 상태와 다음 행동을 구성합니다.',
     category: '구독·결제',
     keywords: ['구독', '결제', '플랜', '요금', '해지'],
-    components: ['panel', 'badge', 'button', 'dialog', 'alert', 'skeleton', 'toast'],
+    components: ['data-list', 'panel', 'badge', 'button', 'dialog', 'alert', 'skeleton', 'toast'],
     guidance:
       'subscription에 서버의 최신 구독 상태·청구 금액·결제일·이용 종료일을 전달합니다. 미리보기의 플랜 선택·변경 버튼은 onPlanSelection 더미 콜백으로 처리합니다. 소비 앱은 planSelectionHref로 이동 경로를 연결하고 onAction은 해지 예약·예약 취소·결제 재시도를 처리합니다. loading과 canManage로 조회 및 권한 상태를 표현합니다. 요청 성공 후 서버가 반환한 상태로 subscription을 갱신합니다. 재청구는 서버에서 중복 요청을 방지합니다. 예제의 무료 전환·자동 결제 정책과 날짜는 샘플이므로 실제 정책에 맞게 안내를 수정합니다.',
     load: async () => ({
@@ -358,7 +358,7 @@ export const BLOCK_DOCS = [
     description: '외부 앱에 허용한 권한과 최근 사용을 확인하고 접근을 해제합니다.',
     category: '보안',
     keywords: ['앱', '연결', 'OAuth', '권한', '해제'],
-    components: ['panel', 'badge', 'button', 'alert-dialog', 'skeleton'],
+    components: ['data-list', 'panel', 'badge', 'button', 'alert-dialog', 'skeleton'],
     guidance:
       'apps에 외부 앱의 허용 범위와 사용 내역을 전달합니다. 소셜 로그인 연결과 달리 계정 데이터에 접근하는 앱을 관리합니다. onDisconnect는 서버에서 접근·갱신 토큰을 폐기하고 성공 후 소비자가 목록을 갱신합니다. 이미 전달된 데이터의 삭제를 보장하지 않으므로 해제 영향 안내를 유지하십시오. loading·error·onRetry는 조회 상태, canManage는 관리 권한입니다. 미리보기는 외부 앱에 요청하지 않습니다.',
     load: async () => ({

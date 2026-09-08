@@ -17,6 +17,7 @@ import { Route as ComponentsRouteImport } from './routes/components'
 import { Route as FoundationsRouteImport } from './routes/foundations'
 import { Route as GettingStartedRouteImport } from './routes/getting-started'
 import { Route as PatternsRouteImport } from './routes/patterns'
+import { Route as UxWritingRouteImport } from './routes/ux-writing'
 import { Route as BlocksIndexRouteImport } from './routes/blocks.index'
 import { Route as BlocksSlugRouteImport } from './routes/blocks.$slug'
 import { Route as ComponentsIndexRouteImport } from './routes/components.index'
@@ -62,6 +63,11 @@ const PatternsRoute = PatternsRouteImport.update({
   path: '/patterns',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UxWritingRoute = UxWritingRouteImport.update({
+  id: '/ux-writing',
+  path: '/ux-writing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlocksIndexRoute = BlocksIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/foundations': typeof FoundationsRoute
   '/getting-started': typeof GettingStartedRoute
   '/patterns': typeof PatternsRoute
+  '/ux-writing': typeof UxWritingRoute
   '/blocks/$slug': typeof BlocksSlugRoute
   '/components/$slug': typeof ComponentsSlugRoute
   '/blocks/': typeof BlocksIndexRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/foundations': typeof FoundationsRoute
   '/getting-started': typeof GettingStartedRoute
   '/patterns': typeof PatternsRoute
+  '/ux-writing': typeof UxWritingRoute
   '/blocks/$slug': typeof BlocksSlugRoute
   '/components/$slug': typeof ComponentsSlugRoute
   '/blocks': typeof BlocksIndexRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/foundations': typeof FoundationsRoute
   '/getting-started': typeof GettingStartedRoute
   '/patterns': typeof PatternsRoute
+  '/ux-writing': typeof UxWritingRoute
   '/blocks/$slug': typeof BlocksSlugRoute
   '/components/$slug': typeof ComponentsSlugRoute
   '/blocks/': typeof BlocksIndexRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/foundations'
     | '/getting-started'
     | '/patterns'
+    | '/ux-writing'
     | '/blocks/$slug'
     | '/components/$slug'
     | '/blocks/'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/foundations'
     | '/getting-started'
     | '/patterns'
+    | '/ux-writing'
     | '/blocks/$slug'
     | '/components/$slug'
     | '/blocks'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/foundations'
     | '/getting-started'
     | '/patterns'
+    | '/ux-writing'
     | '/blocks/$slug'
     | '/components/$slug'
     | '/blocks/'
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   FoundationsRoute: typeof FoundationsRoute
   GettingStartedRoute: typeof GettingStartedRoute
   PatternsRoute: typeof PatternsRoute
+  UxWritingRoute: typeof UxWritingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -234,6 +247,13 @@ declare module '@tanstack/react-router' {
       path: '/patterns'
       fullPath: '/patterns'
       preLoaderRoute: typeof PatternsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ux-writing': {
+      id: '/ux-writing'
+      path: '/ux-writing'
+      fullPath: '/ux-writing'
+      preLoaderRoute: typeof UxWritingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blocks/': {
@@ -303,6 +323,7 @@ const rootRouteChildren: RootRouteChildren = {
   FoundationsRoute: FoundationsRoute,
   GettingStartedRoute: GettingStartedRoute,
   PatternsRoute: PatternsRoute,
+  UxWritingRoute: UxWritingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

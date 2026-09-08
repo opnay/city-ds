@@ -1,8 +1,11 @@
 import { useRef, useState } from 'react';
+import { toast } from '@opnay/city-ds-react/toast';
 import { Button } from '@opnay/city-ds-react/button';
 import { Badge } from '@opnay/city-ds-react/badge';
-import { AlertDialog } from '@opnay/city-ds-react/alert-dialog';
-import { SegmentedControl } from '@opnay/city-ds-react/segmented-control';
+import { Dialog } from '@opnay/city-ds-react/dialog';
+import { Alert } from '@opnay/city-ds-react/alert';
+import { Select } from '@opnay/city-ds-react/select';
+import { Skeleton } from '@opnay/city-ds-react/skeleton';
 import { BlockCard } from './block-card';
 import './blocks.css';
 
@@ -25,21 +28,25 @@ const labels: Record<SubscriptionStatus, string> = {
 
 export function SubscriptionManagement({
   subscription,
-  onChoosePlan,
+  planSelectionHref,
+  loading = false,
+  canManage = true,
   onAction,
 }: {
   subscription: SubscriptionSnapshot;
-  onChoosePlan: () => void;
+  planSelectionHref: string;
+  loading?: boolean;
+  canManage?: boolean;
   onAction: (action: SubscriptionAction) => Promise<void>;
 }) {
   const [confirm, setConfirm] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const lock = useRef(false);
-  const planButtonRef = useRef<HTMLButtonElement>(null);
+  const actionButtonRef = useRef<HTMLButtonElement>(null);
   const { status, plan, price, renewalDate, accessUntil } = subscription;
   async function run(action: SubscriptionAction) {
-    if (lock.current) return;
+    if (lock.current || loading || !canManage) return;
     lock.current = true;
     setBusy(true);
     setError('');
@@ -47,41 +54,108 @@ export function SubscriptionManagement({
       await onAction(action);
       setConfirm(false);
     } catch {
-      setError('처리하지 못했어요. 다시 시도해 주세요.');
+      setError('현재 상태는 유지했어요. 다시 시도해 주세요.');
     } finally {
       lock.current = false;
       setBusy(false);
     }
   }
+  const tone =
+    status === 'past-due'
+      ? 'destructive'
+      : status === 'trial' || status === 'canceling'
+        ? 'warning'
+        : 'neutral';
+  if (loading)
+    return (
+      <BlockCard title="구독 관리">
+        <div className="city-block-section" aria-busy="true" aria-label="구독 불러오는 중">
+          <Skeleton className="h-8 w-32" />
+          <Skeleton className="h-24 w-full" />
+        </div>
+      </BlockCard>
+    );
   return (
     <BlockCard title="구독 관리" description="현재 플랜과 다음 결제 일정을 확인해 주세요.">
-      <div className="city-block-split">
-        <strong>{plan}</strong>
-        <Badge>{labels[status]}</Badge>
-      </div>
-      <p className="city-text-subsection-title">{price}</p>
-      <p role="status">
-        {status === 'free'
-          ? '결제 없이 이용 중이에요.'
-          : status === 'canceling'
-            ? `${accessUntil}까지 이용할 수 있어요. 이후 무료 플랜으로 바뀌며 자동 결제하지 않아요.`
-            : status === 'past-due'
-              ? `결제를 완료하지 못했어요. ${accessUntil}까지 결제하면 계속 이용할 수 있어요.`
-              : status === 'trial'
-                ? `${accessUntil}에 체험이 끝나요. 해지하지 않으면 ${renewalDate}부터 표시된 금액으로 자동 결제해요.`
-                : `다음 결제일은 ${renewalDate}이에요.`}
-      </p>
-      {error && !confirm && <p role="alert">{error}</p>}
+      <dl className="city-block-subscription-details city-text-supporting">
+        <div>
+          <dt>현재 플랜</dt>
+          <dd>{plan}</dd>
+        </div>
+        <div>
+          <dt>상태</dt>
+          <dd>
+            <Badge tone={tone} appearance="subtle">
+              {labels[status]}
+            </Badge>
+          </dd>
+        </div>
+        <div>
+          <dt>{status === 'free' ? '이용 요금' : '결제 금액'}</dt>
+          <dd>{price}</dd>
+        </div>
+        {status !== 'free' && (
+          <div>
+            <dt>
+              {status === 'canceling' || status === 'past-due'
+                ? '이용 종료일'
+                : status === 'trial'
+                  ? '체험 종료일'
+                  : '다음 결제일'}
+            </dt>
+            <dd>{status === 'active' ? renewalDate : accessUntil}</dd>
+          </div>
+        )}
+      </dl>
+      {(status === 'trial' || status === 'canceling' || status === 'past-due') && (
+        <Alert.Root tone={tone} appearance="subtle">
+          <Alert.Title level={4}>
+            {status === 'past-due'
+              ? '결제를 완료하지 못했어요.'
+              : status === 'canceling'
+                ? '해지를 예약했어요.'
+                : '체험 종료 후 자동 결제해요.'}
+          </Alert.Title>
+          <Alert.Description>
+            {status === 'past-due'
+              ? `${accessUntil}까지 결제를 다시 시도해 주세요.`
+              : status === 'canceling'
+                ? `${accessUntil}까지 이용할 수 있어요. 이후 무료 플랜으로 바뀌며 자동 결제하지 않아요.`
+                : `체험 종료 전에 해지를 예약하지 않으면 ${renewalDate}부터 위 금액으로 자동 결제해요.`}
+          </Alert.Description>
+        </Alert.Root>
+      )}
+      {!canManage && (
+        <Alert.Root tone="info" appearance="subtle">
+          <Alert.Title level={4}>관리자만 구독을 변경할 수 있어요.</Alert.Title>
+          <Alert.Description>변경이 필요하면 관리자에게 요청해 주세요.</Alert.Description>
+        </Alert.Root>
+      )}
+      {error && !confirm && (
+        <Alert.Root tone="destructive" appearance="subtle">
+          <Alert.Title level={4}>변경하지 못했어요.</Alert.Title>
+          <Alert.Description>{error}</Alert.Description>
+        </Alert.Root>
+      )}
       <div className="city-block-actions">
         {status !== 'past-due' && (
-          <Button ref={planButtonRef} variant="outline" disabled={busy} onClick={onChoosePlan}>
+          <Button
+            nativeButton={false}
+            role="link"
+            render={<a href={planSelectionHref} />}
+            variant={
+              status === 'free' || status === 'active' || status === 'trial' ? 'primary' : 'outline'
+            }
+            disabled={busy || !canManage}
+          >
             {status === 'free' ? '플랜 선택' : '플랜 변경'}
           </Button>
         )}
         {status !== 'free' && (
           <Button
+            ref={actionButtonRef}
             variant={status === 'active' || status === 'trial' ? 'outline' : 'primary'}
-            disabled={busy}
+            disabled={busy || !canManage}
             onClick={() => {
               if (status === 'past-due') {
                 void run('retry');
@@ -107,7 +181,7 @@ export function SubscriptionManagement({
           </Button>
         )}
       </div>
-      <AlertDialog.Root
+      <Dialog.Root
         open={confirm}
         onOpenChange={(open) => {
           if (!busy) {
@@ -116,32 +190,43 @@ export function SubscriptionManagement({
           }
         }}
       >
-        <AlertDialog.Portal>
-          <AlertDialog.Backdrop />
-          <AlertDialog.Viewport>
-            <AlertDialog.Popup finalFocus={planButtonRef}>
-              <AlertDialog.Title>구독 해지를 예약할까요?</AlertDialog.Title>
-              <AlertDialog.Description>
-                {accessUntil}까지 이용할 수 있어요. 이후 무료 플랜으로 바뀌며 자동 결제하지 않아요.
-              </AlertDialog.Description>
-              {error && <p role="alert">{error}</p>}
-              <div className="city-block-actions">
-                <AlertDialog.Close render={<Button variant="outline" disabled={busy} />}>
+        <Dialog.Portal>
+          <Dialog.Backdrop />
+          <Dialog.Viewport>
+            <Dialog.Popup finalFocus={actionButtonRef} size="sm" scroll="body">
+              <Dialog.Header>
+                <Dialog.Title>구독 해지를 예약할까요?</Dialog.Title>
+              </Dialog.Header>
+              <Dialog.Body className="city-block-section">
+                <Dialog.Description>
+                  {accessUntil}까지 이용할 수 있어요. 이후 무료 플랜으로 바뀌며 자동 결제하지
+                  않아요.
+                </Dialog.Description>
+                {error && (
+                  <Alert.Root tone="destructive" appearance="subtle">
+                    <Alert.Title level={3}>해지를 예약하지 못했어요.</Alert.Title>
+                    <Alert.Description>{error}</Alert.Description>
+                  </Alert.Root>
+                )}
+              </Dialog.Body>
+              <Dialog.Footer>
+                <Dialog.Close render={<Button variant="outline" disabled={busy || !canManage} />}>
                   닫기
-                </AlertDialog.Close>
+                </Dialog.Close>
                 <Button
-                  disabled={busy}
+                  variant="destructive"
+                  disabled={busy || !canManage}
                   onClick={() => {
                     void run('cancel');
                   }}
                 >
                   {busy ? '처리 중…' : '해지 예약'}
                 </Button>
-              </div>
-            </AlertDialog.Popup>
-          </AlertDialog.Viewport>
-        </AlertDialog.Portal>
-      </AlertDialog.Root>
+              </Dialog.Footer>
+            </Dialog.Popup>
+          </Dialog.Viewport>
+        </Dialog.Portal>
+      </Dialog.Root>
     </BlockCard>
   );
 }
@@ -149,24 +234,38 @@ export function SubscriptionManagement({
 export default function SubscriptionManagementExample() {
   const [scenario, setScenario] = useState<SubscriptionStatus>('active');
   const [status, setStatus] = useState<SubscriptionStatus>('active');
-  const [message, setMessage] = useState('');
   return (
     <div className="city-block-section">
-      <SegmentedControl
-        aria-label="구독 예제 상태"
-        value={scenario}
-        onValueChange={(value) => {
-          setScenario(value);
-          setStatus(value);
-          setMessage('');
-        }}
-      >
-        {Object.entries(labels).map(([value, label]) => (
-          <SegmentedControl.Item key={value} value={value}>
-            {label}
-          </SegmentedControl.Item>
-        ))}
-      </SegmentedControl>
+      <div className="city-block-subscription-preview-control">
+        <Select.Root
+          items={labels}
+          value={status}
+          onValueChange={(value) => {
+            if (!value) return;
+            setScenario(value);
+            setStatus(value);
+          }}
+        >
+          <Select.Label>예제 상태</Select.Label>
+          <Select.Trigger>
+            <Select.Value />
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Positioner>
+              <Select.Popup>
+                <Select.List>
+                  {Object.entries(labels).map(([value, label]) => (
+                    <Select.Item key={value} value={value}>
+                      <Select.ItemText>{label}</Select.ItemText>
+                      <Select.ItemIndicator />
+                    </Select.Item>
+                  ))}
+                </Select.List>
+              </Select.Popup>
+            </Select.Positioner>
+          </Select.Portal>
+        </Select.Root>
+      </div>
       <SubscriptionManagement
         key={scenario}
         subscription={{
@@ -176,9 +275,7 @@ export default function SubscriptionManagementExample() {
           renewalDate: '2026년 10월 8일',
           accessUntil: '2026년 10월 7일',
         }}
-        onChoosePlan={() => {
-          window.location.assign('/blocks/plan-selection');
-        }}
+        planSelectionHref="/blocks/plan-selection"
         onAction={async (action) => {
           setStatus(
             action === 'cancel'
@@ -187,7 +284,7 @@ export default function SubscriptionManagementExample() {
                 ? 'trial'
                 : 'active',
           );
-          setMessage(
+          toast.success(
             action === 'cancel'
               ? '해지를 예약했어요.'
               : action === 'resume'
@@ -196,9 +293,6 @@ export default function SubscriptionManagementExample() {
           );
         }}
       />
-      <p role="status" className="city-block-status">
-        {message}
-      </p>
     </div>
   );
 }

@@ -45,6 +45,7 @@ describe('subscription blocks', () => {
     await user.click(screen.getByRole('radio', { name: 'Pro' }));
     await user.click(screen.getByText('연간', { exact: true }));
     expect(screen.getByText(/매년 290,000원을 한 번에/)).toBeVisible();
+    expect(proceed).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: '선택한 플랜으로 계속' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('다시 시도');
     await user.click(screen.getByRole('button', { name: '선택한 플랜으로 계속' }));
@@ -58,12 +59,12 @@ describe('subscription blocks', () => {
     render(
       <SubscriptionManagement
         subscription={subscription}
-        onChoosePlan={vi.fn()}
+        planSelectionHref="/blocks/plan-selection"
         onAction={action}
       />,
     );
     await user.click(screen.getByRole('button', { name: '해지 예약' }));
-    const dialog = screen.getByRole('alertdialog');
+    const dialog = screen.getByRole('dialog');
     expect(within(dialog).getByText(/2026년 10월 7일까지/)).toBeVisible();
     expect(action).not.toHaveBeenCalled();
     await user.click(within(dialog).getByRole('button', { name: '해지 예약' }));
@@ -77,7 +78,7 @@ describe('subscription blocks', () => {
     render(
       <SubscriptionManagement
         subscription={{ ...subscription, status: 'past-due' }}
-        onChoosePlan={vi.fn()}
+        planSelectionHref="/blocks/plan-selection"
         onAction={action}
       />,
     );
@@ -85,5 +86,49 @@ describe('subscription blocks', () => {
     expect(action).toHaveBeenCalledTimes(1);
     expect(action).toHaveBeenCalledWith('retry');
     expect(screen.getByRole('button', { name: '결제 중…' })).toBeDisabled();
+  });
+  it('uses a real link and returns focus to the cancellation trigger', async () => {
+    const user = userEvent.setup();
+    render(
+      <SubscriptionManagement
+        subscription={subscription}
+        planSelectionHref="/blocks/plan-selection"
+        onAction={vi.fn()}
+      />,
+    );
+    expect(screen.getByRole('link', { name: '플랜 변경' })).toHaveAttribute(
+      'href',
+      '/blocks/plan-selection',
+    );
+    const trigger = screen.getByRole('button', { name: '해지 예약' });
+    await user.click(trigger);
+    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: '닫기' }));
+    await vi.waitFor(() => expect(trigger).toHaveFocus());
+  });
+
+  it('shows loading and empty content without an enabled submit action', () => {
+    const props = { current: { planId: 'free', cycle: 'monthly' as const }, onContinue: vi.fn() };
+    const { rerender } = render(<PlanSelection {...props} plans={[]} loading />);
+    expect(screen.getByLabelText('플랜 불러오는 중')).toHaveAttribute('aria-busy', 'true');
+    rerender(<PlanSelection {...props} plans={[]} />);
+    expect(screen.getByText('선택할 수 있는 플랜이 없어요.')).toBeVisible();
+    expect(screen.queryByRole('button', { name: '선택한 플랜으로 계속' })).not.toBeInTheDocument();
+  });
+
+  it('explains permission restrictions and blocks mutations', async () => {
+    const user = userEvent.setup();
+    const action = vi.fn();
+    render(
+      <SubscriptionManagement
+        subscription={subscription}
+        planSelectionHref="/blocks/plan-selection"
+        onAction={action}
+        canManage={false}
+      />,
+    );
+    expect(screen.getByText('관리자만 구독을 변경할 수 있어요.')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: '해지 예약' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(action).not.toHaveBeenCalled();
   });
 });

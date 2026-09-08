@@ -1,8 +1,13 @@
 import { useId, useRef, useState } from 'react';
+import { toast } from '@opnay/city-ds-react/toast';
 import { Button } from '@opnay/city-ds-react/button';
 import { RadioGroup } from '@opnay/city-ds-react/radio-group';
 import { SelectionCard } from '@opnay/city-ds-react/selection-card';
 import { SegmentedControl } from '@opnay/city-ds-react/segmented-control';
+import { Alert } from '@opnay/city-ds-react/alert';
+import { Fieldset } from '@opnay/city-ds-react/fieldset';
+import { EmptyState } from '@opnay/city-ds-react/empty-state';
+import { Skeleton } from '@opnay/city-ds-react/skeleton';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { BlockCard } from './block-card';
 import './blocks.css';
@@ -43,7 +48,11 @@ export function PlanSelection({
   plans,
   current,
   onContinue,
+  loading = false,
+  canManage = true,
 }: {
+  loading?: boolean;
+  canManage?: boolean;
   plans: SubscriptionPlan[];
   current: { planId: string; cycle: BillingCycle };
   onContinue: (selection: { planId: string; cycle: BillingCycle }) => Promise<void>;
@@ -56,78 +65,136 @@ export function PlanSelection({
   const lock = useRef(false);
   const selected = plans.find((plan) => plan.id === planId);
   const unchanged = planId === current.planId && cycle === current.cycle;
+  async function submit() {
+    if (lock.current || !selected || unchanged || !canManage || loading) return;
+    lock.current = true;
+    setBusy(true);
+    setError('');
+    try {
+      await onContinue({ planId, cycle });
+    } catch {
+      setError('선택한 플랜은 유지했어요. 다시 시도해 주세요.');
+    } finally {
+      lock.current = false;
+      setBusy(false);
+    }
+  }
+  if (loading)
+    return (
+      <BlockCard title="플랜 선택">
+        <div aria-label="플랜 불러오는 중" aria-busy="true" className="city-block-section">
+          <Skeleton className="h-8 w-32" />
+          <Skeleton className="h-48 w-full" />
+        </div>
+      </BlockCard>
+    );
+  if (plans.length === 0)
+    return (
+      <BlockCard title="플랜 선택">
+        <EmptyState.Root>
+          <EmptyState.Title level={4}>선택할 수 있는 플랜이 없어요.</EmptyState.Title>
+          <EmptyState.Description>
+            제공 중인 플랜은 관리자에게 문의해 주세요.
+          </EmptyState.Description>
+        </EmptyState.Root>
+      </BlockCard>
+    );
   return (
-    <BlockCard title="플랜 선택" description="필요한 기능과 결제 주기를 선택해 주세요.">
-      <SegmentedControl
-        aria-label="결제 주기"
-        value={cycle}
-        onValueChange={(value) => {
-          setCycle(value);
-          setError('');
-        }}
-        disabled={busy}
-      >
-        <SegmentedControl.Item value="monthly">월간</SegmentedControl.Item>
-        <SegmentedControl.Item value="yearly">연간</SegmentedControl.Item>
-      </SegmentedControl>
-      <RadioGroup
-        aria-label="플랜"
-        value={planId}
-        onValueChange={(value) => {
-          setPlanId(value);
-          setError('');
-        }}
-        disabled={busy}
-        className="city-block-section"
-      >
-        {plans.map((plan) => (
-          <SelectionCard key={plan.id}>
-            <SelectionCard.Content>
-              <SelectionCard.Title id={`${id}-${plan.id}`}>{plan.name}</SelectionCard.Title>
-              <SelectionCard.Description id={`${id}-${plan.id}-description`}>
-                {plan.description}
-              </SelectionCard.Description>
-              <p id={`${id}-${plan.id}-price`} className="city-text-subsection-title">
-                {plan.prices[cycle]}
-              </p>
-              {plan.id === current.planId && cycle === current.cycle && <Badge>현재 플랜</Badge>}
-              <ul>
-                {plan.features.map((feature) => (
-                  <li key={feature}>{feature}</li>
-                ))}
-              </ul>
-            </SelectionCard.Content>
-            <RadioGroup.Control
-              value={plan.id}
-              aria-labelledby={`${id}-${plan.id}`}
-              aria-describedby={`${id}-${plan.id}-description ${id}-${plan.id}-price`}
-            />
-          </SelectionCard>
-        ))}
-      </RadioGroup>
+    <BlockCard
+      className="city-block-plan-selection"
+      title="플랜 선택"
+      description="필요한 기능과 결제 주기를 선택해 주세요."
+      render={
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            void submit();
+          }}
+        />
+      }
+    >
+      {!canManage && (
+        <Alert.Root tone="info" appearance="subtle">
+          <Alert.Title level={4}>관리자만 플랜을 변경할 수 있어요.</Alert.Title>
+          <Alert.Description>변경이 필요하면 관리자에게 요청해 주세요.</Alert.Description>
+        </Alert.Root>
+      )}
+      <Fieldset.Root appearance="plain" disabled={busy || !canManage}>
+        <Fieldset.Legend>결제 주기</Fieldset.Legend>
+        <SegmentedControl
+          className="justify-self-start"
+          name={`${id}-cycle`}
+          aria-label="결제 주기"
+          value={cycle}
+          onValueChange={(value) => {
+            setCycle(value);
+            setError('');
+          }}
+          disabled={busy || !canManage}
+        >
+          <SegmentedControl.Item value="monthly">월간</SegmentedControl.Item>
+          <SegmentedControl.Item value="yearly">연간</SegmentedControl.Item>
+        </SegmentedControl>
+      </Fieldset.Root>
+      <Fieldset.Root appearance="plain" disabled={busy || !canManage}>
+        <Fieldset.Legend>플랜</Fieldset.Legend>
+        <RadioGroup
+          name={`${id}-plan`}
+          aria-label="플랜"
+          value={planId}
+          onValueChange={(value) => {
+            setPlanId(value);
+            setError('');
+          }}
+          disabled={busy || !canManage}
+          className="city-block-plan-grid"
+        >
+          {plans.map((plan) => (
+            <SelectionCard key={plan.id}>
+              <SelectionCard.Content className="city-block-plan-content">
+                <div className="city-block-label-row">
+                  <SelectionCard.Title id={`${id}-${plan.id}`}>{plan.name}</SelectionCard.Title>
+                  {plan.id === current.planId && cycle === current.cycle && (
+                    <Badge appearance="outline">현재 플랜</Badge>
+                  )}
+                </div>
+                <SelectionCard.Description id={`${id}-${plan.id}-description`}>
+                  {plan.description}
+                </SelectionCard.Description>
+                <p id={`${id}-${plan.id}-price`} className="city-text-supporting">
+                  {plan.prices[cycle]}
+                </p>
+                <ul className="city-block-plan-features city-text-supporting">
+                  {plan.features.map((feature) => (
+                    <li key={feature}>{feature}</li>
+                  ))}
+                </ul>
+              </SelectionCard.Content>
+              <RadioGroup.Control
+                value={plan.id}
+                aria-labelledby={`${id}-${plan.id}`}
+                aria-describedby={`${id}-${plan.id}-description ${id}-${plan.id}-price`}
+              />
+            </SelectionCard>
+          ))}
+        </RadioGroup>
+      </Fieldset.Root>
       {selected && (
-        <p className="city-text-supporting" role="status">
+        <p id={`${id}-terms`} className="city-text-supporting" role="status">
           {selected.terms[cycle]}
         </p>
       )}
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <Alert.Root tone="destructive" appearance="subtle">
+          <Alert.Title level={4}>선택을 진행하지 못했어요.</Alert.Title>
+          <Alert.Description>{error}</Alert.Description>
+        </Alert.Root>
+      )}
       <div className="city-block-actions">
         <Button
-          disabled={busy || unchanged || !selected}
-          onClick={async () => {
-            if (lock.current || !selected || unchanged) return;
-            lock.current = true;
-            setBusy(true);
-            setError('');
-            try {
-              await onContinue({ planId, cycle });
-            } catch {
-              setError('선택을 진행하지 못했어요. 다시 시도해 주세요.');
-            } finally {
-              lock.current = false;
-              setBusy(false);
-            }
-          }}
+          type="submit"
+          aria-describedby={selected ? `${id}-terms` : undefined}
+          disabled={busy || unchanged || !selected || !canManage}
         >
           {busy ? '진행 중…' : '선택한 플랜으로 계속'}
         </Button>
@@ -137,21 +204,17 @@ export function PlanSelection({
 }
 
 export default function PlanSelectionExample() {
-  const [message, setMessage] = useState('');
   return (
     <div className="city-block-section">
       <PlanSelection
         plans={examplePlans}
         current={{ planId: 'free', cycle: 'monthly' }}
         onContinue={async ({ planId, cycle }) => {
-          setMessage(
+          toast.success(
             `${examplePlans.find((plan) => plan.id === planId)?.name} · ${cycle === 'monthly' ? '월간' : '연간'}을 선택했어요. 실제 결제는 진행하지 않아요.`,
           );
         }}
       />
-      <p className="city-block-status" role="status">
-        {message}
-      </p>
     </div>
   );
 }

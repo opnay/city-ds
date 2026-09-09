@@ -82,12 +82,15 @@ export const BLOCK_DOCS = [
       'badge',
       'button',
       'skeleton',
-      'stepper',
+      'tabs',
       'data-list',
       'timeline',
+      'drawer',
+      'alert',
+      'empty-state',
     ],
     guidance:
-      'records는 표시 순서대로 렌더링하며 예제는 최신순입니다. workflow·branch·commit은 선택 정보이며 검색에도 포함됩니다. 필터는 전달받은 목록에만 적용됩니다. 서버 검색과 페이지 이동은 소비자가 연결하십시오. onView(id)는 상세 페이지나 패널로 연결합니다. 미리보기에서는 선택한 실행 상세를 아래에 표시합니다. 시각은 Asia/Seoul 기준입니다.',
+      'records는 표시 순서대로 렌더링하며 예제는 최신순입니다. workflow·branch·commit은 선택 정보이며 검색에도 포함됩니다. 필터는 전달받은 목록에만 적용됩니다. 서버 검색과 페이지 이동은 소비자가 연결하십시오. onView(id)는 상세 페이지나 패널로 연결합니다. 미리보기에서는 Drawer로 상세를 열며 닫으면 선택한 실행으로 초점이 돌아갑니다. 시각은 Asia/Seoul 기준입니다.',
     load: async () => ({
       Component: (await import('./examples/deployment-history')).default,
       source: (await import('./examples/deployment-history.tsx?raw')).default,
@@ -118,9 +121,19 @@ export const BLOCK_DOCS = [
     category: '워크플로우',
     scope: '팀',
     keywords: ['워크플로우', 'CI', 'CD', '배포', '실행', '상세', '로그', '이벤트'],
-    components: ['panel', 'stepper', 'timeline', 'data-list', 'badge', 'button', 'skeleton'],
+    components: [
+      'panel',
+      'tabs',
+      'timeline',
+      'data-list',
+      'badge',
+      'button',
+      'skeleton',
+      'alert',
+      'empty-state',
+    ],
     guidance:
-      'deployment의 단계·소요 시간·로그·events는 서버에서 확인한 값입니다. Stepper는 단계 진행과 로그 선택, Timeline은 시간순 이벤트를 표현합니다. 이벤트의 stageId가 존재하는 단계와 일치하면 로그로 이동합니다. events를 생략하면 이벤트 영역을 숨깁니다. 서버에서 로그의 민감 값을 제거하고 조회 권한을 확인하십시오. 스트리밍·폴링·페이지 처리는 소비자가 연결합니다. 미리보기는 고정 샘플입니다.',
+      'deployment의 단계·소요 시간·로그·events는 서버에서 확인한 값입니다. Tabs는 작업별 로그와 이벤트 조회를 구분하고 Timeline은 날짜별 이벤트를 표현합니다. 목록에서는 Drawer로 상세를 열어 필터와 선택 맥락을 유지합니다. 이벤트의 stageId가 존재하는 단계와 일치하면 로그로 이동합니다. events를 생략하면 이벤트 영역을 숨깁니다. 서버에서 로그의 민감 값을 제거하고 조회 권한을 확인하십시오. 스트리밍·폴링·페이지 처리는 소비자가 연결합니다. 미리보기는 고정 샘플입니다.',
     load: async () => ({
       Component: (await import('./examples/deployment-details')).default,
       source: (await import('./examples/deployment-details.tsx?raw')).default,
@@ -146,7 +159,7 @@ export const BLOCK_DOCS = [
     category: '워크플로우',
     scope: '팀',
     keywords: ['워크플로우', 'CI', 'CD', '타임라인', '빌드', '실행', '이벤트', '재시도'],
-    components: ['panel', 'timeline', 'button', 'skeleton'],
+    components: ['panel', 'timeline', 'button', 'skeleton', 'alert', 'empty-state'],
     guidance:
       'events는 발생 순서대로 전달하십시오. 배열 순서를 그대로 표시하며 occurredAt은 시간대가 포함된 ISO 날짜입니다. 예제는 Asia/Seoul 시각을 표시합니다. 재시도는 기존 실패를 덮어쓰지 않고 새 이벤트로 추가합니다. running은 회전 아이콘, queued는 정적인 시계로 표현하며 모션 감소 설정을 따릅니다. stageId와 onViewLogs가 있으면 해당 단계의 로그 이동 버튼을 표시합니다. loading·error·onRetry로 조회 상태를 연결하십시오. 실제 실행·재시도·실시간 수신·권한 검증은 소비자가 담당합니다.',
     load: async () => ({
@@ -169,7 +182,7 @@ export const BLOCK_DOCS = [
     category: '프로젝트',
     scope: '팀',
     keywords: ['프로젝트', '생성', '팀원', '초대', '단계'],
-    components: ['stepper', 'panel', 'field', 'input', 'data-list', 'button'],
+    components: ['tabs', 'panel', 'field', 'input', 'data-list', 'button'],
     guidance:
       'onCreate에 정리된 프로젝트 이름과 선택 입력인 초대 이메일을 전달합니다. 성공 시에만 완료로 전환하고 실패 시 입력을 보존합니다. 권한, 이름 중복, 초대 정책은 서버에서 검증하고 중복 생성 방지 키를 요청에 연결하십시오. 미리보기는 컴포넌트 조합과 단계별 배치를 보여주는 예제입니다.',
     load: async () => ({
@@ -192,7 +205,7 @@ export const BLOCK_DOCS = [
     category: '프로젝트',
     scope: '팀',
     keywords: ['프로젝트', '배포', '환경', '운영', '검증'],
-    components: ['stepper', 'panel', 'radio-group', 'checkbox', 'data-list', 'button'],
+    components: ['tabs', 'panel', 'radio-group', 'checkbox', 'data-list', 'button'],
     guidance:
       'revision은 배포할 버전 식별자입니다. onValidate는 환경·버전의 설정과 권한 검증에 성공할 때 resolve하며, onDeploy는 배포 완료를 확인한 뒤 resolve합니다. 환경 또는 버전 변경 시 이전 검증은 사용할 수 없습니다. 실제 실행 직전 권한·검증 유효성을 서버에서 재확인하고, 같은 실행을 중복 생성하지 않도록 idempotency key와 상태 조회를 연결하십시오. 미리보기는 콜백만 모의 실행하며 실제 배포를 하지 않습니다.',
     load: async () => ({

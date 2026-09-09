@@ -495,11 +495,6 @@
 .city-block-deployment-table {
   min-width: 44rem;
 }
-.city-block-deployment-inspector {
-  display: grid;
-  min-width: 0;
-  gap: var(--city-space-6);
-}
 .city-block-log-section {
   display: grid;
   min-width: 0;
@@ -526,12 +521,79 @@
   outline: 2px solid var(--city-color-ring);
   outline-offset: 2px;
 }
-.city-block-deployment-inspector [aria-pressed='true'] {
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
+/* Workflow surfaces: the outer panel owns padding; drawers own their scroll area. */
+.city-block-workflow-detail {
+  container-type: inline-size;
 }
-@container city-deployment (min-width: 32rem) {
-  .city-block-deployment-inspector {
-    grid-template-columns: 10rem minmax(0, 1fr);
+.city-block-workflow-detail .city-block-deployment-metadata {
+  overflow-wrap: anywhere;
+}
+.city-block-workflow-drawer .city-block-workflow-detail {
+  max-width: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.city-block-job-tabs {
+  display: flex;
+  width: 100%;
+  height: auto;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.city-block-job-tabs [role='tab'] {
+  gap: var(--city-space-2);
+  height: auto;
+  min-height: var(--city-control-md);
+}
+.city-block-history-filter {
+  display: grid;
+  gap: var(--city-space-2);
+}
+.city-block-deployment-table td:first-child {
+  min-width: 14rem;
+}
+.city-block-deployment-table td:first-child > button {
+  margin-inline-start: calc(-1 * var(--city-space-2));
+}
+.city-block-event-groups {
+  display: grid;
+  gap: var(--city-space-6);
+}
+.city-block-event-group {
+  display: grid;
+  gap: var(--city-space-4);
+  min-width: 0;
+}
+.city-block-event-group h4 {
+  margin: 0;
+}
+.city-block-event-group [data-city-timeline-content] {
+  overflow-wrap: anywhere;
+}
+.city-block-event-heading {
+  align-items: baseline;
+  gap: var(--city-space-2);
+}
+.city-block-event-heading time {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+@container (min-width: 40rem) {
+  .city-block-workflow-detail .city-block-deployment-metadata {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
+
+.city-block-run-skeleton {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  align-items: center;
+  gap: var(--city-space-4);
+  padding: var(--city-space-4);
+}
+.city-block-event-skeleton {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--city-space-3);
 }

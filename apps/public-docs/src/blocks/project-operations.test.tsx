@@ -175,11 +175,11 @@ describe('Project operations', () => {
     const { rerender } = render(<DeploymentDetails deployment={exampleDeployments[0]!} />);
     expect(screen.getByLabelText('실행 로그 내용')).toHaveTextContent('PUBLIC_API_URL');
     expect(screen.getByRole('region', { name: '빌드 로그' })).toHaveTextContent('40초');
-    const failed = screen.getByRole('button', { name: '빌드' }).closest('li');
-    await user.click(screen.getByRole('button', { name: '배포' }));
+    const failed = screen.getByRole('tab', { name: '빌드 실패' });
+    await user.click(screen.getByRole('tab', { name: '배포 실행 전' }));
     expect(screen.getByText('아직 기록된 로그가 없습니다.')).toBeVisible();
     expect(screen.getByRole('button', { name: '로그 복사' })).toBeDisabled();
-    expect(failed).toHaveAttribute('aria-current', 'step');
+    expect(failed).toHaveTextContent('실패');
     rerender(<DeploymentDetails deployment={exampleDeployments[2]!} />);
     expect(screen.getByLabelText('실행 로그 내용')).toHaveTextContent('새 버전 적용');
     expect(document.querySelector('[aria-current="step"]')).toBeNull();

@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { filterDocumentPages } from '../docs/doc-catalog';
 import { BLOCK_GROUPS, getBlockDoc } from './block-catalog';
 import { DeploymentDetails } from './examples/deployment-details';
-import { DeploymentHistory } from './examples/deployment-history';
+import DeploymentHistoryExample, { DeploymentHistory } from './examples/deployment-history';
 import { exampleDeployments } from './examples/deployment-data';
 import { WorkflowEvents } from './examples/workflow-events';
 
@@ -86,12 +86,59 @@ describe('Workflow blocks', () => {
         }}
       />,
     );
-    const current = screen.getByRole('button', { name: '빌드' }).closest('li');
+    await user.click(screen.getByRole('tab', { name: '이벤트 이력' }));
     await user.click(screen.getByRole('button', { name: '설정 검증 완료 로그 보기' }));
     expect(screen.getByRole('region', { name: '설정 검증 로그' })).toHaveFocus();
     expect(screen.getByLabelText('실행 로그 내용')).toHaveTextContent('설정 검증 완료');
-    expect(current).toHaveAttribute('aria-current', 'step');
+    expect(screen.getByRole('tab', { name: '빌드 진행 중' })).toBeVisible();
+    await user.click(screen.getByRole('tab', { name: '이벤트 이력' }));
     expect(screen.queryByRole('button', { name: '외부 작업 로그 보기' })).not.toBeInTheDocument();
+  });
+
+  it('keeps date boundaries and supports keyboard job selection without changing status', async () => {
+    const user = userEvent.setup();
+    const run = exampleDeployments[0]!;
+    const { unmount } = render(
+      <WorkflowEvents
+        events={[
+          {
+            id: 'before',
+            title: '전날 요청',
+            description: '',
+            occurredAt: '2026-09-08T14:59:59Z',
+            status: 'queued',
+          },
+          {
+            id: 'after',
+            title: '다음날 실행',
+            description: '',
+            occurredAt: '2026-09-08T15:00:00Z',
+            status: 'running',
+          },
+        ]}
+      />,
+    );
+    expect(screen.getAllByRole('list', { name: '실행 이벤트' })).toHaveLength(2);
+    expect(screen.getByRole('region', { name: '2026년 9월 8일' })).toHaveTextContent('23:59:59');
+    expect(screen.getByRole('region', { name: '2026년 9월 9일' })).toHaveTextContent('00:00:00');
+    unmount();
+    render(<DeploymentDetails deployment={run} />);
+    screen.getByRole('tab', { name: '빌드 실패' }).focus();
+    await user.keyboard('{ArrowRight}');
+    expect(screen.getByRole('tab', { name: '배포 실행 전' })).toHaveFocus();
+    await user.keyboard('{Enter}');
+    expect(screen.getByText('아직 기록된 로그가 없습니다.')).toBeVisible();
+    expect(screen.getByRole('tab', { name: '빌드 실패' })).toHaveTextContent('실패');
+  });
+
+  it('returns focus to the selected run when the detail drawer closes', async () => {
+    const user = userEvent.setup();
+    render(<DeploymentHistoryExample />);
+    const trigger = screen.getByRole('button', { name: 'v1.2.1 dep_103 상세 보기' });
+    await user.click(trigger);
+    expect(await screen.findByRole('dialog')).toBeVisible();
+    await user.keyboard('{Escape}');
+    expect(trigger).toHaveFocus();
   });
 
   it('finds executions by branch and commit', async () => {

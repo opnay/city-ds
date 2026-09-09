@@ -12,7 +12,7 @@ export function BlockCatalog() {
     <GuidePage
       title="블록"
       eyebrow="Blocks"
-      description="여러 컴포넌트를 조합한 실사용 화면입니다. 동작을 확인하고 코드를 가져가 프로젝트에 맞게 수정하십시오."
+      description="디자인 시스템 컴포넌트를 조합한 화면입니다. 배치와 정보 위계를 살펴보고 필요한 구성을 프로젝트에 적용하십시오."
     >
       <div className="city-docs-block-catalog">
         {BLOCK_GROUPS.map(({ title, items }, index) => (

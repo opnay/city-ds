@@ -235,19 +235,15 @@ export function SubscriptionManagement({
 }
 
 export default function SubscriptionManagementExample({
-  scenario = 'active',
-}: {
-  scenario?: SubscriptionStatus;
-}) {
-  return <SubscriptionScenario key={scenario} scenario={scenario} />;
+  subscription = 'active',
+}: { subscription?: SubscriptionStatus } = {}) {
+  return <SubscriptionPreview key={subscription} initialStatus={subscription} />;
 }
-
-function SubscriptionScenario({ scenario }: { scenario: SubscriptionStatus }) {
-  const [status, setStatus] = useState<SubscriptionStatus>(scenario);
+function SubscriptionPreview({ initialStatus }: { initialStatus: SubscriptionStatus }) {
+  const [status, setStatus] = useState<SubscriptionStatus>(initialStatus);
   return (
     <div className="city-block-section">
       <SubscriptionManagement
-        key={scenario}
         subscription={{
           status,
           plan: status === 'free' ? 'Free' : 'Pro',
@@ -261,7 +257,7 @@ function SubscriptionScenario({ scenario }: { scenario: SubscriptionStatus }) {
           setStatus(
             action === 'cancel'
               ? 'canceling'
-              : scenario === 'trial' && action === 'resume'
+              : initialStatus === 'trial' && action === 'resume'
                 ? 'trial'
                 : 'active',
           );

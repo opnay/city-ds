@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
-import { Check } from 'lucide-react';
+import { Check, Clock, LoaderCircle } from 'lucide-react';
 import {
   Timeline,
-  TIMELINE_INDICATOR_VARIANTS,
+  TIMELINE_INDICATOR_APPEARANCES,
   type TimelineRootProps,
 } from '@opnay/city-ds-react';
 
@@ -96,10 +96,10 @@ export const SingleItem: Story = {
 export const CustomColors: Story = {
   render: () => (
     <div className="grid gap-8">
-      {TIMELINE_INDICATOR_VARIANTS.map((variant) => (
-        <section key={variant}>
-          <h3>{variant}</h3>
-          <Timeline.Root aria-label={`CSS colors ${variant}`}>
+      {TIMELINE_INDICATOR_APPEARANCES.map((appearance) => (
+        <section key={appearance}>
+          <h3>{appearance}</h3>
+          <Timeline.Root aria-label={`CSS colors ${appearance}`}>
             {[
               '#2563eb',
               'rgb(180, 83, 9)',
@@ -108,7 +108,7 @@ export const CustomColors: Story = {
               'oklch(0.527 0.154 150.069)',
             ].map((color) => (
               <Timeline.Item key={color}>
-                <Timeline.Indicator color={color} variant={variant} />
+                <Timeline.Indicator color={color} appearance={appearance} />
                 <Timeline.Connector />
                 <Timeline.Content>
                   <Timeline.Title>{color}</Timeline.Title>
@@ -119,5 +119,30 @@ export const CustomColors: Story = {
         </section>
       ))}
     </div>
+  ),
+};
+
+export const BuildProgress: Story = {
+  render: () => (
+    <Timeline.Root aria-label="Build progress">
+      <Timeline.Item>
+        <Timeline.Indicator>
+          <Clock />
+        </Timeline.Indicator>
+        <Timeline.Connector />
+        <Timeline.Content>
+          <Timeline.Title>Queued</Timeline.Title>
+        </Timeline.Content>
+      </Timeline.Item>
+      <Timeline.Item>
+        <Timeline.Indicator color="#2563eb">
+          <LoaderCircle className="motion-safe:animate-spin" />
+        </Timeline.Indicator>
+        <Timeline.Connector />
+        <Timeline.Content>
+          <Timeline.Title>Building</Timeline.Title>
+        </Timeline.Content>
+      </Timeline.Item>
+    </Timeline.Root>
   ),
 };

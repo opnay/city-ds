@@ -1,5 +1,5 @@
-import { Timeline, type TimelineIndicatorVariant } from '@opnay/city-ds-react/timeline';
-import { Check, X, TriangleAlert, LoaderCircle } from 'lucide-react';
+import { Timeline, type TimelineIndicatorAppearance } from '@opnay/city-ds-react/timeline';
+import { Check, Clock, X, TriangleAlert, LoaderCircle } from 'lucide-react';
 
 const builds = [
   {
@@ -7,7 +7,7 @@ const builds = [
     color: undefined,
     title: '빌드 대기 중',
     description: '실행할 작업 공간을 기다리고 있습니다.',
-    Icon: null,
+    Icon: Clock,
   },
   {
     id: '#124',
@@ -39,13 +39,13 @@ const builds = [
   },
 ] as const;
 
-function BuildHistory({ variant }: { variant: TimelineIndicatorVariant }) {
+function BuildHistory({ appearance }: { appearance: TimelineIndicatorAppearance }) {
   return (
-    <Timeline.Root aria-label={`빌드 이력 · ${variant}`} className="w-full">
+    <Timeline.Root aria-label={`빌드 이력 · ${appearance}`} className="w-full">
       {builds.map(({ id, color, title, description, Icon }) => (
         <Timeline.Item key={id}>
-          <Timeline.Indicator color={color} variant={variant}>
-            {Icon ? <Icon /> : undefined}
+          <Timeline.Indicator color={color} appearance={appearance}>
+            <Icon className={Icon === LoaderCircle ? 'motion-safe:animate-spin' : undefined} />
           </Timeline.Indicator>
           <Timeline.Connector />
           <Timeline.Content>
@@ -63,10 +63,10 @@ function BuildHistory({ variant }: { variant: TimelineIndicatorVariant }) {
 export default function TimelineBuildHistoryExample() {
   return (
     <div className="grid w-full gap-8">
-      {(['outline', 'subtle', 'solid'] as const).map((variant) => (
-        <section key={variant} className="grid gap-3">
-          <h3 className="m-0 text-sm font-medium">{variant}</h3>
-          <BuildHistory variant={variant} />
+      {(['outline', 'subtle', 'solid'] as const).map((appearance) => (
+        <section key={appearance} className="grid gap-3">
+          <h3 className="m-0 text-sm font-medium">{appearance}</h3>
+          <BuildHistory appearance={appearance} />
         </section>
       ))}
     </div>

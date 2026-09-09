@@ -44,7 +44,7 @@ export const pageData = {
         'HEX·rgb()·oklch()·색상 이름·var() 등 임의의 CSS 색상값입니다. outline은 테두리·아이콘, subtle은 아이콘·옅은 배경, solid는 배경·테두리에 적용합니다.',
     },
     {
-      name: 'Timeline.Indicator variant',
+      name: 'Timeline.Indicator appearance',
       type: "'solid' | 'subtle' | 'outline'",
       defaultValue: "'outline'",
       description:
@@ -103,7 +103,7 @@ export const pageData = {
       source: buildHistorySource,
       coverage: [
         { axis: 'color', values: ['default', 'hex', 'rgb()', 'var()'] },
-        { axis: 'variant', values: ['outline', 'subtle', 'solid'] },
+        { axis: 'appearance', values: ['outline', 'subtle', 'solid'] },
       ],
     },
     {

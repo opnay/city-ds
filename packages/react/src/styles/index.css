@@ -2,6 +2,7 @@
 @import './theme.css';
 
 @source '../**/*.{ts,tsx}';
+@source inline('motion-safe:animate-spin');
 
 :root,
 [data-theme='light'] {

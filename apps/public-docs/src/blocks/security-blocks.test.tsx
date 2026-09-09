@@ -286,7 +286,7 @@ describe('Security block flows', () => {
     const user = userEvent.setup();
     render(<SecurityActivity events={exampleSecurityEvents} />);
     await user.click(screen.getByRole('combobox', { name: '활동 결과' }));
-    await user.click(screen.getByRole('option', { name: '실패' }));
+    await user.click(await screen.findByRole('option', { name: '실패' }));
     expect(screen.getByText('활동 1건')).toBeVisible();
     await user.type(screen.getByRole('searchbox', { name: '보안 활동 검색' }), 'macOS');
     expect(screen.getByText('일치하는 보안 활동이 없습니다.')).toBeVisible();

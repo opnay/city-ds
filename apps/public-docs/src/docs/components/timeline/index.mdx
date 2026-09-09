@@ -1,0 +1,23 @@
+import { pageData } from './page-data';
+
+<ComponentReference data={pageData} />
+
+## 사용 기준
+
+Timeline은 활동 기록·변경 이력·배송 이력처럼 시간순 이벤트를 읽는 데 사용하십시오.
+표시 순서는 전달한 children의 순서이며, 자동 정렬이나 현재 단계 선택은 제공하지 않습니다.
+
+## 이벤트 구성
+
+Root 안에 Item을, 각 Item 안에 Indicator·Connector·Content를 직접 배치하십시오.
+Content에는 Title·Description·Time과 기존 Badge·Button·Panel 등을 자유롭게 조합하십시오.
+Time의 children은 그대로 표시됩니다. 별도의 date·format 속성은 제공하지 않습니다.
+긴 문구는 줄바꿈하며 두 가지 density를 지원합니다. 빈 상태·로딩·데이터 요청은 소비 화면에서 처리하십시오.
+
+## 접근성
+
+Root는 ol, Item은 li이며, 기본 목록 마커를 없앤 환경에서도 목록 의미를 유지합니다.
+Indicator와 Connector는 기본적으로 보조 기술에서 숨겨집니다. 상태·작성자처럼 의미 있는 정보는 Content에도 명시하십시오.
+표시 시간이 “오늘”이나 “방금 전”이라면 Time의 dateTime에 유효한 날짜·시간을 지정하십시오.
+Title의 기본 요소는 p입니다. heading으로 바꾸려면 페이지의 제목 위계에 맞추십시오.
+render를 사용해도 목록 구조와 내부 버튼·링크의 키보드 접근성을 유지하십시오.

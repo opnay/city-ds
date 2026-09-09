@@ -38,11 +38,10 @@ export const pageData = {
         '이벤트 지점입니다. 기본 점 대신 아이콘 등을 children으로 넣을 수 있습니다. 기본적으로 접근성 트리에서 숨겨집니다.',
     },
     {
-      name: 'Timeline.Indicator tone',
-      type: "'neutral' | 'info' | 'success' | 'warning' | 'destructive'",
-      defaultValue: "'neutral'",
+      name: 'Timeline.Indicator color',
+      type: "React.CSSProperties['color']",
       description:
-        '원의 상태 색상입니다. 실패에는 destructive를 사용하십시오. 상태는 색상 외에 아이콘과 내용에도 표시하십시오.',
+        '원의 배경과 테두리에 적용할 CSS 색상값입니다. HEX·rgb()·oklch()·색상 이름·var()를 그대로 받습니다. 아이콘 색상은 className 또는 style.color로 지정하십시오.',
     },
     {
       name: 'Timeline.Connector',
@@ -94,9 +93,7 @@ export const pageData = {
       Component: TimelineBuildHistoryExample,
       filename: 'build-history.tsx',
       source: buildHistorySource,
-      coverage: [
-        { axis: 'tone', values: ['neutral', 'info', 'success', 'warning', 'destructive'] },
-      ],
+      coverage: [{ axis: 'color', values: ['default', 'hex', 'rgb()', 'var()'] }],
     },
     {
       id: 'timeline-preview',

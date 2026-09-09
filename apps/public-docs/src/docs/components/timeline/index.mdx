@@ -17,7 +17,9 @@ Time의 children은 그대로 표시됩니다. 별도의 date·format 속성은 
 ## 접근성
 
 Root는 ol, Item은 li이며, 기본 목록 마커를 없앤 환경에서도 목록 의미를 유지합니다.
-Indicator의 tone은 원의 색상을 바꿉니다. 성공은 success, 실패는 destructive, 경고는 warning을 사용하십시오.
+Indicator의 color에는 HEX·rgb()·oklch()·CSS 색상 이름·var() 등 CSS 색상값을 직접 지정하십시오.
+배경과 테두리에 같은 색상을 적용하며, 생략하면 기존 모노크롬 스타일을 유지합니다.
+색상을 지정한 원의 기본 아이콘 색상은 흰색입니다. 밝은 배경에서는 className 또는 style.color로 대비를 맞추십시오.
 색상만으로 상태를 전달하지 말고 아이콘과 Title·Description에도 결과를 표시하십시오.
 Indicator와 Connector는 기본적으로 보조 기술에서 숨겨집니다. 상태·작성자처럼 의미 있는 정보는 Content에도 명시하십시오.
 표시 시간이 “오늘”이나 “방금 전”이라면 Time의 dateTime에 유효한 날짜·시간을 지정하십시오.

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 import { Check } from 'lucide-react';
-import { FEEDBACK_TONES, Timeline, type TimelineRootProps } from '@opnay/city-ds-react';
+import { Timeline, type TimelineRootProps } from '@opnay/city-ds-react';
 
 function History(props: Pick<TimelineRootProps, 'density'>) {
   return (
@@ -89,15 +89,21 @@ export const SingleItem: Story = {
   },
 };
 
-export const StatusColors: Story = {
+export const CustomColors: Story = {
   render: () => (
-    <Timeline.Root aria-label="Build status colors">
-      {FEEDBACK_TONES.map((tone) => (
-        <Timeline.Item key={tone}>
-          <Timeline.Indicator tone={tone} />
+    <Timeline.Root aria-label="CSS colors">
+      {[
+        '#2563eb',
+        'rgb(180, 83, 9)',
+        'var(--city-palette-red-700)',
+        'rebeccapurple',
+        'oklch(0.527 0.154 150.069)',
+      ].map((color) => (
+        <Timeline.Item key={color}>
+          <Timeline.Indicator color={color} />
           <Timeline.Connector />
           <Timeline.Content>
-            <Timeline.Title>{tone}</Timeline.Title>
+            <Timeline.Title>{color}</Timeline.Title>
           </Timeline.Content>
         </Timeline.Item>
       ))}

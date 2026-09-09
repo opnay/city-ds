@@ -128,7 +128,7 @@ Tailwind 숫자형 간격과 기본 타이포그래피 유틸리티도 같은 �
 - 날짜 · Dates: Calendar, DatePicker
 - 폼 구성 · Form structure: Field, Fieldset
 - 액션 · Actions: Button, Menu, Toolbar, ToggleGroup
-- 탐색 · Navigation: Breadcrumbs, Pagination, Tabs
+- 탐색 · Navigation: Breadcrumbs, Pagination, Stepper, Tabs
 - 오버레이 · Overlays: Dialog, AlertDialog, Drawer, Popover, Tooltip
 - 정보 표시 · Data display: Avatar, Badge, Kbd, Meter, Table, DataTableRegion
 - 피드백 · Feedback: Alert, Toast, Progress, Skeleton, EmptyState

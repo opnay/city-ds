@@ -56,9 +56,13 @@ export const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
   },
 );
 
+export const TIMELINE_INDICATOR_VARIANTS = ['solid', 'subtle', 'outline'] as const;
+export type TimelineIndicatorVariant = (typeof TIMELINE_INDICATOR_VARIANTS)[number];
+
 export interface TimelineIndicatorProps extends Omit<useRender.ComponentProps<'div'>, 'className'> {
   className?: string;
   color?: React.CSSProperties['color'];
+  variant?: TimelineIndicatorVariant;
 }
 
 export const TimelineIndicator = React.forwardRef<HTMLDivElement, TimelineIndicatorProps>(
@@ -66,6 +70,7 @@ export const TimelineIndicator = React.forwardRef<HTMLDivElement, TimelineIndica
     {
       children = <span className="size-1.5 rounded-full bg-current" />,
       color,
+      variant = 'outline',
       style,
       className,
       render,
@@ -83,13 +88,24 @@ export const TimelineIndicator = React.forwardRef<HTMLDivElement, TimelineIndica
         children,
         className: cn(
           'relative z-10 col-start-1 row-start-1 flex size-6 items-center justify-center rounded-full border [&_svg]:size-3.5',
-          color == null
-            ? 'border-city-border bg-city-background text-city-muted-foreground'
-            : 'text-city-palette-white',
+          variant === 'outline' && 'border-city-border bg-transparent text-city-muted-foreground',
+          variant === 'solid' && 'border-transparent bg-city-primary',
+          variant === 'solid' &&
+            (color == null ? 'text-city-primary-foreground' : 'text-city-palette-white'),
+          variant === 'subtle' && 'border-transparent bg-city-muted text-city-foreground',
           className,
         ),
         'data-city-timeline-indicator': '',
-        style: color == null ? style : { backgroundColor: color, borderColor: color, ...style },
+        'data-variant': variant,
+        style: {
+          ...(color != null &&
+            (variant === 'solid'
+              ? { backgroundColor: color, borderColor: color }
+              : variant === 'subtle'
+                ? { color, backgroundColor: 'color-mix(in srgb, currentColor 12%, transparent)' }
+                : { color, borderColor: color })),
+          ...style,
+        },
       },
     });
   },

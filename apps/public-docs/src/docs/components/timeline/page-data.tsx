@@ -41,7 +41,14 @@ export const pageData = {
       name: 'Timeline.Indicator color',
       type: "React.CSSProperties['color']",
       description:
-        '원의 배경과 테두리에 적용할 CSS 색상값입니다. HEX·rgb()·oklch()·색상 이름·var()를 그대로 받습니다. 아이콘 색상은 className 또는 style.color로 지정하십시오.',
+        'HEX·rgb()·oklch()·색상 이름·var() 등 임의의 CSS 색상값입니다. outline은 테두리·아이콘, subtle은 아이콘·옅은 배경, solid는 배경·테두리에 적용합니다.',
+    },
+    {
+      name: 'Timeline.Indicator variant',
+      type: "'solid' | 'subtle' | 'outline'",
+      defaultValue: "'outline'",
+      description:
+        '원의 표현입니다. outline은 투명 배경과 테두리, subtle은 옅은 배경, solid는 채운 배경입니다.',
     },
     {
       name: 'Timeline.Connector',
@@ -89,11 +96,15 @@ export const pageData = {
     {
       id: 'timeline-build-history',
       title: '빌드 상태 색상',
-      description: '대기·실행·경고·실패·성공을 원의 색상과 아이콘, 상태 문구로 구분합니다.',
+      description:
+        '같은 빌드 이력을 outline·subtle·solid로 비교합니다. 색상은 CSS 값으로 직접 지정합니다.',
       Component: TimelineBuildHistoryExample,
       filename: 'build-history.tsx',
       source: buildHistorySource,
-      coverage: [{ axis: 'color', values: ['default', 'hex', 'rgb()', 'var()'] }],
+      coverage: [
+        { axis: 'color', values: ['default', 'hex', 'rgb()', 'var()'] },
+        { axis: 'variant', values: ['outline', 'subtle', 'solid'] },
+      ],
     },
     {
       id: 'timeline-preview',

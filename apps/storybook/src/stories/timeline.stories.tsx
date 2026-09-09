@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 import { Check } from 'lucide-react';
-import { Timeline, type TimelineRootProps } from '@opnay/city-ds-react';
+import {
+  Timeline,
+  TIMELINE_INDICATOR_VARIANTS,
+  type TimelineRootProps,
+} from '@opnay/city-ds-react';
 
 function History(props: Pick<TimelineRootProps, 'density'>) {
   return (
@@ -91,22 +95,29 @@ export const SingleItem: Story = {
 
 export const CustomColors: Story = {
   render: () => (
-    <Timeline.Root aria-label="CSS colors">
-      {[
-        '#2563eb',
-        'rgb(180, 83, 9)',
-        'var(--city-palette-red-700)',
-        'rebeccapurple',
-        'oklch(0.527 0.154 150.069)',
-      ].map((color) => (
-        <Timeline.Item key={color}>
-          <Timeline.Indicator color={color} />
-          <Timeline.Connector />
-          <Timeline.Content>
-            <Timeline.Title>{color}</Timeline.Title>
-          </Timeline.Content>
-        </Timeline.Item>
+    <div className="grid gap-8">
+      {TIMELINE_INDICATOR_VARIANTS.map((variant) => (
+        <section key={variant}>
+          <h3>{variant}</h3>
+          <Timeline.Root aria-label={`CSS colors ${variant}`}>
+            {[
+              '#2563eb',
+              'rgb(180, 83, 9)',
+              'var(--city-palette-red-700)',
+              'rebeccapurple',
+              'oklch(0.527 0.154 150.069)',
+            ].map((color) => (
+              <Timeline.Item key={color}>
+                <Timeline.Indicator color={color} variant={variant} />
+                <Timeline.Connector />
+                <Timeline.Content>
+                  <Timeline.Title>{color}</Timeline.Title>
+                </Timeline.Content>
+              </Timeline.Item>
+            ))}
+          </Timeline.Root>
+        </section>
       ))}
-    </Timeline.Root>
+    </div>
   ),
 };

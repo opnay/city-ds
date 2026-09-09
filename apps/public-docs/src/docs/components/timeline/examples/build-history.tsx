@@ -1,4 +1,4 @@
-import { Timeline } from '@opnay/city-ds-react/timeline';
+import { Timeline, type TimelineIndicatorVariant } from '@opnay/city-ds-react/timeline';
 import { Check, X, TriangleAlert, LoaderCircle } from 'lucide-react';
 
 const builds = [
@@ -39,12 +39,14 @@ const builds = [
   },
 ] as const;
 
-export default function TimelineBuildHistoryExample() {
+function BuildHistory({ variant }: { variant: TimelineIndicatorVariant }) {
   return (
-    <Timeline.Root aria-label="빌드 이력" className="w-full">
+    <Timeline.Root aria-label={`빌드 이력 · ${variant}`} className="w-full">
       {builds.map(({ id, color, title, description, Icon }) => (
         <Timeline.Item key={id}>
-          <Timeline.Indicator color={color}>{Icon ? <Icon /> : undefined}</Timeline.Indicator>
+          <Timeline.Indicator color={color} variant={variant}>
+            {Icon ? <Icon /> : undefined}
+          </Timeline.Indicator>
           <Timeline.Connector />
           <Timeline.Content>
             <Timeline.Title>
@@ -55,5 +57,18 @@ export default function TimelineBuildHistoryExample() {
         </Timeline.Item>
       ))}
     </Timeline.Root>
+  );
+}
+
+export default function TimelineBuildHistoryExample() {
+  return (
+    <div className="grid w-full gap-8">
+      {(['outline', 'subtle', 'solid'] as const).map((variant) => (
+        <section key={variant} className="grid gap-3">
+          <h3 className="m-0 text-sm font-medium">{variant}</h3>
+          <BuildHistory variant={variant} />
+        </section>
+      ))}
+    </div>
   );
 }

@@ -20,6 +20,9 @@ export default defineConfig({
   ],
   test: {
     environment: 'jsdom',
+    maxWorkers: 2,
     setupFiles: ['./src/test-setup.ts'],
+    // Route tests load MDX and examples on demand, including cold transforms in CI.
+    testTimeout: 15_000,
   },
 });

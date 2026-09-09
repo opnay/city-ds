@@ -18,7 +18,168 @@ async function cardSource() {
 
 export const BLOCK_DOCS = [
   {
+    slug: 'project-settings',
+    optionAxes: [
+      { name: 'mode', control: 'segmented', defaultValue: 'edit', values: ['edit', 'read-only'] },
+    ],
+    title: '프로젝트 설정',
+    description: '이름과 설명을 수정하고 프로젝트 ID를 복사합니다.',
+    category: '프로젝트',
+    scope: '팀',
+    keywords: ['프로젝트', '설정', '이름', '설명'],
+    components: ['panel', 'field', 'input', 'data-list', 'button'],
+    guidance:
+      'initialProject는 편집 시작 시의 값입니다. 프로젝트 전환 시 key에 프로젝트 ID를 지정하십시오. onSave 성공 후에만 저장 기준을 갱신하며 실패 시 입력을 보존합니다. canManage는 UI 권한이며 서버에서 프로젝트 소유권과 변경 권한을 검증하십시오.',
+    load: async () => ({
+      Component: (await import('./examples/project-settings')).default,
+      source: (await import('./examples/project-settings.tsx?raw')).default,
+      extraFiles: [await cardSource()],
+    }),
+  },
+  {
+    slug: 'environment-variables',
+    optionAxes: [
+      { name: 'mode', control: 'segmented', defaultValue: 'edit', values: ['edit', 'read-only'] },
+    ],
+    title: '환경 변수 관리',
+    description: '환경별 설정 값을 추가·교체·삭제하고 민감 값을 마스킹합니다.',
+    category: '프로젝트',
+    scope: '팀',
+    keywords: ['프로젝트', '환경', '변수', '설정'],
+    components: [
+      'panel',
+      'field',
+      'input',
+      'segmented-control',
+      'checkbox',
+      'dialog',
+      'badge',
+      'button',
+    ],
+    guidance:
+      'variables의 민감 값 레코드에는 원문 value가 없습니다. 편집 시 교체할 값을 입력하고 onSave에만 전달합니다. onSave·onRemove 성공 후 소비자가 variables를 갱신하십시오. 서버에서 같은 환경의 이름 중복과 권한을 검증하고 민감 값을 암호화하며 로그·조회 응답에 포함하지 마십시오. 이 예제는 빈 값과 소문자 이름을 허용하지 않는 정책입니다. 실제 적용 시점은 소비 서비스의 배포 정책에 맞추십시오.',
+    load: async () => ({
+      Component: (await import('./examples/environment-variables')).default,
+      source: (await import('./examples/environment-variables.tsx?raw')).default,
+      extraFiles: [await cardSource()],
+    }),
+  },
+  {
+    slug: 'deployment-history',
+    title: '배포 기록',
+    description: '환경·상태·검색어로 기록을 찾고 배포 상세로 이동합니다.',
+    category: '프로젝트',
+    scope: '팀',
+    keywords: ['프로젝트', '배포', '기록', '필터'],
+    components: [
+      'panel',
+      'filter-bar',
+      'field',
+      'search-input',
+      'select',
+      'data-table-region',
+      'table',
+      'badge',
+      'button',
+      'skeleton',
+      'stepper',
+      'data-list',
+    ],
+    guidance:
+      'records는 표시 순서대로 렌더링하며 예제는 최신순입니다. 필터는 전달받은 목록에만 적용됩니다. 서버 검색과 페이지 이동은 소비자가 연결하십시오. onView(id)는 상세 페이지나 패널로 연결합니다. 미리보기에서는 선택한 배포 상세를 아래에 표시합니다. 시각은 Asia/Seoul 기준입니다.',
+    load: async () => ({
+      Component: (await import('./examples/deployment-history')).default,
+      source: (await import('./examples/deployment-history.tsx?raw')).default,
+      extraFiles: [
+        await cardSource(),
+        {
+          filename: 'deployment-data.ts',
+          source: (await import('./examples/deployment-data.ts?raw')).default,
+          language: 'ts',
+        },
+        {
+          filename: 'deployment-details.tsx',
+          source: (await import('./examples/deployment-details.tsx?raw')).default,
+          language: 'tsx',
+        },
+      ],
+    }),
+  },
+  {
+    slug: 'deployment-details',
+    title: '배포 상세',
+    description: '단계별 상태·소요 시간·실패 원인과 실행 로그를 확인합니다.',
+    category: '프로젝트',
+    scope: '팀',
+    keywords: ['프로젝트', '배포', '상세', '로그'],
+    components: ['panel', 'stepper', 'data-list', 'badge', 'button', 'skeleton'],
+    guidance:
+      'deployment의 단계·소요 시간·로그는 서버에서 확인한 값입니다. 실행 상태와 선택한 로그 단계는 독립적입니다. 서버에서 로그의 민감 값을 제거하고 조회 권한을 확인하십시오. 로그 스트리밍·폴링·대용량 로그 페이지 처리는 소비자가 연결합니다. 미리보기는 고정 샘플이며 실제 배포를 조회하지 않습니다.',
+    load: async () => ({
+      Component: (await import('./examples/deployment-details')).default,
+      source: (await import('./examples/deployment-details.tsx?raw')).default,
+      extraFiles: [
+        await cardSource(),
+        {
+          filename: 'deployment-data.ts',
+          source: (await import('./examples/deployment-data.ts?raw')).default,
+          language: 'ts',
+        },
+      ],
+    }),
+  },
+  {
+    slug: 'project-creation',
+    title: '프로젝트 생성',
+    description: '프로젝트 이름과 초대할 팀원을 입력하고 확인한 뒤 생성합니다.',
+    category: '프로젝트',
+    scope: '팀',
+    keywords: ['프로젝트', '생성', '팀원', '초대', '단계'],
+    components: ['stepper', 'panel', 'field', 'input', 'data-list', 'button'],
+    guidance:
+      'onCreate에 정리된 프로젝트 이름과 선택 입력인 초대 이메일을 전달합니다. 성공 시에만 완료로 전환하고 실패 시 입력을 보존합니다. 권한, 이름 중복, 초대 정책은 서버에서 검증하고 중복 생성 방지 키를 요청에 연결하십시오. 미리보기는 컴포넌트 조합과 단계별 배치를 보여주는 예제입니다.',
+    load: async () => ({
+      Component: (await import('./examples/project-creation')).default,
+      source: (await import('./examples/project-creation.tsx?raw')).default,
+      extraFiles: [
+        await cardSource(),
+        {
+          filename: 'project-flow.tsx',
+          source: (await import('./examples/project-flow.tsx?raw')).default,
+          language: 'tsx',
+        },
+      ],
+    }),
+  },
+  {
+    slug: 'deployment-preparation',
+    title: '배포 준비',
+    description: '환경을 선택하고 설정과 변경 사항을 검증한 뒤 배포합니다.',
+    category: '프로젝트',
+    scope: '팀',
+    keywords: ['프로젝트', '배포', '환경', '운영', '검증'],
+    components: ['stepper', 'panel', 'radio-group', 'checkbox', 'data-list', 'button'],
+    guidance:
+      'revision은 배포할 버전 식별자입니다. onValidate는 환경·버전의 설정과 권한 검증에 성공할 때 resolve하며, onDeploy는 배포 완료를 확인한 뒤 resolve합니다. 환경 또는 버전 변경 시 이전 검증은 사용할 수 없습니다. 실제 실행 직전 권한·검증 유효성을 서버에서 재확인하고, 같은 실행을 중복 생성하지 않도록 idempotency key와 상태 조회를 연결하십시오. 미리보기는 콜백만 모의 실행하며 실제 배포를 하지 않습니다.',
+    load: async () => ({
+      Component: (await import('./examples/deployment-preparation')).default,
+      source: (await import('./examples/deployment-preparation.tsx?raw')).default,
+      extraFiles: [
+        await cardSource(),
+        {
+          filename: 'project-flow.tsx',
+          source: (await import('./examples/project-flow.tsx?raw')).default,
+          language: 'tsx',
+        },
+      ],
+    }),
+  },
+
+  {
     slug: 'payment-methods',
+    optionAxes: [
+      { name: 'mode', control: 'segmented', defaultValue: 'edit', values: ['edit', 'read-only'] },
+    ],
     title: '결제 수단 관리',
     description: '카드를 추가하고 기본 결제 수단을 변경하거나 등록한 카드를 삭제합니다.',
     category: '구독·결제',
@@ -37,16 +198,8 @@ export const BLOCK_DOCS = [
       'toast',
       'tooltip',
     ],
-    optionAxes: [
-      {
-        name: 'scenario',
-        control: 'select',
-        defaultValue: 'default',
-        values: ['default', 'read-only'],
-      },
-    ],
     guidance:
-      'methods에는 마스킹된 결제 수단만 전달합니다. 등록 폼 제출 시 onAdd에 입력값을 전달하고, onSetDefault와 onRemove는 서버 요청 성공 후 methods를 갱신합니다. 기본 카드는 다른 카드를 기본으로 설정한 뒤 삭제하는 예제 정책입니다. 실제 삭제 가능 여부와 소유권은 서버에서 검증합니다. loading은 초기 조회, canManage는 관리 권한입니다. 등록 폼은 흐름을 확인하는 예제입니다. 서비스에서는 결제 제공사의 보안 입력 및 토큰화 흐름으로 교체합니다. 미리보기에서는 테스트 번호 4242 4242 4242 4242를 사용할 수 있으며 입력값 중 이름·마지막 네 자리·유효기간만 목록에 남습니다. scenario의 read-only는 읽기 전용 맥락을 표현합니다.',
+      'methods에는 마스킹된 결제 수단만 전달합니다. 등록 폼 제출 시 onAdd에 입력값을 전달하고, onSetDefault와 onRemove는 서버 요청 성공 후 methods를 갱신합니다. 기본 카드는 다른 카드를 기본으로 설정한 뒤 삭제하는 예제 정책입니다. 실제 삭제 가능 여부와 소유권은 서버에서 검증합니다. loading은 초기 조회, canManage는 관리 권한입니다. 등록 폼은 흐름을 확인하는 예제입니다. 서비스에서는 결제 제공사의 보안 입력 및 토큰화 흐름으로 교체합니다. 미리보기에서는 테스트 번호 4242 4242 4242 4242를 사용할 수 있으며 입력값 중 이름·마지막 네 자리·유효기간만 목록에 남습니다.',
     load: async () => ({
       Component: (await import('./examples/payment-methods')).default,
       source: (await import('./examples/payment-methods.tsx?raw')).default,
@@ -109,7 +262,7 @@ export const BLOCK_DOCS = [
     slug: 'subscription-management',
     optionAxes: [
       {
-        name: 'scenario',
+        name: 'subscription',
         control: 'select',
         defaultValue: 'active',
         values: ['free', 'active', 'trial', 'past-due', 'canceling'],
@@ -414,6 +567,7 @@ export const BLOCK_DOCS = [
 ] as const satisfies readonly BlockDocEntry[];
 
 export const BLOCK_CATEGORIES = [
+  '프로젝트',
   '인증',
   '계정 관리',
   '계정 보안',

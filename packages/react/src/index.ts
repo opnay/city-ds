@@ -59,3 +59,4 @@ export {
 } from './types';
 export * from './components/data-list';
 export * from './components/timeline';
+export * from './components/stepper';

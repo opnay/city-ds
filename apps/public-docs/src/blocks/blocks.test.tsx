@@ -13,7 +13,9 @@ describe('Blocks', () => {
       const section = main.getByRole('region', { name: group.title });
       expect(within(section).getByRole('heading', { level: 2, name: group.title })).toBeVisible();
       for (const entry of group.items) {
-        const card = within(section).getByRole('link', { name: new RegExp(entry.title) });
+        const card = within(section)
+          .getByRole('heading', { level: 3, name: entry.title })
+          .closest('a')!;
         expect(card).toHaveAttribute('href', `/blocks/${entry.slug}`);
         expect(within(card).getByRole('heading', { level: 3, name: entry.title })).toBeVisible();
         expect(within(card).getByText(`적용 범위: ${entry.scope}`)).toBeVisible();

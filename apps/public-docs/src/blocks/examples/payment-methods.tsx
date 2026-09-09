@@ -342,16 +342,14 @@ export function PaymentMethods({
 }
 
 export default function PaymentMethodsExample({
-  scenario = 'default',
-}: {
-  scenario?: 'default' | 'read-only';
-}) {
+  mode = 'edit',
+}: { mode?: 'edit' | 'read-only' } = {}) {
   const [methods, setMethods] = useState<readonly PaymentMethod[]>(exampleMethods);
   const nextId = useRef(3);
   return (
     <PaymentMethods
+      canManage={mode !== 'read-only'}
       methods={methods}
-      canManage={scenario !== 'read-only'}
       onAdd={async (card) => {
         const id = nextId.current++;
         setMethods((current) => [

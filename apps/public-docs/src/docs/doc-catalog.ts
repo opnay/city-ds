@@ -165,6 +165,18 @@ export const COMPONENT_DOCS = [
     title: 'Kbd',
   },
   {
+    category: 'Navigation',
+    description: '여러 단계로 구성된 작업의 현재 위치와 완료·오류 상태를 표시합니다.',
+    importPath: '@opnay/city-ds-react/stepper',
+    keywords: ['단계', '진행', '스테퍼', 'wizard'],
+    load: () => import('./components/stepper/index.mdx'),
+    related: ['progress', 'tabs', 'button'],
+    selectionGuidance:
+      '순서가 있는 작업에는 Stepper를, 독립된 보기 전환에는 Tabs를, 수치 진행률에는 Progress를 사용하십시오.',
+    slug: 'stepper',
+    title: 'Stepper',
+  },
+  {
     category: 'Actions',
     description: '명령을 실행하거나 링크로 이동하는 주요 액션을 표현합니다.',
     importPath: '@opnay/city-ds-react/button',

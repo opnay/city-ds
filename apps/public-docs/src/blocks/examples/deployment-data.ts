@@ -1,5 +1,10 @@
 export type DeploymentStatus = 'succeeded' | 'running' | 'failed';
 export const deploymentStatusLabels = { succeeded: '성공', running: '진행 중', failed: '실패' };
+export const deploymentStatusTones = {
+  succeeded: 'success',
+  running: 'info',
+  failed: 'destructive',
+} as const;
 export const deploymentEnvironmentLabels = { staging: '스테이징', production: '운영' };
 export interface DeploymentSummary {
   id: string;

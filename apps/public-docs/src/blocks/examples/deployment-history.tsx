@@ -15,6 +15,7 @@ import { DeploymentDetails } from './deployment-details';
 import {
   deploymentEnvironmentLabels,
   deploymentStatusLabels,
+  deploymentStatusTones,
   exampleDeployments,
   type DeploymentSummary,
 } from './deployment-data';
@@ -158,10 +159,7 @@ export function DeploymentHistory({
                       </Table.Cell>
                       <Table.Cell>{deploymentEnvironmentLabels[record.environment]}</Table.Cell>
                       <Table.Cell>
-                        <Badge
-                          appearance="subtle"
-                          tone={record.status === 'failed' ? 'destructive' : 'neutral'}
-                        >
+                        <Badge appearance="subtle" tone={deploymentStatusTones[record.status]}>
                           {deploymentStatusLabels[record.status]}
                         </Badge>
                       </Table.Cell>

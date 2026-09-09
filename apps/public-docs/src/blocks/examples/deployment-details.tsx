@@ -5,6 +5,7 @@ import { WorkflowEventList } from './workflow-events';
 import {
   deploymentEnvironmentLabels,
   deploymentStatusLabels,
+  deploymentStatusTones,
   exampleDeployments,
   type DeploymentRecord,
 } from './deployment-data';
@@ -34,10 +35,7 @@ export function DeploymentDetails({
       }
       actions={
         available && (
-          <Badge
-            tone={available.status === 'failed' ? 'destructive' : 'neutral'}
-            appearance="subtle"
-          >
+          <Badge tone={deploymentStatusTones[available.status]} appearance="subtle">
             {deploymentStatusLabels[available.status]}
           </Badge>
         )

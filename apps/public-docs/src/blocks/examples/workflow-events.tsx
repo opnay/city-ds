@@ -1,14 +1,21 @@
-import { Check, Clock, LoaderCircle, RotateCcw, TriangleAlert, X } from 'lucide-react';
+import {
+  CircleCheck,
+  CircleAlert,
+  Clock,
+  LoaderCircle,
+  RotateCcw,
+  TriangleAlert,
+} from 'lucide-react';
 import { Button, Skeleton, Timeline } from '@opnay/city-ds-react';
 import { BlockCard } from './block-card';
 import { exampleDeployments, type WorkflowEvent } from './deployment-data';
 
 const eventPresentation = {
   queued: { label: '대기', Icon: Clock, color: undefined },
-  running: { label: '실행 중', Icon: LoaderCircle, color: 'var(--city-palette-blue-600)' },
-  succeeded: { label: '성공', Icon: Check, color: 'var(--city-palette-green-600)' },
-  failed: { label: '실패', Icon: X, color: 'var(--city-palette-red-600)' },
-  warning: { label: '경고', Icon: TriangleAlert, color: 'var(--city-palette-amber-600)' },
+  running: { label: '실행 중', Icon: LoaderCircle, color: 'var(--city-color-info)' },
+  succeeded: { label: '성공', Icon: CircleCheck, color: 'var(--city-color-success)' },
+  failed: { label: '실패', Icon: CircleAlert, color: 'var(--city-color-destructive)' },
+  warning: { label: '경고', Icon: TriangleAlert, color: 'var(--city-color-warning)' },
   retried: { label: '재시도', Icon: RotateCcw, color: undefined },
 } as const;
 
@@ -36,16 +43,16 @@ export function WorkflowEventList({
             <Timeline.Connector />
             <Timeline.Content>
               <div className="city-block-split city-block-event-heading">
-                <Timeline.Title>{event.title}</Timeline.Title>
+                <Timeline.Title>
+                  <span className="sr-only">{label}: </span>
+                  {event.title}
+                </Timeline.Title>
                 <Timeline.Time dateTime={event.occurredAt}>
                   {new Date(event.occurredAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}{' '}
                   KST
                 </Timeline.Time>
               </div>
-              <span className="city-block-status">
-                {label}
-                {event.actor ? ` · ${event.actor}` : ''}
-              </span>
+              {event.actor && <span className="city-block-status">{event.actor}</span>}
               <Timeline.Description>{event.description}</Timeline.Description>
               {event.stageId && onViewLogs && (
                 <div className="city-block-label-row">

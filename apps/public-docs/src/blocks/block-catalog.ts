@@ -66,11 +66,11 @@ export const BLOCK_DOCS = [
   },
   {
     slug: 'deployment-history',
-    title: '배포 기록',
-    description: '환경·상태·검색어로 기록을 찾고 배포 상세로 이동합니다.',
-    category: '프로젝트',
+    title: '실행 기록',
+    description: '환경·상태·검색어로 실행을 찾고 단계별 로그와 이벤트를 확인합니다.',
+    category: '워크플로우',
     scope: '팀',
-    keywords: ['프로젝트', '배포', '기록', '필터'],
+    keywords: ['워크플로우', 'CI', 'CD', '빌드', '배포', '실행', '기록', '필터'],
     components: [
       'panel',
       'filter-bar',
@@ -84,9 +84,10 @@ export const BLOCK_DOCS = [
       'skeleton',
       'stepper',
       'data-list',
+      'timeline',
     ],
     guidance:
-      'records는 표시 순서대로 렌더링하며 예제는 최신순입니다. 필터는 전달받은 목록에만 적용됩니다. 서버 검색과 페이지 이동은 소비자가 연결하십시오. onView(id)는 상세 페이지나 패널로 연결합니다. 미리보기에서는 선택한 배포 상세를 아래에 표시합니다. 시각은 Asia/Seoul 기준입니다.',
+      'records는 표시 순서대로 렌더링하며 예제는 최신순입니다. workflow·branch·commit은 선택 정보이며 검색에도 포함됩니다. 필터는 전달받은 목록에만 적용됩니다. 서버 검색과 페이지 이동은 소비자가 연결하십시오. onView(id)는 상세 페이지나 패널로 연결합니다. 미리보기에서는 선택한 실행 상세를 아래에 표시합니다. 시각은 Asia/Seoul 기준입니다.',
     load: async () => ({
       Component: (await import('./examples/deployment-history')).default,
       source: (await import('./examples/deployment-history.tsx?raw')).default,
@@ -102,22 +103,55 @@ export const BLOCK_DOCS = [
           source: (await import('./examples/deployment-details.tsx?raw')).default,
           language: 'tsx',
         },
+        {
+          filename: 'workflow-events.tsx',
+          source: (await import('./examples/workflow-events.tsx?raw')).default,
+          language: 'tsx',
+        },
       ],
     }),
   },
   {
     slug: 'deployment-details',
-    title: '배포 상세',
-    description: '단계별 상태·소요 시간·실패 원인과 실행 로그를 확인합니다.',
-    category: '프로젝트',
+    title: '실행 상세',
+    description: '단계별 상태와 로그를 확인하고 실행 이벤트에서 실패·재시도 경위를 살펴봅니다.',
+    category: '워크플로우',
     scope: '팀',
-    keywords: ['프로젝트', '배포', '상세', '로그'],
-    components: ['panel', 'stepper', 'data-list', 'badge', 'button', 'skeleton'],
+    keywords: ['워크플로우', 'CI', 'CD', '배포', '실행', '상세', '로그', '이벤트'],
+    components: ['panel', 'stepper', 'timeline', 'data-list', 'badge', 'button', 'skeleton'],
     guidance:
-      'deployment의 단계·소요 시간·로그는 서버에서 확인한 값입니다. 실행 상태와 선택한 로그 단계는 독립적입니다. 서버에서 로그의 민감 값을 제거하고 조회 권한을 확인하십시오. 로그 스트리밍·폴링·대용량 로그 페이지 처리는 소비자가 연결합니다. 미리보기는 고정 샘플이며 실제 배포를 조회하지 않습니다.',
+      'deployment의 단계·소요 시간·로그·events는 서버에서 확인한 값입니다. Stepper는 단계 진행과 로그 선택, Timeline은 시간순 이벤트를 표현합니다. 이벤트의 stageId가 존재하는 단계와 일치하면 로그로 이동합니다. events를 생략하면 이벤트 영역을 숨깁니다. 서버에서 로그의 민감 값을 제거하고 조회 권한을 확인하십시오. 스트리밍·폴링·페이지 처리는 소비자가 연결합니다. 미리보기는 고정 샘플입니다.',
     load: async () => ({
       Component: (await import('./examples/deployment-details')).default,
       source: (await import('./examples/deployment-details.tsx?raw')).default,
+      extraFiles: [
+        await cardSource(),
+        {
+          filename: 'deployment-data.ts',
+          source: (await import('./examples/deployment-data.ts?raw')).default,
+          language: 'ts',
+        },
+        {
+          filename: 'workflow-events.tsx',
+          source: (await import('./examples/workflow-events.tsx?raw')).default,
+          language: 'tsx',
+        },
+      ],
+    }),
+  },
+  {
+    slug: 'workflow-events',
+    title: '실행 이벤트 이력',
+    description: '대기부터 실행·실패·재시도까지 시간순으로 확인합니다.',
+    category: '워크플로우',
+    scope: '팀',
+    keywords: ['워크플로우', 'CI', 'CD', '타임라인', '빌드', '실행', '이벤트', '재시도'],
+    components: ['panel', 'timeline', 'button', 'skeleton'],
+    guidance:
+      'events는 발생 순서대로 전달하십시오. 배열 순서를 그대로 표시하며 occurredAt은 시간대가 포함된 ISO 날짜입니다. 예제는 Asia/Seoul 시각을 표시합니다. 재시도는 기존 실패를 덮어쓰지 않고 새 이벤트로 추가합니다. running은 회전 아이콘, queued는 정적인 시계로 표현하며 모션 감소 설정을 따릅니다. stageId와 onViewLogs가 있으면 해당 단계의 로그 이동 버튼을 표시합니다. loading·error·onRetry로 조회 상태를 연결하십시오. 실제 실행·재시도·실시간 수신·권한 검증은 소비자가 담당합니다.',
+    load: async () => ({
+      Component: (await import('./examples/workflow-events')).default,
+      source: (await import('./examples/workflow-events.tsx?raw')).default,
       extraFiles: [
         await cardSource(),
         {
@@ -568,6 +602,7 @@ export const BLOCK_DOCS = [
 
 export const BLOCK_CATEGORIES = [
   '프로젝트',
+  '워크플로우',
   '인증',
   '계정 관리',
   '계정 보안',

@@ -39,7 +39,7 @@ export function DeploymentHistory({
     (record) =>
       (environment === 'all' || record.environment === environment) &&
       (status === 'all' || record.status === status) &&
-      `${record.id} ${record.revision} ${record.actor}`
+      `${record.id} ${record.revision} ${record.actor} ${record.workflow ?? ''} ${record.branch ?? ''} ${record.commit ?? ''}`
         .toLowerCase()
         .includes(query.trim().toLowerCase()),
   );
@@ -50,12 +50,12 @@ export function DeploymentHistory({
   }
   return (
     <BlockCard
-      title="배포 기록"
-      description="환경별 배포 결과를 확인하고 상세 로그를 살펴보십시오."
+      title="실행 기록"
+      description="워크플로우 실행 결과를 비교하고 로그와 이벤트 이력을 살펴보십시오."
       className="city-block-project-data"
     >
       <FilterBar
-        aria-label="배포 기록 필터"
+        aria-label="실행 기록 필터"
         actions={
           <Button variant="outline" onClick={reset}>
             초기화
@@ -63,10 +63,10 @@ export function DeploymentHistory({
         }
       >
         <Field.Root>
-          <Field.Label className="sr-only">배포 검색</Field.Label>
+          <Field.Label className="sr-only">실행 검색</Field.Label>
           <SearchInput.Root value={query} onValueChange={setQuery}>
             <SearchInput.Group>
-              <SearchInput.Input placeholder="버전·실행자 검색" />
+              <SearchInput.Input placeholder="워크플로우·브랜치·커밋 검색" />
               <SearchInput.Clear />
             </SearchInput.Group>
           </SearchInput.Root>
@@ -78,7 +78,7 @@ export function DeploymentHistory({
           items={{ all: '모든 환경', ...deploymentEnvironmentLabels }}
         />
         <HistoryFilter
-          label="배포 상태"
+          label="실행 상태"
           value={status}
           onChange={setStatus}
           items={{ all: '모든 상태', ...deploymentStatusLabels }}
@@ -87,7 +87,7 @@ export function DeploymentHistory({
       {loading ? (
         <div
           role="status"
-          aria-label="배포 기록 불러오는 중"
+          aria-label="실행 기록 불러오는 중"
           aria-busy="true"
           className="city-block-section"
         >
@@ -107,14 +107,14 @@ export function DeploymentHistory({
       ) : (
         <>
           <p role="status" className="city-block-status">
-            배포 {filtered.length}건
+            실행 {filtered.length}건
           </p>
           {!filtered.length ? (
             <div className="city-block-section">
               <p>
                 {records.length
-                  ? '조건에 맞는 배포 기록이 없습니다.'
-                  : '아직 배포 기록이 없습니다.'}
+                  ? '조건에 맞는 실행 기록이 없습니다.'
+                  : '아직 실행 기록이 없습니다.'}
               </p>
               {records.length > 0 && (
                 <Button variant="outline" onClick={reset}>
@@ -123,11 +123,11 @@ export function DeploymentHistory({
               )}
             </div>
           ) : (
-            <DataTableRegion label="배포 기록 목록">
+            <DataTableRegion label="실행 기록 목록">
               <Table.Root className="city-block-deployment-table">
                 <Table.Header>
                   <Table.Row>
-                    <Table.Head>버전</Table.Head>
+                    <Table.Head>실행</Table.Head>
                     <Table.Head>환경</Table.Head>
                     <Table.Head>상태</Table.Head>
                     <Table.Head>실행자</Table.Head>
@@ -139,6 +139,9 @@ export function DeploymentHistory({
                   {filtered.map((record) => (
                     <Table.Row key={record.id}>
                       <Table.Cell>
+                        {record.workflow && (
+                          <div className="city-block-step-title">{record.workflow}</div>
+                        )}
                         <Button
                           variant="ghost"
                           size="sm"
@@ -147,6 +150,11 @@ export function DeploymentHistory({
                         >
                           {record.revision}
                         </Button>
+                        {(record.branch || record.commit) && (
+                          <div className="city-block-status">
+                            {[record.branch, record.commit].filter(Boolean).join(' · ')}
+                          </div>
+                        )}
                       </Table.Cell>
                       <Table.Cell>{deploymentEnvironmentLabels[record.environment]}</Table.Cell>
                       <Table.Cell>
@@ -229,7 +237,7 @@ export default function DeploymentHistoryExample() {
               상세 닫기
             </Button>
           </div>
-          <div ref={details} tabIndex={-1} role="region" aria-label="선택한 배포 상세">
+          <div ref={details} tabIndex={-1} role="region" aria-label="선택한 실행 상세">
             <DeploymentDetails deployment={selected} />
           </div>
         </>

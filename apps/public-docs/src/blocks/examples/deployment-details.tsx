@@ -1,6 +1,7 @@
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { Badge, Button, DataList, Skeleton, Stepper } from '@opnay/city-ds-react';
 import { BlockCard } from './block-card';
+import { WorkflowEventList } from './workflow-events';
 import {
   deploymentEnvironmentLabels,
   deploymentStatusLabels,
@@ -22,9 +23,14 @@ export function DeploymentDetails({
   const available = !loading && !error ? deployment : null;
   return (
     <BlockCard
-      title={available ? available.revision : '배포 상세'}
+      title={available ? available.revision : '실행 상세'}
       description={
-        available ? <code className="city-text-caption">{available.id}</code> : undefined
+        available ? (
+          <span>
+            {available.workflow ? `${available.workflow} · ` : ''}
+            <code className="city-text-caption">{available.id}</code>
+          </span>
+        ) : undefined
       }
       actions={
         available && (
@@ -41,7 +47,7 @@ export function DeploymentDetails({
       {loading ? (
         <div
           role="status"
-          aria-label="배포 상세 불러오는 중"
+          aria-label="실행 상세 불러오는 중"
           aria-busy="true"
           className="city-block-section"
         >
@@ -73,6 +79,7 @@ function DeploymentContents({ deployment }: { deployment: DeploymentRecord }) {
   const [selectedId, setSelectedId] = useState(initial?.id);
   const [message, setMessage] = useState('');
   const logId = useId();
+  const logRef = useRef<HTMLElement>(null);
   const selected =
     deployment.stages.find((stage) => stage.id === selectedId) ?? deployment.stages[0];
   return (
@@ -82,6 +89,20 @@ function DeploymentContents({ deployment }: { deployment: DeploymentRecord }) {
         orientation="vertical"
         className="city-block-deployment-metadata"
       >
+        {deployment.branch && (
+          <DataList.Item>
+            <DataList.Label>브랜치</DataList.Label>
+            <DataList.Value>{deployment.branch}</DataList.Value>
+          </DataList.Item>
+        )}
+        {deployment.commit && (
+          <DataList.Item>
+            <DataList.Label>커밋</DataList.Label>
+            <DataList.Value>
+              <code>{deployment.commit}</code>
+            </DataList.Value>
+          </DataList.Item>
+        )}
         <DataList.Item>
           <DataList.Label>환경</DataList.Label>
           <DataList.Value>{deploymentEnvironmentLabels[deployment.environment]}</DataList.Value>
@@ -145,6 +166,8 @@ function DeploymentContents({ deployment }: { deployment: DeploymentRecord }) {
         </Stepper.Root>
         <section
           id={logId}
+          ref={logRef}
+          tabIndex={-1}
           className="city-block-log-section"
           aria-label={`${selected?.title ?? '실행'} 로그`}
         >
@@ -184,6 +207,23 @@ function DeploymentContents({ deployment }: { deployment: DeploymentRecord }) {
           </p>
         </section>
       </div>
+      {deployment.events && (
+        <section className="city-block-section" aria-label="실행 이벤트 이력">
+          <h4 className="city-block-step-title">실행 이벤트 이력</h4>
+          <WorkflowEventList
+            events={deployment.events.map((event) =>
+              event.stageId && !deployment.stages.some((stage) => stage.id === event.stageId)
+                ? { ...event, stageId: undefined }
+                : event,
+            )}
+            onViewLogs={(stageId) => {
+              setSelectedId(stageId);
+              setMessage('');
+              logRef.current?.focus();
+            }}
+          />
+        </section>
+      )}
     </>
   );
 }

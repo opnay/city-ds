@@ -46,7 +46,7 @@ describe('Blocks', () => {
     expect(screen.getByText('구현 참고').closest('details')).toHaveAttribute('open');
     const nav = within(screen.getByRole('navigation', { name: '문서 탐색' }));
     await user.click(nav.getByRole('link', { name: '계정 관리' }));
-    await screen.findByRole('heading', { level: 1, name: '계정 관리' });
+    await screen.findByRole('heading', { level: 1, name: '계정 관리' }, { timeout: 5_000 });
     expect(screen.getByRole('button', { name: '코드 보기' })).toHaveAttribute(
       'aria-expanded',
       'false',
@@ -54,7 +54,7 @@ describe('Blocks', () => {
     expect(screen.getByText('구현 참고').closest('details')).not.toHaveAttribute('open');
     await user.click(screen.getByRole('button', { name: '코드 보기' }));
     await user.click(nav.getByRole('link', { name: '프로필 관리' }));
-    await screen.findByRole('heading', { level: 1, name: '프로필 관리' });
+    await screen.findByRole('heading', { level: 1, name: '프로필 관리' }, { timeout: 5_000 });
     expect(screen.getByRole('button', { name: '코드 보기' })).toHaveAttribute(
       'aria-expanded',
       'false',

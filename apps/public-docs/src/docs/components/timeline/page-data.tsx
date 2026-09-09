@@ -1,3 +1,5 @@
+import TimelineBuildHistoryExample from './examples/build-history';
+import buildHistorySource from './examples/build-history.tsx?raw';
 import TimelineActivityExample from './examples/activity';
 import activitySource from './examples/activity.tsx?raw';
 import TimelineDensityExample from './examples/density';
@@ -11,7 +13,7 @@ function TimelinePreview({ density }: PreviewOptionProps) {
 
 export const pageData = {
   featuredExampleId: 'timeline-preview',
-  widePreviewIds: ['timeline-preview', 'timeline-density'],
+  widePreviewIds: ['timeline-preview', 'timeline-density', 'timeline-build-history'],
   api: [
     {
       name: 'Timeline.Root',
@@ -34,6 +36,13 @@ export const pageData = {
       type: 'div props + render',
       description:
         '이벤트 지점입니다. 기본 점 대신 아이콘 등을 children으로 넣을 수 있습니다. 기본적으로 접근성 트리에서 숨겨집니다.',
+    },
+    {
+      name: 'Timeline.Indicator tone',
+      type: "'neutral' | 'info' | 'success' | 'warning' | 'destructive'",
+      defaultValue: "'neutral'",
+      description:
+        '원의 상태 색상입니다. 실패에는 destructive를 사용하십시오. 상태는 색상 외에 아이콘과 내용에도 표시하십시오.',
     },
     {
       name: 'Timeline.Connector',
@@ -78,6 +87,17 @@ export const pageData = {
     },
   ],
   examples: [
+    {
+      id: 'timeline-build-history',
+      title: '빌드 상태 색상',
+      description: '대기·실행·경고·실패·성공을 원의 색상과 아이콘, 상태 문구로 구분합니다.',
+      Component: TimelineBuildHistoryExample,
+      filename: 'build-history.tsx',
+      source: buildHistorySource,
+      coverage: [
+        { axis: 'tone', values: ['neutral', 'info', 'success', 'warning', 'destructive'] },
+      ],
+    },
     {
       id: 'timeline-preview',
       title: 'Preview',

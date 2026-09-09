@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 import { Check } from 'lucide-react';
-import { Timeline, type TimelineRootProps } from '@opnay/city-ds-react';
+import { FEEDBACK_TONES, Timeline, type TimelineRootProps } from '@opnay/city-ds-react';
 
 function History(props: Pick<TimelineRootProps, 'density'>) {
   return (
@@ -87,4 +87,20 @@ export const SingleItem: Story = {
   play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByTestId('single-connector')).not.toBeVisible();
   },
+};
+
+export const StatusColors: Story = {
+  render: () => (
+    <Timeline.Root aria-label="Build status colors">
+      {FEEDBACK_TONES.map((tone) => (
+        <Timeline.Item key={tone}>
+          <Timeline.Indicator tone={tone} />
+          <Timeline.Connector />
+          <Timeline.Content>
+            <Timeline.Title>{tone}</Timeline.Title>
+          </Timeline.Content>
+        </Timeline.Item>
+      ))}
+    </Timeline.Root>
+  ),
 };

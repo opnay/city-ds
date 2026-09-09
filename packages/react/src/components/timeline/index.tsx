@@ -3,7 +3,8 @@
 import * as React from 'react';
 import { useRender } from '@base-ui/react/use-render';
 import { cn } from '../../lib/cn';
-import type { Density } from '../../types';
+import type { Density, FeedbackTone } from '../../types';
+import { feedbackToneStyles } from '../../lib/feedback-tone-styles';
 import { useDensity } from '../density-provider';
 
 const TimelineContext = React.createContext<Density>('comfortable');
@@ -58,18 +59,21 @@ export const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
 
 export interface TimelineIndicatorProps extends Omit<useRender.ComponentProps<'div'>, 'className'> {
   className?: string;
+  tone?: FeedbackTone;
 }
 
 export const TimelineIndicator = React.forwardRef<HTMLDivElement, TimelineIndicatorProps>(
   function TimelineIndicator(
     {
       children = <span className="size-1.5 rounded-full bg-current" />,
+      tone = 'neutral',
       className,
       render,
       ...props
     },
     ref,
   ) {
+    const toneStyles = feedbackToneStyles[tone];
     return useRender({
       defaultTagName: 'div',
       ref,
@@ -79,10 +83,15 @@ export const TimelineIndicator = React.forwardRef<HTMLDivElement, TimelineIndica
         ...props,
         children,
         className: cn(
-          'relative z-10 col-start-1 row-start-1 flex size-6 items-center justify-center rounded-full border border-city-border bg-city-background text-city-muted-foreground [&_svg]:size-3.5',
+          'relative z-10 col-start-1 row-start-1 flex size-6 items-center justify-center rounded-full border [&_svg]:size-3.5',
+          toneStyles.border,
+          tone === 'neutral'
+            ? 'bg-city-background text-city-muted-foreground'
+            : cn(toneStyles.fill, toneStyles.fillForeground),
           className,
         ),
         'data-city-timeline-indicator': '',
+        'data-tone': tone,
       },
     });
   },

@@ -22,6 +22,7 @@ const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   skeleton: 1,
   table: 5,
   toast: 1,
+  timeline: 3,
 };
 
 const CONFIGURABLE_COMPONENTS = new Set([
@@ -71,6 +72,7 @@ const CONFIGURABLE_COMPONENTS = new Set([
   'table',
   'tabs',
   'toast',
+  'timeline',
   'toggle-group',
   'toolbar',
   'tooltip',

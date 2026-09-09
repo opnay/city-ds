@@ -690,6 +690,17 @@ export const COMPONENT_DOCS = [
     slug: 'data-list',
     title: 'DataList',
   },
+  {
+    category: 'Data display',
+    description: '시간순 이벤트를 지점·연결선·내용으로 구성합니다.',
+    importPath: '@opnay/city-ds-react/timeline',
+    keywords: ['타임라인', '활동', '이력', '시간', '이벤트'],
+    load: () => import('./components/timeline/index.mdx'),
+    related: ['data-list', 'panel'],
+    selectionGuidance: '활동 기록이나 변경 이력을 표시할 때 사용하십시오.',
+    slug: 'timeline',
+    title: 'Timeline',
+  },
 ] as const satisfies readonly ComponentDocEntry[];
 
 export type ComponentSlug = (typeof COMPONENT_DOCS)[number]['slug'];

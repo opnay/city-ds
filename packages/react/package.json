@@ -213,6 +213,10 @@
       "types": "./dist/components/checkbox-group/index.d.ts",
       "import": "./dist/components/checkbox-group/index.js"
     },
+    "./timeline": {
+      "types": "./dist/components/timeline/index.d.ts",
+      "import": "./dist/components/timeline/index.js"
+    },
     "./data-list": {
       "types": "./dist/components/data-list/index.d.ts",
       "import": "./dist/components/data-list/index.js"

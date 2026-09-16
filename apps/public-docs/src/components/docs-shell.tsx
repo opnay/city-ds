@@ -11,6 +11,7 @@ import {
   History,
   CreditCard,
   LayoutGrid,
+  LayoutTemplate,
   Menu as MenuIcon,
   Moon,
   ShieldCheck,
@@ -224,6 +225,7 @@ function BlockNavigationLink({
 }
 
 const BLOCK_CATEGORY_ICONS = {
+  레이아웃: LayoutTemplate,
   프로젝트: FolderKanban,
   워크플로우: Workflow,
   인증: Fingerprint,

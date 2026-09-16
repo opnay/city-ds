@@ -5,6 +5,7 @@ import {
   BookOpen,
   Fingerprint,
   FolderKanban,
+  Workflow,
   UserRound,
   Plug,
   History,
@@ -224,6 +225,7 @@ function BlockNavigationLink({
 
 const BLOCK_CATEGORY_ICONS = {
   프로젝트: FolderKanban,
+  워크플로우: Workflow,
   인증: Fingerprint,
   '계정 관리': UserRound,
   '계정 보안': ShieldCheck,

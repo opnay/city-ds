@@ -14,14 +14,12 @@ async function reachDeploymentReview() {
 }
 
 describe('Project blocks', () => {
-  it('lists creation and deployment together in the project category', () => {
+  it('keeps configuration and preparation in the project category', () => {
     expect(
       BLOCK_GROUPS.find((group) => group.title === '프로젝트')?.items.map((entry) => entry.slug),
     ).toEqual([
       'project-settings',
       'environment-variables',
-      'deployment-history',
-      'deployment-details',
       'project-creation',
       'deployment-preparation',
     ]);

@@ -147,27 +147,27 @@ describe('Project operations', () => {
     render(<DeploymentHistory records={exampleDeployments} onView={view} />);
     await user.click(screen.getByRole('combobox', { name: '배포 환경' }));
     await user.click(await screen.findByRole('option', { name: '운영' }));
-    await user.click(screen.getByRole('combobox', { name: '배포 상태' }));
+    await user.click(screen.getByRole('combobox', { name: '실행 상태' }));
     await user.click(await screen.findByRole('option', { name: '실패' }));
-    expect(screen.getByRole('status')).toHaveTextContent('배포 1건');
+    expect(screen.getByRole('status')).toHaveTextContent('실행 1건');
     await user.click(screen.getByRole('button', { name: 'v1.2.1 dep_103 상세 보기' }));
     expect(view).toHaveBeenCalledWith('dep_103');
-    await user.type(screen.getByRole('searchbox', { name: '배포 검색' }), 'unknown');
-    expect(screen.getByText('조건에 맞는 배포 기록이 없습니다.')).toBeVisible();
+    await user.type(screen.getByRole('searchbox', { name: '실행 검색' }), 'unknown');
+    expect(screen.getByText('조건에 맞는 실행 기록이 없습니다.')).toBeVisible();
     await user.click(screen.getByRole('button', { name: '필터 초기화' }));
-    expect(screen.getByRole('status')).toHaveTextContent('배포 3건');
+    expect(screen.getByRole('status')).toHaveTextContent('실행 3건');
   });
 
   it('handles history loading, error recovery and an empty list', async () => {
     const user = userEvent.setup();
     const retry = vi.fn();
     const { rerender } = render(<DeploymentHistory records={[]} onView={vi.fn()} loading />);
-    expect(screen.getByLabelText('배포 기록 불러오는 중')).toBeInTheDocument();
+    expect(screen.getByLabelText('실행 기록 불러오는 중')).toBeInTheDocument();
     rerender(<DeploymentHistory records={[]} onView={vi.fn()} error="조회 실패" onRetry={retry} />);
     await user.click(screen.getByRole('button', { name: '다시 불러오기' }));
     expect(retry).toHaveBeenCalledOnce();
     rerender(<DeploymentHistory records={[]} onView={vi.fn()} />);
-    expect(screen.getByText('아직 배포 기록이 없습니다.')).toBeVisible();
+    expect(screen.getByText('아직 실행 기록이 없습니다.')).toBeVisible();
   });
 
   it('switches logs independently of execution state and resets selection for another deployment', async () => {
@@ -175,11 +175,11 @@ describe('Project operations', () => {
     const { rerender } = render(<DeploymentDetails deployment={exampleDeployments[0]!} />);
     expect(screen.getByLabelText('실행 로그 내용')).toHaveTextContent('PUBLIC_API_URL');
     expect(screen.getByRole('region', { name: '빌드 로그' })).toHaveTextContent('40초');
-    const failed = screen.getByRole('button', { name: '빌드' }).closest('li');
-    await user.click(screen.getByRole('button', { name: '배포' }));
+    const failed = screen.getByRole('tab', { name: '빌드 실패' });
+    await user.click(screen.getByRole('tab', { name: '배포 실행 전' }));
     expect(screen.getByText('아직 기록된 로그가 없습니다.')).toBeVisible();
     expect(screen.getByRole('button', { name: '로그 복사' })).toBeDisabled();
-    expect(failed).toHaveAttribute('aria-current', 'step');
+    expect(failed).toHaveTextContent('실패');
     rerender(<DeploymentDetails deployment={exampleDeployments[2]!} />);
     expect(screen.getByLabelText('실행 로그 내용')).toHaveTextContent('새 버전 적용');
     expect(document.querySelector('[aria-current="step"]')).toBeNull();

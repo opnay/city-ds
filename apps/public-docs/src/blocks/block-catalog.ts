@@ -16,7 +16,129 @@ async function cardSource() {
   };
 }
 
+async function layoutShellSource() {
+  return {
+    filename: 'layout-shells.tsx',
+    source: (await import('./examples/layout-shells.tsx?raw')).default,
+    language: 'tsx',
+  };
+}
+
 export const BLOCK_DOCS = [
+  {
+    slug: 'top-navigation',
+    title: '상단 GNB',
+    description: '주요 메뉴와 사용자 작업을 상단에 두고 넓은 본문을 사용하는 기본 레이아웃입니다.',
+    category: '레이아웃',
+    scope: '사용자·팀',
+    keywords: ['레이아웃', '상단', 'GNB', '전역 메뉴', '헤더', '탐색'],
+    components: ['avatar', 'badge', 'breadcrumbs', 'button'],
+    guidance:
+      '전역 메뉴가 적고 본문 폭이 중요한 서비스에 사용하십시오. 현재 위치는 활성 메뉴와 Breadcrumbs로 함께 보여 주며, 메뉴 이동은 소비 앱의 라우터에 연결합니다. 사용자 메뉴·알림·권한·실시간 상태는 소비 앱이 소유합니다. 좁은 화면에서는 전체 메뉴 접근 경로를 유지하고 본문보다 탐색을 먼저 숨기지 마십시오.',
+    load: async () => ({
+      Component: (await import('./examples/top-navigation')).default,
+      source: (await import('./examples/top-navigation.tsx?raw')).default,
+      extraFiles: [await layoutShellSource()],
+    }),
+  },
+  {
+    slug: 'top-navigation-local-menu',
+    title: '상단 GNB와 로컬 메뉴',
+    description: '전역 서비스 탐색 아래에 프로젝트나 제품 단위의 하위 메뉴를 이어서 배치합니다.',
+    category: '레이아웃',
+    scope: '사용자·팀',
+    keywords: ['레이아웃', '상단', 'GNB', '로컬 메뉴', '프로젝트', '탐색'],
+    components: ['avatar', 'badge', 'breadcrumbs', 'button'],
+    guidance:
+      '전역 메뉴와 현재 서비스의 메뉴가 모두 필요한 경우에 사용하십시오. 두 메뉴는 이름과 활성 상태를 분리하고, 로컬 메뉴가 전역 메뉴를 반복하지 않게 하십시오. 좁은 화면에서도 전역 메뉴와 로컬 메뉴의 접근 경로를 각각 유지하며, 실제 경로와 선택 상태는 소비 앱의 라우터가 결정합니다.',
+    load: async () => ({
+      Component: (await import('./examples/top-navigation-local-menu')).default,
+      source: (await import('./examples/top-navigation-local-menu.tsx?raw')).default,
+      extraFiles: [await layoutShellSource()],
+    }),
+  },
+  {
+    slug: 'sidebar-navigation',
+    title: '사이드바 메뉴',
+    description:
+      '그룹이 많은 운영 도구에서 좌측 메뉴와 현재 화면의 맥락을 유지하는 기본 구성입니다.',
+    category: '레이아웃',
+    scope: '사용자·팀',
+    keywords: ['레이아웃', '사이드바', '메뉴', '운영 도구', '대시보드', '탐색'],
+    components: ['avatar', 'badge', 'breadcrumbs', 'button'],
+    guidance:
+      '반복적으로 여러 작업 영역을 오가는 운영 도구에 사용하십시오. 사이드바는 탐색을, 상단 바는 현재 화면의 짧은 맥락과 전역 작업을 소유합니다. 긴 메뉴는 사이드바 안에서만 스크롤하게 하고, 모바일에서는 메뉴 항목에 도달할 수 있는 별도의 탐색 경로를 제공하십시오.',
+    load: async () => ({
+      Component: (await import('./examples/sidebar-navigation')).default,
+      source: (await import('./examples/sidebar-navigation.tsx?raw')).default,
+      extraFiles: [await layoutShellSource()],
+    }),
+  },
+  {
+    slug: 'sidebar-drawer',
+    title: '햄버거 사이드 패널',
+    description: '햄버거 메뉴를 눌러 본문 위에 열고 닫는 사이드 패널형 탐색입니다.',
+    category: '레이아웃',
+    scope: '사용자·팀',
+    keywords: ['레이아웃', '사이드바', '햄버거', '사이드 패널', 'Drawer', '모바일'],
+    components: ['avatar', 'badge', 'breadcrumbs', 'button', 'drawer'],
+    guidance:
+      '본문 폭을 우선 보존하면서 필요할 때만 탐색을 열어야 하는 화면에 사용하십시오. 메뉴 버튼에는 접근 가능한 이름을 제공하고, Drawer는 Escape·닫기 버튼·선택 후 닫힘·트리거로의 초점 복귀를 지원해야 합니다. 현재 화면과 선택 상태는 소비 앱의 라우터가 소유하며, 패널을 닫아도 본문의 맥락은 유지하십시오.',
+    load: async () => ({
+      Component: (await import('./examples/sidebar-drawer')).default,
+      source: (await import('./examples/sidebar-drawer.tsx?raw')).default,
+      extraFiles: [await layoutShellSource()],
+    }),
+  },
+  {
+    slug: 'sidebar-floating-page',
+    title: '사이드바 플로팅 페이지',
+    description: '사이드바와 본문 표면을 분리해 설정이나 집중 작업을 구분하는 레이아웃입니다.',
+    category: '레이아웃',
+    scope: '사용자·팀',
+    keywords: ['레이아웃', '사이드바', '플로팅 페이지', '설정', '표면', '워크스페이스'],
+    components: ['avatar', 'badge', 'breadcrumbs', 'button'],
+    guidance:
+      '본문 자체가 하나의 독립된 작업 단위일 때 사용하십시오. 배경 위의 페이지 표면은 설정·편집처럼 자체 정보와 액션을 소유하는 영역에만 적용합니다. 내부 섹션마다 다시 카드 테두리를 반복하지 말고, 저장·권한·오류 상태는 해당 설정 영역 가까이에 연결하십시오.',
+    load: async () => ({
+      Component: (await import('./examples/sidebar-floating-page')).default,
+      source: (await import('./examples/sidebar-floating-page.tsx?raw')).default,
+      extraFiles: [await layoutShellSource()],
+    }),
+  },
+  {
+    slug: 'sidebar-two-column',
+    title: '사이드바 2열 탐색',
+    description: '제품 영역 선택과 그 안의 세부 메뉴를 두 개의 탐색 열로 나누는 레이아웃입니다.',
+    category: '레이아웃',
+    scope: '사용자·팀',
+    keywords: ['레이아웃', '사이드바', '2열', '아이콘 레일', '메뉴', '워크스페이스'],
+    components: ['avatar', 'badge', 'breadcrumbs', 'button'],
+    guidance:
+      '제품 영역과 세부 탐색의 깊이가 명확히 다른 경우에 사용하십시오. 첫 번째 열은 영역 선택, 두 번째 열은 해당 영역의 메뉴만 표현합니다. 아이콘 레일의 모든 항목에는 접근 가능한 이름을 제공하고, 작은 화면에서는 두 탐색 단계가 모두 남도록 재배치하십시오.',
+    load: async () => ({
+      Component: (await import('./examples/sidebar-two-column')).default,
+      source: (await import('./examples/sidebar-two-column.tsx?raw')).default,
+      extraFiles: [await layoutShellSource()],
+    }),
+  },
+  {
+    slug: 'sidebar-list-detail',
+    title: '사이드바 목록·상세',
+    description:
+      '전역 탐색 옆에서 목록을 고르고, 같은 화면의 상세 영역에서 내용을 읽고 작업합니다.',
+    category: '레이아웃',
+    scope: '사용자·팀',
+    keywords: ['레이아웃', '사이드바', '목록', '상세', '문서', '선택'],
+    components: ['avatar', 'breadcrumbs', 'button', 'search-input'],
+    guidance:
+      '문서·작업·티켓처럼 목록을 빠르게 훑고 상세를 이어서 봐야 할 때 사용하십시오. 선택한 항목은 목록에서 현재 상태로 표시하고, 상세 제목·메타정보·작업을 함께 갱신하십시오. 모바일에서는 목록과 상세를 한 화면에 압축하지 말고, 선택한 항목으로 이동하거나 이전 목록으로 돌아가는 흐름을 소비 앱에서 제공합니다.',
+    load: async () => ({
+      Component: (await import('./examples/sidebar-list-detail')).default,
+      source: (await import('./examples/sidebar-list-detail.tsx?raw')).default,
+      extraFiles: [await layoutShellSource()],
+    }),
+  },
   {
     slug: 'project-settings',
     optionAxes: [
@@ -614,6 +736,7 @@ export const BLOCK_DOCS = [
 ] as const satisfies readonly BlockDocEntry[];
 
 export const BLOCK_CATEGORIES = [
+  '레이아웃',
   '프로젝트',
   '워크플로우',
   '인증',

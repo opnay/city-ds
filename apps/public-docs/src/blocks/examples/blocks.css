@@ -23,6 +23,23 @@
   min-width: 48rem;
 }
 
+.city-block-table-controls {
+  min-width: 0;
+  padding-inline: var(--city-space-4);
+}
+
+.city-block-result-filters > [data-city-filter-bar-content] {
+  flex: 1 1 24rem;
+}
+
+.city-block-result-filters [data-city-filter-bar-condition]:first-child {
+  flex: 1 1 14rem;
+}
+
+.city-block-result-filters .city-block-status {
+  white-space: nowrap;
+}
+
 .city-block-card {
   padding: var(--city-space-5);
   border: 1px solid var(--city-color-border);

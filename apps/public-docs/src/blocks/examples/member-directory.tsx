@@ -7,7 +7,7 @@ import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Dialog } from '@opnay/city-ds-react/dialog';
 import { EmptyState } from '@opnay/city-ds-react/empty-state';
 import { Field } from '@opnay/city-ds-react/field';
-import { FilterPanel } from '@opnay/city-ds-react/filter-panel';
+import { FilterBar } from '@opnay/city-ds-react/filter-bar';
 import { Input } from '@opnay/city-ds-react/input';
 import { SearchInput } from '@opnay/city-ds-react/search-input';
 import { Select } from '@opnay/city-ds-react/select';
@@ -150,50 +150,64 @@ export function MemberManagement({
           <Alert.Title level={4}>팀원 관리 권한이 없어요.</Alert.Title>
         </Alert.Root>
       )}
-      <FilterPanel
-        aria-label="팀원 필터"
-        appearance="band"
-        actions={
-          <Button type="button" variant="outline" onClick={reset}>
-            초기화
-          </Button>
-        }
-      >
-        <Field.Root>
-          <Field.Label className="sr-only">팀원 검색</Field.Label>
-          <SearchInput.Root value={query} onValueChange={setQuery}>
-            <SearchInput.Group>
-              <SearchInput.Input placeholder="이름 또는 이메일 검색" />
-              <SearchInput.Clear aria-label="검색어 지우기" />
-            </SearchInput.Group>
-          </SearchInput.Root>
-        </Field.Root>
-        <Select.Root
-          items={statuses}
-          value={status}
-          onValueChange={(value) => setStatus(value ?? 'all')}
+      <div className="city-block-table-controls">
+        <FilterBar
+          aria-label="팀원 필터"
+          className="city-block-result-filters"
+          actions={
+            <>
+              {!loading && !error && (
+                <p role="status" className="city-block-status">
+                  팀원 {filtered.length}명
+                </p>
+              )}
+              <Button
+                type="button"
+                variant="outline"
+                disabled={!query && status === 'all'}
+                onClick={reset}
+              >
+                초기화
+              </Button>
+            </>
+          }
         >
-          <Select.Label className="sr-only">팀원 상태</Select.Label>
-          <Select.Trigger>
-            <Select.Value />
-            <Select.Icon />
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Positioner>
-              <Select.Popup>
-                <Select.List aria-label="팀원 상태">
-                  {Object.entries(statuses).map(([value, label]) => (
-                    <Select.Item key={value} value={value}>
-                      <Select.ItemText>{label}</Select.ItemText>
-                      <Select.ItemIndicator />
-                    </Select.Item>
-                  ))}
-                </Select.List>
-              </Select.Popup>
-            </Select.Positioner>
-          </Select.Portal>
-        </Select.Root>
-      </FilterPanel>
+          <Field.Root>
+            <Field.Label className="sr-only">팀원 검색</Field.Label>
+            <SearchInput.Root value={query} onValueChange={setQuery}>
+              <SearchInput.Group>
+                <SearchInput.Input placeholder="이름 또는 이메일 검색" />
+                <SearchInput.Clear aria-label="검색어 지우기" />
+              </SearchInput.Group>
+            </SearchInput.Root>
+          </Field.Root>
+          <Select.Root
+            items={statuses}
+            value={status}
+            onValueChange={(value) => setStatus(value ?? 'all')}
+          >
+            <Select.Label className="sr-only">팀원 상태</Select.Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Icon />
+            </Select.Trigger>
+            <Select.Portal>
+              <Select.Positioner>
+                <Select.Popup>
+                  <Select.List aria-label="팀원 상태">
+                    {Object.entries(statuses).map(([value, label]) => (
+                      <Select.Item key={value} value={value}>
+                        <Select.ItemText>{label}</Select.ItemText>
+                        <Select.ItemIndicator />
+                      </Select.Item>
+                    ))}
+                  </Select.List>
+                </Select.Popup>
+              </Select.Positioner>
+            </Select.Portal>
+          </Select.Root>
+        </FilterBar>
+      </div>
       {loading ? (
         <Skeleton aria-label="팀원 불러오는 중" className="h-40 w-full" />
       ) : error ? (
@@ -204,9 +218,6 @@ export function MemberManagement({
         </Alert.Root>
       ) : (
         <>
-          <p role="status" className="city-text-supporting">
-            팀원 {filtered.length}명
-          </p>
           {filtered.length ? (
             <DataTableRegion label="팀원 목록">
               <Table.Root className="city-block-member-table">

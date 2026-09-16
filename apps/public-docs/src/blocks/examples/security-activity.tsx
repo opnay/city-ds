@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
 import { Field } from '@opnay/city-ds-react/field';
-import { FilterPanel } from '@opnay/city-ds-react/filter-panel';
+import { FilterBar } from '@opnay/city-ds-react/filter-bar';
 import { SearchInput } from '@opnay/city-ds-react/search-input';
 import { Select } from '@opnay/city-ds-react/select';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
@@ -49,12 +49,20 @@ export function SecurityActivity({
       description="로그인과 인증 수단 변경 내역을 확인하십시오."
       className="city-block-members"
     >
-      <FilterPanel
+      <FilterBar
         aria-label="보안 활동 필터"
+        className="city-block-result-filters"
         actions={
-          <Button variant="outline" onClick={reset}>
-            초기화
-          </Button>
+          <>
+            {!loading && !error && (
+              <p role="status" className="city-block-status">
+                활동 {filtered.length}건
+              </p>
+            )}
+            <Button variant="outline" disabled={!query && outcome === 'all'} onClick={reset}>
+              초기화
+            </Button>
+          </>
         }
       >
         <Field.Root>
@@ -91,7 +99,7 @@ export function SecurityActivity({
             </Select.Positioner>
           </Select.Portal>
         </Select.Root>
-      </FilterPanel>
+      </FilterBar>
       {loading ? (
         <Skeleton aria-label="보안 활동 불러오는 중" className="h-24 w-full" />
       ) : error ? (
@@ -105,9 +113,6 @@ export function SecurityActivity({
         </div>
       ) : (
         <>
-          <p role="status" className="city-block-status">
-            활동 {filtered.length}건
-          </p>
           {!filtered.length ? (
             <div className="city-block-section">
               <p>

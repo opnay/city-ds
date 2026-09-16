@@ -71,7 +71,7 @@ export function DeploymentHistory({
         }
       >
         <Field.Root>
-          <Field.Label>실행 검색</Field.Label>
+          <Field.Label className="sr-only">실행 검색</Field.Label>
           <SearchInput.Root value={query} onValueChange={setQuery}>
             <SearchInput.Group>
               <SearchInput.Input placeholder="워크플로우·브랜치·커밋 검색" />
@@ -214,9 +214,9 @@ function HistoryFilter({
   items: Record<string, string>;
 }) {
   return (
-    <div className="city-block-history-filter">
+    <div className="min-w-0">
       <Select.Root value={value} items={items} onValueChange={(next) => onChange(next ?? 'all')}>
-        <Select.Label>{label}</Select.Label>
+        <Select.Label className="sr-only">{label}</Select.Label>
         <Select.Trigger>
           <Select.Value />
           <Select.Icon />

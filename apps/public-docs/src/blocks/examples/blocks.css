@@ -23,11 +23,6 @@
   min-width: 48rem;
 }
 
-.city-block-table-controls {
-  min-width: 0;
-  padding-inline: var(--city-space-4);
-}
-
 .city-block-result-filters > [data-city-filter-bar-content] {
   flex: 1 1 24rem;
 }

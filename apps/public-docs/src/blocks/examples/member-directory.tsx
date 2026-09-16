@@ -150,64 +150,62 @@ export function MemberManagement({
           <Alert.Title level={4}>팀원 관리 권한이 없어요.</Alert.Title>
         </Alert.Root>
       )}
-      <div className="city-block-table-controls">
-        <FilterBar
-          aria-label="팀원 필터"
-          className="city-block-result-filters"
-          actions={
-            <>
-              {!loading && !error && (
-                <p role="status" className="city-block-status">
-                  팀원 {filtered.length}명
-                </p>
-              )}
-              <Button
-                type="button"
-                variant="outline"
-                disabled={!query && status === 'all'}
-                onClick={reset}
-              >
-                초기화
-              </Button>
-            </>
-          }
+      <FilterBar
+        aria-label="팀원 필터"
+        className="city-block-result-filters"
+        actions={
+          <>
+            {!loading && !error && (
+              <p role="status" className="city-block-status">
+                팀원 {filtered.length}명
+              </p>
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              disabled={!query && status === 'all'}
+              onClick={reset}
+            >
+              초기화
+            </Button>
+          </>
+        }
+      >
+        <Field.Root>
+          <Field.Label className="sr-only">팀원 검색</Field.Label>
+          <SearchInput.Root value={query} onValueChange={setQuery}>
+            <SearchInput.Group>
+              <SearchInput.Input placeholder="이름 또는 이메일 검색" />
+              <SearchInput.Clear aria-label="검색어 지우기" />
+            </SearchInput.Group>
+          </SearchInput.Root>
+        </Field.Root>
+        <Select.Root
+          items={statuses}
+          value={status}
+          onValueChange={(value) => setStatus(value ?? 'all')}
         >
-          <Field.Root>
-            <Field.Label className="sr-only">팀원 검색</Field.Label>
-            <SearchInput.Root value={query} onValueChange={setQuery}>
-              <SearchInput.Group>
-                <SearchInput.Input placeholder="이름 또는 이메일 검색" />
-                <SearchInput.Clear aria-label="검색어 지우기" />
-              </SearchInput.Group>
-            </SearchInput.Root>
-          </Field.Root>
-          <Select.Root
-            items={statuses}
-            value={status}
-            onValueChange={(value) => setStatus(value ?? 'all')}
-          >
-            <Select.Label className="sr-only">팀원 상태</Select.Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Icon />
-            </Select.Trigger>
-            <Select.Portal>
-              <Select.Positioner>
-                <Select.Popup>
-                  <Select.List aria-label="팀원 상태">
-                    {Object.entries(statuses).map(([value, label]) => (
-                      <Select.Item key={value} value={value}>
-                        <Select.ItemText>{label}</Select.ItemText>
-                        <Select.ItemIndicator />
-                      </Select.Item>
-                    ))}
-                  </Select.List>
-                </Select.Popup>
-              </Select.Positioner>
-            </Select.Portal>
-          </Select.Root>
-        </FilterBar>
-      </div>
+          <Select.Label className="sr-only">팀원 상태</Select.Label>
+          <Select.Trigger>
+            <Select.Value />
+            <Select.Icon />
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Positioner>
+              <Select.Popup>
+                <Select.List aria-label="팀원 상태">
+                  {Object.entries(statuses).map(([value, label]) => (
+                    <Select.Item key={value} value={value}>
+                      <Select.ItemText>{label}</Select.ItemText>
+                      <Select.ItemIndicator />
+                    </Select.Item>
+                  ))}
+                </Select.List>
+              </Select.Popup>
+            </Select.Positioner>
+          </Select.Portal>
+        </Select.Root>
+      </FilterBar>
       {loading ? (
         <Skeleton aria-label="팀원 불러오는 중" className="h-40 w-full" />
       ) : error ? (

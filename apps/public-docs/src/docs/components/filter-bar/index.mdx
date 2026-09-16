@@ -5,8 +5,10 @@ import { pageData } from './page-data';
 ## 조건 조합
 
 FilterBar는 Table이나 목록 결과 바로 위에서 검색어·상태·기간을 좁히는 조건 행입니다.
-표면, 테두리, 바깥 padding을 만들지 않습니다. Table의 첫·마지막 열과 맞출 inline gutter는
-주변 데이터 영역이 소유합니다. 별도 조회 영역에는 [FilterPanel](/components/filter-panel)을 사용하십시오.
+표면, 테두리, 바깥 padding을 만들지 않습니다. 외곽선 없이 배치할 때는 헤더와 Table
+영역의 바깥 경계에 양 끝을 맞추고, 필터 전용 래퍼에도 좌우 padding을 추가하지 마십시오.
+아래 예제처럼 필터와 표를 하나의 테두리로 묶은 경우에는 그 컨테이너가 내부 gutter를
+소유합니다. 별도 조회 영역에는 [FilterPanel](/components/filter-panel)을 사용하십시오.
 
 각 직접 자식은 하나의 조건으로 취급하며, 내용에 필요한 너비를 유지합니다.
 레이블과 입력은 `Field.Root` 또는 하나의 컨테이너로 묶으십시오. 화면이나 컨테이너의

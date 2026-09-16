@@ -58,50 +58,48 @@ export function DeploymentHistory({
       description="워크플로우 실행 결과를 비교하고 로그와 이벤트 이력을 살펴보십시오."
       className="city-block-project-data"
     >
-      <div className="city-block-table-controls">
-        <FilterBar
-          aria-label="실행 기록 필터"
-          className="city-block-result-filters"
-          actions={
-            <>
-              {!loading && !error && (
-                <p role="status" className="city-block-status">
-                  실행 {filtered.length}건
-                </p>
-              )}
-              <Button
-                variant="outline"
-                disabled={!query && environment === 'all' && status === 'all'}
-                onClick={reset}
-              >
-                초기화
-              </Button>
-            </>
-          }
-        >
-          <Field.Root>
-            <Field.Label className="sr-only">실행 검색</Field.Label>
-            <SearchInput.Root value={query} onValueChange={setQuery}>
-              <SearchInput.Group>
-                <SearchInput.Input placeholder="워크플로우·브랜치·커밋 검색" />
-                <SearchInput.Clear />
-              </SearchInput.Group>
-            </SearchInput.Root>
-          </Field.Root>
-          <HistoryFilter
-            label="배포 환경"
-            value={environment}
-            onChange={setEnvironment}
-            items={{ all: '모든 환경', ...deploymentEnvironmentLabels }}
-          />
-          <HistoryFilter
-            label="실행 상태"
-            value={status}
-            onChange={setStatus}
-            items={{ all: '모든 상태', ...deploymentStatusLabels }}
-          />
-        </FilterBar>
-      </div>
+      <FilterBar
+        aria-label="실행 기록 필터"
+        className="city-block-result-filters"
+        actions={
+          <>
+            {!loading && !error && (
+              <p role="status" className="city-block-status">
+                실행 {filtered.length}건
+              </p>
+            )}
+            <Button
+              variant="outline"
+              disabled={!query && environment === 'all' && status === 'all'}
+              onClick={reset}
+            >
+              초기화
+            </Button>
+          </>
+        }
+      >
+        <Field.Root>
+          <Field.Label className="sr-only">실행 검색</Field.Label>
+          <SearchInput.Root value={query} onValueChange={setQuery}>
+            <SearchInput.Group>
+              <SearchInput.Input placeholder="워크플로우·브랜치·커밋 검색" />
+              <SearchInput.Clear />
+            </SearchInput.Group>
+          </SearchInput.Root>
+        </Field.Root>
+        <HistoryFilter
+          label="배포 환경"
+          value={environment}
+          onChange={setEnvironment}
+          items={{ all: '모든 환경', ...deploymentEnvironmentLabels }}
+        />
+        <HistoryFilter
+          label="실행 상태"
+          value={status}
+          onChange={setStatus}
+          items={{ all: '모든 상태', ...deploymentStatusLabels }}
+        />
+      </FilterBar>
       {loading ? (
         <div
           role="status"

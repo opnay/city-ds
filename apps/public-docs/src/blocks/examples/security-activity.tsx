@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
 import { Field } from '@opnay/city-ds-react/field';
-import { FilterBar } from '@opnay/city-ds-react/filter-bar';
+import { FilterPanel } from '@opnay/city-ds-react/filter-panel';
 import { SearchInput } from '@opnay/city-ds-react/search-input';
 import { Select } from '@opnay/city-ds-react/select';
 import { Skeleton } from '@opnay/city-ds-react/skeleton';
@@ -49,7 +49,7 @@ export function SecurityActivity({
       description="로그인과 인증 수단 변경 내역을 확인하십시오."
       className="city-block-members"
     >
-      <FilterBar
+      <FilterPanel
         aria-label="보안 활동 필터"
         actions={
           <Button variant="outline" onClick={reset}>
@@ -91,7 +91,7 @@ export function SecurityActivity({
             </Select.Positioner>
           </Select.Portal>
         </Select.Root>
-      </FilterBar>
+      </FilterPanel>
       {loading ? (
         <Skeleton aria-label="보안 활동 불러오는 중" className="h-24 w-full" />
       ) : error ? (

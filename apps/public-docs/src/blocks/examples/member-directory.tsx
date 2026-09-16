@@ -7,7 +7,7 @@ import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Dialog } from '@opnay/city-ds-react/dialog';
 import { EmptyState } from '@opnay/city-ds-react/empty-state';
 import { Field } from '@opnay/city-ds-react/field';
-import { FilterBar } from '@opnay/city-ds-react/filter-bar';
+import { FilterPanel } from '@opnay/city-ds-react/filter-panel';
 import { Input } from '@opnay/city-ds-react/input';
 import { SearchInput } from '@opnay/city-ds-react/search-input';
 import { Select } from '@opnay/city-ds-react/select';
@@ -150,7 +150,7 @@ export function MemberManagement({
           <Alert.Title level={4}>팀원 관리 권한이 없어요.</Alert.Title>
         </Alert.Root>
       )}
-      <FilterBar
+      <FilterPanel
         aria-label="팀원 필터"
         appearance="band"
         actions={
@@ -193,7 +193,7 @@ export function MemberManagement({
             </Select.Positioner>
           </Select.Portal>
         </Select.Root>
-      </FilterBar>
+      </FilterPanel>
       {loading ? (
         <Skeleton aria-label="팀원 불러오는 중" className="h-40 w-full" />
       ) : error ? (

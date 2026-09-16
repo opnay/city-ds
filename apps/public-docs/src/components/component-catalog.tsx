@@ -4,7 +4,7 @@ import { Link } from '@tanstack/react-router';
 import { Button } from '@opnay/city-ds-react/button';
 import { EmptyState } from '@opnay/city-ds-react/empty-state';
 import { Field } from '@opnay/city-ds-react/field';
-import { FilterBar } from '@opnay/city-ds-react/filter-bar';
+import { FilterPanel } from '@opnay/city-ds-react/filter-panel';
 import { SearchInput } from '@opnay/city-ds-react/search-input';
 import { Select } from '@opnay/city-ds-react/select';
 
@@ -36,7 +36,7 @@ export function ComponentCatalog() {
       eyebrow="Components"
       title="컴포넌트"
     >
-      <FilterBar
+      <FilterPanel
         actions={
           <Button onClick={reset} size="sm" type="button" variant="outline">
             필터 초기화
@@ -85,7 +85,7 @@ export function ComponentCatalog() {
             </Select.Portal>
           </Select.Root>
         </div>
-      </FilterBar>
+      </FilterPanel>
 
       <p className="city-docs-results-count city-text-supporting" aria-live="polite">
         컴포넌트 {results.length}개

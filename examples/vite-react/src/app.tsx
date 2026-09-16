@@ -276,7 +276,6 @@ function OperationsPage() {
                   필터 초기화
                 </Button>
               }
-              appearance="band"
               aria-label="현장 작업 필터"
             >
               <Field.Root className="city-ops-search-input">

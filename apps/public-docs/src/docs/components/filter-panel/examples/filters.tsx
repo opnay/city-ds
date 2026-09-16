@@ -1,0 +1,91 @@
+import { useState } from 'react';
+import { Button } from '@opnay/city-ds-react/button';
+import { Field } from '@opnay/city-ds-react/field';
+import { FilterPanel } from '@opnay/city-ds-react/filter-panel';
+import { Input } from '@opnay/city-ds-react/input';
+import { Select } from '@opnay/city-ds-react/select';
+
+const statuses = { all: '모든 상태', active: '진행 중', completed: '완료' };
+const projects = [
+  { name: '공원 정비', status: 'active' },
+  { name: '도로 점검', status: 'active' },
+  { name: '공원 안내판 교체', status: 'completed' },
+];
+
+export default function FilterPanelExample({
+  appearance = 'band',
+  density = 'comfortable',
+}: {
+  appearance?: 'plain' | 'band' | 'outline';
+  density?: 'comfortable' | 'compact';
+}) {
+  const [query, setQuery] = useState('');
+  const [status, setStatus] = useState('all');
+  const results = projects.filter(
+    (project) =>
+      project.name.includes(query.trim()) && (status === 'all' || project.status === status),
+  );
+
+  return (
+    <div className="grid w-full gap-4">
+      <FilterPanel
+        aria-label="프로젝트 상세 필터"
+        appearance={appearance}
+        density={density}
+        actions={
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              setQuery('');
+              setStatus('all');
+            }}
+          >
+            초기화
+          </Button>
+        }
+      >
+        <Field.Root>
+          <Field.Label className="sr-only">프로젝트 이름</Field.Label>
+          <Input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="프로젝트 이름 검색"
+          />
+        </Field.Root>
+        <div className="min-w-0">
+          <Select.Root
+            items={statuses}
+            value={status}
+            onValueChange={(value) => setStatus(value ?? 'all')}
+          >
+            <Select.Label className="sr-only">상태</Select.Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Icon />
+            </Select.Trigger>
+            <Select.Portal>
+              <Select.Positioner>
+                <Select.Popup>
+                  <Select.List>
+                    {Object.entries(statuses).map(([value, label]) => (
+                      <Select.Item key={value} value={value}>
+                        <Select.ItemText>{label}</Select.ItemText>
+                        <Select.ItemIndicator />
+                      </Select.Item>
+                    ))}
+                  </Select.List>
+                </Select.Popup>
+              </Select.Positioner>
+            </Select.Portal>
+          </Select.Root>
+        </div>
+      </FilterPanel>
+      <p className="city-text-supporting" role="status">
+        {results.length > 0
+          ? `${results.length}개 · ${results.map((project) => project.name).join(', ')}`
+          : '조건에 맞는 프로젝트가 없어요.'}
+      </p>
+    </div>
+  );
+}

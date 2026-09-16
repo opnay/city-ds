@@ -20,6 +20,7 @@ export * from './components/field';
 export * from './components/fieldset';
 export * from './components/file-upload';
 export * from './components/filter-bar';
+export * from './components/filter-panel';
 export * from './components/input';
 export * from './components/kbd';
 export * from './components/menu';

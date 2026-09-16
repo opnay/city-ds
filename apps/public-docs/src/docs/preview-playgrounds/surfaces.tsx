@@ -5,7 +5,8 @@ import { Button } from '@opnay/city-ds-react/button';
 import { DataTableRegion } from '@opnay/city-ds-react/data-table-region';
 import { Dialog } from '@opnay/city-ds-react/dialog';
 import { Drawer } from '@opnay/city-ds-react/drawer';
-import FiltersExample from '../components/filter-bar/examples/filters';
+import FilterBarExample from '../components/filter-bar/examples/filters';
+import FilterPanelExample from '../components/filter-panel/examples/filters';
 import { Panel } from '@opnay/city-ds-react/panel';
 import { Popover } from '@opnay/city-ds-react/popover';
 import { Table, type TableSortDirection } from '@opnay/city-ds-react/table';
@@ -362,9 +363,13 @@ export function PanelPreview({ actions }: PreviewOptionProps) {
   );
 }
 
-export function FilterBarPreview({ appearance, density }: PreviewOptionProps) {
+export function FilterBarPreview({ density }: PreviewOptionProps) {
+  return <FilterBarExample density={density === 'compact' ? 'compact' : 'comfortable'} />;
+}
+
+export function FilterPanelPreview({ appearance, density }: PreviewOptionProps) {
   return (
-    <FiltersExample
+    <FilterPanelExample
       appearance={isOneOf(appearance, APPEARANCES, 'band')}
       density={density === 'compact' ? 'compact' : 'comfortable'}
     />

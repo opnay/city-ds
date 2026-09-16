@@ -7,7 +7,7 @@ import {
   Button,
   DataTableRegion,
   Field,
-  FilterBar,
+  FilterPanel,
   SearchInput,
   Select,
   Skeleton,
@@ -58,7 +58,7 @@ export function DeploymentHistory({
       description="워크플로우 실행 결과를 비교하고 로그와 이벤트 이력을 살펴보십시오."
       className="city-block-project-data"
     >
-      <FilterBar
+      <FilterPanel
         aria-label="실행 기록 필터"
         actions={
           <Button
@@ -91,7 +91,7 @@ export function DeploymentHistory({
           onChange={setStatus}
           items={{ all: '모든 상태', ...deploymentStatusLabels }}
         />
-      </FilterBar>
+      </FilterPanel>
       {loading ? (
         <div
           role="status"

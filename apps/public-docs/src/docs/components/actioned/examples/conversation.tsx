@@ -135,7 +135,7 @@ export default function ConversationExample() {
               <Button size="sm" variant="outline" onClick={() => transition('failed')}>
                 실패 결과 적용
               </Button>
-              <Button size="sm" variant="ghost" onClick={() => transition('cancelled')}>
+              <Button size="sm" variant="outline" onClick={() => transition('cancelled')}>
                 실행 취소
               </Button>
             </Actioned.Actions>

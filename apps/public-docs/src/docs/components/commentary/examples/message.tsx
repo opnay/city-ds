@@ -27,7 +27,12 @@ export default function MessageExample({
         </pre>
       </Commentary.Content>
       <Commentary.Actions>
-        <Button size="sm" variant="ghost" nativeButton={false} render={<a href="/accessibility" />}>
+        <Button
+          size="sm"
+          variant="outline"
+          nativeButton={false}
+          render={<a href="/accessibility" />}
+        >
           접근성 안내
         </Button>
       </Commentary.Actions>

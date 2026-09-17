@@ -136,6 +136,7 @@ const preview: Preview = {
           'Overlays',
           'Data display',
           'Feedback',
+          'AI & Chat',
           'Layout',
         ],
       },

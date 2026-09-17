@@ -5,6 +5,9 @@ import { renderDocs } from '../test/render-docs';
 import { COMPONENT_DOCS } from './doc-catalog';
 
 const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
+  commentary: 2,
+  'agent-activity': 2,
+  actioned: 3,
   stepper: 1,
   alert: 2,
   badge: 1,
@@ -27,6 +30,9 @@ const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
 };
 
 const CONFIGURABLE_COMPONENTS = new Set([
+  'commentary',
+  'agent-activity',
+  'actioned',
   'stepper',
   'accordion',
   'alert',

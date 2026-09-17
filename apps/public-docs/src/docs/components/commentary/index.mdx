@@ -1,0 +1,21 @@
+import { pageData } from './page-data';
+
+<ComponentReference data={pageData} />
+
+## 사용 기준
+
+Header에 기존 Avatar와 Author·Meta를, Content에 임의의 React 본문을 조합하십시오.
+appearance와 align은 작성자 종류와 독립적입니다. bubble의 배경은 Content에 적용됩니다.
+Markdown 변환·스트리밍 연결·메시지 액션은 소비자가 담당합니다.
+각 part는 render 합성과 ref, className, 이벤트와 ARIA 속성을 지원합니다.
+
+## 접근성
+
+과거 메시지를 기본적으로 자동 낭독하지 않습니다. 전체 대화 기록에 live region을 지정하면 이전 내용까지 반복해서 읽을 수 있습니다.
+현재 진행 상태만 별도의 `role="status"` 또는 `aria-live="polite"` 영역에 지정하십시오.
+Meta를 time으로 합성하면 유효한 dateTime도 전달하십시오. 아이콘 전용 액션에는 접근 가능한 이름을 지정하십시오.
+코드처럼 가로로 긴 콘텐츠는 내부 스크롤이 가능합니다. 스크롤할 pre에는 tabIndex와 접근 가능한 이름을 제공하십시오.
+
+## 대화 조합
+
+[Actioned의 대화 흐름 예제](/components/actioned#example-actioned-conversation)에서 메시지·Thinking·승인·실행·응답의 조합을 확인하십시오.

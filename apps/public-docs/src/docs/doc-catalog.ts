@@ -16,10 +16,12 @@ export const COMPONENT_CATEGORIES: readonly ComponentCategory[] = [
   'Overlays',
   'Data display',
   'Feedback',
+  'AI & Chat',
   'Layout',
 ];
 
 export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
+  'AI & Chat': 'AI & Chat',
   Actions: '액션',
   'Data display': '정보 표시',
   Dates: '날짜',
@@ -713,6 +715,42 @@ export const COMPONENT_DOCS = [
     selectionGuidance: '활동 기록이나 변경 이력을 표시할 때 사용하십시오.',
     slug: 'timeline',
     title: 'Timeline',
+  },
+  {
+    category: 'AI & Chat',
+    description: '작성자·본문·액션을 조합하는 대화 메시지입니다.',
+    importPath: '@opnay/city-ds-react/commentary',
+    keywords: ['채팅', '메시지', '말풍선', '대화'],
+    load: () => import('./components/commentary/index.mdx'),
+    related: ['agent-activity', 'actioned'],
+    selectionGuidance:
+      '대화 본문에 사용하십시오. 짧은 진행 안내는 AgentActivity, 도구 실행과 승인은 Actioned를 사용하십시오.',
+    slug: 'commentary',
+    title: 'Commentary',
+  },
+  {
+    category: 'AI & Chat',
+    description: 'Thinking·모델 변경·작업 중단을 짧은 상태 라인으로 표시합니다.',
+    importPath: '@opnay/city-ds-react/agent-activity',
+    keywords: ['thinking', '모델', '진행', '이벤트', '중단'],
+    load: () => import('./components/agent-activity/index.mdx'),
+    related: ['commentary', 'actioned'],
+    selectionGuidance:
+      '짧은 상태나 이벤트에 사용하십시오. 도구 입력·결과를 펼쳐야 하면 Actioned를 사용하십시오.',
+    slug: 'agent-activity',
+    title: 'AgentActivity',
+  },
+  {
+    category: 'AI & Chat',
+    description: '도구 실행 상태·상세·승인 요청을 조합합니다.',
+    importPath: '@opnay/city-ds-react/actioned',
+    keywords: ['도구', '승인', '실행', '거절', '재시도'],
+    load: () => import('./components/actioned/index.mdx'),
+    related: ['commentary', 'agent-activity'],
+    selectionGuidance:
+      '도구 실행과 승인 요청에 사용하십시오. 실행·승인·재시도 정책은 소비자가 관리합니다.',
+    slug: 'actioned',
+    title: 'Actioned',
   },
 ] as const satisfies readonly ComponentDocEntry[];
 

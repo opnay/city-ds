@@ -1,0 +1,26 @@
+import { pageData } from './page-data';
+
+<ComponentReference data={pageData} />
+
+## 상태와 상세
+
+status는 소비자가 전달하는 실행 상태입니다. queued는 실행 대기, approval-required는 승인 대기, running은 실행 중입니다.
+completed는 성공, failed는 실행 실패, cancelled는 시작한 작업의 취소, rejected는 승인 거절을 나타냅니다.
+Status의 기본 영문 문구는 children으로 현지화할 수 있습니다. 상태 변경은 상세의 펼침 상태를 초기화하지 않습니다.
+open 없이 defaultOpen으로 초기 상태를 지정하거나 open과 onOpenChange로 외부에서 제어하십시오.
+각 part는 render 합성과 ref, className, 이벤트와 ARIA 속성을 지원합니다.
+
+## 승인과 실행
+
+Approval은 Content 밖에 두고 승인 상태일 때만 표시하십시오. 상세가 닫혀 있어도 승인 요청을 확인할 수 있습니다.
+승인·거절·재시도 버튼은 Trigger 밖에 배치하십시오. 버튼을 눌러도 컴포넌트가 status를 변경하지 않습니다.
+실행·승인·재시도 정책은 소비자 소유입니다. 요청을 시작하기 전에 중복 제출을 막고 진행 중인 버튼을 제거하거나 비활성화하십시오.
+대화 흐름 예제는 직접 결과를 선택하는 시뮬레이션이며 네트워크나 파일 작업을 실행하지 않습니다.
+실제 비동기 실행에서는 요청 실패·취소·오래된 응답을 처리하고 필요하면 다시 승인을 받으십시오.
+
+## 접근성
+
+Base UI Collapsible의 버튼·키보드·aria-expanded·aria-controls 동작을 유지합니다. Enter 또는 Space로 상세를 여닫습니다.
+기본적으로 과거 도구 기록을 자동 낭독하지 않습니다. 필요한 현재 진행 상태만 별도의 `role="status"` 또는 `aria-live="polite"` 영역으로 전달하십시오.
+승인 버튼이 사라지는 전환에서는 안정적으로 남아 있는 Trigger 등 의미 있는 위치로 포커스를 이동하십시오.
+상태 아이콘은 장식용이며 텍스트가 상태를 전달합니다. 진행 애니메이션은 모션 감소 설정에서 멈춥니다.

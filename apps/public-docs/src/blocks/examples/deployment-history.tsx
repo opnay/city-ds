@@ -60,14 +60,22 @@ export function DeploymentHistory({
     >
       <FilterBar
         aria-label="실행 기록 필터"
+        className="city-block-result-filters"
         actions={
-          <Button
-            variant="outline"
-            disabled={!query && environment === 'all' && status === 'all'}
-            onClick={reset}
-          >
-            초기화
-          </Button>
+          <>
+            {!loading && !error && (
+              <p role="status" className="city-block-status">
+                실행 {filtered.length}건
+              </p>
+            )}
+            <Button
+              variant="outline"
+              disabled={!query && environment === 'all' && status === 'all'}
+              onClick={reset}
+            >
+              초기화
+            </Button>
+          </>
         }
       >
         <Field.Root>
@@ -121,9 +129,6 @@ export function DeploymentHistory({
         </Alert.Root>
       ) : (
         <>
-          <p role="status" className="city-block-status">
-            실행 {filtered.length}건
-          </p>
           {!filtered.length ? (
             <EmptyState.Root>
               <EmptyState.Title level={4}>

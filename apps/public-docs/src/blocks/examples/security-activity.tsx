@@ -51,10 +51,18 @@ export function SecurityActivity({
     >
       <FilterBar
         aria-label="보안 활동 필터"
+        className="city-block-result-filters"
         actions={
-          <Button variant="outline" onClick={reset}>
-            초기화
-          </Button>
+          <>
+            {!loading && !error && (
+              <p role="status" className="city-block-status">
+                활동 {filtered.length}건
+              </p>
+            )}
+            <Button variant="outline" disabled={!query && outcome === 'all'} onClick={reset}>
+              초기화
+            </Button>
+          </>
         }
       >
         <Field.Root>
@@ -105,9 +113,6 @@ export function SecurityActivity({
         </div>
       ) : (
         <>
-          <p role="status" className="city-block-status">
-            활동 {filtered.length}건
-          </p>
           {!filtered.length ? (
             <div className="city-block-section">
               <p>

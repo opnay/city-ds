@@ -106,6 +106,10 @@
       "types": "./dist/components/filter-bar/index.d.ts",
       "import": "./dist/components/filter-bar/index.js"
     },
+    "./filter-panel": {
+      "types": "./dist/components/filter-panel/index.d.ts",
+      "import": "./dist/components/filter-panel/index.js"
+    },
     "./input": {
       "types": "./dist/components/input/index.d.ts",
       "import": "./dist/components/input/index.js"

@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { DensityProvider } from '../../src/components/density-provider';
 import { FilterBar } from '../../src/components/filter-bar';
+import { FilterPanel } from '../../src/components/filter-panel';
 import { Select } from '../../src/components/select';
 
 describe('FilterBar', () => {
@@ -45,8 +46,9 @@ describe('FilterBar', () => {
     );
 
     const filterBar = screen.getByRole('group', { name: 'Project filters' });
-    expect(filterBar).toHaveAttribute('data-appearance', 'band');
-    expect(filterBar).toHaveClass('gap-4', 'p-4');
+    expect(filterBar).not.toHaveAttribute('data-appearance');
+    expect(filterBar).toHaveClass('gap-4');
+    expect(filterBar).not.toHaveClass('p-4', 'p-3', 'bg-city-muted');
     expect(filterBar.querySelector('[data-city-filter-bar-content]')).toHaveClass('gap-3');
     expect(filterBar.querySelector('[data-city-filter-bar-actions]')).toHaveClass('gap-3');
     expect(screen.queryByRole('toolbar')).not.toBeInTheDocument();
@@ -61,10 +63,10 @@ describe('FilterBar', () => {
     expect(onReset).toHaveBeenCalledTimes(1);
   });
 
-  it('supports surface appearances and inherited density', () => {
+  it('uses inherited density without adding an outer surface or padding', () => {
     render(
       <DensityProvider density="compact">
-        <FilterBar appearance="outline" aria-label="Compact filters">
+        <FilterBar aria-label="Compact filters">
           <input aria-label="Query" />
         </FilterBar>
       </DensityProvider>,
@@ -75,7 +77,23 @@ describe('FilterBar', () => {
       'compact',
     );
     const filterBar = screen.getByRole('group', { name: 'Compact filters' });
-    expect(filterBar).toHaveClass('rounded-city-md', 'border', 'gap-3', 'p-3');
+    expect(filterBar).toHaveClass('gap-3');
+    expect(filterBar).not.toHaveClass('rounded-city-md', 'border', 'p-3');
     expect(filterBar.querySelector('[data-city-filter-bar-content]')).toHaveClass('gap-2');
+  });
+
+  it('keeps independent filter surfaces and padding in FilterPanel', () => {
+    render(
+      <DensityProvider density="compact">
+        <FilterPanel appearance="outline" aria-label="Compact filters">
+          <input aria-label="Query" />
+        </FilterPanel>
+      </DensityProvider>,
+    );
+
+    const filterPanel = screen.getByRole('group', { name: 'Compact filters' });
+    expect(filterPanel).toHaveAttribute('data-appearance', 'outline');
+    expect(filterPanel).toHaveClass('rounded-city-md', 'border', 'gap-3', 'p-3');
+    expect(filterPanel.querySelector('[data-city-filter-panel-content]')).toHaveClass('gap-2');
   });
 });

@@ -152,11 +152,23 @@ export function MemberManagement({
       )}
       <FilterBar
         aria-label="팀원 필터"
-        appearance="band"
+        className="city-block-result-filters"
         actions={
-          <Button type="button" variant="outline" onClick={reset}>
-            초기화
-          </Button>
+          <>
+            {!loading && !error && (
+              <p role="status" className="city-block-status">
+                팀원 {filtered.length}명
+              </p>
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              disabled={!query && status === 'all'}
+              onClick={reset}
+            >
+              초기화
+            </Button>
+          </>
         }
       >
         <Field.Root>
@@ -204,9 +216,6 @@ export function MemberManagement({
         </Alert.Root>
       ) : (
         <>
-          <p role="status" className="city-text-supporting">
-            팀원 {filtered.length}명
-          </p>
           {filtered.length ? (
             <DataTableRegion label="팀원 목록">
               <Table.Root className="city-block-member-table">

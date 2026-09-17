@@ -6,7 +6,7 @@ import { COMPONENT_DOCS } from './doc-catalog';
 
 const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   commentary: 2,
-  'agent-activity': 3,
+  'agent-activity': 4,
   stepper: 1,
   alert: 2,
   badge: 1,

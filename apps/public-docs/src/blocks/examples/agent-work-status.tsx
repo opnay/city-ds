@@ -33,7 +33,7 @@ function WorkActivity({ event, current }: { event: AgentWorkEvent; current: bool
   );
 
   return (
-    <AgentActivity.Root pending={current && (event.pending ?? false)} role="listitem">
+    <AgentActivity.Root pending={current && (event.pending ?? false)}>
       {event.details ? (
         <>
           <AgentActivity.Trigger>{summary}</AgentActivity.Trigger>
@@ -178,12 +178,12 @@ export function AgentWorkStatus({
           </Commentary.Header>
           <Commentary.Content>{task.prompt}</Commentary.Content>
         </Commentary.Root>
-        <div className="city-ai-chat-block-events" role="list" aria-label="에이전트 작업 이벤트">
+        <AgentActivity.List className="city-ai-chat-block-events" aria-label="에이전트 작업 이벤트">
           {task.events.map((event) => {
             const isCurrent = event.id === currentEvent?.id;
             return <WorkActivity key={event.id} event={event} current={isCurrent} />;
           })}
-        </div>
+        </AgentActivity.List>
         {task.response && (
           <Commentary.Root appearance="plain" align="start">
             <Commentary.Header>

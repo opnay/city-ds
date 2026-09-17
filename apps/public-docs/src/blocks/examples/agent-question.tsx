@@ -74,7 +74,7 @@ function QuestionActivity({
   );
 
   return (
-    <AgentActivity.Root pending={current && (activity.pending ?? false)} role="listitem">
+    <AgentActivity.Root pending={current && (activity.pending ?? false)}>
       {activity.details ? (
         <>
           <AgentActivity.Trigger>{summary}</AgentActivity.Trigger>
@@ -180,7 +180,10 @@ export function AgentQuestion({
           <Commentary.Content>{request.prompt}</Commentary.Content>
         </Commentary.Root>
         {request.activities && request.activities.length > 0 && (
-          <div className="city-ai-chat-block-events" role="list" aria-label="에이전트 작업 이벤트">
+          <AgentActivity.List
+            className="city-ai-chat-block-events"
+            aria-label="에이전트 작업 이벤트"
+          >
             {request.activities.map((activity) => (
               <QuestionActivity
                 key={activity.id}
@@ -188,7 +191,7 @@ export function AgentQuestion({
                 current={activity.id === currentActivity?.id}
               />
             ))}
-          </div>
+          </AgentActivity.List>
         )}
         <Commentary.Root appearance="bubble" align="start">
           <Commentary.Header>

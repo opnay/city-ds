@@ -157,4 +157,45 @@ describe('AgentActivity disclosure', () => {
     expect(screen.queryByRole('button')).toBeNull();
     expect(screen.getByText('Model changed').tagName).toBe('SPAN');
   });
+
+  it('groups sequential activities under a summary without changing the row start position', async () => {
+    const user = userEvent.setup();
+    render(
+      <AgentActivity.Root data-testid="summary">
+        <AgentActivity.Trigger>
+          <AgentActivity.Indicator />
+          <AgentActivity.Content>3개 파일을 검사했습니다.</AgentActivity.Content>
+          <AgentActivity.Meta>Now</AgentActivity.Meta>
+        </AgentActivity.Trigger>
+        <AgentActivity.Details>
+          <AgentActivity.List aria-label="파일 검사 활동">
+            <AgentActivity.Root data-testid="first-child">
+              <AgentActivity.Indicator />
+              <AgentActivity.Content>README.md를 읽었습니다.</AgentActivity.Content>
+            </AgentActivity.Root>
+            <AgentActivity.Root>
+              <AgentActivity.Trigger>
+                <AgentActivity.Indicator />
+                <AgentActivity.Content>package.json을 읽었습니다.</AgentActivity.Content>
+              </AgentActivity.Trigger>
+              <AgentActivity.Details>패키지 메타데이터</AgentActivity.Details>
+            </AgentActivity.Root>
+          </AgentActivity.List>
+        </AgentActivity.Details>
+      </AgentActivity.Root>,
+    );
+
+    const summary = screen.getByRole('button', { name: /3개 파일을 검사했습니다/ });
+    expect(summary).not.toHaveClass('px-2');
+    expect(screen.queryByRole('list', { name: '파일 검사 활동' })).toBeNull();
+
+    await user.click(summary);
+    expect(screen.getByRole('list', { name: '파일 검사 활동' })).toBeVisible();
+    expect(screen.getAllByRole('listitem')).toHaveLength(2);
+    expect(screen.getByTestId('first-child')).toHaveAttribute('role', 'listitem');
+    expect(screen.getByTestId('first-child')).not.toHaveClass('px-2');
+
+    await user.click(screen.getByRole('button', { name: /package.json을 읽었습니다/ }));
+    expect(screen.getByText('패키지 메타데이터')).toBeVisible();
+  });
 });

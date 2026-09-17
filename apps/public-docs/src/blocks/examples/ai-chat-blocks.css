@@ -35,11 +35,14 @@
 
 .city-ai-chat-block-body,
 .city-ai-chat-block-transcript,
-.city-ai-chat-block-events,
 .city-ai-chat-block-composer {
   display: grid;
   min-width: 0;
   gap: var(--city-space-4);
+}
+
+.city-ai-chat-block-events {
+  gap: 0;
 }
 
 .city-ai-chat-block-transcript [data-city-commentary] {
@@ -51,11 +54,7 @@
 }
 
 .city-ai-chat-block-events > [data-city-agent-activity] {
-  padding-block: var(--city-space-2);
-}
-
-.city-ai-chat-block-events > [data-city-agent-activity] + [data-city-agent-activity] {
-  border-top: 1px solid var(--city-color-border);
+  padding-block: var(--city-space-1);
 }
 
 .city-ai-chat-block-composer {

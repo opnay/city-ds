@@ -4,6 +4,8 @@ import DetailsExample from './examples/details';
 import detailsSource from './examples/details.tsx?raw';
 import EventsExample from './examples/events';
 import eventsSource from './examples/events.tsx?raw';
+import GroupedExample from './examples/grouped';
+import groupedSource from './examples/grouped.tsx?raw';
 import { isEnabled, type PreviewOptionProps } from '../../preview-playgrounds/types';
 import type { ComponentPageData } from '../../types';
 
@@ -18,7 +20,12 @@ function Preview({ pending, density }: PreviewOptionProps) {
 
 export const pageData = {
   featuredExampleId: 'agent-activity-preview',
-  widePreviewIds: ['agent-activity-preview', 'agent-activity-events', 'agent-activity-details'],
+  widePreviewIds: [
+    'agent-activity-preview',
+    'agent-activity-events',
+    'agent-activity-details',
+    'agent-activity-grouped',
+  ],
   api: [
     {
       name: 'AgentActivity.Root',
@@ -62,6 +69,12 @@ export const pageData = {
       name: 'AgentActivity.Details',
       type: 'Base UI Collapsible.Panel props',
       description: '입력·결과·오류 로그를 요약 텍스트 아래에 이어 표시합니다.',
+    },
+    {
+      name: 'AgentActivity.List',
+      type: 'div props + render',
+      description:
+        '요약 아래의 연속 활동을 role=list로 묶습니다. 안의 Root는 기본으로 listitem이 됩니다.',
     },
   ],
   optionAxes: [
@@ -109,6 +122,19 @@ export const pageData = {
       coverage: [
         { axis: 'open', values: ['controlled'] },
         { axis: 'pending', values: ['true', 'false'] },
+      ],
+    },
+    {
+      id: 'agent-activity-grouped',
+      title: '연속 활동 요약',
+      description:
+        '여러 활동을 요약 행 하나로 접고, 열었을 때 같은 활동 행 목록으로 이어 표시합니다.',
+      Component: GroupedExample,
+      filename: 'grouped.tsx',
+      source: groupedSource,
+      coverage: [
+        { axis: 'open', values: ['controlled'] },
+        { axis: 'content', values: ['summary', 'nested-activity-list'] },
       ],
     },
   ],

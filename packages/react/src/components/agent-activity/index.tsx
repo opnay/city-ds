@@ -13,6 +13,7 @@ const ActivityContext = React.createContext<{ density: Density; pending: boolean
   density: 'comfortable',
   pending: false,
 });
+const ActivityListContext = React.createContext(false);
 
 export interface AgentActivityRootProps extends Collapsible.Root.Props {
   pending?: boolean;
@@ -20,14 +21,19 @@ export interface AgentActivityRootProps extends Collapsible.Root.Props {
 }
 
 export const AgentActivityRoot = React.forwardRef<HTMLDivElement, AgentActivityRootProps>(
-  function AgentActivityRoot({ pending = false, density: densityProp, className, ...props }, ref) {
+  function AgentActivityRoot(
+    { pending = false, density: densityProp, className, role, ...props },
+    ref,
+  ) {
     const density = useDensity(densityProp);
+    const isInList = React.useContext(ActivityListContext);
     const context = React.useMemo(() => ({ density, pending }), [density, pending]);
     return (
       <ActivityContext.Provider value={context}>
         <Collapsible.Root
           {...props}
           ref={ref}
+          role={role ?? (isInList ? 'listitem' : undefined)}
           data-city-agent-activity=""
           data-city-pending={pending ? '' : undefined}
           data-city-density={density}
@@ -136,7 +142,7 @@ export const AgentActivityTrigger = React.forwardRef<HTMLButtonElement, AgentAct
         data-city-agent-activity-trigger=""
         className={(state) =>
           cn(
-            'group/city-agent-activity-trigger col-span-3 grid min-h-(--city-hit-target-min) min-w-0 grid-cols-[auto_minmax(0,1fr)_auto_auto] items-start gap-x-2 gap-y-1 rounded-city-sm px-2 text-start text-sm leading-6 text-city-muted-foreground outline-none hover:text-city-foreground focus-visible:ring-2 focus-visible:ring-city-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-45',
+            'group/city-agent-activity-trigger col-span-3 grid min-h-(--city-hit-target-min) min-w-0 grid-cols-[auto_minmax(0,1fr)_auto_auto] items-start gap-x-2 gap-y-1 rounded-city-sm text-start text-sm leading-6 text-city-muted-foreground outline-none hover:text-city-foreground focus-visible:ring-2 focus-visible:ring-city-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-45',
             resolveClassName(className, state),
           )
         }
@@ -173,6 +179,26 @@ export const AgentActivityDetails = React.forwardRef<HTMLDivElement, AgentActivi
   },
 );
 
+export interface AgentActivityListProps extends Omit<useRender.ComponentProps<'div'>, 'className'> {
+  className?: string;
+}
+export const AgentActivityList = React.forwardRef<HTMLDivElement, AgentActivityListProps>(
+  function AgentActivityList({ className, render, ...props }, ref) {
+    const element = useRender({
+      defaultTagName: 'div',
+      ref,
+      render,
+      props: {
+        role: 'list',
+        ...props,
+        'data-city-agent-activity-list': '',
+        className: cn('grid min-w-0 gap-y-1', className),
+      },
+    });
+    return <ActivityListContext.Provider value>{element}</ActivityListContext.Provider>;
+  },
+);
+
 export const AgentActivity = {
   Root: AgentActivityRoot,
   Indicator: AgentActivityIndicator,
@@ -180,4 +206,5 @@ export const AgentActivity = {
   Meta: AgentActivityMeta,
   Trigger: AgentActivityTrigger,
   Details: AgentActivityDetails,
+  List: AgentActivityList,
 };

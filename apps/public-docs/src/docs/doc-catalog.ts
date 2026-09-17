@@ -16,10 +16,12 @@ export const COMPONENT_CATEGORIES: readonly ComponentCategory[] = [
   'Overlays',
   'Data display',
   'Feedback',
+  'AI & Chat',
   'Layout',
 ];
 
 export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
+  'AI & Chat': 'AI & Chat',
   Actions: '액션',
   'Data display': '정보 표시',
   Dates: '날짜',
@@ -713,6 +715,30 @@ export const COMPONENT_DOCS = [
     selectionGuidance: '활동 기록이나 변경 이력을 표시할 때 사용하십시오.',
     slug: 'timeline',
     title: 'Timeline',
+  },
+  {
+    category: 'AI & Chat',
+    description: '작성자·본문·액션을 조합하는 대화 메시지입니다.',
+    importPath: '@opnay/city-ds-react/commentary',
+    keywords: ['채팅', '메시지', '말풍선', '대화'],
+    load: () => import('./components/commentary/index.mdx'),
+    related: ['agent-activity'],
+    selectionGuidance:
+      '대화 본문에 사용하십시오. Thinking, 도구 실행 기록 같은 짧은 진행 안내는 AgentActivity를 사용하십시오.',
+    slug: 'commentary',
+    title: 'Commentary',
+  },
+  {
+    category: 'AI & Chat',
+    description: 'Thinking·모델 변경·도구 실행 로그를 한 행으로 표시합니다.',
+    importPath: '@opnay/city-ds-react/agent-activity',
+    keywords: ['thinking', '모델', '진행', '이벤트', '중단', '도구', '로그', '상세'],
+    load: () => import('./components/agent-activity/index.mdx'),
+    related: ['commentary'],
+    selectionGuidance:
+      '짧은 상태·이벤트·도구 로그에 사용하십시오. 입력·결과·오류는 Details에서 필요할 때만 펼치십시오.',
+    slug: 'agent-activity',
+    title: 'AgentActivity',
   },
 ] as const satisfies readonly ComponentDocEntry[];
 

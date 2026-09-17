@@ -228,6 +228,14 @@
     "./stepper": {
       "types": "./dist/components/stepper/index.d.ts",
       "import": "./dist/components/stepper/index.js"
+    },
+    "./commentary": {
+      "types": "./dist/components/commentary/index.d.ts",
+      "import": "./dist/components/commentary/index.js"
+    },
+    "./agent-activity": {
+      "types": "./dist/components/agent-activity/index.d.ts",
+      "import": "./dist/components/agent-activity/index.js"
     }
   },
   "publishConfig": {

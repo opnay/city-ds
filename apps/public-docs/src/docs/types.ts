@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react';
 
 export type ComponentCategory =
+  | 'AI & Chat'
   | 'Actions'
   | 'Data display'
   | 'Dates'

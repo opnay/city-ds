@@ -1,0 +1,116 @@
+.city-ai-chat-block {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  max-width: 52rem;
+  gap: var(--city-space-5);
+  padding: var(--city-space-5);
+  border: 1px solid var(--city-color-border);
+  border-radius: var(--city-radius-md);
+  background: var(--city-color-background);
+}
+
+.city-ai-chat-block-header {
+  align-items: center;
+}
+
+.city-ai-chat-block-header > [data-city-panel-header-content] {
+  flex: 1 1 10rem;
+}
+
+.city-ai-chat-block-heading {
+  display: grid;
+  min-width: 0;
+  gap: var(--city-space-1-5);
+}
+
+.city-ai-chat-block-heading > * {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.city-ai-chat-block-heading > p {
+  color: var(--city-color-muted-foreground);
+}
+
+.city-ai-chat-block-body,
+.city-ai-chat-block-transcript,
+.city-ai-chat-block-composer {
+  display: grid;
+  min-width: 0;
+  gap: var(--city-space-4);
+}
+
+.city-ai-chat-block-events {
+  gap: 0;
+}
+
+.city-ai-chat-block-transcript [data-city-commentary] {
+  max-width: 100%;
+}
+
+.city-ai-chat-block-transcript [data-city-commentary-content] {
+  max-width: min(100%, 34rem);
+}
+
+.city-ai-chat-block-events > [data-city-agent-activity] {
+  padding-block: var(--city-space-1);
+}
+
+.city-ai-chat-block-composer {
+  padding-top: var(--city-space-4);
+  border-top: 1px solid var(--city-color-border);
+}
+
+.city-ai-chat-block-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--city-space-2);
+}
+
+.city-ai-chat-block [data-city-agent-activity-details] pre {
+  max-width: 100%;
+  margin: 0;
+  padding: var(--city-space-3);
+  overflow-x: auto;
+  border: 1px solid var(--city-color-border);
+  border-radius: var(--city-radius-sm);
+  background: var(--city-color-background);
+  font-family: var(--city-font-family-mono);
+  font-size: var(--city-font-size-xs);
+  line-height: 1.7;
+}
+
+.city-ai-chat-block [data-city-agent-activity-details] pre:focus-visible {
+  outline: 2px solid var(--city-color-ring);
+  outline-offset: 2px;
+}
+
+.city-ai-chat-block-error {
+  margin: 0;
+  color: var(--city-color-destructive);
+  font-size: var(--city-font-size-sm);
+}
+
+@media (pointer: coarse) {
+  .city-ai-chat-block .city-button::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, var(--city-hit-target-min));
+    height: max(100%, var(--city-hit-target-min));
+    content: '';
+    transform: translate(-50%, -50%);
+  }
+
+  .city-ai-chat-block-actions {
+    gap: var(--city-space-3);
+  }
+}
+
+@media (max-width: 480px) {
+  .city-ai-chat-block {
+    padding: var(--city-space-4);
+  }
+}

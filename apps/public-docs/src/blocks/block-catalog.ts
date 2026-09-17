@@ -16,6 +16,22 @@ async function cardSource() {
   };
 }
 
+async function aiChatCardSource() {
+  return {
+    filename: 'ai-chat-block-card.tsx',
+    source: (await import('./examples/ai-chat-block-card.tsx?raw')).default,
+    language: 'tsx',
+  };
+}
+
+async function aiChatStylesSource() {
+  return {
+    filename: 'ai-chat-blocks.css',
+    source: (await import('./examples/ai-chat-blocks.css?raw')).default,
+    language: 'css',
+  };
+}
+
 async function layoutShellSource() {
   return {
     filename: 'layout-shells.tsx',
@@ -295,6 +311,79 @@ export const BLOCK_DOCS = [
           language: 'ts',
         },
       ],
+    }),
+  },
+  {
+    slug: 'support-conversation',
+    title: '고객 지원 대화',
+    description: '고객 문의 이력과 답변 입력을 한 화면에 두고 API 상태를 연결합니다.',
+    category: 'AI & Chat',
+    scope: '사용자·팀',
+    keywords: ['AI', '채팅', '고객 지원', '대화', '메시지', '답변', '입력'],
+    components: [
+      'commentary',
+      'avatar',
+      'field',
+      'input',
+      'button',
+      'alert',
+      'empty-state',
+      'skeleton',
+    ],
+    guidance:
+      '코드 보기에 있는 컴포넌트·ai-chat-block-card.tsx·ai-chat-blocks.css를 함께 사용한 뒤, conversation에 API에서 받은 제목·고객·메시지를 전달하고 onSendMessage를 답변 생성 API에 연결하십시오. 전송 성공 뒤 서버가 갱신한 messages를 다시 전달하며, loading·error·onRetry로 초기 조회와 새로고침을 연결합니다. 이미 conversation이 있으면 새로고침 오류가 대화 위 Alert로 표시되어 이력을 보존합니다. message.content는 React 콘텐츠이므로 소비 앱이 Markdown·코드 블록·링크 정책을 연결할 수 있습니다. 메시지 보존·첨부 파일·권한 확인은 소비자가 소유합니다.',
+    load: async () => ({
+      Component: (await import('./examples/support-conversation')).default,
+      source: (await import('./examples/support-conversation.tsx?raw')).default,
+      extraFiles: [await aiChatCardSource(), await aiChatStylesSource()],
+    }),
+  },
+  {
+    slug: 'agent-work-status',
+    title: '에이전트 작업 대화',
+    description: '사용자 프롬프트, 진행 이벤트, 최종 응답을 하나의 작업 화면으로 구성합니다.',
+    category: 'AI & Chat',
+    scope: '사용자·팀',
+    keywords: ['AI', '에이전트', 'Thinking', '모델', '작업 상태', '이벤트'],
+    components: [
+      'commentary',
+      'agent-activity',
+      'avatar',
+      'button',
+      'alert',
+      'empty-state',
+      'skeleton',
+    ],
+    guidance:
+      '코드 보기에 있는 컴포넌트·ai-chat-block-card.tsx·ai-chat-blocks.css를 함께 사용한 뒤, task에 프롬프트·이벤트·모델·완료 응답을 전달하고 서버에서 받은 순서를 그대로 유지하십시오. 진행 중인 이벤트 ID 하나만 currentEventId로 전달해 과거 이력이 다시 낭독되지 않게 합니다. task가 있으면 새로고침 오류가 작업 위 Alert로 표시되어 내용을 보존합니다. indicator·content·meta는 React 콘텐츠이므로 이벤트 종류를 제한하지 않습니다. onCancel·cancelling·loading·error·onRetry를 작업 API에 연결하고, 상태 수신·재개·보존 정책은 소비자가 관리합니다.',
+    load: async () => ({
+      Component: (await import('./examples/agent-work-status')).default,
+      source: (await import('./examples/agent-work-status.tsx?raw')).default,
+      extraFiles: [await aiChatCardSource(), await aiChatStylesSource()],
+    }),
+  },
+  {
+    slug: 'agent-question',
+    title: '에이전트 질문',
+    description: '에이전트가 사용자 선택을 기다리는 질문을 대화와 작업 로그 안에 표시합니다.',
+    category: 'AI & Chat',
+    scope: '사용자·팀',
+    keywords: ['AI', '질문', '선택', '승인', '응답', '도구', '실행'],
+    components: [
+      'commentary',
+      'agent-activity',
+      'avatar',
+      'button',
+      'alert',
+      'empty-state',
+      'skeleton',
+    ],
+    guidance:
+      '코드 보기에 있는 컴포넌트·ai-chat-block-card.tsx·ai-chat-blocks.css를 함께 사용한 뒤, request에 사용자 프롬프트·질문·선택지·도구 활동 로그를 전달하고 onAnswer를 질문 도구 API에 연결하십시오. 선택을 받아도 Block은 실행 상태를 바꾸지 않습니다. 서버가 갱신한 answer·activities·assistantResponse를 다시 전달하십시오. 도구 입력·결과·오류는 activity.details에 두며, 상세는 AgentActivity 행에서 접고 펼칩니다. 진행 중인 activity ID 하나만 currentActivityId로 전달해 과거 이력이 다시 낭독되지 않게 합니다. request가 있으면 새로고침 오류가 대화 위 Alert로 표시되어 이력을 보존하고, answerPending으로 중복 응답을 막으십시오. 질문 처리, 실행 정책, 결과 보존, 질문이 사라진 뒤의 포커스 이동은 소비자가 소유합니다.',
+    load: async () => ({
+      Component: (await import('./examples/agent-question')).default,
+      source: (await import('./examples/agent-question.tsx?raw')).default,
+      extraFiles: [await aiChatCardSource(), await aiChatStylesSource()],
     }),
   },
   {
@@ -739,6 +828,7 @@ export const BLOCK_CATEGORIES = [
   '레이아웃',
   '프로젝트',
   '워크플로우',
+  'AI & Chat',
   '인증',
   '계정 관리',
   '계정 보안',

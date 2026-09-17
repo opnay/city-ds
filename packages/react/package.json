@@ -236,10 +236,6 @@
     "./agent-activity": {
       "types": "./dist/components/agent-activity/index.d.ts",
       "import": "./dist/components/agent-activity/index.js"
-    },
-    "./actioned": {
-      "types": "./dist/components/actioned/index.d.ts",
-      "import": "./dist/components/actioned/index.js"
     }
   },
   "publishConfig": {

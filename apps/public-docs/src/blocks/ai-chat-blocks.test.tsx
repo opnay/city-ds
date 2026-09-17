@@ -5,9 +5,9 @@ import { describe, expect, it, vi } from 'vitest';
 import { filterDocumentPages } from '../docs/doc-catalog';
 import { renderDocs } from '../test/render-docs';
 import { BLOCK_GROUPS } from './block-catalog';
+import { AgentQuestion, type AgentQuestionRequest } from './examples/agent-question';
 import { AgentWorkStatus, type AgentWorkTask } from './examples/agent-work-status';
 import { SupportConversation, type SupportConversationData } from './examples/support-conversation';
-import { ToolApproval, type DeveloperToolRequest } from './examples/tool-approval';
 
 const supportConversation: SupportConversationData = {
   id: 'support_1',
@@ -48,25 +48,40 @@ const agentTask: AgentWorkTask = {
   ],
 };
 
-const toolRequest: DeveloperToolRequest = {
-  id: 'tool_1',
-  approval: '환경 변수를 추가하도록 허용하시겠습니까?',
-  input: '{ "name": "FEATURE_AGENT_SEARCH" }',
+const questionRequest: AgentQuestionRequest = {
+  id: 'question_1',
   prompt: '검색 기능을 켜기 위해 환경 변수를 추가해 주세요.',
-  status: 'approval-required',
-  title: '환경 변수 추가',
+  question: '프로덕션 환경에 FEATURE_AGENT_SEARCH를 추가할까요?',
+  choices: [
+    { id: 'allow', label: '적용 허용', preferred: true },
+    { id: 'reject', label: '이번에는 취소' },
+  ],
+  currentActivityId: 'question',
+  activities: [
+    {
+      id: 'inspect',
+      content: '환경 설정을 확인했습니다.',
+      details: <pre aria-label="환경 설정 확인 입력">{'{ "path": ".env.production" }'}</pre>,
+    },
+    { id: 'question', content: '선택을 기다리고 있습니다.', pending: true },
+  ],
 };
 
-function ToolApprovalHarness() {
-  const [request, setRequest] = useState(toolRequest);
+function AgentQuestionHarness() {
+  const [request, setRequest] = useState(questionRequest);
   return (
-    <ToolApproval
+    <AgentQuestion
       request={request}
-      onApprove={async () => setRequest((current) => ({ ...current, status: 'running' }))}
-      onCancel={async () => setRequest((current) => ({ ...current, status: 'cancelled' }))}
-      onReject={async () => setRequest((current) => ({ ...current, status: 'rejected' }))}
-      onRetryExecution={async () =>
-        setRequest((current) => ({ ...current, status: 'approval-required' }))
+      onAnswer={async (_, choice) =>
+        setRequest((current) => ({
+          ...current,
+          answer: choice.label,
+          assistantResponse:
+            choice.id === 'allow'
+              ? '환경 변수를 추가했습니다.'
+              : '환경 변수는 변경하지 않았습니다.',
+          currentActivityId: undefined,
+        }))
       }
     />
   );
@@ -78,7 +93,7 @@ describe('AI & Chat blocks', () => {
     expect(entries.map((entry) => entry.slug)).toEqual([
       'support-conversation',
       'agent-work-status',
-      'tool-approval',
+      'agent-question',
     ]);
     for (const entry of entries) {
       expect(
@@ -100,9 +115,9 @@ describe('AI & Chat blocks', () => {
     expect(within(section).getByRole('heading', { level: 2, name: 'AI & Chat' })).toBeVisible();
     const navigation = within(screen.getByRole('navigation', { name: '문서 탐색' }));
     await userEvent.setup().click(navigation.getByRole('button', { name: 'AI & Chat' }));
-    expect(navigation.getByRole('link', { name: '개발 도구 실행' })).toHaveAttribute(
+    expect(navigation.getByRole('link', { name: '에이전트 질문' })).toHaveAttribute(
       'href',
-      '/blocks/tool-approval',
+      '/blocks/agent-question',
     );
   });
 
@@ -159,8 +174,8 @@ describe('AI & Chat blocks', () => {
     rerender(<AgentWorkStatus />);
     expect(screen.getByText('선택한 작업이 없습니다.')).toBeVisible();
 
-    rerender(<ToolApproval />);
-    expect(screen.getByText('표시할 도구 요청이 없습니다.')).toBeVisible();
+    rerender(<AgentQuestion />);
+    expect(screen.getByText('응답할 질문이 없습니다.')).toBeVisible();
   });
 
   it('keeps previously loaded content when a refresh fails', () => {
@@ -177,9 +192,9 @@ describe('AI & Chat blocks', () => {
     expect(screen.getByText('릴리스 노트를 정리해 주세요.')).toBeVisible();
     expect(screen.getByRole('alert')).toHaveTextContent('작업 정보를 새로고침하지 못했습니다.');
 
-    rerender(<ToolApproval request={toolRequest} error="도구 상태를 새로고침하지 못했습니다." />);
+    rerender(<AgentQuestion request={questionRequest} error="질문을 새로고침하지 못했습니다." />);
     expect(screen.getByText('검색 기능을 켜기 위해 환경 변수를 추가해 주세요.')).toBeVisible();
-    expect(screen.getByRole('alert')).toHaveTextContent('도구 상태를 새로고침하지 못했습니다.');
+    expect(screen.getByRole('alert')).toHaveTextContent('질문을 새로고침하지 못했습니다.');
   });
 
   it('shows an actual agent task transcript and announces only the current event', () => {
@@ -216,28 +231,31 @@ describe('AI & Chat blocks', () => {
     expect(screen.queryByRole('button', { name: '작업 중단' })).not.toBeInTheDocument();
   });
 
-  it('derives one current event from its ID and clears it for terminal tool states', () => {
+  it('derives one current event from its ID and keeps tool logs inside the activity stream', async () => {
+    const user = userEvent.setup();
     const { rerender } = render(
-      <AgentWorkStatus
-        task={{
-          ...agentTask,
-          events: [
-            ...agentTask.events,
+      <AgentQuestion
+        request={{
+          ...questionRequest,
+          activities: [
+            ...(questionRequest.activities ?? []),
             { id: 'stale-pending', content: '이전 처리입니다.', pending: true },
           ],
         }}
       />,
     );
     expect(screen.getAllByRole('status')).toHaveLength(1);
-    expect(screen.getByRole('status')).toHaveTextContent('Thinking');
+    expect(screen.getByRole('status')).toHaveTextContent('선택을 기다리고 있습니다.');
+    const trigger = screen.getByRole('button', { name: /환경 설정을 확인했습니다/ });
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    await user.click(trigger);
+    expect(screen.getByLabelText('환경 설정 확인 입력')).toBeVisible();
 
     rerender(
-      <ToolApproval
+      <AgentQuestion
         request={{
-          ...toolRequest,
-          activities: [{ id: 'running', content: '실행 중입니다.', pending: true }],
-          currentActivityId: 'running',
-          status: 'completed',
+          ...questionRequest,
+          currentActivityId: undefined,
         }}
       />,
     );
@@ -265,50 +283,40 @@ describe('AI & Chat blocks', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: '작업 중단' })).toBeEnabled());
   });
 
-  it('keeps tool details open while API-owned status changes and restores trigger focus', async () => {
+  it('sends one answer, then renders server-owned activity and response data', async () => {
     const user = userEvent.setup();
-    render(<ToolApprovalHarness />);
-    const trigger = screen.getByRole('button', { name: '환경 변수 추가' });
-    expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    await user.click(trigger);
-    expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByLabelText('환경 변수 추가 입력')).toBeVisible();
-
-    await user.click(screen.getByRole('button', { name: '허용' }));
-    expect(screen.getByText('실행 중')).toBeVisible();
-    await waitFor(() => expect(trigger).toHaveFocus());
-    expect(trigger).toHaveAttribute('aria-expanded', 'true');
-
-    await user.click(screen.getByRole('button', { name: '실행 취소' }));
-    expect(screen.getByText('취소됨')).toBeVisible();
-    await waitFor(() => expect(trigger).toHaveFocus());
-
-    await user.click(screen.getByRole('button', { name: '다시 승인 요청' }));
-    await user.click(screen.getByRole('button', { name: '거절' }));
-    expect(screen.getByText('거절됨')).toBeVisible();
-    await waitFor(() => expect(trigger).toHaveFocus());
+    render(<AgentQuestionHarness />);
+    await user.click(screen.getByRole('button', { name: '적용 허용' }));
+    expect(screen.getByText('적용 허용')).toBeVisible();
+    expect(screen.queryByRole('button', { name: '적용 허용' })).toBeNull();
+    expect(screen.getByText('환경 변수를 추가했습니다.')).toBeVisible();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 
-  it('keeps a failed tool result separate from rejected and cancelled requests', async () => {
+  it('blocks duplicate answers and preserves a failed question for retry', async () => {
     const user = userEvent.setup();
-    const retry = vi.fn().mockResolvedValue(undefined);
-    render(
-      <ToolApproval
-        defaultOpen
-        request={{
-          ...toolRequest,
-          error: '환경 변수 저장 권한을 확인하지 못했습니다.',
-          status: 'failed',
-        }}
-        onRetryExecution={retry}
-      />,
+    let finishAnswer: (() => void) | undefined;
+    const onAnswer = vi.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          finishAnswer = resolve;
+        }),
     );
+    const { rerender } = render(<AgentQuestion request={questionRequest} onAnswer={onAnswer} />);
+    const allow = screen.getByRole('button', { name: '적용 허용' });
+    await user.click(allow);
+    await user.click(allow);
+    expect(onAnswer).toHaveBeenCalledOnce();
+    expect(allow).toBeDisabled();
+    finishAnswer?.();
+    await waitFor(() => expect(allow).toBeEnabled());
 
-    expect(screen.getByText('실패')).toBeVisible();
-    expect(screen.getByRole('alert')).toHaveTextContent(
-      '환경 변수 저장 권한을 확인하지 못했습니다.',
-    );
-    await user.click(screen.getByRole('button', { name: '다시 승인 요청' }));
-    expect(retry).toHaveBeenCalledWith(expect.objectContaining({ status: 'failed' }));
+    const failedAnswer = vi.fn().mockRejectedValue(new Error('offline'));
+    rerender(<AgentQuestion request={questionRequest} onAnswer={failedAnswer} />);
+    await user.click(screen.getByRole('button', { name: '이번에는 취소' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('응답을 전송하지 못했습니다.');
+    expect(screen.getByText('프로덕션 환경에 FEATURE_AGENT_SEARCH를 추가할까요?')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: '이번에는 취소' }));
+    expect(failedAnswer).toHaveBeenCalledTimes(2);
   });
 });

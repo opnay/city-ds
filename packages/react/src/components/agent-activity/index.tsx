@@ -1,43 +1,46 @@
 'use client';
 
 import * as React from 'react';
+import { Collapsible } from '@base-ui/react/collapsible';
 import { useRender } from '@base-ui/react/use-render';
-import { LoaderCircle } from 'lucide-react';
+import { ChevronDown, LoaderCircle } from 'lucide-react';
 import { cn } from '../../lib/cn';
+import { resolveClassName } from '../../lib/resolve-class-name';
 import type { Density } from '../../types';
 import { useDensity } from '../density-provider';
 
-const PendingContext = React.createContext(false);
+const ActivityContext = React.createContext<{ density: Density; pending: boolean }>({
+  density: 'comfortable',
+  pending: false,
+});
 
-export interface AgentActivityRootProps extends Omit<useRender.ComponentProps<'div'>, 'className'> {
-  className?: string;
+export interface AgentActivityRootProps extends Collapsible.Root.Props {
   pending?: boolean;
   density?: Density;
 }
 
 export const AgentActivityRoot = React.forwardRef<HTMLDivElement, AgentActivityRootProps>(
-  function AgentActivityRoot(
-    { pending = false, density: densityProp, className, render, ...props },
-    ref,
-  ) {
+  function AgentActivityRoot({ pending = false, density: densityProp, className, ...props }, ref) {
     const density = useDensity(densityProp);
-    const element = useRender({
-      defaultTagName: 'div',
-      ref,
-      render,
-      props: {
-        ...props,
-        'data-city-agent-activity': '',
-        'data-city-pending': pending ? '' : undefined,
-        'data-city-density': density,
-        className: cn(
-          'flex min-w-0 flex-wrap items-start gap-x-2 gap-y-1 text-sm leading-6 text-city-muted-foreground',
-          density === 'compact' ? 'py-1' : 'py-2',
-          className,
-        ),
-      },
-    });
-    return <PendingContext.Provider value={pending}>{element}</PendingContext.Provider>;
+    const context = React.useMemo(() => ({ density, pending }), [density, pending]);
+    return (
+      <ActivityContext.Provider value={context}>
+        <Collapsible.Root
+          {...props}
+          ref={ref}
+          data-city-agent-activity=""
+          data-city-pending={pending ? '' : undefined}
+          data-city-density={density}
+          className={(state) =>
+            cn(
+              'grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-x-2 gap-y-1 text-sm leading-6 text-city-muted-foreground',
+              density === 'compact' ? 'py-1' : 'py-2',
+              resolveClassName(className, state),
+            )
+          }
+        />
+      </ActivityContext.Provider>
+    );
   },
 );
 
@@ -51,7 +54,7 @@ export const AgentActivityIndicator = React.forwardRef<
   HTMLSpanElement,
   AgentActivityIndicatorProps
 >(function AgentActivityIndicator({ children, className, render, ...props }, ref) {
-  const pending = React.useContext(PendingContext);
+  const { pending } = React.useContext(ActivityContext);
   return useRender({
     defaultTagName: 'span',
     ref,
@@ -61,7 +64,7 @@ export const AgentActivityIndicator = React.forwardRef<
       ...props,
       'data-city-agent-activity-indicator': '',
       className: cn(
-        'inline-flex size-6 shrink-0 items-center justify-center [&_svg]:size-4',
+        'inline-flex size-6 shrink-0 items-center justify-center self-start [&_svg]:size-4',
         className,
       ),
       children:
@@ -79,21 +82,21 @@ export const AgentActivityIndicator = React.forwardRef<
 });
 
 export interface AgentActivityContentProps extends Omit<
-  useRender.ComponentProps<'div'>,
+  useRender.ComponentProps<'span'>,
   'className'
 > {
   className?: string;
 }
-export const AgentActivityContent = React.forwardRef<HTMLDivElement, AgentActivityContentProps>(
+export const AgentActivityContent = React.forwardRef<HTMLSpanElement, AgentActivityContentProps>(
   function AgentActivityContent({ className, render, ...props }, ref) {
     return useRender({
-      defaultTagName: 'div',
+      defaultTagName: 'span',
       ref,
       render,
       props: {
         ...props,
         'data-city-agent-activity-content': '',
-        className: cn('min-w-0 flex-1 [overflow-wrap:anywhere]', className),
+        className: cn('min-w-0 [overflow-wrap:anywhere]', className),
       },
     });
   },
@@ -114,9 +117,59 @@ export const AgentActivityMeta = React.forwardRef<HTMLSpanElement, AgentActivity
       props: {
         ...props,
         'data-city-agent-activity-meta': '',
-        className: cn('min-w-0 max-w-full text-xs leading-6 [overflow-wrap:anywhere]', className),
+        className: cn(
+          'min-w-0 max-w-full self-start text-xs leading-6 [overflow-wrap:anywhere]',
+          className,
+        ),
       },
     });
+  },
+);
+
+export type AgentActivityTriggerProps = Collapsible.Trigger.Props;
+export const AgentActivityTrigger = React.forwardRef<HTMLButtonElement, AgentActivityTriggerProps>(
+  function AgentActivityTrigger({ children, className, ...props }, ref) {
+    return (
+      <Collapsible.Trigger
+        {...props}
+        ref={ref}
+        data-city-agent-activity-trigger=""
+        className={(state) =>
+          cn(
+            'group/city-agent-activity-trigger col-span-3 grid min-h-(--city-hit-target-min) min-w-0 grid-cols-[auto_minmax(0,1fr)_auto_auto] items-start gap-x-2 gap-y-1 rounded-city-sm px-2 text-start text-sm leading-6 text-city-muted-foreground outline-none hover:text-city-foreground focus-visible:ring-2 focus-visible:ring-city-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-45',
+            resolveClassName(className, state),
+          )
+        }
+      >
+        {children}
+        <ChevronDown
+          aria-hidden="true"
+          data-city-agent-activity-trigger-icon=""
+          className="mt-1 size-4 shrink-0 text-city-muted-foreground transition-transform duration-(--city-duration-normal) group-data-[panel-open]/city-agent-activity-trigger:rotate-180 motion-reduce:transition-none"
+        />
+      </Collapsible.Trigger>
+    );
+  },
+);
+
+export type AgentActivityDetailsProps = Collapsible.Panel.Props;
+export const AgentActivityDetails = React.forwardRef<HTMLDivElement, AgentActivityDetailsProps>(
+  function AgentActivityDetails({ className, ...props }, ref) {
+    const { density } = React.useContext(ActivityContext);
+    return (
+      <Collapsible.Panel
+        {...props}
+        ref={ref}
+        data-city-agent-activity-details=""
+        className={(state) =>
+          cn(
+            'col-span-2 col-start-2 min-w-0 text-sm leading-6 text-city-muted-foreground [&_pre]:max-w-full [&_pre]:overflow-x-auto',
+            density === 'compact' ? 'pb-1' : 'pb-2',
+            resolveClassName(className, state),
+          )
+        }
+      />
+    );
   },
 );
 
@@ -125,4 +178,6 @@ export const AgentActivity = {
   Indicator: AgentActivityIndicator,
   Content: AgentActivityContent,
   Meta: AgentActivityMeta,
+  Trigger: AgentActivityTrigger,
+  Details: AgentActivityDetails,
 };

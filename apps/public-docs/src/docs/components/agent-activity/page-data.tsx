@@ -1,5 +1,7 @@
 import ActivityExample from './examples/activity';
 import activitySource from './examples/activity.tsx?raw';
+import DetailsExample from './examples/details';
+import detailsSource from './examples/details.tsx?raw';
 import EventsExample from './examples/events';
 import eventsSource from './examples/events.tsx?raw';
 import { isEnabled, type PreviewOptionProps } from '../../preview-playgrounds/types';
@@ -16,12 +18,12 @@ function Preview({ pending, density }: PreviewOptionProps) {
 
 export const pageData = {
   featuredExampleId: 'agent-activity-preview',
-  widePreviewIds: ['agent-activity-preview', 'agent-activity-events'],
+  widePreviewIds: ['agent-activity-preview', 'agent-activity-events', 'agent-activity-details'],
   api: [
     {
       name: 'AgentActivity.Root',
-      type: 'div props + render',
-      description: '짧은 상태·이벤트 라인입니다.',
+      type: 'Base UI Collapsible.Root props + render',
+      description: '짧은 상태·이벤트 행입니다. Details가 있을 때만 펼침 상태를 가집니다.',
     },
     {
       name: 'pending',
@@ -43,13 +45,23 @@ export const pageData = {
     },
     {
       name: 'AgentActivity.Content',
-      type: 'div props + render',
+      type: 'span props + render',
       description: '임의의 상태·이벤트 문구입니다. 긴 문구는 줄바꿈합니다.',
     },
     {
       name: 'AgentActivity.Meta',
       type: 'span props + render',
       description: '시간 등 부가 정보를 표시합니다.',
+    },
+    {
+      name: 'AgentActivity.Trigger',
+      type: 'Base UI Collapsible.Trigger props',
+      description: '상세가 있는 활동의 요약 행 전체를 여닫습니다.',
+    },
+    {
+      name: 'AgentActivity.Details',
+      type: 'Base UI Collapsible.Panel props',
+      description: '입력·결과·오류 로그를 요약 텍스트 아래에 이어 표시합니다.',
     },
   ],
   optionAxes: [
@@ -78,13 +90,25 @@ export const pageData = {
     {
       id: 'agent-activity-events',
       title: '이벤트 조합',
-      description: '모델 변경과 중단을 임의의 아이콘·문구로 표시합니다.',
+      description: '모델 변경·중단·도구 로그를 임의의 아이콘·문구로 표시합니다.',
       Component: EventsExample,
       filename: 'events.tsx',
       source: eventsSource,
       coverage: [
         { axis: 'pending', values: ['false'] },
         { axis: 'density', values: ['compact'] },
+      ],
+    },
+    {
+      id: 'agent-activity-details',
+      title: '상세 펼치기',
+      description: '펼침 상태는 외부에서 제어할 수 있으며 진행 상태가 바뀌어도 유지됩니다.',
+      Component: DetailsExample,
+      filename: 'details.tsx',
+      source: detailsSource,
+      coverage: [
+        { axis: 'open', values: ['controlled'] },
+        { axis: 'pending', values: ['true', 'false'] },
       ],
     },
   ],

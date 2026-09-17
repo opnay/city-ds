@@ -1,5 +1,5 @@
 import { AgentActivity, DensityProvider } from '@opnay/city-ds-react';
-import { ArrowRightLeft, Ban } from 'lucide-react';
+import { ArrowRightLeft, Ban, Terminal } from 'lucide-react';
 
 export default function EventsExample() {
   return (
@@ -18,6 +18,20 @@ export default function EventsExample() {
           <Ban />
         </AgentActivity.Indicator>
         <AgentActivity.Content>사용자가 작업을 중단했습니다.</AgentActivity.Content>
+      </AgentActivity.Root>
+      <AgentActivity.Root>
+        <AgentActivity.Trigger>
+          <AgentActivity.Indicator>
+            <Terminal />
+          </AgentActivity.Indicator>
+          <AgentActivity.Content>프로젝트 파일을 읽었습니다.</AgentActivity.Content>
+          <AgentActivity.Meta>09:32</AgentActivity.Meta>
+        </AgentActivity.Trigger>
+        <AgentActivity.Details>
+          <pre tabIndex={0} aria-label="파일 읽기 입력">
+            <code>{'{ "path": "README.md" }'}</code>
+          </pre>
+        </AgentActivity.Details>
       </AgentActivity.Root>
     </DensityProvider>
   );

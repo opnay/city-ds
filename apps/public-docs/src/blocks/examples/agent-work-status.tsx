@@ -8,15 +8,42 @@ import {
   EmptyState,
   Skeleton,
 } from '@opnay/city-ds-react';
-import { CircleCheck, CircleX, Clock, Sparkles } from 'lucide-react';
+import { CircleX, Clock, Sparkles, Terminal } from 'lucide-react';
 import { AiChatBlockCard } from './ai-chat-block-card';
 
 export interface AgentWorkEvent {
   content: ReactNode;
+  details?: ReactNode;
   id: string;
   indicator?: ReactNode;
   meta?: ReactNode;
   pending?: boolean;
+}
+
+function WorkActivity({ event, current }: { event: AgentWorkEvent; current: boolean }) {
+  const contentProps = current
+    ? ({ role: 'status', 'aria-live': 'polite', 'aria-atomic': true } as const)
+    : undefined;
+  const summary = (
+    <>
+      <AgentActivity.Indicator>{event.indicator}</AgentActivity.Indicator>
+      <AgentActivity.Content {...contentProps}>{event.content}</AgentActivity.Content>
+      {event.meta && <AgentActivity.Meta>{event.meta}</AgentActivity.Meta>}
+    </>
+  );
+
+  return (
+    <AgentActivity.Root pending={current && (event.pending ?? false)} role="listitem">
+      {event.details ? (
+        <>
+          <AgentActivity.Trigger>{summary}</AgentActivity.Trigger>
+          <AgentActivity.Details>{event.details}</AgentActivity.Details>
+        </>
+      ) : (
+        summary
+      )}
+    </AgentActivity.Root>
+  );
 }
 
 export interface AgentWorkTask {
@@ -154,23 +181,7 @@ export function AgentWorkStatus({
         <div className="city-ai-chat-block-events" role="list" aria-label="에이전트 작업 이벤트">
           {task.events.map((event) => {
             const isCurrent = event.id === currentEvent?.id;
-            return (
-              <AgentActivity.Root
-                key={event.id}
-                pending={isCurrent && (event.pending ?? false)}
-                role="listitem"
-              >
-                <AgentActivity.Indicator>{event.indicator}</AgentActivity.Indicator>
-                <AgentActivity.Content
-                  {...(isCurrent
-                    ? { role: 'status', 'aria-live': 'polite', 'aria-atomic': true }
-                    : undefined)}
-                >
-                  {event.content}
-                </AgentActivity.Content>
-                {event.meta && <AgentActivity.Meta>{event.meta}</AgentActivity.Meta>}
-              </AgentActivity.Root>
-            );
+            return <WorkActivity key={event.id} event={event} current={isCurrent} />;
           })}
         </div>
         {task.response && (
@@ -212,7 +223,12 @@ const exampleTask: AgentWorkTask = {
     {
       id: 'complete',
       content: '공개 API와 의존성 목록을 정리했습니다.',
-      indicator: <CircleCheck />,
+      details: (
+        <pre tabIndex={0} aria-label="정리한 공개 API">
+          <code>{'Commentary\nAgentActivity\nDensityProvider'}</code>
+        </pre>
+      ),
+      indicator: <Terminal />,
       meta: '10:05',
     },
     {

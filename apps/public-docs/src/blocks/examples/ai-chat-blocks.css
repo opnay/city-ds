@@ -36,8 +36,7 @@
 .city-ai-chat-block-body,
 .city-ai-chat-block-transcript,
 .city-ai-chat-block-events,
-.city-ai-chat-block-composer,
-.city-ai-chat-block-tool-detail {
+.city-ai-chat-block-composer {
   display: grid;
   min-width: 0;
   gap: var(--city-space-4);
@@ -71,12 +70,7 @@
   gap: var(--city-space-2);
 }
 
-.city-ai-chat-block-tool-detail > p,
-.city-ai-chat-block-tool-detail > h4 {
-  margin: 0;
-}
-
-.city-ai-chat-block-tool-detail pre {
+.city-ai-chat-block [data-city-agent-activity-details] pre {
   max-width: 100%;
   margin: 0;
   padding: var(--city-space-3);
@@ -89,7 +83,7 @@
   line-height: 1.7;
 }
 
-.city-ai-chat-block-tool-detail pre:focus-visible {
+.city-ai-chat-block [data-city-agent-activity-details] pre:focus-visible {
   outline: 2px solid var(--city-color-ring);
   outline-offset: 2px;
 }
@@ -111,7 +105,6 @@
     transform: translate(-50%, -50%);
   }
 
-  .city-ai-chat-block [data-city-actioned-actions],
   .city-ai-chat-block-actions {
     gap: var(--city-space-3);
   }

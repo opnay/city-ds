@@ -2,28 +2,20 @@ import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import {
-  Actioned,
-  ACTIONED_STATUSES,
-  AgentActivity,
-  Button,
-  Commentary,
-  DensityProvider,
-  type ActionedRootProps,
-} from '../../src';
+import { AgentActivity, Button, Commentary, DensityProvider } from '../../src';
 import { Commentary as CommentarySubpath } from '../../src/components/commentary';
 import { AgentActivity as AgentActivitySubpath } from '../../src/components/agent-activity';
-import { Actioned as ActionedSubpath } from '../../src/components/actioned';
 
-function Tool(props: ActionedRootProps) {
+function ToolActivity(props: React.ComponentProps<typeof AgentActivity.Root>) {
   return (
-    <Actioned.Root {...props} data-testid="tool">
-      <Actioned.Header>
-        <Actioned.Trigger>Read file</Actioned.Trigger>
-        <Actioned.Status />
-      </Actioned.Header>
-      <Actioned.Content data-testid="details">Tool result</Actioned.Content>
-    </Actioned.Root>
+    <AgentActivity.Root {...props} data-testid="activity">
+      <AgentActivity.Trigger>
+        <AgentActivity.Indicator />
+        <AgentActivity.Content>Read file</AgentActivity.Content>
+        <AgentActivity.Meta>Now</AgentActivity.Meta>
+      </AgentActivity.Trigger>
+      <AgentActivity.Details data-testid="details">Tool result</AgentActivity.Details>
+    </AgentActivity.Root>
   );
 }
 
@@ -31,7 +23,6 @@ describe('AI chat composition', () => {
   it('exposes the same parts through root and subpath modules', () => {
     expect(Commentary).toBe(CommentarySubpath);
     expect(AgentActivity).toBe(AgentActivitySubpath);
-    expect(Actioned).toBe(ActionedSubpath);
   });
 
   it('inherits density with local overrides and does not announce historical records', () => {
@@ -43,15 +34,13 @@ describe('AI chat composition', () => {
         <AgentActivity.Root data-testid="activity">
           <AgentActivity.Content>Model changed</AgentActivity.Content>
         </AgentActivity.Root>
-        <Tool status="queued" />
         <Commentary.Root density="comfortable" data-testid="override" />
         <AgentActivity.Root density="comfortable" data-testid="activity-override" />
-        <Actioned.Root status="completed" density="comfortable" data-testid="tool-override" />
       </DensityProvider>,
     );
-    for (const id of ['message', 'activity', 'tool'])
+    for (const id of ['message', 'activity'])
       expect(screen.getByTestId(id)).toHaveAttribute('data-city-density', 'compact');
-    for (const id of ['override', 'activity-override', 'tool-override'])
+    for (const id of ['override', 'activity-override'])
       expect(screen.getByTestId(id)).toHaveAttribute('data-city-density', 'comfortable');
     expect(
       container.querySelector('[aria-live], [role="status"], [role="log"], [role="alert"]'),
@@ -123,97 +112,49 @@ describe('AI chat composition', () => {
   });
 });
 
-describe('Actioned', () => {
-  it('uses Base UI keyboard disclosure and preserves uncontrolled open state through every status', async () => {
+describe('AgentActivity disclosure', () => {
+  it('uses Base UI keyboard disclosure and preserves an uncontrolled choice while pending changes', async () => {
     const user = userEvent.setup();
-    const { rerender } = render(<Tool status="queued" />);
-    const trigger = screen.getByRole('button', { name: 'Read file' });
+    const { rerender } = render(<ToolActivity pending={false} />);
+    const trigger = screen.getByRole('button', { name: /Read file/ });
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByText('Tool result')).not.toBeInTheDocument();
     await user.tab();
     await user.keyboard('{Enter}');
     expect(screen.getByTestId('details')).toBeVisible();
     expect(trigger.getAttribute('aria-controls')).toBe(screen.getByTestId('details').id);
-    for (const status of ACTIONED_STATUSES) {
-      rerender(<Tool status={status} />);
-      expect(trigger).toHaveAttribute('aria-expanded', 'true');
-      expect(screen.getByTestId('tool')).toHaveAttribute('data-city-status', status);
-      expect(trigger).toHaveFocus();
-    }
+    rerender(<ToolActivity pending />);
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(trigger).toHaveFocus();
     await user.keyboard(' ');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    rerender(<Tool status="queued" />);
-    expect(trigger).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('honors defaultOpen and externally controlled disclosure', async () => {
+  it('honors defaultOpen and externally controlled disclosure without adding a surface', async () => {
     const user = userEvent.setup();
     const change = vi.fn();
-    const { rerender, unmount } = render(
-      <Tool status="running" open={false} onOpenChange={change} />,
-    );
-    await user.click(screen.getByRole('button'));
+    const { rerender, unmount } = render(<ToolActivity open={false} onOpenChange={change} />);
+    await user.click(screen.getByRole('button', { name: /Read file/ }));
     expect(change).toHaveBeenCalledWith(true, expect.objectContaining({ reason: 'trigger-press' }));
     expect(screen.getByRole('button')).toHaveAttribute('aria-expanded', 'false');
-    rerender(<Tool status="completed" open onOpenChange={change} />);
+    rerender(<ToolActivity open onOpenChange={change} />);
     expect(screen.getByText('Tool result')).toBeVisible();
+    expect(screen.getByTestId('activity')).not.toHaveClass('border');
+    expect(screen.getByTestId('details')).not.toHaveClass('border');
     unmount();
-    render(<Tool status="completed" defaultOpen />);
+    render(<ToolActivity defaultOpen />);
     expect(screen.getByText('Tool result')).toBeVisible();
   });
 
-  it('keeps approval visible outside the closed panel and leaves execution policy to the consumer', async () => {
-    const user = userEvent.setup();
-    const approve = vi.fn();
-    const openChange = vi.fn();
-    const trigger = React.createRef<HTMLButtonElement>();
-    const approval = React.createRef<HTMLDivElement>();
+  it('keeps static activities noninteractive and hides decorative disclosure icons', () => {
     render(
-      <Actioned.Root status="approval-required" onOpenChange={openChange} data-testid="tool">
-        <Actioned.Header>
-          <Actioned.Trigger ref={trigger} render={<button data-testid="trigger" />}>
-            Details
-          </Actioned.Trigger>
-          <Actioned.Status>승인 필요</Actioned.Status>
-        </Actioned.Header>
-        <Actioned.Content>Hidden details</Actioned.Content>
-        <Actioned.Approval ref={approval} render={<section data-testid="approval" />}>
-          <p>Read this file?</p>
-          <Actioned.Actions>
-            <Button onClick={approve}>Allow</Button>
-            <Button>Reject</Button>
-          </Actioned.Actions>
-        </Actioned.Approval>
-      </Actioned.Root>,
+      <AgentActivity.Root>
+        <AgentActivity.Indicator />
+        <AgentActivity.Content>Model changed</AgentActivity.Content>
+        <AgentActivity.Meta>Now</AgentActivity.Meta>
+      </AgentActivity.Root>,
     );
-    expect(screen.getByTestId('approval')).toBe(approval.current);
-    expect(approval.current).toBeVisible();
-    expect(screen.getByTestId('trigger')).toBe(trigger.current);
-    await user.tab();
-    await user.tab();
-    await user.keyboard('{Enter}');
-    expect(approve).toHaveBeenCalledOnce();
-    expect(openChange).not.toHaveBeenCalled();
-    expect(screen.getByTestId('tool')).toHaveAttribute('data-city-status', 'approval-required');
-    expect(screen.getByText('승인 필요')).toBeVisible();
-    expect(trigger.current).toHaveAttribute('aria-expanded', 'false');
-  });
-
-  it.each([
-    ['queued', 'Queued'],
-    ['approval-required', 'Approval required'],
-    ['running', 'Running'],
-    ['completed', 'Completed'],
-    ['failed', 'Failed'],
-    ['cancelled', 'Cancelled'],
-    ['rejected', 'Rejected'],
-  ] as const)('labels %s without requiring color or live semantics', (status, label) => {
-    render(<Tool status={status} />);
-    expect(screen.getByText(label)).toBeVisible();
-    expect(screen.getByText(label).parentElement?.querySelector('svg')).toHaveAttribute(
-      'aria-hidden',
-      'true',
-    );
-    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button')).toBeNull();
+    expect(screen.getByText('Model changed').tagName).toBe('SPAN');
   });
 });

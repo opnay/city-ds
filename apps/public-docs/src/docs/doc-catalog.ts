@@ -722,35 +722,23 @@ export const COMPONENT_DOCS = [
     importPath: '@opnay/city-ds-react/commentary',
     keywords: ['채팅', '메시지', '말풍선', '대화'],
     load: () => import('./components/commentary/index.mdx'),
-    related: ['agent-activity', 'actioned'],
+    related: ['agent-activity'],
     selectionGuidance:
-      '대화 본문에 사용하십시오. 짧은 진행 안내는 AgentActivity, 도구 실행과 승인은 Actioned를 사용하십시오.',
+      '대화 본문에 사용하십시오. Thinking, 도구 실행 기록 같은 짧은 진행 안내는 AgentActivity를 사용하십시오.',
     slug: 'commentary',
     title: 'Commentary',
   },
   {
     category: 'AI & Chat',
-    description: 'Thinking·모델 변경·작업 중단을 짧은 상태 라인으로 표시합니다.',
+    description: 'Thinking·모델 변경·도구 실행 로그를 한 행으로 표시합니다.',
     importPath: '@opnay/city-ds-react/agent-activity',
-    keywords: ['thinking', '모델', '진행', '이벤트', '중단'],
+    keywords: ['thinking', '모델', '진행', '이벤트', '중단', '도구', '로그', '상세'],
     load: () => import('./components/agent-activity/index.mdx'),
-    related: ['commentary', 'actioned'],
+    related: ['commentary'],
     selectionGuidance:
-      '짧은 상태나 이벤트에 사용하십시오. 도구 입력·결과를 펼쳐야 하면 Actioned를 사용하십시오.',
+      '짧은 상태·이벤트·도구 로그에 사용하십시오. 입력·결과·오류는 Details에서 필요할 때만 펼치십시오.',
     slug: 'agent-activity',
     title: 'AgentActivity',
-  },
-  {
-    category: 'AI & Chat',
-    description: '도구 실행 상태·상세·승인 요청을 조합합니다.',
-    importPath: '@opnay/city-ds-react/actioned',
-    keywords: ['도구', '승인', '실행', '거절', '재시도'],
-    load: () => import('./components/actioned/index.mdx'),
-    related: ['commentary', 'agent-activity'],
-    selectionGuidance:
-      '도구 실행과 승인 요청에 사용하십시오. 실행·승인·재시도 정책은 소비자가 관리합니다.',
-    slug: 'actioned',
-    title: 'Actioned',
   },
 ] as const satisfies readonly ComponentDocEntry[];
 

@@ -112,6 +112,16 @@
     margin-block-start: var(--city-space-6);
   }
 
+  [data-city-agent-activity] {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  [data-city-agent-activity]:has(
+    > [data-city-agent-activity-trigger] > [data-city-agent-activity-indicator]
+  ) {
+    grid-template-columns: var(--city-space-6) minmax(0, 1fr) auto;
+  }
+
   .city-toast-surface {
     background-color: color-mix(in oklab, currentColor 8%, var(--city-color-background));
   }
@@ -175,6 +185,10 @@
 }
 
 @media (pointer: coarse) {
+  [data-city-agent-activity-trigger] {
+    min-height: var(--city-hit-target-min);
+  }
+
   .city-button[data-city-icon-only]::after {
     content: '';
     height: var(--city-hit-target-min);

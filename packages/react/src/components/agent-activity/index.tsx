@@ -39,7 +39,7 @@ export const AgentActivityRoot = React.forwardRef<HTMLDivElement, AgentActivityR
           data-city-density={density}
           className={(state) =>
             cn(
-              'grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-x-2 gap-y-1 text-sm leading-6 text-city-muted-foreground',
+              'grid min-w-0 items-start gap-x-2 gap-y-1 text-sm leading-6 text-city-muted-foreground',
               density === 'compact' ? 'py-1' : 'py-2',
               resolveClassName(className, state),
             )
@@ -142,7 +142,7 @@ export const AgentActivityTrigger = React.forwardRef<HTMLButtonElement, AgentAct
         data-city-agent-activity-trigger=""
         className={(state) =>
           cn(
-            'group/city-agent-activity-trigger col-span-3 grid min-h-(--city-hit-target-min) min-w-0 grid-cols-[auto_minmax(0,1fr)_auto_auto] items-start gap-x-2 gap-y-1 rounded-city-sm text-start text-sm leading-6 text-city-muted-foreground outline-none hover:text-city-foreground focus-visible:ring-2 focus-visible:ring-city-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-45',
+            'group/city-agent-activity-trigger col-span-3 grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto_auto] items-start gap-x-2 gap-y-1 rounded-city-sm text-start text-sm leading-6 text-city-muted-foreground outline-none hover:text-city-foreground focus-visible:ring-2 focus-visible:ring-city-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-45',
             resolveClassName(className, state),
           )
         }

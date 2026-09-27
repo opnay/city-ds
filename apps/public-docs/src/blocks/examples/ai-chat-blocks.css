@@ -2,7 +2,7 @@
   display: grid;
   width: 100%;
   min-width: 0;
-  max-width: 52rem;
+  max-width: 60rem;
   gap: var(--city-space-5);
   padding: var(--city-space-5);
   border: 1px solid var(--city-color-border);

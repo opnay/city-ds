@@ -145,7 +145,7 @@ describe('public docs routes and shell', () => {
     ).toBeVisible();
     expect(
       within(main).getByText(
-        '사용자 목표 > 프로젝트 패턴 선택·정의 > 컴포넌트 구성 > 레이아웃 구성 > 페이지 구현',
+        '사용자 목표 > 페이지·패널 맥락 > 프로젝트 패턴 선택·정의 > 정보·액션·상태 구성 > 컴포넌트 구성 > 레이아웃 구성 > 페이지 구현',
       ),
     ).toBeVisible();
     expect(

@@ -1,0 +1,24 @@
+import { pageData } from './page-data';
+
+<ComponentReference data={pageData} />
+
+## 사용 기준
+
+문단·목록·코드처럼 이어지는 본문에는 Article을 사용하십시오. `markdown` 문자열과 React `children`은 같은 본문 스타일을 공유합니다.
+첫 미리보기에서 강조·링크·줄바꿈·구분선·목록·체크리스트·인용·코드·표·각주를, 제목 수준 예제에서 `h1`–`h6`을 확인하십시오.
+일반 `ul`·`ol`은 Tailwind 리셋을 따르며, Article 안에서는 목록 마커와 들여쓰기를 표시합니다. 탐색·메뉴 목록에는 Article을 적용하지 마십시오.
+화면 전체의 읽기 폭과 문단 흐름을 설계할 때는 `city-prose`와 `city-text-*` 역할 클래스를 사용하십시오.
+
+## Markdown과 대화
+
+`markdown`은 react-markdown과 remark-gfm으로 변환합니다. GFM 체크리스트·표·각주를 지원하며 raw HTML은 렌더링하지 않습니다.
+체크리스트는 읽기 전용 완료 상태로 표시됩니다. 각주에는 본문 참조와 복귀 링크가 함께 표시됩니다.
+Markdown의 굵게 표시는 `strong`입니다. React `children`에서는 필요하면 `b`를 직접 사용할 수 있습니다.
+Markdown 이미지는 요청을 만들지 않고 대체 텍스트만 표시합니다. 링크는 react-markdown의 기본 URL 정책을 따릅니다.
+Commentary.Content 안에서는 `<Article render={<div />} markdown={response} />`로 조합하십시오. 스트리밍·네트워크 요청·메시지 저장은 소비 앱이 담당합니다.
+
+## 접근성
+
+기본 루트는 article입니다. 중첩 article이 의미에 맞지 않으면 `render`로 div 등 적절한 요소를 지정하십시오.
+제목 수준은 페이지의 문서 구조에 맞추십시오. Markdown 코드 블록과 표는 키보드로 접근할 수 있는 가로 스크롤 영역을 갖습니다.
+React children에 직접 넣은 스크롤 영역에는 접근 가능한 이름과 `tabIndex`를 지정하십시오.

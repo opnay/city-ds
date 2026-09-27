@@ -5,6 +5,7 @@ import { renderDocs } from '../test/render-docs';
 import { COMPONENT_DOCS } from './doc-catalog';
 
 const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
+  article: 3,
   commentary: 2,
   'agent-activity': 4,
   stepper: 1,
@@ -29,6 +30,7 @@ const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
 };
 
 const CONFIGURABLE_COMPONENTS = new Set([
+  'article',
   'commentary',
   'agent-activity',
   'stepper',
@@ -85,6 +87,56 @@ const CONFIGURABLE_COMPONENTS = new Set([
 ]);
 
 describe('all component document routes', () => {
+  it('previews the Article elements described in its documentation', async () => {
+    const { container } = await renderDocs(['/components/article']);
+    const content = container
+      .querySelector('#example-article-content')
+      ?.closest('.city-docs-example')
+      ?.querySelector('[data-city-article]');
+    const headings = container
+      .querySelector('#example-article-headings')
+      ?.closest('.city-docs-example')
+      ?.querySelector('[data-city-article]');
+
+    expect(content).not.toBeNull();
+    expect(headings).not.toBeNull();
+    for (const tag of [
+      'h2',
+      'h3',
+      'p',
+      'strong',
+      'em',
+      'del',
+      'a',
+      'br',
+      'hr',
+      'ul',
+      'ol',
+      'li',
+      'blockquote',
+      'pre',
+      'code',
+      'table',
+      'thead',
+      'tbody',
+      'tr',
+      'th',
+      'td',
+      'sup',
+      'section',
+    ]) {
+      expect(content?.querySelector(tag), `${tag} 미리보기`).not.toBeNull();
+    }
+    expect(content?.querySelectorAll('[data-city-article-task-state]')).toHaveLength(2);
+    expect(content?.querySelector('input[type="checkbox"]')).toBeNull();
+    expect(content?.querySelector('[data-footnotes]')).toHaveTextContent('각주');
+    expect(content?.querySelector('img')).toBeNull();
+    expect(content).toHaveTextContent('상태 다이어그램');
+    for (const level of [1, 2, 3, 4, 5, 6]) {
+      expect(headings?.querySelector(`h${level}`), `h${level} 미리보기`).not.toBeNull();
+    }
+  });
+
   it('adds an option playground to every component route', () => {
     expect([...CONFIGURABLE_COMPONENTS].sort()).toEqual(
       COMPONENT_DOCS.map((entry) => entry.slug).sort(),

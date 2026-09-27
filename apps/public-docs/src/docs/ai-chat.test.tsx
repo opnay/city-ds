@@ -4,13 +4,15 @@ import { COMPONENT_CATEGORIES, filterComponentDocs, filterDocumentPages } from '
 import { renderDocs } from '../test/render-docs';
 
 describe('AI & Chat documentation', () => {
-  it('registers message and activity components without a duplicate tool execution primitive', async () => {
+  it('registers article, message and activity components without a duplicate tool execution primitive', async () => {
     expect(COMPONENT_CATEGORIES).toContain('AI & Chat');
     expect(filterComponentDocs('', 'AI & Chat').map((entry) => entry.slug)).toEqual([
+      'article',
       'commentary',
       'agent-activity',
     ]);
     for (const [query, slug] of [
+      ['마크다운', 'article'],
       ['말풍선', 'commentary'],
       ['도구 로그', 'agent-activity'],
     ] as const) {
@@ -24,7 +26,7 @@ describe('AI & Chat documentation', () => {
 
     await renderDocs(['/components/commentary']);
     const nav = screen.getByRole('navigation', { name: '문서 탐색' });
-    for (const title of ['Commentary', 'AgentActivity'])
+    for (const title of ['Article', 'Commentary', 'AgentActivity'])
       expect(within(nav).getByRole('link', { name: title })).toBeVisible();
     expect(within(nav).queryByRole('link', { name: 'Actioned' })).toBeNull();
   });

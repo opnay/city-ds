@@ -718,11 +718,23 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'AI & Chat',
+    description: 'Markdown 문자열과 React 본문에 제목·목록·코드 스타일을 적용합니다.',
+    importPath: '@opnay/city-ds-react/article',
+    keywords: ['본문', '마크다운', 'markdown', '목록', '리스트', '코드', '표'],
+    load: () => import('./components/article/index.mdx'),
+    related: ['commentary'],
+    selectionGuidance:
+      '읽는 본문과 대화 메시지 내용에 사용하십시오. 화면 전체의 타이포그래피는 city-prose와 city-text-* 역할 클래스로 구성하십시오.',
+    slug: 'article',
+    title: 'Article',
+  },
+  {
+    category: 'AI & Chat',
     description: '작성자·본문·액션을 조합하는 대화 메시지입니다.',
     importPath: '@opnay/city-ds-react/commentary',
     keywords: ['채팅', '메시지', '말풍선', '대화'],
     load: () => import('./components/commentary/index.mdx'),
-    related: ['agent-activity'],
+    related: ['article', 'agent-activity'],
     selectionGuidance:
       '대화 본문에 사용하십시오. Thinking, 도구 실행 기록 같은 짧은 진행 안내는 AgentActivity를 사용하십시오.',
     slug: 'commentary',

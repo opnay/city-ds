@@ -478,6 +478,14 @@ describe('theme contract', () => {
     expect(stylesCss).toContain('margin-block-start: var(--city-space-6);');
   });
 
+  it('restores native list markers inside prose and Article without changing the reset', () => {
+    expect(stylesCss).toContain('.city-prose ul');
+    expect(stylesCss).toContain('.city-prose ol');
+    expect(stylesCss).toMatch(/\[data-city-article\] ul \{\s*list-style-type: disc;/);
+    expect(stylesCss).toMatch(/\[data-city-article\] ol \{\s*list-style-type: decimal;/);
+    expect(stylesCss).not.toMatch(/^\s*(?:ul|ol)\s*\{\s*list-style-type:/m);
+  });
+
   it('keeps Sonner toast surfaces, motion and default icons on city contracts', () => {
     expect(stylesCss).toMatch(
       /\.city-toast-surface \{[\s\S]*?background-color: color-mix\(in oklab, currentColor 8%, var\(--city-color-background\)\);[\s\S]*?\n  \}/,

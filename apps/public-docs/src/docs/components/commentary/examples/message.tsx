@@ -1,4 +1,19 @@
-import { Avatar, Button, Commentary, type CommentaryRootProps } from '@opnay/city-ds-react';
+import {
+  Article,
+  Avatar,
+  Button,
+  Commentary,
+  type CommentaryRootProps,
+} from '@opnay/city-ds-react';
+
+const response = `본문에는 문단, 목록, 코드 등 필요한 내용을 조합합니다.
+
+- 긴 문구는 화면 너비에 맞게 줄바꿈합니다.
+- 목록의 마커와 들여쓰기를 유지합니다.
+
+\`\`\`sh
+pnpm add @opnay/city-ds-react @base-ui/react lucide-react
+\`\`\``;
 
 export default function MessageExample({
   appearance = 'plain',
@@ -18,13 +33,7 @@ export default function MessageExample({
         </Commentary.Meta>
       </Commentary.Header>
       <Commentary.Content>
-        <p>
-          본문에는 문단, 링크, 코드 등 필요한 React 콘텐츠를 조합합니다. 긴 문구도 화면 너비에 맞게
-          줄바꿈합니다.
-        </p>
-        <pre tabIndex={0} aria-label="패키지 설치 명령">
-          <code>pnpm add @opnay/city-ds-react @base-ui/react lucide-react</code>
-        </pre>
+        <Article render={<div />} markdown={response} />
       </Commentary.Content>
       <Commentary.Actions>
         <Button

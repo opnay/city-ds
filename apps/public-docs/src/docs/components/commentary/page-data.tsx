@@ -51,7 +51,8 @@ export const pageData = {
     {
       name: 'Commentary.Content',
       type: 'div props + render',
-      description: '임의의 React 본문입니다. Markdown 변환과 스트리밍 처리는 소비자가 담당합니다.',
+      description:
+        '임의의 React 본문입니다. Markdown 문자열은 Article로 표시하고 스트리밍은 소비자가 연결합니다.',
     },
     {
       name: 'Commentary.Actions',

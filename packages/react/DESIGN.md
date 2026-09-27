@@ -109,7 +109,7 @@ city-ds를 사용하는 프로젝트는 개별 컴포넌트를 페이지에서 �
 
 `city-text-body`의 1.75rem 행간은 한글과 영문에 동일하게 적용하십시오. 언어에 따라 별도 행간을 만들지 마십시오.
 
-여러 문단에는 `city-prose`를 사용하십시오. 이 클래스는 68ch 읽기 폭, 20px 흐름 간격, `h1`–`h6` 앞 24px 추가 간격, 목록 들여쓰기와 긴 문자열 줄바꿈만 제공하며 하위 요소의 텍스트 역할은 자동으로 정하지 않습니다.
+여러 문단에는 `city-prose`를 사용하십시오. 이 클래스는 68ch 읽기 폭, 20px 흐름 간격, `h1`–`h6` 앞 24px 추가 간격, 목록 마커·들여쓰기와 긴 문자열 줄바꿈을 제공하며 하위 요소의 텍스트 역할은 자동으로 정하지 않습니다.
 
 ```tsx
 <article className="city-prose">
@@ -119,6 +119,23 @@ city-ds를 사용하는 프로젝트는 개별 컴포넌트를 페이지에서 �
   <p className="city-text-body">일반적인 설명을 여기에 작성합니다.</p>
 </article>
 ```
+
+Tailwind 리셋은 일반 `ul`·`ol`의 마커를 제거합니다. 페이지의 읽기 흐름에는 `city-prose`를 사용하십시오. Markdown 또는 React 본문을 한 영역으로 표시할 때는 `Article`을 사용하십시오. 두 방식 모두 중첩된 `ul`·`ol`의 마커와 들여쓰기를 적용합니다. 탐색·메뉴처럼 목록 마커가 의미에 맞지 않는 곳에는 적용하지 마십시오.
+
+```tsx
+import { Article } from '@opnay/city-ds-react/article';
+
+<Article markdown={'- 첫 번째 항목\n- 두 번째 항목'} />
+
+<Article>
+  <ol>
+    <li>첫 번째 단계</li>
+    <li>두 번째 단계</li>
+  </ol>
+</Article>
+```
+
+대화 메시지 본문에서는 `Commentary.Content` 안에 `<Article render={<div />} markdown={response} />`를 조합하십시오. Markdown의 raw HTML은 렌더링하지 않으며 이미지는 대체 텍스트로 표시합니다. 데이터 요청·스트리밍·저장은 소비자가 담당합니다.
 
 역할 클래스는 색상과 외부 여백을 포함하지 않습니다. 오류와 필수 안내를 `city-text-caption` 또는 낮은 대비로 약화하지 말고, 색상만으로 정보 위계를 표현하지 마십시오. Button·Input·Badge 같은 컴포넌트 내부 텍스트는 각 컴포넌트와 Control Text 계약을 유지하십시오.
 

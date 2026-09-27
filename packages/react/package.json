@@ -236,6 +236,10 @@
     "./agent-activity": {
       "types": "./dist/components/agent-activity/index.d.ts",
       "import": "./dist/components/agent-activity/index.js"
+    },
+    "./article": {
+      "types": "./dist/components/article/index.d.ts",
+      "import": "./dist/components/article/index.js"
     }
   },
   "publishConfig": {
@@ -256,6 +260,8 @@
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "lucide-react": "catalog:",
+    "react-markdown": "catalog:",
+    "remark-gfm": "catalog:",
     "sonner": "catalog:",
     "tailwind-merge": "catalog:"
   },

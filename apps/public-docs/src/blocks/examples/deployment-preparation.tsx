@@ -7,6 +7,9 @@ export interface DeploymentTarget {
   environment: 'staging' | 'production';
   revision: string;
 }
+export interface CreatedDeployment {
+  id: string;
+}
 const steps = [
   { title: '환경 선택', description: '배포 대상을 선택합니다.' },
   { title: '설정 검증', description: '배포 조건을 확인합니다.' },
@@ -18,17 +21,19 @@ export function DeploymentPreparation({
   revision,
   onValidate,
   onDeploy,
+  onViewDeployment,
 }: {
   revision: string;
   onValidate: (target: DeploymentTarget) => Promise<void>;
-  onDeploy: (target: DeploymentTarget) => Promise<void>;
+  onDeploy: (target: DeploymentTarget) => Promise<CreatedDeployment>;
+  onViewDeployment: (id: string) => void;
 }) {
   const [environment, setEnvironment] = useState<DeploymentTarget['environment']>('staging');
   const [step, setStep] = useState(0);
   const [validated, setValidated] = useState<DeploymentTarget | null>(null);
   const [confirmed, setConfirmed] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [deployed, setDeployed] = useState<DeploymentTarget | null>(null);
+  const [deployed, setDeployed] = useState<(DeploymentTarget & CreatedDeployment) | null>(null);
   const done = deployed !== null;
   const [error, setError] = useState('');
   const pending = useRef(false);
@@ -61,8 +66,8 @@ export function DeploymentPreparation({
         setValidated(target);
         setStep(2);
       } else {
-        await onDeploy(target);
-        setDeployed(target);
+        const result = await onDeploy(target);
+        setDeployed({ ...target, id: result.id });
       }
     } catch {
       setError(
@@ -99,10 +104,13 @@ export function DeploymentPreparation({
         onBack={back}
       >
         {done ? (
-          <p role="status">
-            {deployed?.environment === 'production' ? '운영' : '스테이징'} 환경에{' '}
-            {deployed?.revision} 배포를 완료했습니다.
-          </p>
+          <div className="city-block-section">
+            <p role="status">
+              {deployed.environment === 'production' ? '운영' : '스테이징'} 환경에{' '}
+              {deployed.revision} 배포를 완료했습니다.
+            </p>
+            <Button onClick={() => onViewDeployment(deployed.id)}>실행 상세 보기</Button>
+          </div>
         ) : (
           <>
             {step === 0 && (
@@ -183,11 +191,22 @@ export function DeploymentPreparation({
 }
 
 export default function DeploymentPreparationExample() {
+  const [viewedId, setViewedId] = useState<string | null>(null);
+
+  if (viewedId) {
+    return (
+      <BlockCard title="실행 상세" description="완료된 배포 실행입니다.">
+        <p>실행 ID: {viewedId}</p>
+      </BlockCard>
+    );
+  }
+
   return (
     <DeploymentPreparation
       revision="v1.2.0"
       onValidate={async () => {}}
-      onDeploy={async () => {}}
+      onDeploy={async () => ({ id: 'sample-deployment' })}
+      onViewDeployment={setViewedId}
     />
   );
 }

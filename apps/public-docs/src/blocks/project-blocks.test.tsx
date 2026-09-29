@@ -30,8 +30,8 @@ describe('Project blocks', () => {
     const create = vi
       .fn()
       .mockRejectedValueOnce(new Error('offline'))
-      .mockResolvedValueOnce(undefined);
-    render(<ProjectCreation onCreate={create} />);
+      .mockResolvedValueOnce({ id: 'city' });
+    render(<ProjectCreation onCreate={create} onViewProject={vi.fn()} />);
     await user.type(screen.getByRole('textbox', { name: '프로젝트 이름' }), 'City');
     await user.click(screen.getByRole('button', { name: '다음' }));
     await user.type(screen.getByRole('textbox', { name: '초대 이메일' }), 'team@example.com');
@@ -50,7 +50,7 @@ describe('Project blocks', () => {
 
   it('shows prior inputs in the step summary and current instructions in the body', async () => {
     const user = userEvent.setup();
-    const { container } = render(<ProjectCreation onCreate={vi.fn()} />);
+    const { container } = render(<ProjectCreation onCreate={vi.fn()} onViewProject={vi.fn()} />);
     expect(container.querySelector('[data-city-stepper]')).not.toHaveTextContent(
       '프로젝트 이름을 정합니다.',
     );
@@ -67,14 +67,14 @@ describe('Project blocks', () => {
 
   it('blocks duplicate creation and navigation while the request is pending', async () => {
     const user = userEvent.setup();
-    let finish!: () => void;
+    let finish!: (project: { id: string }) => void;
     const create = vi.fn(
       () =>
-        new Promise<void>((resolve) => {
+        new Promise<{ id: string }>((resolve) => {
           finish = resolve;
         }),
     );
-    render(<ProjectCreation onCreate={create} />);
+    render(<ProjectCreation onCreate={create} onViewProject={vi.fn()} />);
     await user.type(screen.getByRole('textbox', { name: '프로젝트 이름' }), 'City');
     await user.click(screen.getByRole('button', { name: '다음' }));
     await user.click(screen.getByRole('button', { name: '다음' }));
@@ -82,7 +82,7 @@ describe('Project blocks', () => {
     expect(create).toHaveBeenCalledTimes(1);
     expect(screen.getByRole('button', { name: '이전' })).toBeDisabled();
     expect(screen.getByRole('button', { name: '기본 정보' })).toBeDisabled();
-    await act(async () => finish());
+    await act(async () => finish({ id: 'city' }));
     expect(screen.getByRole('status')).toHaveTextContent('City');
   });
 
@@ -94,9 +94,16 @@ describe('Project blocks', () => {
     const deploy = vi
       .fn()
       .mockRejectedValueOnce(new Error('offline'))
-      .mockResolvedValueOnce(undefined);
+      .mockResolvedValueOnce({ id: 'deployment-1' });
     const user = userEvent.setup();
-    render(<DeploymentPreparation revision="v2" onValidate={validate} onDeploy={deploy} />);
+    render(
+      <DeploymentPreparation
+        revision="v2"
+        onValidate={validate}
+        onDeploy={deploy}
+        onViewDeployment={vi.fn()}
+      />,
+    );
     await user.click(screen.getByRole('radio', { name: '운영' }));
     await user.click(screen.getByRole('button', { name: '다음' }));
     await user.click(screen.getByRole('button', { name: '설정 검증' }));
@@ -116,11 +123,23 @@ describe('Project blocks', () => {
     const validate = vi.fn().mockResolvedValue(undefined);
     const deploy = vi.fn();
     const { rerender } = render(
-      <DeploymentPreparation revision="v1" onValidate={validate} onDeploy={deploy} />,
+      <DeploymentPreparation
+        revision="v1"
+        onValidate={validate}
+        onDeploy={deploy}
+        onViewDeployment={vi.fn()}
+      />,
     );
     const user = await reachDeploymentReview();
     await user.click(screen.getByRole('checkbox'));
-    rerender(<DeploymentPreparation revision="v2" onValidate={validate} onDeploy={deploy} />);
+    rerender(
+      <DeploymentPreparation
+        revision="v2"
+        onValidate={validate}
+        onDeploy={deploy}
+        onViewDeployment={vi.fn()}
+      />,
+    );
     expect(screen.getByRole('button', { name: '배포 단계로' })).toBeDisabled();
     expect(screen.getByRole('alert')).toHaveTextContent('대상이 변경');
     await user.click(screen.getByRole('button', { name: '환경 선택' }));
@@ -133,16 +152,21 @@ describe('Project blocks', () => {
   });
 
   it('blocks duplicate deployment and reports the deployed snapshot if props change in flight', async () => {
-    let finish!: () => void;
+    let finish!: (deployment: { id: string }) => void;
     const validate = vi.fn().mockResolvedValue(undefined);
     const deploy = vi.fn(
       () =>
-        new Promise<void>((resolve) => {
+        new Promise<{ id: string }>((resolve) => {
           finish = resolve;
         }),
     );
     const { rerender } = render(
-      <DeploymentPreparation revision="v1" onValidate={validate} onDeploy={deploy} />,
+      <DeploymentPreparation
+        revision="v1"
+        onValidate={validate}
+        onDeploy={deploy}
+        onViewDeployment={vi.fn()}
+      />,
     );
     const user = await reachDeploymentReview();
     await user.click(screen.getByRole('checkbox'));
@@ -150,8 +174,15 @@ describe('Project blocks', () => {
     await user.dblClick(screen.getByRole('button', { name: '배포 시작' }));
     expect(deploy).toHaveBeenCalledTimes(1);
     expect(screen.getByRole('button', { name: '이전' })).toBeDisabled();
-    rerender(<DeploymentPreparation revision="v2" onValidate={validate} onDeploy={deploy} />);
-    await act(async () => finish());
+    rerender(
+      <DeploymentPreparation
+        revision="v2"
+        onValidate={validate}
+        onDeploy={deploy}
+        onViewDeployment={vi.fn()}
+      />,
+    );
+    await act(async () => finish({ id: 'deployment-1' }));
     expect(screen.getByRole('status')).toHaveTextContent('v1');
     expect(screen.getByRole('status')).not.toHaveTextContent('v2');
   });

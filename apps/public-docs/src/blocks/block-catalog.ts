@@ -167,7 +167,7 @@ export const BLOCK_DOCS = [
     keywords: ['프로젝트', '설정', '이름', '설명'],
     components: ['panel', 'field', 'input', 'data-list', 'button'],
     guidance:
-      'initialProject는 편집 시작 시의 값입니다. 프로젝트 전환 시 key에 프로젝트 ID를 지정하십시오. onSave 성공 후에만 저장 기준을 갱신하며 실패 시 입력을 보존합니다. canManage는 UI 권한이며 서버에서 프로젝트 소유권과 변경 권한을 검증하십시오.',
+      '프로젝트 설정 페이지의 일반 설정 패널입니다. 여러 줄 설명 입력은 Input 문서의 Textarea를 사용합니다. initialProject는 편집 시작 시의 값이며 프로젝트 전환 시 key에 프로젝트 ID를 지정하십시오. onSave 성공 뒤 같은 설정 화면에 머물며 저장 기준을 갱신하고, 실패하면 입력을 보존합니다. canManage는 UI 권한이며 서버에서 프로젝트 소유권과 변경 권한을 검증하십시오.',
     load: async () => ({
       Component: (await import('./examples/project-settings')).default,
       source: (await import('./examples/project-settings.tsx?raw')).default,
@@ -184,18 +184,9 @@ export const BLOCK_DOCS = [
     category: '프로젝트',
     scope: '팀',
     keywords: ['프로젝트', '환경', '변수', '설정'],
-    components: [
-      'panel',
-      'field',
-      'input',
-      'segmented-control',
-      'checkbox',
-      'dialog',
-      'badge',
-      'button',
-    ],
+    components: ['panel', 'field', 'input', 'segmented-control', 'checkbox', 'dialog', 'button'],
     guidance:
-      'variables의 민감 값 레코드에는 원문 value가 없습니다. 편집 시 교체할 값을 입력하고 onSave에만 전달합니다. onSave·onRemove 성공 후 소비자가 variables를 갱신하십시오. 서버에서 같은 환경의 이름 중복과 권한을 검증하고 민감 값을 암호화하며 로그·조회 응답에 포함하지 마십시오. 이 예제는 빈 값과 소문자 이름을 허용하지 않는 정책입니다. 실제 적용 시점은 소비 서비스의 배포 정책에 맞추십시오.',
+      '프로젝트 설정의 환경 변수 패널입니다. 변수 추가 Dialog는 추가 버튼으로, 수정 Dialog는 해당 행으로, 삭제 성공 Dialog는 다음 행 또는 추가 버튼으로 초점을 돌립니다. variables의 민감 값 레코드에는 원문 value가 없습니다. 편집 시 교체할 값을 입력하고 onSave에만 전달합니다. onSave·onRemove 성공 후 소비자가 variables를 갱신하십시오. 서버에서 같은 환경의 이름 중복과 권한을 검증하고 민감 값을 암호화하며 로그·조회 응답에 포함하지 마십시오. 이 예제는 빈 값과 소문자 이름을 허용하지 않는 정책입니다.',
     load: async () => ({
       Component: (await import('./examples/environment-variables')).default,
       source: (await import('./examples/environment-variables.tsx?raw')).default,
@@ -393,9 +384,9 @@ export const BLOCK_DOCS = [
     category: '프로젝트',
     scope: '팀',
     keywords: ['프로젝트', '생성', '팀원', '초대', '단계'],
-    components: ['tabs', 'panel', 'field', 'input', 'data-list', 'button'],
+    components: ['stepper', 'panel', 'field', 'input', 'data-list', 'button'],
     guidance:
-      'onCreate에 정리된 프로젝트 이름과 선택 입력인 초대 이메일을 전달합니다. 성공 시에만 완료로 전환하고 실패 시 입력을 보존합니다. 권한, 이름 중복, 초대 정책은 서버에서 검증하고 중복 생성 방지 키를 요청에 연결하십시오. 미리보기는 컴포넌트 조합과 단계별 배치를 보여주는 예제입니다.',
+      '프로젝트 목록에서 새 프로젝트 생성 작업으로 진입하는 패널입니다. onCreate에 정리된 이름과 선택 입력인 초대 이메일을 전달하고, 성공 결과의 프로젝트 ID로 완료 화면의 상세 보기 액션을 연결하십시오. 실제 상세 경로는 onViewProject를 통해 소비 앱이 소유합니다. 실패 시 입력을 보존합니다. 권한·이름 중복·초대 정책은 서버에서 검증하고 중복 생성 방지 키를 요청에 연결하십시오. 미리보기는 로컬 상세 화면으로 전환합니다.',
     load: async () => ({
       Component: (await import('./examples/project-creation')).default,
       source: (await import('./examples/project-creation.tsx?raw')).default,
@@ -416,9 +407,9 @@ export const BLOCK_DOCS = [
     category: '프로젝트',
     scope: '팀',
     keywords: ['프로젝트', '배포', '환경', '운영', '검증'],
-    components: ['tabs', 'panel', 'radio-group', 'checkbox', 'data-list', 'button'],
+    components: ['stepper', 'panel', 'radio-group', 'checkbox', 'data-list', 'button'],
     guidance:
-      'revision은 배포할 버전 식별자입니다. onValidate는 환경·버전의 설정과 권한 검증에 성공할 때 resolve하며, onDeploy는 배포 완료를 확인한 뒤 resolve합니다. 환경 또는 버전 변경 시 이전 검증은 사용할 수 없습니다. 실제 실행 직전 권한·검증 유효성을 서버에서 재확인하고, 같은 실행을 중복 생성하지 않도록 idempotency key와 상태 조회를 연결하십시오. 미리보기는 콜백만 모의 실행하며 실제 배포를 하지 않습니다.',
+      '프로젝트 배포 화면의 준비 패널입니다. revision은 배포할 버전 식별자입니다. onValidate는 환경·버전의 설정과 권한 검증에 성공할 때 resolve하며, onDeploy는 실행 ID를 반환합니다. 완료 화면의 실행 상세 보기는 onViewDeployment를 통해 소비 앱의 실행 기록·상세 경로로 연결하십시오. 환경 또는 버전 변경 시 이전 검증은 사용할 수 없습니다. 실제 실행 직전 권한·검증 유효성을 서버에서 재확인하고, 같은 실행을 중복 생성하지 않도록 idempotency key와 상태 조회를 연결하십시오. 미리보기는 실제 배포를 하지 않습니다.',
     load: async () => ({
       Component: (await import('./examples/deployment-preparation')).default,
       source: (await import('./examples/deployment-preparation.tsx?raw')).default,

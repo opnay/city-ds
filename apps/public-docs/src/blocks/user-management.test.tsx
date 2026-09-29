@@ -57,7 +57,7 @@ describe('User management blocks', () => {
       setProviderConnected: vi.fn().mockResolvedValue(undefined),
       deleteAccount: vi.fn().mockResolvedValue(undefined),
     };
-    render(<AccountManagement actions={actions} />);
+    render(<AccountManagement actions={actions} onSignIn={vi.fn()} />);
     await user.click(screen.getByRole('button', { name: '이메일 변경' }));
     await user.type(screen.getByRole('textbox', { name: '새 이메일' }), 'new@example.com');
     await user.type(

@@ -574,7 +574,7 @@ export const BLOCK_DOCS = [
       'toast',
     ],
     guidance:
-      'actions에 이메일 변경 요청·코드 검증·외부 계정 연결·탈퇴 API를 연결하십시오. 연결 해제 시 남은 로그인 수단을 서버에서 검증해야 합니다. 미리보기의 기본 콜백은 통신 없이 화면 상태만 변경합니다.',
+      '계정 관리 페이지에서 로그인 이메일·연결 계정·탈퇴 패널을 함께 구성합니다. 각 오류는 해당 패널 가까이에 표시합니다. actions에 이메일 변경 요청·코드 검증·외부 계정 연결·탈퇴 API를 연결하십시오. 탈퇴 성공 뒤에는 onSignIn을 로그인 경로로 연결하고 인증 세션 폐기를 소비 앱에서 처리하십시오. 연결 해제 시 남은 로그인 수단을 서버에서 검증해야 합니다. 미리보기 콜백은 통신 없이 화면 상태만 변경합니다.',
     load: async () => ({
       Component: (await import('./examples/account-management')).default,
       source: (await import('./examples/account-management.tsx?raw')).default,
@@ -645,7 +645,7 @@ export const BLOCK_DOCS = [
     keywords: ['세션', '기기', '접속', '기록', '로그아웃'],
     components: ['panel', 'segmented-control', 'badge', 'button', 'alert-dialog', 'toast'],
     guidance:
-      'initialSessions에 서버에서 조회한 세션을 전달하고 onRevoke에 종료 요청을 연결하십시오. 현재 세션을 제외한 ID만 전달하며 성공한 뒤 목록을 갱신합니다. 서버는 계정 소유권과 세션 유효성을 검증해야 합니다. 미리보기 데이터는 샘플입니다.',
+      '계정 보안 페이지의 세션 패널입니다. initialSessions에 서버에서 조회한 세션을 전달하고 onRevoke에 종료 요청을 연결하십시오. 현재 세션을 제외한 ID만 전달하며 성공한 뒤 목록을 갱신하고 세션 개수로 초점을 옮깁니다. 취소 시에는 진입 버튼으로 돌아갑니다. 서버는 계정 소유권과 세션 유효성을 검증해야 합니다. 미리보기 데이터는 샘플입니다.',
     load: async () => ({
       Component: (await import('./examples/session-history')).default,
       source: (await import('./examples/session-history.tsx?raw')).default,
@@ -662,7 +662,7 @@ export const BLOCK_DOCS = [
     keywords: ['프로필', '계정', '설정', '저장', '취소'],
     components: ['field', 'input', 'switch', 'button'],
     guidance:
-      '저장 버튼은 변경이 있을 때만 활성화됩니다. 예제는 현재 화면의 상태만 저장합니다. 서비스에서는 저장 요청의 대기·실패 상태를 연결하십시오.',
+      '직접 URL로 접근하는 미리보기 전용 계정 설정 폼이며 계정 관리 메뉴에는 표시하지 않습니다. 저장 버튼은 변경이 있을 때만 활성화되고 예제는 현재 화면의 상태만 저장합니다. 실제 서비스의 로그인 이메일 변경은 계정 관리 블록의 재인증 흐름을 사용하십시오. 이 폼을 별도 페이지에 적용한다면 저장 요청의 대기·실패 상태와 저장 뒤 복귀 경로를 소비 앱에서 연결하십시오.',
     load: async () => ({
       Component: (await import('./examples/account-settings')).default,
       source: (await import('./examples/account-settings.tsx?raw')).default,
@@ -677,7 +677,7 @@ export const BLOCK_DOCS = [
     keywords: ['인증', 'OTP', '코드', '오류', '확인'],
     components: ['panel', 'otp-input', 'field', 'alert', 'button'],
     guidance:
-      '예제 코드 123456으로 일치 상태를 확인할 수 있습니다. 실제 인증은 서버에서 검증하고 만료·시도 제한을 적용하십시오. 이 예제는 인증이나 메시지 발송을 수행하지 않습니다.',
+      '독립 OTP 입력 미리보기입니다. 예제 코드 123456으로 일치 상태를 확인할 수 있습니다. 실제 계정 흐름에서는 이메일 변경·2차 인증·비밀번호 재설정 중 하나의 상위 작업에 연결하고, 성공 뒤 그 작업으로 돌아갈 경로를 소비 앱이 제공하십시오. 실제 코드는 서버에서 검증하고 만료·시도 제한을 적용하십시오. 이 예제는 인증이나 메시지 발송을 수행하지 않습니다.',
     load: async () => ({
       Component: (await import('./examples/verification-code')).default,
       source: (await import('./examples/verification-code.tsx?raw')).default,
@@ -790,7 +790,7 @@ export const BLOCK_DOCS = [
     keywords: ['앱', '연결', 'OAuth', '권한', '해제'],
     components: ['data-list', 'panel', 'button', 'alert-dialog', 'skeleton'],
     guidance:
-      'apps에 외부 앱의 이름, 허용한 권한과 연결일을 전달합니다. 소셜 로그인 연결과 달리 계정 데이터에 접근하는 앱을 관리합니다. onDisconnect는 서버에서 접근·갱신 토큰을 폐기하고 성공 후 소비자가 목록을 갱신합니다. 이미 전달된 데이터의 삭제를 보장하지 않으므로 해제 영향 안내를 유지하십시오. loading·error·onRetry는 조회 상태, canManage는 관리 권한입니다. 미리보기는 외부 앱에 요청하지 않습니다.',
+      '계정의 앱 연동 페이지 패널입니다. apps에 외부 앱의 이름·권한·연결일을 전달합니다. 소셜 로그인 연결과 달리 계정 데이터에 접근하는 앱을 관리합니다. onDisconnect는 서버에서 접근·갱신 토큰을 폐기하고 성공 후 소비자가 목록을 갱신합니다. 로딩·오류 중에는 이전 앱 개수를 숨기고 성공 뒤 최신 개수에 초점을 둡니다. 이미 전달된 데이터의 삭제를 보장하지 않으므로 해제 영향 안내를 유지하십시오. loading·error·onRetry는 조회 상태, canManage는 관리 권한입니다.',
     load: async () => ({
       Component: (await import('./examples/connected-apps')).default,
       source: (await import('./examples/connected-apps.tsx?raw')).default,
@@ -813,9 +813,11 @@ export const BLOCK_DOCS = [
       'search-input',
       'select',
       'skeleton',
+      'alert',
+      'empty-state',
     ],
     guidance:
-      'events에 서버에서 조회한 활동을 최신순으로 전달하십시오. 활동 검색과 결과 조건은 AND로 적용되며 전달된 기록 안에서만 검색합니다. 기간별 조회·페이지 이동·기록 보존·조회 권한은 소비 앱이 담당합니다. occurredAt은 시간대가 포함된 ISO 날짜이며 예제는 한국 시간으로 표시합니다. IP·기기 정보 노출은 서비스 정책에 맞추십시오. loading·error·onRetry로 조회 상태를 연결합니다. 미리보기는 문서용 IP와 샘플 기록입니다.',
+      '계정 보안의 활동 기록 패널입니다. events에 서버에서 조회한 활동을 최신순으로 전달하십시오. 활동 검색과 결과 조건은 AND로 적용되며 전달된 기록 안에서만 검색합니다. 초기 로딩은 Skeleton, 조회 실패는 Alert와 재시도, 기록 없음과 필터 결과 없음은 서로 다른 EmptyState로 표시합니다. 기간별 조회·페이지 이동·기록 보존·조회 권한은 소비 앱이 담당합니다. occurredAt은 시간대가 포함된 ISO 날짜이며 예제는 한국 시간으로 표시합니다. IP·기기 정보 노출은 서비스 정책에 맞추십시오.',
     load: async () => ({
       Component: (await import('./examples/security-activity')).default,
       source: (await import('./examples/security-activity.tsx?raw')).default,

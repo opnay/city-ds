@@ -1,4 +1,4 @@
-import { useState, type MouseEvent, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react';
 import {
   Bell,
   FileText,
@@ -12,7 +12,16 @@ import {
   X,
   type LucideIcon,
 } from 'lucide-react';
-import { Avatar, Badge, Breadcrumbs, Button, Drawer, SearchInput } from '@opnay/city-ds-react';
+import {
+  Avatar,
+  Badge,
+  Breadcrumbs,
+  Button,
+  Drawer,
+  Field,
+  Input,
+  SearchInput,
+} from '@opnay/city-ds-react';
 import './blocks.css';
 
 type NavigationItem = {
@@ -185,7 +194,13 @@ function PageHeading({
   );
 }
 
-function OverviewContent({ compact = false }: { compact?: boolean }) {
+function OverviewContent({
+  compact = false,
+  onViewAll,
+}: {
+  compact?: boolean;
+  onViewAll?: () => void;
+}) {
   return (
     <div
       className={`city-block-layout-content ${compact ? 'city-block-layout-content--compact' : ''}`}
@@ -213,7 +228,7 @@ function OverviewContent({ compact = false }: { compact?: boolean }) {
             <h4 id="layout-activity-title">최근 활동</h4>
             <p>팀에서 처리한 업데이트입니다.</p>
           </div>
-          <Button size="sm" type="button" variant="outline">
+          <Button onClick={onViewAll} size="sm" type="button" variant="outline">
             전체 보기
           </Button>
         </div>
@@ -238,6 +253,45 @@ function OverviewContent({ compact = false }: { compact?: boolean }) {
               완료
             </Badge>
           </li>
+        </ul>
+      </section>
+    </div>
+  );
+}
+
+const sampleSections: Record<string, { description: string; rows: readonly string[] }> = {
+  projects: { description: '진행 중인 프로젝트', rows: ['도시환경 개선', '공공 서비스 개편'] },
+  team: { description: '팀에서 함께하는 사람', rows: ['서유진 · 관리자', '김서연 · 편집자'] },
+  settings: {
+    description: '워크스페이스 설정',
+    rows: ['팀 이름 · 도시환경 개선팀', '기본 알림 · 사용 중'],
+  },
+  tasks: { description: '프로젝트 작업', rows: ['디자인 검토 · 검토 중', '운영 리포트 · 완료'] },
+  files: { description: '프로젝트 파일', rows: ['운영 계획서', '릴리스 점검표'] },
+  members: { description: '프로젝트 멤버', rows: ['서유진 · 소유자', '김서연 · 편집자'] },
+  roles: { description: '팀 역할과 권한', rows: ['관리자 · 전체 설정', '편집자 · 콘텐츠 관리'] },
+  general: { description: '일반 설정', rows: ['팀 이름 · 도시환경 개선팀', '언어 · 한국어'] },
+  notifications: { description: '알림 설정', rows: ['업무 배정 · 사용 중', '검토 요청 · 사용 중'] },
+};
+
+function WorkspaceContent({ current, onViewAll }: { current: string; onViewAll: () => void }) {
+  if (current === 'overview') return <OverviewContent onViewAll={onViewAll} />;
+
+  const section = sampleSections[current];
+  if (!section) return null;
+
+  return (
+    <div className="city-block-layout-content">
+      <section className="city-block-layout-activity">
+        <div className="city-block-layout-section-heading">
+          <h4>{section.description}</h4>
+        </div>
+        <ul>
+          {section.rows.map((row) => (
+            <li key={row}>
+              <span>{row}</span>
+            </li>
+          ))}
         </ul>
       </section>
     </div>
@@ -275,22 +329,20 @@ export function TopNavigation() {
           eyebrow="프로젝트 운영"
           title={currentLabel}
           description="주요 메뉴가 적고 본문 폭을 넓게 쓰는 서비스 화면입니다."
-          actions={
-            <Button size="sm" type="button">
-              새 프로젝트
-            </Button>
-          }
         />
-        <OverviewContent />
+        <WorkspaceContent current={current} onViewAll={() => setCurrent('projects')} />
       </div>
     </section>
   );
 }
 
 export function TopNavigationWithLocalMenu() {
+  const [globalCurrent, setGlobalCurrent] = useState('projects');
   const [current, setCurrent] = useState('overview');
   const currentLabel =
-    projectNavigation.find((item) => item.id === current)?.label ?? '프로젝트 개요';
+    globalCurrent === 'projects'
+      ? (projectNavigation.find((item) => item.id === current)?.label ?? '프로젝트 개요')
+      : (globalNavigation.find((item) => item.id === globalCurrent)?.label ?? '개요');
 
   return (
     <section
@@ -299,33 +351,41 @@ export function TopNavigationWithLocalMenu() {
     >
       <header className="city-block-layout-gnb city-block-layout-gnb--local">
         <Brand />
-        <span className="city-block-layout-product-name">프로젝트</span>
+        <NavigationLinks
+          current={globalCurrent}
+          items={globalNavigation}
+          label="주요 메뉴"
+          onSelect={setGlobalCurrent}
+        />
         <UserActions />
       </header>
-      <div className="city-block-layout-local-menu">
-        <NavigationLinks
-          current={current}
-          items={projectNavigation}
-          label="프로젝트 메뉴"
-          onSelect={setCurrent}
-        />
-        <Button size="sm" type="button" variant="outline">
-          공유
-        </Button>
-      </div>
+      {globalCurrent === 'projects' && (
+        <div className="city-block-layout-local-menu">
+          <NavigationLinks
+            current={current}
+            items={projectNavigation}
+            label="프로젝트 메뉴"
+            onSelect={setCurrent}
+          />
+        </div>
+      )}
       <div className="city-block-layout-workspace">
         <Breadcrumb current={currentLabel} />
         <PageHeading
-          eyebrow="도시환경 개선"
+          eyebrow={globalCurrent === 'projects' ? '도시환경 개선' : '운영 워크스페이스'}
           title={currentLabel}
-          description="전역 서비스 안에서 한 프로젝트의 하위 탐색이 이어지는 구성입니다."
-          actions={
-            <Button size="sm" type="button">
-              작업 추가
-            </Button>
+          description={
+            globalCurrent === 'projects'
+              ? '도시환경 개선 프로젝트의 하위 화면입니다.'
+              : '전역 메뉴에서 선택한 워크스페이스 화면입니다.'
           }
         />
-        <OverviewContent />
+        <WorkspaceContent
+          current={globalCurrent === 'projects' ? current : globalCurrent}
+          onViewAll={() =>
+            globalCurrent === 'projects' ? setCurrent('tasks') : setGlobalCurrent('projects')
+          }
+        />
       </div>
     </section>
   );
@@ -361,13 +421,8 @@ export function SidebarNavigation() {
             eyebrow="운영 워크스페이스"
             title={currentLabel}
             description="탐색이 많은 운영 도구에 맞는 기본 사이드바 구성입니다."
-            actions={
-              <Button size="sm" type="button">
-                새로 만들기
-              </Button>
-            }
           />
-          <OverviewContent />
+          <WorkspaceContent current={current} onViewAll={() => setCurrent('projects')} />
         </div>
       </div>
     </section>
@@ -409,13 +464,8 @@ export function HamburgerSidebar() {
               eyebrow="모바일 우선 탐색"
               title={currentLabel}
               description="본문을 우선 보여 주고 필요할 때 햄버거 메뉴에서 사이드 패널을 여는 구성입니다."
-              actions={
-                <Button size="sm" type="button">
-                  새 작업
-                </Button>
-              }
             />
-            <OverviewContent />
+            <WorkspaceContent current={current} onViewAll={() => selectNavigation('projects')} />
           </div>
         </div>
         <Drawer.Portal>
@@ -461,8 +511,23 @@ export function HamburgerSidebar() {
 }
 
 export function SidebarFloatingPage() {
-  const [current, setCurrent] = useState('overview');
-  const currentLabel = globalNavigation.find((item) => item.id === current)?.label ?? '개요';
+  const [current, setCurrent] = useState('settings');
+  const [teamName, setTeamName] = useState('도시환경 개선팀');
+  const [draftName, setDraftName] = useState(teamName);
+  const [editing, setEditing] = useState(false);
+  const [status, setStatus] = useState('');
+  const currentLabel = globalNavigation.find((item) => item.id === current)?.label ?? '설정';
+
+  function saveTeamName() {
+    if (!draftName.trim()) {
+      setStatus('팀 이름을 입력하십시오.');
+      return;
+    }
+
+    setTeamName(draftName.trim());
+    setEditing(false);
+    setStatus('팀 이름을 저장했습니다.');
+  }
 
   return (
     <section
@@ -484,37 +549,73 @@ export function SidebarFloatingPage() {
           <UserActions />
         </header>
         <section className="city-block-layout-floating-page" aria-label="현재 페이지">
-          <Breadcrumb current={currentLabel} />
+          <Breadcrumb current={current === 'settings' ? '팀 설정' : currentLabel} />
           <PageHeading
             eyebrow="프로젝트 운영"
-            title="팀 설정"
+            title={current === 'settings' ? '팀 설정' : currentLabel}
             description="사이드바와 본문을 별도 표면으로 구분해 설정이나 집중 작업에 쓰는 구성입니다."
             actions={
-              <Button size="sm" type="button">
-                변경 사항 저장
-              </Button>
+              current === 'settings' ? (
+                <Button disabled={!editing} onClick={saveTeamName} size="sm" type="button">
+                  변경 사항 저장
+                </Button>
+              ) : undefined
             }
           />
-          <section className="city-block-layout-settings-list" aria-label="팀 설정 항목">
-            <div>
+          {current === 'settings' ? (
+            <section className="city-block-layout-settings-list" aria-label="팀 설정 항목">
               <div>
-                <strong>팀 이름</strong>
-                <span>도시환경 개선팀</span>
+                <div>
+                  {editing ? (
+                    <Field.Root invalid={!draftName.trim()}>
+                      <Field.Label>팀 이름</Field.Label>
+                      <Input
+                        maxLength={60}
+                        onChange={(event) => {
+                          setDraftName(event.target.value);
+                          setStatus('');
+                        }}
+                        value={draftName}
+                      />
+                    </Field.Root>
+                  ) : (
+                    <>
+                      <strong>팀 이름</strong>
+                      <span>{teamName}</span>
+                    </>
+                  )}
+                </div>
+                <Button
+                  onClick={() => {
+                    setDraftName(teamName);
+                    setEditing(!editing);
+                    setStatus('');
+                  }}
+                  size="sm"
+                  type="button"
+                  variant="outline"
+                >
+                  {editing ? '취소' : '수정'}
+                </Button>
               </div>
-              <Button size="sm" type="button" variant="outline">
-                수정
-              </Button>
-            </div>
-            <div>
               <div>
-                <strong>기본 알림</strong>
-                <span>업무 배정과 검토 요청을 팀에 알립니다.</span>
+                <div>
+                  <strong>기본 알림</strong>
+                  <span>업무 배정과 검토 요청을 팀에 알립니다.</span>
+                </div>
+                <Badge appearance="subtle" tone="success">
+                  사용 중
+                </Badge>
               </div>
-              <Badge appearance="subtle" tone="success">
-                사용 중
-              </Badge>
-            </div>
-          </section>
+            </section>
+          ) : (
+            <WorkspaceContent current={current} onViewAll={() => setCurrent('projects')} />
+          )}
+          {current === 'settings' && status && (
+            <p className="city-block-status" role="status">
+              {status}
+            </p>
+          )}
         </section>
       </div>
     </section>
@@ -572,13 +673,11 @@ export function SidebarTwoColumn() {
             eyebrow={areaLabel}
             title={currentLabel}
             description="제품 영역과 그 안의 메뉴를 분리해야 할 때 쓰는 2열 탐색 구성입니다."
-            actions={
-              <Button size="sm" type="button">
-                새 작업
-              </Button>
-            }
           />
-          <OverviewContent />
+          <WorkspaceContent
+            current={area === 'team' && current === 'members' ? 'team' : current}
+            onViewAll={() => setCurrent('tasks')}
+          />
         </div>
       </div>
     </section>
@@ -587,11 +686,25 @@ export function SidebarTwoColumn() {
 
 export function SidebarListDetail() {
   const [selectedId, setSelectedId] = useState<(typeof documents)[number]['id']>('brief');
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const detailHeadingRef = useRef<HTMLHeadingElement>(null);
+  const selectedButtonRef = useRef<HTMLButtonElement>(null);
   const selected = documents.find((document) => document.id === selectedId) ?? documents[0];
+  const visibleDocuments = documents.filter((document) => document.title.includes(query.trim()));
+
+  useEffect(() => {
+    if (detailOpen) detailHeadingRef.current?.focus();
+  }, [detailOpen, selectedId]);
+
+  function returnToList() {
+    setDetailOpen(false);
+    requestAnimationFrame(() => selectedButtonRef.current?.focus());
+  }
 
   return (
     <section
-      className="city-block-layout city-block-layout--list-detail"
+      className={`city-block-layout city-block-layout--list-detail ${detailOpen ? 'city-block-layout--detail-open' : ''}`}
       aria-label="사이드바 목록 상세 레이아웃"
     >
       <aside className="city-block-layout-sidebar">
@@ -609,21 +722,22 @@ export function SidebarListDetail() {
             <p>문서</p>
             <h3 id="layout-document-list-title">최근 문서</h3>
           </div>
-          <Button aria-label="문서 추가" iconOnly size="sm" type="button" variant="outline">
-            +
-          </Button>
         </header>
-        <SearchInput.Root>
+        <SearchInput.Root value={query} onValueChange={setQuery}>
           <SearchInput.Group>
             <SearchInput.Input aria-label="문서 검색" placeholder="문서 검색" />
           </SearchInput.Group>
         </SearchInput.Root>
         <ul>
-          {documents.map((document) => (
+          {visibleDocuments.map((document) => (
             <li key={document.id}>
               <button
                 aria-current={selectedId === document.id ? 'page' : undefined}
-                onClick={() => setSelectedId(document.id)}
+                onClick={() => {
+                  setSelectedId(document.id);
+                  setDetailOpen(true);
+                }}
+                ref={selectedId === document.id ? selectedButtonRef : undefined}
                 type="button"
               >
                 <strong>{document.title}</strong>
@@ -632,20 +746,31 @@ export function SidebarListDetail() {
             </li>
           ))}
         </ul>
+        {visibleDocuments.length === 0 && (
+          <p className="city-block-layout-empty-list">검색 결과가 없습니다.</p>
+        )}
       </section>
       <article
         className="city-block-layout-document-detail"
         aria-labelledby="layout-document-title"
       >
+        <Button
+          className="city-block-layout-back"
+          onClick={returnToList}
+          size="sm"
+          type="button"
+          variant="ghost"
+        >
+          목록으로 돌아가기
+        </Button>
         <Breadcrumb current="최근 문서" />
         <header>
           <div>
             <p>{selected.meta}</p>
-            <h3 id="layout-document-title">{selected.title}</h3>
+            <h3 id="layout-document-title" ref={detailHeadingRef} tabIndex={-1}>
+              {selected.title}
+            </h3>
           </div>
-          <Button size="sm" type="button" variant="outline">
-            공유
-          </Button>
         </header>
         <p className="city-block-layout-document-lead">{selected.excerpt}</p>
         <div className="city-block-layout-document-lines" aria-label="문서 내용 예시">

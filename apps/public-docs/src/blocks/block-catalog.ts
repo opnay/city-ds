@@ -677,7 +677,7 @@ export const BLOCK_DOCS = [
     keywords: ['인증', 'OTP', '코드', '오류', '확인'],
     components: ['panel', 'otp-input', 'field', 'alert', 'button'],
     guidance:
-      '예제 코드 123456으로 일치 상태를 확인할 수 있습니다. 실제 인증은 서버에서 검증하고 만료·시도 제한을 적용하십시오. 이 예제는 인증이나 메시지 발송을 수행하지 않습니다.',
+      '독립 OTP 입력 미리보기입니다. 예제 코드 123456으로 일치 상태를 확인할 수 있습니다. 실제 계정 흐름에서는 이메일 변경·2차 인증·비밀번호 재설정 중 하나의 상위 작업에 연결하고, 성공 뒤 그 작업으로 돌아갈 경로를 소비 앱이 제공하십시오. 실제 코드는 서버에서 검증하고 만료·시도 제한을 적용하십시오. 이 예제는 인증이나 메시지 발송을 수행하지 않습니다.',
     load: async () => ({
       Component: (await import('./examples/verification-code')).default,
       source: (await import('./examples/verification-code.tsx?raw')).default,

@@ -813,9 +813,11 @@ export const BLOCK_DOCS = [
       'search-input',
       'select',
       'skeleton',
+      'alert',
+      'empty-state',
     ],
     guidance:
-      'events에 서버에서 조회한 활동을 최신순으로 전달하십시오. 활동 검색과 결과 조건은 AND로 적용되며 전달된 기록 안에서만 검색합니다. 기간별 조회·페이지 이동·기록 보존·조회 권한은 소비 앱이 담당합니다. occurredAt은 시간대가 포함된 ISO 날짜이며 예제는 한국 시간으로 표시합니다. IP·기기 정보 노출은 서비스 정책에 맞추십시오. loading·error·onRetry로 조회 상태를 연결합니다. 미리보기는 문서용 IP와 샘플 기록입니다.',
+      '계정 보안의 활동 기록 패널입니다. events에 서버에서 조회한 활동을 최신순으로 전달하십시오. 활동 검색과 결과 조건은 AND로 적용되며 전달된 기록 안에서만 검색합니다. 초기 로딩은 Skeleton, 조회 실패는 Alert와 재시도, 기록 없음과 필터 결과 없음은 서로 다른 EmptyState로 표시합니다. 기간별 조회·페이지 이동·기록 보존·조회 권한은 소비 앱이 담당합니다. occurredAt은 시간대가 포함된 ISO 날짜이며 예제는 한국 시간으로 표시합니다. IP·기기 정보 노출은 서비스 정책에 맞추십시오.',
     load: async () => ({
       Component: (await import('./examples/security-activity')).default,
       source: (await import('./examples/security-activity.tsx?raw')).default,

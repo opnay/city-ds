@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { Alert } from '@opnay/city-ds-react/alert';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
+import { EmptyState } from '@opnay/city-ds-react/empty-state';
 import { Field } from '@opnay/city-ds-react/field';
 import { FilterBar } from '@opnay/city-ds-react/filter-bar';
 import { SearchInput } from '@opnay/city-ds-react/search-input';
@@ -103,29 +105,37 @@ export function SecurityActivity({
       {loading ? (
         <Skeleton aria-label="보안 활동 불러오는 중" className="h-24 w-full" />
       ) : error ? (
-        <div role="alert" className="city-block-section">
-          <p>{error}</p>
+        <Alert.Root tone="destructive">
+          <Alert.Title level={4}>보안 활동을 불러오지 못했습니다.</Alert.Title>
+          <Alert.Description>{error}</Alert.Description>
           {onRetry && (
-            <Button variant="outline" onClick={onRetry}>
-              다시 불러오기
-            </Button>
+            <Alert.Action>
+              <Button variant="outline" onClick={onRetry}>
+                다시 불러오기
+              </Button>
+            </Alert.Action>
           )}
-        </div>
+        </Alert.Root>
       ) : (
         <>
           {!filtered.length ? (
-            <div className="city-block-section">
-              <p>
+            <EmptyState.Root>
+              <EmptyState.Title level={4}>
                 {events.length
                   ? '일치하는 보안 활동이 없습니다.'
                   : '아직 보안 활동 기록이 없습니다.'}
-              </p>
+              </EmptyState.Title>
+              <EmptyState.Description>
+                {events.length
+                  ? '검색어 또는 결과 조건을 조정하십시오.'
+                  : '계정에서 보안 관련 작업을 하면 여기에 표시됩니다.'}
+              </EmptyState.Description>
               {events.length > 0 && (
                 <Button variant="outline" onClick={reset}>
                   필터 초기화
                 </Button>
               )}
-            </div>
+            </EmptyState.Root>
           ) : (
             <ul className="city-block-list">
               {filtered.map((event) => (

@@ -35,7 +35,7 @@ describe('Workflow blocks', () => {
     const user = userEvent.setup();
     const viewLogs = vi.fn();
     const events = exampleDeployments[1]!.events!;
-    render(<WorkflowEvents events={events} onViewLogs={viewLogs} />);
+    render(<WorkflowEvents run={exampleDeployments[1]!} events={events} onViewLogs={viewLogs} />);
     const items = within(screen.getByRole('list', { name: '실행 이벤트' })).getAllByRole(
       'listitem',
     );
@@ -53,15 +53,24 @@ describe('Workflow blocks', () => {
     const user = userEvent.setup();
     const retry = vi.fn();
     const events = exampleDeployments[1]!.events!;
-    const { rerender } = render(<WorkflowEvents events={events} loading />);
+    const { rerender } = render(
+      <WorkflowEvents run={exampleDeployments[1]!} events={events} loading />,
+    );
     expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
-    rerender(<WorkflowEvents events={events} error="이벤트 조회 실패" onRetry={retry} />);
+    rerender(
+      <WorkflowEvents
+        run={exampleDeployments[1]!}
+        events={events}
+        error="이벤트 조회 실패"
+        onRetry={retry}
+      />,
+    );
     expect(screen.getByRole('alert')).toHaveTextContent('이벤트 조회 실패');
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: '다시 불러오기' }));
     expect(retry).toHaveBeenCalledOnce();
-    rerender(<WorkflowEvents events={[]} />);
+    rerender(<WorkflowEvents run={exampleDeployments[1]!} events={[]} />);
     expect(screen.getByText('아직 기록된 실행 이벤트가 없습니다.')).toBeVisible();
   });
 
@@ -100,6 +109,7 @@ describe('Workflow blocks', () => {
     const run = exampleDeployments[0]!;
     const { unmount } = render(
       <WorkflowEvents
+        run={run}
         events={[
           {
             id: 'before',

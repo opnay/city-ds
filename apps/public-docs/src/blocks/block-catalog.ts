@@ -219,7 +219,7 @@ export const BLOCK_DOCS = [
       'empty-state',
     ],
     guidance:
-      'records는 표시 순서대로 렌더링하며 예제는 최신순입니다. workflow·branch·commit은 선택 정보이며 검색에도 포함됩니다. 필터는 전달받은 목록에만 적용됩니다. 서버 검색과 페이지 이동은 소비자가 연결하십시오. onView(id)는 상세 페이지나 패널로 연결합니다. 미리보기에서는 Drawer로 상세를 열며 닫으면 선택한 실행으로 초점이 돌아갑니다. 시각은 Asia/Seoul 기준입니다.',
+      '실행 기록 페이지의 목록 패널입니다. records는 표시 순서대로 렌더링하며 예제는 최신순입니다. workflow·branch·commit은 선택 정보이며 검색에도 포함됩니다. 필터는 전달받은 목록에만 적용됩니다. 서버 검색과 페이지 이동은 소비자가 연결하십시오. onView(id)는 선택 실행의 상세 페이지나 패널로 연결합니다. 미리보기에서는 Drawer로 상세를 열며 닫으면 선택한 실행으로 초점이 돌아갑니다. 시각은 Asia/Seoul 기준입니다.',
     load: async () => ({
       Component: (await import('./examples/deployment-history')).default,
       source: (await import('./examples/deployment-history.tsx?raw')).default,
@@ -262,7 +262,7 @@ export const BLOCK_DOCS = [
       'empty-state',
     ],
     guidance:
-      'deployment의 단계·소요 시간·로그·events는 서버에서 확인한 값입니다. Tabs는 작업별 로그와 이벤트 조회를 구분하고 Timeline은 날짜별 이벤트를 표현합니다. 목록에서는 Drawer로 상세를 열어 필터와 선택 맥락을 유지합니다. 이벤트의 stageId가 존재하는 단계와 일치하면 로그로 이동합니다. events를 생략하면 이벤트 영역을 숨깁니다. 서버에서 로그의 민감 값을 제거하고 조회 권한을 확인하십시오. 스트리밍·폴링·페이지 처리는 소비자가 연결합니다. 미리보기는 고정 샘플입니다.',
+      '기본은 실행 기록에서 선택한 실행의 상세 패널입니다. deployment의 단계·소요 시간·로그·events는 서버에서 확인한 값입니다. Tabs는 작업별 로그와 이벤트 조회를 구분하고 Timeline은 날짜별 이벤트를 표현합니다. 목록에서는 Drawer로 상세를 열어 필터와 선택 맥락을 유지합니다. 독립 상세 페이지로 쓸 때는 소비 앱이 실행 기록으로 돌아가는 경로와 선택 상태를 제공하십시오. 이벤트의 stageId가 존재하는 단계와 일치하면 로그로 이동합니다. events를 생략하면 이벤트 영역을 숨깁니다. 서버에서 로그의 민감 값을 제거하고 조회 권한을 확인하십시오. 스트리밍·폴링·페이지 처리는 소비자가 연결합니다.',
     load: async () => ({
       Component: (await import('./examples/deployment-details')).default,
       source: (await import('./examples/deployment-details.tsx?raw')).default,
@@ -290,7 +290,7 @@ export const BLOCK_DOCS = [
     keywords: ['워크플로우', 'CI', 'CD', '타임라인', '빌드', '실행', '이벤트', '재시도'],
     components: ['panel', 'timeline', 'button', 'skeleton', 'alert', 'empty-state'],
     guidance:
-      'events는 발생 순서대로 전달하십시오. 배열 순서를 그대로 표시하며 occurredAt은 시간대가 포함된 ISO 날짜입니다. 예제는 Asia/Seoul 시각을 표시합니다. 재시도는 기존 실패를 덮어쓰지 않고 새 이벤트로 추가합니다. running은 회전 아이콘, queued는 정적인 시계로 표현하며 모션 감소 설정을 따릅니다. stageId와 onViewLogs가 있으면 해당 단계의 로그 이동 버튼을 표시합니다. loading·error·onRetry로 조회 상태를 연결하십시오. 실제 실행·재시도·실시간 수신·권한 검증은 소비자가 담당합니다.',
+      '선택한 실행의 이벤트 패널입니다. 필수 run에는 실행 ID·버전·환경·워크플로우를 전달해 이벤트의 상위 맥락을 표시합니다. events는 발생 순서대로 전달하고 occurredAt에는 시간대가 포함된 ISO 날짜를 사용하십시오. 예제는 Asia/Seoul 시각을 표시합니다. 재시도는 기존 실패를 덮어쓰지 않고 새 이벤트로 추가합니다. stageId와 onViewLogs가 있으면 해당 단계의 로그 이동 버튼을 표시하며, 미리보기는 로그를 연 뒤 이벤트로 돌아갑니다. 소비 앱은 실행 상세의 로그 위치와 복귀 경로를 연결하십시오. loading·error·onRetry로 조회 상태를 연결하고 실제 실행·실시간 수신·권한 검증은 소비자가 담당합니다.',
     load: async () => ({
       Component: (await import('./examples/workflow-events')).default,
       source: (await import('./examples/workflow-events.tsx?raw')).default,

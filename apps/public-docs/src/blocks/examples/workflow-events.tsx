@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import {
   CircleCheck,
   CircleAlert,
@@ -8,7 +9,12 @@ import {
 } from 'lucide-react';
 import { Alert, Button, EmptyState, Skeleton, Timeline } from '@opnay/city-ds-react';
 import { BlockCard } from './block-card';
-import { exampleDeployments, type WorkflowEvent } from './deployment-data';
+import {
+  deploymentEnvironmentLabels,
+  exampleDeployments,
+  type DeploymentSummary,
+  type WorkflowEvent,
+} from './deployment-data';
 
 const eventPresentation = {
   queued: { label: '대기', Icon: Clock, color: undefined },
@@ -92,6 +98,7 @@ export function WorkflowEventList({
                     {event.stageId && onViewLogs && (
                       <div className="city-block-label-row">
                         <Button
+                          data-stage-id={event.stageId}
                           size="sm"
                           variant="ghost"
                           aria-label={`${event.title} 로그 보기`}
@@ -113,15 +120,15 @@ export function WorkflowEventList({
 }
 
 export function WorkflowEvents({
+  run,
   events,
-  description,
   loading = false,
   error,
   onRetry,
   onViewLogs,
 }: {
+  run: Pick<DeploymentSummary, 'id' | 'workflow' | 'revision' | 'environment'>;
   events: readonly WorkflowEvent[];
-  description?: string;
   loading?: boolean;
   error?: string;
   onRetry?: () => void;
@@ -130,7 +137,7 @@ export function WorkflowEvents({
   return (
     <BlockCard
       title="실행 이벤트 이력"
-      description={description}
+      description={`${run.workflow ?? '워크플로우 실행'} · ${run.id} · ${run.revision} · ${deploymentEnvironmentLabels[run.environment]}`}
       className="city-block-project-data"
     >
       {loading ? (
@@ -172,10 +179,52 @@ export function WorkflowEvents({
 
 export default function WorkflowEventsExample() {
   const run = exampleDeployments[1]!;
+  const [selectedStageId, setSelectedStageId] = useState<string | null>(null);
+  const returnStage = useRef<string | null>(null);
+  const logRef = useRef<HTMLPreElement>(null);
+  const selectedStage = run.stages.find((stage) => stage.id === selectedStageId);
+
+  useEffect(() => {
+    if (selectedStageId) logRef.current?.focus();
+  }, [selectedStageId]);
+
+  if (selectedStage) {
+    return (
+      <div className="city-block-section">
+        <Button
+          variant="ghost"
+          onClick={() => {
+            setSelectedStageId(null);
+            requestAnimationFrame(() => {
+              const buttons = document.querySelectorAll<HTMLElement>('[data-stage-id]');
+              Array.from(buttons)
+                .find((button) => button.dataset.stageId === returnStage.current)
+                ?.focus();
+            });
+          }}
+        >
+          이벤트 이력으로 돌아가기
+        </Button>
+        <BlockCard
+          title={`${selectedStage.title} 로그`}
+          description={`${run.id} · ${run.revision}`}
+        >
+          <pre className="city-block-deployment-log" ref={logRef} tabIndex={0}>
+            {selectedStage.logs.join('\n')}
+          </pre>
+        </BlockCard>
+      </div>
+    );
+  }
+
   return (
     <WorkflowEvents
+      run={run}
       events={run.events ?? []}
-      description={`${run.workflow} · ${run.id} · ${run.revision} · 스테이징`}
+      onViewLogs={(stageId) => {
+        returnStage.current = stageId;
+        setSelectedStageId(stageId);
+      }}
     />
   );
 }

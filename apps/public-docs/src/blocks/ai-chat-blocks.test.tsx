@@ -35,6 +35,7 @@ const agentTask: AgentWorkTask = {
   currentEventId: 'thinking',
   id: 'task_1',
   model: 'research-model-2026-09-long-context-v3',
+  status: 'running',
   prompt: '릴리스 노트를 정리해 주세요.',
   response: '접근성 API와 마이그레이션 항목을 정리했습니다.',
   title: '릴리스 노트 초안',
@@ -50,6 +51,7 @@ const agentTask: AgentWorkTask = {
 
 const questionRequest: AgentQuestionRequest = {
   id: 'question_1',
+  task: { id: 'task_1', title: '검색 기능 설정' },
   prompt: '검색 기능을 켜기 위해 환경 변수를 추가해 주세요.',
   question: '프로덕션 환경에 FEATURE_AGENT_SEARCH를 추가할까요?',
   choices: [
@@ -221,6 +223,7 @@ describe('AI & Chat blocks', () => {
         task={{
           ...agentTask,
           currentEventId: undefined,
+          status: 'succeeded',
         }}
         onCancel={vi.fn()}
       />,
@@ -290,7 +293,7 @@ describe('AI & Chat blocks', () => {
     expect(screen.getByText('적용 허용')).toBeVisible();
     expect(screen.queryByRole('button', { name: '적용 허용' })).toBeNull();
     expect(screen.getByText('환경 변수를 추가했습니다.')).toBeVisible();
-    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('질문에 답변했습니다.');
   });
 
   it('blocks duplicate answers and preserves a failed question for retry', async () => {

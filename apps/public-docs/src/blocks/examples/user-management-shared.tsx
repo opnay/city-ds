@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@opnay/city-ds-react/button';
 import { Dialog } from '@opnay/city-ds-react/dialog';
@@ -101,6 +101,7 @@ export function AccountActionDialog({
   requirePassword = false,
   confirmationText,
   destructive = false,
+  finalFocus,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -111,6 +112,7 @@ export function AccountActionDialog({
   requirePassword?: boolean;
   confirmationText?: string;
   destructive?: boolean;
+  finalFocus?: RefObject<HTMLElement | null>;
 }) {
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
@@ -135,7 +137,7 @@ export function AccountActionDialog({
       <Modal.Portal>
         <Modal.Backdrop />
         <Modal.Viewport>
-          <Modal.Popup>
+          <Modal.Popup finalFocus={finalFocus}>
             <form
               className="city-block-section"
               onSubmit={async (event) => {

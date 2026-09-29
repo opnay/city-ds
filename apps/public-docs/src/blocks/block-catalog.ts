@@ -636,7 +636,7 @@ export const BLOCK_DOCS = [
     keywords: ['세션', '기기', '접속', '기록', '로그아웃'],
     components: ['panel', 'segmented-control', 'badge', 'button', 'alert-dialog', 'toast'],
     guidance:
-      'initialSessions에 서버에서 조회한 세션을 전달하고 onRevoke에 종료 요청을 연결하십시오. 현재 세션을 제외한 ID만 전달하며 성공한 뒤 목록을 갱신합니다. 서버는 계정 소유권과 세션 유효성을 검증해야 합니다. 미리보기 데이터는 샘플입니다.',
+      '계정 보안 페이지의 세션 패널입니다. initialSessions에 서버에서 조회한 세션을 전달하고 onRevoke에 종료 요청을 연결하십시오. 현재 세션을 제외한 ID만 전달하며 성공한 뒤 목록을 갱신하고 세션 개수로 초점을 옮깁니다. 취소 시에는 진입 버튼으로 돌아갑니다. 서버는 계정 소유권과 세션 유효성을 검증해야 합니다. 미리보기 데이터는 샘플입니다.',
     load: async () => ({
       Component: (await import('./examples/session-history')).default,
       source: (await import('./examples/session-history.tsx?raw')).default,

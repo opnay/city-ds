@@ -710,7 +710,7 @@ export const BLOCK_DOCS = [
       'empty-state',
     ],
     guidance:
-      'members에 팀원 목록을 전달하고 onInvite·onRoleChange·onRemove에 서버 요청을 연결하십시오. 성공 후 소비자가 목록을 갱신합니다. 권한, 마지막 관리자 보호, 초대 중복 및 팀 소유권은 서버에서 검증해야 합니다. currentUserId에 해당하는 본인의 관리 액션은 숨깁니다. loading·error·onRetry로 조회 상태를, canManage로 관리 가능 여부를 전달합니다. 미리보기는 화면의 샘플 데이터만 변경하며 이메일을 발송하지 않습니다.',
+      '팀 설정 페이지의 팀원 관리 패널입니다. 페이지는 현재 팀을 식별하고, 이 패널은 그 팀의 목록·검색·초대·역할 변경·내보내기를 소유합니다. members에는 현재 팀의 목록을 전달하고 onInvite·onRoleChange·onRemove에 서버 요청을 연결하십시오. 성공 후 소비자가 목록을 갱신합니다. Dialog 취소와 역할 변경 뒤에는 연 팀원 액션으로, 내보내기로 행이 사라진 뒤에는 초대 버튼으로 초점을 돌립니다. 조회 실패는 패널 안에서 다시 시도하고, 제출 실패는 입력과 확인창을 유지합니다. 권한, 마지막 관리자 보호, 초대 중복 및 팀 소유권은 서버에서 검증해야 합니다. currentUserId에 해당하는 본인의 관리 액션은 숨깁니다. loading·error·onRetry로 조회 상태를, canManage로 관리 가능 여부를 전달합니다. 미리보기는 화면의 샘플 데이터만 변경하며 이메일을 발송하지 않습니다.',
     load: async () => ({
       Component: (await import('./examples/member-directory')).default,
       source: (await import('./examples/member-directory.tsx?raw')).default,

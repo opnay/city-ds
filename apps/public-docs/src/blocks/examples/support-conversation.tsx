@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   Alert,
   Avatar,
@@ -33,6 +33,7 @@ export interface SupportConversationProps {
   loading?: boolean;
   onMessageAction?: ((message: SupportMessage, action: 'copy') => void) | undefined;
   onRetry?: (() => void) | undefined;
+  onBackToList?: (() => void) | undefined;
   onSendMessage?:
     | ((message: { conversationId: string; content: string }) => Promise<void>)
     | undefined;
@@ -53,27 +54,47 @@ export function SupportConversation({
   loading = false,
   onMessageAction,
   onRetry,
+  onBackToList,
   onSendMessage,
   sendPending = false,
 }: SupportConversationProps) {
   const [draft, setDraft] = useState('');
   const [localPending, setLocalPending] = useState(false);
   const [sendError, setSendError] = useState('');
+  const [sentMessage, setSentMessage] = useState('');
   const sending = useRef(false);
+  const previousConversationId = useRef(conversation?.id);
+  const activeConversationId = useRef(conversation?.id);
   const busy = sendPending || localPending;
+
+  useEffect(() => {
+    activeConversationId.current = conversation?.id;
+    if (previousConversationId.current === conversation?.id) return;
+    previousConversationId.current = conversation?.id;
+    setDraft('');
+    setSendError('');
+    setSentMessage('');
+  }, [conversation?.id]);
 
   async function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const content = draft.trim();
     if (!conversation || !onSendMessage || !content || sending.current || busy) return;
+    const conversationId = conversation.id;
     sending.current = true;
     setLocalPending(true);
     setSendError('');
+    setSentMessage('');
     try {
-      await onSendMessage({ conversationId: conversation.id, content });
-      setDraft('');
+      await onSendMessage({ conversationId, content });
+      if (activeConversationId.current === conversationId) {
+        setDraft('');
+        setSentMessage('답변을 보냈습니다.');
+      }
     } catch {
-      setSendError('답변을 보내지 못했습니다. 연결을 확인한 뒤 다시 시도하십시오.');
+      if (activeConversationId.current === conversationId) {
+        setSendError('답변을 보내지 못했습니다. 연결을 확인한 뒤 다시 시도하십시오.');
+      }
     } finally {
       sending.current = false;
       setLocalPending(false);
@@ -126,6 +147,13 @@ export function SupportConversation({
     <AiChatBlockCard
       title={conversation.subject}
       description={`${conversation.customer.name} 고객과 주고받은 지원 대화입니다.`}
+      actions={
+        onBackToList && (
+          <Button variant="outline" onClick={onBackToList}>
+            문의 목록으로
+          </Button>
+        )
+      }
     >
       {error && (
         <Alert.Root tone="destructive">
@@ -184,6 +212,11 @@ export function SupportConversation({
               {sendError}
             </p>
           )}
+          {sentMessage && (
+            <p role="status" className="city-block-status">
+              {sentMessage}
+            </p>
+          )}
           <div className="city-ai-chat-block-actions">
             <Button type="submit" disabled={busy || !draft.trim()}>
               <Send aria-hidden="true" size={16} />
@@ -225,22 +258,48 @@ const exampleConversation: SupportConversationData = {
 
 export default function SupportConversationExample() {
   const [messages, setMessages] = useState(exampleConversation.messages);
+  const [showList, setShowList] = useState(false);
+  const listButton = useRef<HTMLElement>(null);
+  const detail = useRef<HTMLDivElement>(null);
+  const navigated = useRef(false);
+
+  useEffect(() => {
+    if (!navigated.current) return;
+    if (showList) listButton.current?.focus();
+    else detail.current?.focus();
+  }, [showList]);
+
+  if (showList) {
+    return (
+      <AiChatBlockCard title="고객 문의" description="답변할 문의를 선택하십시오.">
+        <Button ref={listButton} variant="outline" onClick={() => setShowList(false)}>
+          {exampleConversation.subject}
+        </Button>
+      </AiChatBlockCard>
+    );
+  }
+
   return (
-    <SupportConversation
-      conversation={{ ...exampleConversation, messages }}
-      onMessageAction={() => {}}
-      onSendMessage={async ({ content }) => {
-        setMessages((current) => [
-          ...current,
-          {
-            id: `message_${current.length + 1}`,
-            author: { name: 'City 지원팀', initials: 'CS', model: 'support-model-2026-09' },
-            content,
-            role: 'support',
-            sentAt: '2026-09-17T09:45:00+09:00',
-          },
-        ]);
-      }}
-    />
+    <div ref={detail} tabIndex={-1}>
+      <SupportConversation
+        conversation={{ ...exampleConversation, messages }}
+        onBackToList={() => {
+          navigated.current = true;
+          setShowList(true);
+        }}
+        onSendMessage={async ({ content }) => {
+          setMessages((current) => [
+            ...current,
+            {
+              id: `message_${current.length + 1}`,
+              author: { name: 'City 지원팀', initials: 'CS', model: 'support-model-2026-09' },
+              content,
+              role: 'support',
+              sentAt: '2026-09-17T09:45:00+09:00',
+            },
+          ]);
+        }}
+      />
+    </div>
   );
 }

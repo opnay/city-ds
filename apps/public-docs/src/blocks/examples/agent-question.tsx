@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AgentActivity,
   Alert,
@@ -42,6 +42,7 @@ export interface AgentQuestionRequest {
   id: string;
   prompt: ReactNode;
   question: ReactNode;
+  task: { id: string; title: string };
 }
 
 export interface AgentQuestionProps {
@@ -52,6 +53,7 @@ export interface AgentQuestionProps {
     | ((request: AgentQuestionRequest, choice: AgentQuestionChoice) => Promise<void> | void)
     | undefined;
   onRetry?: (() => void) | undefined;
+  onReturnToTask?: (() => void) | undefined;
   request?: AgentQuestionRequest;
 }
 
@@ -93,11 +95,22 @@ export function AgentQuestion({
   loading = false,
   onAnswer,
   onRetry,
+  onReturnToTask,
   request,
 }: AgentQuestionProps) {
   const [localPending, setLocalPending] = useState(false);
   const [answerError, setAnswerError] = useState('');
   const inFlight = useRef(false);
+  const answerFocus = useRef<HTMLParagraphElement>(null);
+  const priorAnswer = useRef({ id: request?.id, answered: Boolean(request?.answer) });
+
+  useEffect(() => {
+    const answered = Boolean(request?.answer);
+    if (priorAnswer.current.id === request?.id && !priorAnswer.current.answered && answered) {
+      answerFocus.current?.focus();
+    }
+    priorAnswer.current = { id: request?.id, answered };
+  }, [request?.id, request?.answer]);
 
   async function submitAnswer(choice: AgentQuestionChoice) {
     if (!request || !onAnswer || request.answer || answerPending || inFlight.current) return;
@@ -161,7 +174,18 @@ export function AgentQuestion({
   );
 
   return (
-    <AiChatBlockCard title="에이전트 질문">
+    <AiChatBlockCard
+      title={`에이전트 질문 · ${request.task.title}`}
+      description={`작업 ${request.task.id}`}
+      actions={
+        request.answer &&
+        onReturnToTask && (
+          <Button variant="outline" onClick={onReturnToTask}>
+            작업으로 돌아가기
+          </Button>
+        )
+      }
+    >
       {error && (
         <Alert.Root tone="destructive">
           <Alert.Title level={4}>대화를 새로고침하지 못했습니다.</Alert.Title>
@@ -217,6 +241,11 @@ export function AgentQuestion({
             </Commentary.Actions>
           )}
         </Commentary.Root>
+        {request.answer && (
+          <p ref={answerFocus} tabIndex={-1} role="status" className="city-block-status">
+            질문에 답변했습니다.
+          </p>
+        )}
         {request.answer && (
           <Commentary.Root appearance="bubble" align="end">
             <Commentary.Header>
@@ -276,15 +305,30 @@ const exampleRequest: AgentQuestionRequest = {
     { id: 'reject', label: '이번에는 취소' },
   ],
   id: 'question_419',
+  task: { id: 'task_87', title: '검색 기능 설정' },
   prompt: '검색 기능을 켜기 위해 FEATURE_AGENT_SEARCH 환경 변수를 추가해 주세요.',
   question: '프로덕션 환경에 FEATURE_AGENT_SEARCH를 추가할까요?',
 };
 
 export default function AgentQuestionExample() {
   const [request, setRequest] = useState(exampleRequest);
+  const [showTask, setShowTask] = useState(false);
+
+  if (showTask) {
+    return (
+      <AiChatBlockCard title={request.task.title} description={`작업 ${request.task.id}`}>
+        <p>{request.assistantResponse}</p>
+        <Button variant="outline" onClick={() => setShowTask(false)}>
+          질문 다시 보기
+        </Button>
+      </AiChatBlockCard>
+    );
+  }
+
   return (
     <AgentQuestion
       request={request}
+      onReturnToTask={() => setShowTask(true)}
       onAnswer={async (_, choice) =>
         setRequest((current) => {
           const id = `answered-${current.activities?.length ?? 0}`;
@@ -299,13 +343,13 @@ export default function AgentQuestionExample() {
                   : '선택을 받았습니다. 환경 변수 추가를 취소했습니다.',
               indicator: choice.id === 'allow' ? <Sparkles /> : <CircleX />,
               meta: '지금',
-              pending: choice.id === 'allow',
+              pending: false,
             }),
             assistantResponse:
               choice.id === 'allow'
                 ? '환경 변수를 추가했습니다. 다음 배포부터 검색 기능이 활성화됩니다.'
                 : '환경 변수는 변경하지 않았습니다.',
-            currentActivityId: choice.id === 'allow' ? id : undefined,
+            currentActivityId: undefined,
           };
         })
       }

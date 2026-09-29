@@ -53,6 +53,8 @@ export interface AgentWorkTask {
   model?: string;
   prompt: ReactNode;
   response?: ReactNode;
+  result?: ReactNode;
+  status: 'running' | 'succeeded' | 'failed' | 'cancelled';
   title: string;
 }
 
@@ -62,6 +64,7 @@ export interface AgentWorkStatusProps {
   loading?: boolean;
   onCancel?: ((taskId: string) => Promise<void> | void) | undefined;
   onRetry?: (() => void) | undefined;
+  onBackToTasks?: (() => void) | undefined;
   task?: AgentWorkTask;
 }
 
@@ -71,6 +74,7 @@ export function AgentWorkStatus({
   loading = false,
   onCancel,
   onRetry,
+  onBackToTasks,
   task,
 }: AgentWorkStatusProps) {
   const [localCancelling, setLocalCancelling] = useState(false);
@@ -121,11 +125,10 @@ export function AgentWorkStatus({
 
   const workTask = task;
   const currentEvent = workTask.events.find((event) => event.id === workTask.currentEventId);
-  const hasCurrentEvent = Boolean(currentEvent);
   const busy = cancelling || localCancelling;
 
   async function cancelTask() {
-    if (!onCancel || !hasCurrentEvent || busy || cancellingRef.current) return;
+    if (!onCancel || workTask.status !== 'running' || busy || cancellingRef.current) return;
     cancellingRef.current = true;
     setLocalCancelling(true);
     setCancelError('');
@@ -144,17 +147,39 @@ export function AgentWorkStatus({
       title={task.title}
       description={
         task.model
-          ? `${task.model}${hasCurrentEvent ? '으로 처리 중인 작업입니다.' : '으로 실행한 작업입니다.'}`
+          ? `${task.model}${task.status === 'running' ? '으로 처리 중인 작업입니다.' : '으로 실행한 작업입니다.'}`
           : undefined
       }
       actions={
-        onCancel && hasCurrentEvent ? (
+        task.status === 'running' && onCancel ? (
           <Button variant="outline" disabled={busy} onClick={cancelTask}>
             {busy ? '중단 요청 중…' : '작업 중단'}
+          </Button>
+        ) : task.status !== 'running' && onBackToTasks ? (
+          <Button variant="outline" onClick={onBackToTasks}>
+            작업 목록으로
           </Button>
         ) : undefined
       }
     >
+      {task.status === 'failed' && (
+        <Alert.Root tone="destructive">
+          <Alert.Title level={4}>작업을 완료하지 못했습니다.</Alert.Title>
+          <Alert.Description>
+            {task.result ?? '작업 결과를 확인하고 다시 시도하십시오.'}
+          </Alert.Description>
+        </Alert.Root>
+      )}
+      {task.status === 'cancelled' && (
+        <p role="status" className="city-block-status">
+          {task.result ?? '작업을 중단했습니다.'}
+        </p>
+      )}
+      {task.status === 'succeeded' && (
+        <p role="status" className="city-block-status">
+          작업을 완료했습니다.
+        </p>
+      )}
       {error && (
         <Alert.Root tone="destructive">
           <Alert.Title level={4}>작업을 새로고침하지 못했습니다.</Alert.Title>
@@ -180,7 +205,7 @@ export function AgentWorkStatus({
         </Commentary.Root>
         <AgentActivity.List className="city-ai-chat-block-events" aria-label="에이전트 작업 이벤트">
           {task.events.map((event) => {
-            const isCurrent = event.id === currentEvent?.id;
+            const isCurrent = task.status === 'running' && event.id === currentEvent?.id;
             return <WorkActivity key={event.id} event={event} current={isCurrent} />;
           })}
         </AgentActivity.List>
@@ -205,6 +230,7 @@ const exampleTask: AgentWorkTask = {
   currentEventId: 'thinking',
   id: 'task_87',
   model: 'research-model-2026-09-long-context-v3',
+  status: 'running',
   prompt: '이번 릴리스에서 변경된 접근성 API와 마이그레이션 항목을 요약해 주세요.',
   title: '릴리스 노트 초안',
   events: [
@@ -242,10 +268,24 @@ const exampleTask: AgentWorkTask = {
 
 export default function AgentWorkStatusExample() {
   const [cancelled, setCancelled] = useState(false);
+  const [showList, setShowList] = useState(false);
+
+  if (showList) {
+    return (
+      <AiChatBlockCard title="에이전트 작업 목록">
+        <Button variant="outline" onClick={() => setShowList(false)}>
+          {exampleTask.title}
+        </Button>
+      </AiChatBlockCard>
+    );
+  }
+
   return (
     <AgentWorkStatus
       task={{
         ...exampleTask,
+        status: cancelled ? 'cancelled' : 'running',
+        result: cancelled ? '사용자 요청으로 작업을 중단했습니다.' : undefined,
         currentEventId: cancelled ? undefined : exampleTask.currentEventId,
         events: cancelled
           ? exampleTask.events.map((event) =>
@@ -261,6 +301,7 @@ export default function AgentWorkStatusExample() {
           : exampleTask.events,
       }}
       onCancel={() => setCancelled(true)}
+      onBackToTasks={() => setShowList(true)}
     />
   );
 }

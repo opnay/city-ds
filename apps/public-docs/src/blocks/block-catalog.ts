@@ -322,7 +322,7 @@ export const BLOCK_DOCS = [
       'skeleton',
     ],
     guidance:
-      '코드 보기에 있는 컴포넌트·ai-chat-block-card.tsx·ai-chat-blocks.css를 함께 사용한 뒤, conversation에 API에서 받은 제목·고객·메시지를 전달하고 onSendMessage를 답변 생성 API에 연결하십시오. 전송 성공 뒤 서버가 갱신한 messages를 다시 전달하며, loading·error·onRetry로 초기 조회와 새로고침을 연결합니다. 이미 conversation이 있으면 새로고침 오류가 대화 위 Alert로 표시되어 이력을 보존합니다. message.content는 React 콘텐츠이므로 소비 앱이 Markdown·코드 블록·링크 정책을 연결할 수 있습니다. 메시지 보존·첨부 파일·권한 확인은 소비자가 소유합니다.',
+      '고객 문의 목록에서 선택한 대화의 상세 패널입니다. 코드 보기에 있는 컴포넌트·ai-chat-block-card.tsx·ai-chat-blocks.css를 함께 사용하십시오. 목록과 분리된 화면에서는 onBackToList로 이전 목록과 선택 상태를 복구하십시오. conversation에 API에서 받은 제목·고객·메시지를 전달하고 onSendMessage를 답변 API에 연결하십시오. 전송 성공 뒤 서버가 갱신한 messages를 다시 전달하며, loading·error·onRetry로 조회와 새로고침을 연결합니다. 이미 conversation이 있으면 새로고침 오류가 대화 위 Alert로 표시되어 이력을 보존합니다. Textarea는 Input 문서에 포함됩니다. message.content의 Markdown·코드·링크 정책과 메시지 보존·권한 확인은 소비 앱이 소유합니다.',
     load: async () => ({
       Component: (await import('./examples/support-conversation')).default,
       source: (await import('./examples/support-conversation.tsx?raw')).default,
@@ -346,7 +346,7 @@ export const BLOCK_DOCS = [
       'skeleton',
     ],
     guidance:
-      '코드 보기에 있는 컴포넌트·ai-chat-block-card.tsx·ai-chat-blocks.css를 함께 사용한 뒤, task에 프롬프트·이벤트·모델·완료 응답을 전달하고 서버에서 받은 순서를 그대로 유지하십시오. 진행 중인 이벤트 ID 하나만 currentEventId로 전달해 과거 이력이 다시 낭독되지 않게 합니다. task가 있으면 새로고침 오류가 작업 위 Alert로 표시되어 내용을 보존합니다. indicator·content·meta는 React 콘텐츠이므로 이벤트 종류를 제한하지 않습니다. onCancel·cancelling·loading·error·onRetry를 작업 API에 연결하고, 상태 수신·재개·보존 정책은 소비자가 관리합니다.',
+      '작업 목록에서 선택한 에이전트 작업의 상세 패널입니다. 코드 보기에 있는 컴포넌트·ai-chat-block-card.tsx·ai-chat-blocks.css를 함께 사용하십시오. task.status는 running·succeeded·failed·cancelled를 명시하고 완료 응답·실패·중단 결과를 구분합니다. 완료 뒤 onBackToTasks를 작업 목록이나 생성 결과 경로에 연결하십시오. 진행 중인 이벤트 ID 하나만 currentEventId로 전달해 과거 이력이 다시 낭독되지 않게 합니다. task가 있으면 새로고침 오류가 작업 위 Alert로 표시되어 내용을 보존합니다. indicator·content·meta는 React 콘텐츠이며 서버에서 받은 순서를 유지합니다. onCancel·cancelling·loading·error·onRetry를 작업 API에 연결하고 상태 수신·재개·보존 정책은 소비자가 관리합니다.',
     load: async () => ({
       Component: (await import('./examples/agent-work-status')).default,
       source: (await import('./examples/agent-work-status.tsx?raw')).default,
@@ -370,7 +370,7 @@ export const BLOCK_DOCS = [
       'skeleton',
     ],
     guidance:
-      '코드 보기에 있는 컴포넌트·ai-chat-block-card.tsx·ai-chat-blocks.css를 함께 사용한 뒤, request에 사용자 프롬프트·질문·선택지·도구 활동 로그를 전달하고 onAnswer를 질문 도구 API에 연결하십시오. 선택을 받아도 Block은 실행 상태를 바꾸지 않습니다. 서버가 갱신한 answer·activities·assistantResponse를 다시 전달하십시오. 도구 입력·결과·오류는 activity.details에 두며, 상세는 AgentActivity 행에서 접고 펼칩니다. 진행 중인 activity ID 하나만 currentActivityId로 전달해 과거 이력이 다시 낭독되지 않게 합니다. request가 있으면 새로고침 오류가 대화 위 Alert로 표시되어 이력을 보존하고, answerPending으로 중복 응답을 막으십시오. 질문 처리, 실행 정책, 결과 보존, 질문이 사라진 뒤의 포커스 이동은 소비자가 소유합니다.',
+      '에이전트 작업 안의 질문 패널입니다. 코드 보기에 있는 컴포넌트·ai-chat-block-card.tsx·ai-chat-blocks.css를 함께 사용하십시오. request.task에 상위 작업 ID·제목을 전달하고 onAnswer를 질문 도구 API에 연결하십시오. 서버가 갱신한 answer·activities·assistantResponse를 다시 전달하면 답변 완료를 알리고 초점을 완료 신호로 옮깁니다. onReturnToTask를 상위 작업 복귀 경로에 연결하십시오. 선택을 받아도 Block은 실행 상태를 바꾸지 않습니다. 도구 입력·결과·오류는 activity.details에 두고 진행 중인 activity ID 하나만 currentActivityId로 전달하십시오. request가 있으면 새로고침 오류에도 이력을 보존하며 answerPending으로 중복 응답을 막습니다. 실행 정책과 결과 보존은 소비자가 소유합니다.',
     load: async () => ({
       Component: (await import('./examples/agent-question')).default,
       source: (await import('./examples/agent-question.tsx?raw')).default,

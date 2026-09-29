@@ -7,6 +7,9 @@ export interface ProjectDraft {
   name: string;
   email: string;
 }
+export interface CreatedProject {
+  id: string;
+}
 const steps = [
   { title: '기본 정보', description: '프로젝트 이름을 정합니다.' },
   { title: '팀원 초대', description: '함께할 팀원을 초대합니다.' },
@@ -15,13 +18,16 @@ const steps = [
 
 export function ProjectCreation({
   onCreate,
+  onViewProject,
 }: {
-  onCreate: (draft: ProjectDraft) => Promise<void>;
+  onCreate: (draft: ProjectDraft) => Promise<CreatedProject>;
+  onViewProject: (id: string) => void;
 }) {
   const [draft, setDraft] = useState<ProjectDraft>({ name: '', email: '' });
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
-  const [done, setDone] = useState(false);
+  const [createdProject, setCreatedProject] = useState<CreatedProject | null>(null);
+  const done = createdProject !== null;
   const [error, setError] = useState('');
   const pending = useRef(false);
   function back(next: number) {
@@ -50,8 +56,8 @@ export function ProjectCreation({
         pending.current = true;
         setBusy(true);
         try {
-          await onCreate({ name: draft.name.trim(), email: draft.email.trim() });
-          setDone(true);
+          const project = await onCreate({ name: draft.name.trim(), email: draft.email.trim() });
+          setCreatedProject(project);
         } catch {
           setError('프로젝트를 만들지 못했습니다. 입력한 내용은 유지됩니다. 다시 시도하십시오.');
         } finally {
@@ -73,7 +79,12 @@ export function ProjectCreation({
         onBack={back}
       >
         {done ? (
-          <p role="status">{draft.name.trim()} 프로젝트를 만들었습니다.</p>
+          <div className="city-block-section">
+            <p role="status">{draft.name.trim()} 프로젝트를 만들었습니다.</p>
+            <Button type="button" onClick={() => onViewProject(createdProject.id)}>
+              프로젝트 상세 보기
+            </Button>
+          </div>
         ) : (
           <>
             {step === 0 && (
@@ -142,5 +153,25 @@ export function ProjectCreation({
 }
 
 export default function ProjectCreationExample() {
-  return <ProjectCreation onCreate={async () => {}} />;
+  const [project, setProject] = useState<{ id: string; name: string } | null>(null);
+  const [viewed, setViewed] = useState(false);
+
+  if (viewed && project) {
+    return (
+      <BlockCard title={project.name} description="새 프로젝트의 상세 화면입니다.">
+        <p>프로젝트 ID: {project.id}</p>
+      </BlockCard>
+    );
+  }
+
+  return (
+    <ProjectCreation
+      onCreate={async (draft) => {
+        const created = { id: 'sample-project', name: draft.name };
+        setProject(created);
+        return created;
+      }}
+      onViewProject={() => setViewed(true)}
+    />
+  );
 }

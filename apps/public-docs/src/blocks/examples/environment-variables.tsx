@@ -35,6 +35,8 @@ export function EnvironmentVariables({
   const [message, setMessage] = useState('');
   const pending = useRef(false);
   const addButton = useRef<HTMLElement>(null);
+  const returnFocus = useRef<HTMLElement>(null);
+  const removeButtons = useRef(new Map<string, HTMLElement>());
   const visible = variables.filter((variable) => variable.environment === environment);
   function edit(variable?: EnvironmentVariable) {
     setError('');
@@ -62,7 +64,10 @@ export function EnvironmentVariables({
             ref={addButton}
             aria-label="변수 추가"
             disabled={!canManage || busy}
-            onClick={() => edit()}
+            onClick={(event) => {
+              returnFocus.current = event.currentTarget;
+              edit();
+            }}
           >
             추가
           </Button>
@@ -111,16 +116,24 @@ export function EnvironmentVariables({
                     size="sm"
                     disabled={!canManage || busy}
                     aria-label={`${variable.name} 수정`}
-                    onClick={() => edit(variable)}
+                    onClick={(event) => {
+                      returnFocus.current = event.currentTarget;
+                      edit(variable);
+                    }}
                   >
                     수정
                   </Button>
                   <Button
+                    ref={(node) => {
+                      if (node) removeButtons.current.set(variable.id, node);
+                      else removeButtons.current.delete(variable.id);
+                    }}
                     variant="ghost"
                     size="sm"
                     disabled={!canManage || busy}
                     aria-label={`${variable.name} 삭제`}
-                    onClick={() => {
+                    onClick={(event) => {
+                      returnFocus.current = event.currentTarget;
                       setError('');
                       setRemoving(variable);
                     }}
@@ -145,7 +158,7 @@ export function EnvironmentVariables({
         <Dialog.Portal>
           <Dialog.Backdrop />
           <Dialog.Viewport>
-            <Dialog.Popup size="sm" finalFocus={addButton}>
+            <Dialog.Popup size="sm" finalFocus={returnFocus}>
               <form
                 onSubmit={async (event) => {
                   event.preventDefault();
@@ -267,7 +280,7 @@ export function EnvironmentVariables({
         <Dialog.Portal>
           <Dialog.Backdrop />
           <Dialog.Viewport>
-            <Dialog.Popup size="sm" finalFocus={addButton}>
+            <Dialog.Popup size="sm" finalFocus={returnFocus}>
               <Dialog.Header>
                 <Dialog.Title>환경 변수를 삭제하시겠습니까?</Dialog.Title>
                 <Dialog.Description>
@@ -293,6 +306,13 @@ export function EnvironmentVariables({
                     setError('');
                     try {
                       await onRemove(removing.id);
+                      const removedIndex = visible.findIndex(
+                        (variable) => variable.id === removing.id,
+                      );
+                      const next = visible[removedIndex + 1] ?? visible[removedIndex - 1];
+                      returnFocus.current = next
+                        ? (removeButtons.current.get(next.id) ?? addButton.current)
+                        : addButton.current;
                       setRemoving(null);
                       setMessage('환경 변수를 삭제했습니다.');
                     } catch {

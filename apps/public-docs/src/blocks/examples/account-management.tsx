@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
 import { Field } from '@opnay/city-ds-react/field';
@@ -16,7 +16,13 @@ export interface AccountManagementActions {
   deleteAccount: (password: string) => Promise<void>;
 }
 
-export function AccountManagement({ actions }: { actions: AccountManagementActions }) {
+export function AccountManagement({
+  actions,
+  onSignIn,
+}: {
+  actions: AccountManagementActions;
+  onSignIn: () => void;
+}) {
   const [email, setEmail] = useState('seoyeon@example.com');
   const [nextEmail, setNextEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +36,12 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
   const [disconnect, setDisconnect] = useState<string>();
   const [deleting, setDeleting] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const [errorArea, setErrorArea] = useState<'email' | 'providers' | null>(null);
+  const signInButton = useRef<HTMLElement>(null);
   const action = useAccountAction();
+  useEffect(() => {
+    if (deleted) signInButton.current?.focus();
+  }, [deleted]);
   const resetEmail = () => {
     setEditing(false);
     setNextEmail('');
@@ -38,6 +49,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
     setChallenge(undefined);
     setCode('');
     action.clearError();
+    setErrorArea(null);
   };
 
   if (deleted)
@@ -45,7 +57,11 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
       <BlockCard
         title="계정이 탈퇴되었습니다"
         description="이 계정으로 더 이상 로그인할 수 없습니다."
-      />
+      >
+        <Button ref={signInButton} onClick={onSignIn}>
+          로그인으로 돌아가기
+        </Button>
+      </BlockCard>
     );
 
   return (
@@ -85,6 +101,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
             className="city-block-section"
             onSubmit={async (event) => {
               event.preventDefault();
+              setErrorArea('email');
               if (challenge) {
                 if (code.length !== 6) return;
                 const result = await action.run(() => actions.confirmEmailChange(challenge, code));
@@ -138,6 +155,11 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
                 />
               </>
             )}
+            {errorArea === 'email' && action.error && (
+              <p role="alert" className="city-block-error">
+                {action.error}
+              </p>
+            )}
             <div className="city-block-actions">
               <Button
                 size="lg"
@@ -190,6 +212,7 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
                     setDisconnect(provider.name);
                     return;
                   }
+                  setErrorArea('providers');
                   const result = await action.run(() =>
                     actions.setProviderConnected(provider.name, true),
                   );
@@ -208,12 +231,12 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
             </li>
           ))}
         </ul>
+        {errorArea === 'providers' && action.error && (
+          <p role="alert" className="city-block-error">
+            {action.error}
+          </p>
+        )}
       </BlockCard>
-      {action.error && (
-        <p role="alert" className="city-block-error">
-          {action.error}
-        </p>
-      )}
       <BlockCard
         title="계정 탈퇴"
         description="계정과 개인 정보가 삭제됩니다. 탈퇴 후에는 복구할 수 없습니다."
@@ -269,8 +292,13 @@ export function AccountManagement({ actions }: { actions: AccountManagementActio
 }
 
 export default function AccountManagementExample() {
+  const [signIn, setSignIn] = useState(false);
+
+  if (signIn) return <BlockCard title="로그인" description="계정 탈퇴 뒤 로그인 화면입니다." />;
+
   return (
     <AccountManagement
+      onSignIn={() => setSignIn(true)}
       actions={{
         requestEmailChange: async (email) => email,
         confirmEmailChange: async (email) => email,

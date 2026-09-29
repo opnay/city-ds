@@ -565,7 +565,7 @@ export const BLOCK_DOCS = [
       'toast',
     ],
     guidance:
-      'actions에 이메일 변경 요청·코드 검증·외부 계정 연결·탈퇴 API를 연결하십시오. 연결 해제 시 남은 로그인 수단을 서버에서 검증해야 합니다. 미리보기의 기본 콜백은 통신 없이 화면 상태만 변경합니다.',
+      '계정 관리 페이지에서 로그인 이메일·연결 계정·탈퇴 패널을 함께 구성합니다. 각 오류는 해당 패널 가까이에 표시합니다. actions에 이메일 변경 요청·코드 검증·외부 계정 연결·탈퇴 API를 연결하십시오. 탈퇴 성공 뒤에는 onSignIn을 로그인 경로로 연결하고 인증 세션 폐기를 소비 앱에서 처리하십시오. 연결 해제 시 남은 로그인 수단을 서버에서 검증해야 합니다. 미리보기 콜백은 통신 없이 화면 상태만 변경합니다.',
     load: async () => ({
       Component: (await import('./examples/account-management')).default,
       source: (await import('./examples/account-management.tsx?raw')).default,
@@ -653,7 +653,7 @@ export const BLOCK_DOCS = [
     keywords: ['프로필', '계정', '설정', '저장', '취소'],
     components: ['field', 'input', 'switch', 'button'],
     guidance:
-      '저장 버튼은 변경이 있을 때만 활성화됩니다. 예제는 현재 화면의 상태만 저장합니다. 서비스에서는 저장 요청의 대기·실패 상태를 연결하십시오.',
+      '직접 URL로 접근하는 미리보기 전용 계정 설정 폼이며 계정 관리 메뉴에는 표시하지 않습니다. 저장 버튼은 변경이 있을 때만 활성화되고 예제는 현재 화면의 상태만 저장합니다. 실제 서비스의 로그인 이메일 변경은 계정 관리 블록의 재인증 흐름을 사용하십시오. 이 폼을 별도 페이지에 적용한다면 저장 요청의 대기·실패 상태와 저장 뒤 복귀 경로를 소비 앱에서 연결하십시오.',
     load: async () => ({
       Component: (await import('./examples/account-settings')).default,
       source: (await import('./examples/account-settings.tsx?raw')).default,

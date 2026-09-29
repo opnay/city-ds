@@ -51,13 +51,14 @@ describe('User management blocks', () => {
 
   it('commits a changed email only after code confirmation, and confirms disconnect and deletion', async () => {
     const user = userEvent.setup();
+    const onSignIn = vi.fn();
     const actions = {
       requestEmailChange: vi.fn().mockResolvedValue('challenge-1'),
       confirmEmailChange: vi.fn().mockResolvedValue('new@example.com'),
       setProviderConnected: vi.fn().mockResolvedValue(undefined),
       deleteAccount: vi.fn().mockResolvedValue(undefined),
     };
-    render(<AccountManagement actions={actions} />);
+    render(<AccountManagement actions={actions} onSignIn={onSignIn} />);
     await user.click(screen.getByRole('button', { name: '이메일 변경' }));
     await user.type(screen.getByRole('textbox', { name: '새 이메일' }), 'new@example.com');
     await user.type(
@@ -89,6 +90,42 @@ describe('User management blocks', () => {
     await user.click(removal.getByRole('button', { name: '계정 탈퇴' }));
     expect(actions.deleteAccount).toHaveBeenCalledWith('current-password');
     expect(await screen.findByRole('heading', { name: '계정이 탈퇴되었습니다' })).toBeVisible();
+    const signInButton = screen.getByRole('button', { name: '로그인으로 돌아가기' });
+    await waitFor(() => expect(signInButton).toHaveFocus());
+    await user.click(signInButton);
+    expect(onSignIn).toHaveBeenCalledOnce();
+  });
+
+  it('keeps the idle email panel compact and shows errors inside their owning panels', async () => {
+    const user = userEvent.setup();
+    render(
+      <AccountManagement
+        actions={{
+          requestEmailChange: vi.fn().mockRejectedValue(new Error('email request failed')),
+          confirmEmailChange: vi.fn(),
+          setProviderConnected: vi.fn().mockRejectedValue(new Error('provider request failed')),
+          deleteAccount: vi.fn(),
+        }}
+        onSignIn={vi.fn()}
+      />,
+    );
+    const emailPanel = screen.getByRole('region', { name: '로그인 이메일' });
+    const providerPanel = screen.getByRole('region', { name: '연결 계정' });
+    expect(emailPanel.querySelector('[data-city-panel-body]')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: '이메일 변경' }));
+    await user.type(screen.getByRole('textbox', { name: '새 이메일' }), 'new@example.com');
+    await user.type(
+      screen.getByLabelText('현재 비밀번호', { selector: 'input' }),
+      'current-password',
+    );
+    await user.click(screen.getByRole('button', { name: '확인 코드 보내기' }));
+    expect(await within(emailPanel).findByRole('alert')).toBeVisible();
+    expect(within(providerPanel).queryByRole('alert')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'GitHub 연결' }));
+    expect(await within(providerPanel).findByRole('alert')).toBeVisible();
+    expect(within(emailPanel).queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('validates password confirmation, keeps failed inputs and clears them after success', async () => {

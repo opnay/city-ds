@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Laptop, Smartphone } from 'lucide-react';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
@@ -77,6 +77,8 @@ export function SessionHistory({
   const [sessions, setSessions] = useState(initialSessions);
   const [filter, setFilter] = useState<'active' | 'all'>('active');
   const [targets, setTargets] = useState<string[]>([]);
+  const returnFocus = useRef<HTMLElement>(null);
+  const countFocus = useRef<HTMLElement>(null);
   const otherActive = sessions.filter((session) => !session.current && session.status === 'active');
   const visible = sessions.filter((session) => filter === 'all' || session.status === 'active');
   return (
@@ -89,7 +91,7 @@ export function SessionHistory({
           <SegmentedControl.Item value="active">로그인 중</SegmentedControl.Item>
           <SegmentedControl.Item value="all">전체 기록</SegmentedControl.Item>
         </SegmentedControl>
-        <span className="city-block-status" role="status">
+        <span ref={countFocus} tabIndex={-1} className="city-block-status" role="status">
           {visible.length}개 세션
         </span>
       </div>
@@ -119,7 +121,10 @@ export function SessionHistory({
                 size="lg"
                 variant="outline"
                 aria-label={`${session.device} 세션 종료`}
-                onClick={() => setTargets([session.id])}
+                onClick={(event) => {
+                  returnFocus.current = event.currentTarget;
+                  setTargets([session.id]);
+                }}
               >
                 종료
               </Button>
@@ -132,12 +137,16 @@ export function SessionHistory({
           size="lg"
           variant="outline"
           disabled={!otherActive.length}
-          onClick={() => setTargets(otherActive.map((session) => session.id))}
+          onClick={(event) => {
+            returnFocus.current = event.currentTarget;
+            setTargets(otherActive.map((session) => session.id));
+          }}
         >
           다른 세션 모두 종료
         </Button>
       </div>
       <AccountActionDialog
+        finalFocus={returnFocus}
         open={targets.length > 0}
         onOpenChange={(open) => {
           if (!open) setTargets([]);
@@ -154,6 +163,7 @@ export function SessionHistory({
             .map((session) => session.id);
           if (!ids.length) return;
           await onRevoke(ids);
+          returnFocus.current = countFocus.current;
           setSessions((current) =>
             current.map((session) =>
               ids.includes(session.id) && !session.current

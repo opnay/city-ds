@@ -31,14 +31,18 @@ export function ConnectedApps({
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const status = useRef<HTMLParagraphElement>(null);
+  const returnFocus = useRef<HTMLElement>(null);
   return (
     <BlockCard
       title="연결된 앱 관리"
       description="계정 데이터에 접근할 수 있는 외부 앱과 허용한 권한을 확인하십시오."
     >
-      <p ref={status} tabIndex={-1} role="status" className="city-block-status">
-        {message || `연결된 앱 ${apps.length}개`}
-      </p>
+      {!loading && !error && (
+        <p ref={status} tabIndex={-1} role="status" className="city-block-status">
+          연결된 앱 {apps.length}개
+        </p>
+      )}
+      {!loading && !error && message && <p className="city-block-status">{message}</p>}
       {loading ? (
         <Skeleton aria-label="연결된 앱 불러오는 중" className="h-24 w-full" />
       ) : error ? (
@@ -66,7 +70,8 @@ export function ConnectedApps({
                     size="sm"
                     className="shrink-0"
                     aria-label={`${app.name} 연결 해제`}
-                    onClick={() => {
+                    onClick={(event) => {
+                      returnFocus.current = event.currentTarget;
                       setSelected(app);
                       setOpen(true);
                     }}
@@ -97,6 +102,7 @@ export function ConnectedApps({
       )}
       {!canManage && <p className="city-block-status">연결을 해제할 권한이 없습니다.</p>}
       <AccountActionDialog
+        finalFocus={returnFocus}
         open={open}
         onOpenChange={setOpen}
         title="앱 연결을 해제하시겠습니까?"
@@ -107,7 +113,7 @@ export function ConnectedApps({
           if (!selected || !canManage) throw new Error('Unavailable');
           await onDisconnect(selected.id);
           setMessage(`${selected.name} 연결을 해제했습니다.`);
-          requestAnimationFrame(() => status.current?.focus());
+          returnFocus.current = status.current;
         }}
       />
     </BlockCard>

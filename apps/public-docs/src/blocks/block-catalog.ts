@@ -781,7 +781,7 @@ export const BLOCK_DOCS = [
     keywords: ['앱', '연결', 'OAuth', '권한', '해제'],
     components: ['data-list', 'panel', 'button', 'alert-dialog', 'skeleton'],
     guidance:
-      'apps에 외부 앱의 이름, 허용한 권한과 연결일을 전달합니다. 소셜 로그인 연결과 달리 계정 데이터에 접근하는 앱을 관리합니다. onDisconnect는 서버에서 접근·갱신 토큰을 폐기하고 성공 후 소비자가 목록을 갱신합니다. 이미 전달된 데이터의 삭제를 보장하지 않으므로 해제 영향 안내를 유지하십시오. loading·error·onRetry는 조회 상태, canManage는 관리 권한입니다. 미리보기는 외부 앱에 요청하지 않습니다.',
+      '계정의 앱 연동 페이지 패널입니다. apps에 외부 앱의 이름·권한·연결일을 전달합니다. 소셜 로그인 연결과 달리 계정 데이터에 접근하는 앱을 관리합니다. onDisconnect는 서버에서 접근·갱신 토큰을 폐기하고 성공 후 소비자가 목록을 갱신합니다. 로딩·오류 중에는 이전 앱 개수를 숨기고 성공 뒤 최신 개수에 초점을 둡니다. 이미 전달된 데이터의 삭제를 보장하지 않으므로 해제 영향 안내를 유지하십시오. loading·error·onRetry는 조회 상태, canManage는 관리 권한입니다.',
     load: async () => ({
       Component: (await import('./examples/connected-apps')).default,
       source: (await import('./examples/connected-apps.tsx?raw')).default,

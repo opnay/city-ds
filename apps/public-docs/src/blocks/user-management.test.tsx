@@ -96,7 +96,7 @@ describe('User management blocks', () => {
     expect(onSignIn).toHaveBeenCalledOnce();
   });
 
-  it('shows email and provider errors inside the panel that owns the action', async () => {
+  it('keeps the idle email panel compact and shows errors inside their owning panels', async () => {
     const user = userEvent.setup();
     render(
       <AccountManagement
@@ -111,6 +111,7 @@ describe('User management blocks', () => {
     );
     const emailPanel = screen.getByRole('region', { name: '로그인 이메일' });
     const providerPanel = screen.getByRole('region', { name: '연결 계정' });
+    expect(emailPanel.querySelector('[data-city-panel-body]')).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: '이메일 변경' }));
     await user.type(screen.getByRole('textbox', { name: '새 이메일' }), 'new@example.com');

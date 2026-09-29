@@ -155,6 +155,11 @@ export function AccountManagement({
                 />
               </>
             )}
+            {errorArea === 'email' && action.error && (
+              <p role="alert" className="city-block-error">
+                {action.error}
+              </p>
+            )}
             <div className="city-block-actions">
               <Button
                 size="lg"
@@ -181,11 +186,6 @@ export function AccountManagement({
               </Button>
             </div>
           </form>
-        )}
-        {errorArea === 'email' && action.error && (
-          <p role="alert" className="city-block-error">
-            {action.error}
-          </p>
         )}
       </BlockCard>
       <BlockCard

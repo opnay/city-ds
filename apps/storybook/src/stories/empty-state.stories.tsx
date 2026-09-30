@@ -1,23 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Search, Table2 } from 'lucide-react';
 import { Button, EmptyState, type EmptyStateDensity } from '@opnay/city-ds-react';
-
-function TableIcon() {
-  return (
-    <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-      <rect x={3} y={4} width={18} height={16} rx={2} />
-      <path d="M3 10h18M9 4v16" />
-    </svg>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-      <circle cx={11} cy={11} r={7} />
-      <path d="m16 16 4 4" />
-    </svg>
-  );
-}
 
 interface EmptyStateStoryArgs {
   density: EmptyStateDensity;
@@ -27,7 +10,7 @@ function EmptyStateExample({ density }: EmptyStateStoryArgs) {
   return (
     <EmptyState.Root density={density}>
       <EmptyState.Icon>
-        <TableIcon />
+        <Table2 aria-hidden="true" />
       </EmptyState.Icon>
       <EmptyState.Title level={3}>No records yet</EmptyState.Title>
       <EmptyState.Description>
@@ -67,7 +50,7 @@ export const NoSearchResults: Story = {
   render: (args) => (
     <EmptyState.Root {...args}>
       <EmptyState.Icon>
-        <SearchIcon />
+        <Search aria-hidden="true" />
       </EmptyState.Icon>
       <EmptyState.Title level={3}>No results found</EmptyState.Title>
       <EmptyState.Description>
@@ -81,7 +64,7 @@ export const WithActions: Story = {
   render: (args) => (
     <EmptyState.Root {...args}>
       <EmptyState.Icon>
-        <TableIcon />
+        <Table2 aria-hidden="true" />
       </EmptyState.Icon>
       <EmptyState.Title level={3}>Connect your first data source</EmptyState.Title>
       <EmptyState.Description>

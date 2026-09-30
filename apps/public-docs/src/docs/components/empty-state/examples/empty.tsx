@@ -1,3 +1,4 @@
+import { Table2 } from 'lucide-react';
 import { Button } from '@opnay/city-ds-react/button';
 import { EmptyState } from '@opnay/city-ds-react/empty-state';
 
@@ -5,7 +6,9 @@ export default function EmptyStateExample() {
   return (
     <div className="city-docs-example-stack">
       <EmptyState.Root density="default">
-        <EmptyState.Icon>□</EmptyState.Icon>
+        <EmptyState.Icon>
+          <Table2 aria-hidden="true" />
+        </EmptyState.Icon>
         <EmptyState.Title>아직 데이터가 없습니다</EmptyState.Title>
         <EmptyState.Description>첫 레코드를 추가해 이 표를 채우십시오.</EmptyState.Description>
         <EmptyState.Actions>

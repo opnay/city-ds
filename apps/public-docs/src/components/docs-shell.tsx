@@ -3,6 +3,7 @@ import { Collapsible } from '@base-ui/react/collapsible';
 import {
   ArrowRight,
   BookOpen,
+  ChevronDown,
   Fingerprint,
   FolderKanban,
   Workflow,
@@ -262,9 +263,12 @@ function BlockNavigationGroup({
           <Icon aria-hidden="true" size={16} strokeWidth={1.8} />
           {title}
         </span>
-        <span className="city-docs-block-group-chevron" aria-hidden="true">
-          ⌄
-        </span>
+        <ChevronDown
+          aria-hidden="true"
+          className="city-docs-block-group-chevron shrink-0"
+          size={16}
+          strokeWidth={1.8}
+        />
       </Collapsible.Trigger>
       <Collapsible.Panel>
         <ul className="city-docs-block-submenu">

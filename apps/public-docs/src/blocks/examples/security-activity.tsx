@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { Alert } from '@opnay/city-ds-react/alert';
 import { Badge } from '@opnay/city-ds-react/badge';
 import { Button } from '@opnay/city-ds-react/button';
-import { EmptyState } from '@opnay/city-ds-react/empty-state';
 import { Field } from '@opnay/city-ds-react/field';
 import { FilterBar } from '@opnay/city-ds-react/filter-bar';
 import { SearchInput } from '@opnay/city-ds-react/search-input';
 import { Select } from '@opnay/city-ds-react/select';
-import { Skeleton } from '@opnay/city-ds-react/skeleton';
 import { BlockCard } from './block-card';
 
 export interface SecurityEvent {
@@ -21,17 +18,7 @@ export interface SecurityEvent {
 }
 const outcomes = { all: '모든 결과', success: '성공', failure: '실패' };
 
-export function SecurityActivity({
-  events,
-  loading = false,
-  error,
-  onRetry,
-}: {
-  events: readonly SecurityEvent[];
-  loading?: boolean;
-  error?: string;
-  onRetry?: () => void;
-}) {
+export function SecurityActivity({ events }: { events: readonly SecurityEvent[] }) {
   const [query, setQuery] = useState('');
   const [outcome, setOutcome] = useState('all');
   const filtered = events.filter(
@@ -56,11 +43,9 @@ export function SecurityActivity({
         className="city-block-result-filters"
         actions={
           <>
-            {!loading && !error && (
-              <p role="status" className="city-block-status">
-                활동 {filtered.length}건
-              </p>
-            )}
+            <p role="status" className="city-block-status">
+              활동 {filtered.length}건
+            </p>
             <Button variant="outline" disabled={!query && outcome === 'all'} onClick={reset}>
               초기화
             </Button>
@@ -102,69 +87,44 @@ export function SecurityActivity({
           </Select.Portal>
         </Select.Root>
       </FilterBar>
-      {loading ? (
-        <Skeleton aria-label="보안 활동 불러오는 중" className="h-24 w-full" />
-      ) : error ? (
-        <Alert.Root tone="destructive">
-          <Alert.Title level={4}>보안 활동을 불러오지 못했습니다.</Alert.Title>
-          <Alert.Description>{error}</Alert.Description>
-          {onRetry && (
-            <Alert.Action>
-              <Button variant="outline" onClick={onRetry}>
-                다시 불러오기
-              </Button>
-            </Alert.Action>
+      {!filtered.length ? (
+        <div className="city-block-section">
+          <p>
+            {events.length ? '일치하는 보안 활동이 없습니다.' : '아직 보안 활동 기록이 없습니다.'}
+          </p>
+          {events.length > 0 && (
+            <Button variant="outline" onClick={reset}>
+              필터 초기화
+            </Button>
           )}
-        </Alert.Root>
+        </div>
       ) : (
-        <>
-          {!filtered.length ? (
-            <EmptyState.Root>
-              <EmptyState.Title level={4}>
-                {events.length
-                  ? '일치하는 보안 활동이 없습니다.'
-                  : '아직 보안 활동 기록이 없습니다.'}
-              </EmptyState.Title>
-              <EmptyState.Description>
-                {events.length
-                  ? '검색어 또는 결과 조건을 조정하십시오.'
-                  : '계정에서 보안 관련 작업을 하면 여기에 표시됩니다.'}
-              </EmptyState.Description>
-              {events.length > 0 && (
-                <Button variant="outline" onClick={reset}>
-                  필터 초기화
-                </Button>
-              )}
-            </EmptyState.Root>
-          ) : (
-            <ul className="city-block-list">
-              {filtered.map((event) => (
-                <li key={event.id} className="city-block-section">
-                  <div className="city-block-split">
-                    <div className="city-block-label-row">
-                      <strong>{event.title}</strong>
-                      <Badge
-                        appearance="subtle"
-                        tone={event.outcome === 'failure' ? 'destructive' : 'neutral'}
-                      >
-                        {outcomes[event.outcome]}
-                      </Badge>
-                    </div>
-                    <time className="city-block-status" dateTime={event.occurredAt}>
-                      {new Date(event.occurredAt).toLocaleString('ko-KR', {
-                        timeZone: 'Asia/Seoul',
-                      })}{' '}
-                      KST
-                    </time>
-                  </div>
-                  <p className="city-block-status break-words">
-                    {event.device} · {event.location} · {event.ipAddress}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </>
+        <ul className="city-block-list">
+          {filtered.map((event) => (
+            <li key={event.id} className="city-block-section">
+              <div className="city-block-split">
+                <div className="city-block-label-row">
+                  <strong>{event.title}</strong>
+                  <Badge
+                    appearance="subtle"
+                    tone={event.outcome === 'failure' ? 'destructive' : 'neutral'}
+                  >
+                    {outcomes[event.outcome]}
+                  </Badge>
+                </div>
+                <time className="city-block-status" dateTime={event.occurredAt}>
+                  {new Date(event.occurredAt).toLocaleString('ko-KR', {
+                    timeZone: 'Asia/Seoul',
+                  })}{' '}
+                  KST
+                </time>
+              </div>
+              <p className="city-block-status break-words">
+                {event.device} · {event.location} · {event.ipAddress}
+              </p>
+            </li>
+          ))}
+        </ul>
       )}
     </BlockCard>
   );

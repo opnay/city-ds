@@ -22,7 +22,7 @@ export default function DataListDetailsExample(
       <DataList.Item>
         <DataList.Label>허용한 권한</DataList.Label>
         <DataList.Value>
-          <ul className="m-0 list-disc pl-4">
+          <ul className="m-0" style={{ listStyle: 'disc inside', padding: 0 }}>
             <li>기본 프로필 읽기</li>
             <li>일정 읽기 및 작성</li>
           </ul>

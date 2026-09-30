@@ -479,8 +479,8 @@ describe('theme contract', () => {
   });
 
   it('restores native list markers inside prose and Article without changing the reset', () => {
-    expect(stylesCss).toContain('.city-prose ul');
-    expect(stylesCss).toContain('.city-prose ol');
+    expect(stylesCss).toContain('.city-prose > ul');
+    expect(stylesCss).toContain('.city-prose > ol');
     expect(stylesCss).toMatch(/\[data-city-article\] ul \{\s*list-style-type: disc;/);
     expect(stylesCss).toMatch(/\[data-city-article\] ol \{\s*list-style-type: decimal;/);
     expect(stylesCss).not.toMatch(/^\s*(?:ul|ol)\s*\{\s*list-style-type:/m);

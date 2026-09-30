@@ -29,63 +29,6 @@ const WIDE_PREVIEW_COUNTS: Readonly<Record<string, number>> = {
   timeline: 3,
 };
 
-const CONFIGURABLE_COMPONENTS = new Set([
-  'article',
-  'commentary',
-  'agent-activity',
-  'stepper',
-  'accordion',
-  'alert',
-  'alert-dialog',
-  'avatar',
-  'badge',
-  'button',
-  'breadcrumbs',
-  'calendar',
-  'checkbox',
-  'checkbox-group',
-  'combobox',
-  'data-list',
-  'date-picker',
-  'data-table-region',
-  'density-provider',
-  'dialog',
-  'divider',
-  'drawer',
-  'empty-state',
-  'field',
-  'fieldset',
-  'file-upload',
-  'filter-bar',
-  'filter-panel',
-  'input',
-  'kbd',
-  'number-input',
-  'otp-input',
-  'menu',
-  'meter',
-  'pagination',
-  'panel',
-  'popover',
-  'progress',
-  'radio-group',
-  'search-input',
-  'segmented-control',
-  'select',
-  'selection-card',
-  'scroll-area',
-  'skeleton',
-  'slider',
-  'switch',
-  'table',
-  'tabs',
-  'toast',
-  'timeline',
-  'toggle-group',
-  'toolbar',
-  'tooltip',
-]);
-
 describe('all component document routes', () => {
   it('previews the Article elements described in its documentation', async () => {
     const { container } = await renderDocs(['/components/article']);
@@ -135,12 +78,6 @@ describe('all component document routes', () => {
     for (const level of [1, 2, 3, 4, 5, 6]) {
       expect(headings?.querySelector(`h${level}`), `h${level} 미리보기`).not.toBeNull();
     }
-  });
-
-  it('adds an option playground to every component route', () => {
-    expect([...CONFIGURABLE_COMPONENTS].sort()).toEqual(
-      COMPONENT_DOCS.map((entry) => entry.slug).sort(),
-    );
   });
 
   it.each(COMPONENT_DOCS)('renders $slug with examples and API', async (entry) => {
@@ -244,7 +181,7 @@ describe('all component document routes', () => {
       ).toBeVisible();
     }
     const optionPanels = screen.queryAllByRole('complementary', { name: '미리보기 옵션' });
-    expect(optionPanels).toHaveLength(CONFIGURABLE_COMPONENTS.has(entry.slug) ? 1 : 0);
+    expect(optionPanels).toHaveLength(1);
     for (const panel of optionPanels) {
       expect(panel).not.toHaveAttribute('hidden');
     }

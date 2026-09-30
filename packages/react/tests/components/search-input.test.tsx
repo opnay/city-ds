@@ -3,6 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { Field } from '../../src/components/field';
 import { SearchInput } from '../../src/components/search-input';
 
 function SearchControls({ name }: { name?: string }) {
@@ -16,30 +17,54 @@ function SearchControls({ name }: { name?: string }) {
 }
 
 describe('SearchInput', () => {
-  it('leaves form ownership and FormData submission to the consumer form', async () => {
+  it('leaves form ownership and keyboard or button submission to the consumer form', async () => {
     const user = userEvent.setup();
-    const onSubmit = vi.fn((event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      return new FormData(event.currentTarget).get('query');
-    });
+    const onSubmit = vi.fn();
 
     const { container } = render(
-      <form onSubmit={onSubmit}>
-        <SearchInput.Root data-testid="search-root">
-          <SearchControls name="query" />
-        </SearchInput.Root>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSubmit(new FormData(event.currentTarget).get('query'), event);
+        }}
+      >
+        <Field.Root>
+          <Field.Label>Search projects</Field.Label>
+          <SearchInput.Root data-testid="search-root">
+            <SearchInput.Group data-testid="search-group">
+              <SearchInput.Input name="query" />
+              <SearchInput.Clear />
+              <SearchInput.Submit />
+            </SearchInput.Group>
+          </SearchInput.Root>
+        </Field.Root>
       </form>,
     );
 
-    const input = screen.getByRole('searchbox', { name: 'Search' });
+    const input = screen.getByRole('searchbox', { name: 'Search projects' });
+    const searchButton = screen.getByRole('button', { name: 'Search' });
 
     expect(container.querySelectorAll('form')).toHaveLength(1);
     expect(screen.getByTestId('search-root').tagName).toBe('DIV');
+    expect(screen.getByTestId('search-group')).toContainElement(input);
+    expect(screen.getByTestId('search-group')).toHaveClass('h-(--city-control-md)');
+    expect(searchButton).toHaveClass('hover:bg-city-accent', 'active:bg-city-accent-active');
+    expect(searchButton).toHaveClass('h-full', 'w-(--city-control-md)');
+    expect(input).toHaveAttribute('type', 'search');
+    expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
 
-    await user.type(input, 'city{Enter}');
+    await user.type(input, 'metro');
+    await user.keyboard('{Escape}');
+    expect(input).toHaveValue('');
 
+    await user.type(input, 'roads{Enter}');
     expect(onSubmit).toHaveBeenCalledTimes(1);
-    expect(onSubmit).toHaveReturnedWith('city');
+    expect(onSubmit).toHaveBeenLastCalledWith('roads', expect.anything());
+
+    await user.clear(input);
+    await user.type(input, 'bridges');
+    await user.click(searchButton);
+    expect(onSubmit).toHaveBeenLastCalledWith('bridges', expect.anything());
   });
 
   it('returns focus to the input in the same SearchInput root', async () => {
@@ -245,14 +270,21 @@ describe('SearchInput', () => {
 
     render(
       <SearchInput.Root defaultValue="archived" disabled onValueChange={onValueChange}>
-        <SearchControls />
+        <SearchInput.Group data-testid="disabled-search-group">
+          <SearchInput.Input aria-label="Disabled search" disabled={false} />
+          <SearchInput.Clear disabled={false} />
+          <SearchInput.Submit disabled={false} />
+        </SearchInput.Group>
       </SearchInput.Root>,
     );
 
-    const input = screen.getByRole('searchbox', { name: 'Search' });
+    const input = screen.getByRole('searchbox', { name: 'Disabled search' });
     const clear = screen.getByRole('button', { name: 'Clear search' });
     const submit = screen.getByRole('button', { name: 'Search' });
 
+    const group = screen.getByTestId('disabled-search-group');
+    expect(group).toHaveAttribute('data-disabled');
+    expect(group).toHaveClass('data-[disabled]:opacity-50');
     expect(input).toBeDisabled();
     expect(clear).toBeDisabled();
     expect(submit).toBeDisabled();
@@ -262,5 +294,72 @@ describe('SearchInput', () => {
 
     expect(input).toHaveValue('archived');
     expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it('supports SearchInput controlled values and loading status', async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+
+    function ControlledSearch() {
+      const [value, setValue] = React.useState('city');
+
+      return (
+        <Field.Root>
+          <Field.Label>Search packages</Field.Label>
+          <SearchInput.Root
+            loading
+            onValueChange={(nextValue) => {
+              setValue(nextValue);
+              onValueChange(nextValue);
+            }}
+            value={value}
+          >
+            <SearchInput.Group>
+              <SearchInput.Input />
+              <SearchInput.Clear />
+              <SearchInput.Submit />
+            </SearchInput.Group>
+            <SearchInput.Loading>Searching…</SearchInput.Loading>
+          </SearchInput.Root>
+        </Field.Root>
+      );
+    }
+
+    render(<ControlledSearch />);
+
+    const input = screen.getByRole('searchbox', { name: 'Search packages' });
+    expect(input).toHaveValue('city');
+    expect(screen.getByText('Searching…')).toBeVisible();
+
+    await user.type(input, ' ds');
+    expect(input).toHaveValue('city ds');
+    expect(onValueChange).toHaveBeenLastCalledWith('city ds');
+
+    await user.click(screen.getByRole('button', { name: 'Clear search' }));
+    expect(input).toHaveValue('');
+    expect(input).toHaveFocus();
+    expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
+  });
+
+  it('propagates invalid state to the input and group while displaying Field errors', () => {
+    render(
+      <Field.Root>
+        <Field.Label>Invalid search</Field.Label>
+        <SearchInput.Root defaultValue="x" invalid>
+          <SearchInput.Group data-testid="invalid-search-group">
+            <SearchInput.Input />
+            <SearchInput.Clear />
+            <SearchInput.Submit />
+          </SearchInput.Group>
+        </SearchInput.Root>
+        <Field.Error match>Enter at least 2 characters.</Field.Error>
+      </Field.Root>,
+    );
+
+    const invalidGroup = screen.getByTestId('invalid-search-group');
+    expect(invalidGroup).toHaveAttribute('data-invalid');
+    expect(invalidGroup).toHaveClass('data-[invalid]:border-city-destructive');
+    expect(within(invalidGroup).getByRole('searchbox')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByText('Enter at least 2 characters.')).toBeVisible();
   });
 });

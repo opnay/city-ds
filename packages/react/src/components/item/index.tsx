@@ -29,7 +29,7 @@ export interface ItemRootProps extends Omit<
 const appearanceClasses: Record<SurfaceAppearance, string> = {
   plain: 'border-transparent bg-transparent',
   band: 'border-transparent bg-city-muted',
-  outline: 'border-city-border bg-city-surface',
+  outline: 'border-city-border bg-transparent',
 };
 
 export const ItemRoot = React.forwardRef<HTMLDivElement, ItemRootProps>(function ItemRoot(
@@ -52,7 +52,10 @@ export const ItemRoot = React.forwardRef<HTMLDivElement, ItemRootProps>(function
       className: cn(
         'group/city-item flex w-full min-w-0 flex-wrap items-center rounded-city-md border text-sm text-city-foreground',
         'transition-colors motion-reduce:transition-none',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-city-ring focus-visible:ring-offset-2 focus-visible:ring-offset-city-background [&:is(a,button)]:hover:bg-city-muted',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-city-ring focus-visible:ring-offset-2 focus-visible:ring-offset-city-background',
+        appearance === 'band'
+          ? '[&:is(a,button)]:hover:bg-city-accent-hover [&:is(a,button):hover_[data-city-item-description]]:text-city-accent-foreground'
+          : '[&:is(a,button)]:hover:bg-city-muted',
         appearanceClasses[appearance],
         density === 'compact' ? 'gap-2 p-3' : 'gap-3 p-4',
         resolveClassName(className, state),

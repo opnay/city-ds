@@ -343,10 +343,10 @@ describe('public docs layout styles', () => {
 
   it('keeps code bodies closer to the page background than muted surfaces', () => {
     expect(styles).toMatch(
-      /\.city-docs-prose-code,[\s\S]*?\.city-docs-example-code pre\s*{[^}]*background:\s*var\(--city-color-surface\);/s,
+      /\.city-docs-prose-code,[\s\S]*?\.city-docs-example-code pre\s*{[^}]*background:\s*var\(--city-color-surface-raised\);/s,
     );
     expect(styles).toMatch(
-      /\.city-docs-code-frame\s*{[^}]*background:\s*var\(--city-color-surface\);/s,
+      /\.city-docs-code-frame\s*{[^}]*background:\s*var\(--city-color-surface-raised\);/s,
     );
   });
 });

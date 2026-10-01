@@ -363,13 +363,14 @@ describe('theme contract', () => {
     const darkMappings = [
       ['background', 'neutral-950'],
       ['foreground', 'neutral-50'],
-      ['surface', 'neutral-900'],
+      ['surface', 'neutral-950'],
+      ['surface-raised', 'neutral-900'],
       ['muted', 'neutral-800'],
       ['muted-foreground', 'neutral-400'],
       ['accent', 'neutral-800'],
       ['accent-hover', 'neutral-700'],
       ['accent-active', 'neutral-600'],
-      ['border', 'neutral-700'],
+      ['border', 'neutral-600'],
       ['input', 'neutral-600'],
       ['ring', 'neutral-400'],
     ] as const;
@@ -382,6 +383,40 @@ describe('theme contract', () => {
       for (const [token, palette] of darkMappings) {
         expect(theme).toContain(`--city-color-${token}: var(--city-palette-${palette});`);
       }
+    }
+  });
+
+  it('keeps neutral text readable across canvas and interaction surfaces', () => {
+    const darkText = readPaletteOklch('neutral-50');
+    const darkMutedText = readPaletteOklch('neutral-400');
+    const lightText = readPaletteOklch('neutral-900');
+    const lightMutedBase = readPaletteOklch('neutral-500');
+    const lightMutedAdjustment = readPaletteOklch('neutral-600');
+    const lightMutedText = lightMutedBase.map(
+      (channel, index) => channel * 0.9 + lightMutedAdjustment[index]! * 0.1,
+    ) as [number, number, number];
+
+    for (const background of ['neutral-950', 'neutral-800', 'neutral-700', 'neutral-600']) {
+      const surface = readPaletteOklch(background);
+      expect(contrastRatio(darkText, surface), `dark text on ${background}`).toBeGreaterThanOrEqual(
+        4.5,
+      );
+      expect(
+        contrastRatio(darkMutedText, surface),
+        `dark muted text on ${background}`,
+      ).toBeGreaterThanOrEqual(4.5);
+    }
+
+    for (const background of ['white', 'neutral-50', 'neutral-100', 'neutral-200', 'neutral-300']) {
+      const surface = readPaletteOklch(background);
+      expect(
+        contrastRatio(lightText, surface),
+        `light text on ${background}`,
+      ).toBeGreaterThanOrEqual(4.5);
+      expect(
+        contrastRatio(lightMutedText, surface),
+        `light muted text on ${background}`,
+      ).toBeGreaterThanOrEqual(4.5);
     }
   });
 
@@ -514,12 +549,12 @@ describe('theme contract', () => {
     expect(interactionColors).not.toContain(readToken('--city-color-surface-raised'));
   });
 
-  it('keeps raised surfaces close to the background in every theme', () => {
+  it('keeps light raised surfaces close to the background', () => {
     const raisedSurfaceDefinitions = themeCss.match(
       /--city-color-surface-raised:\s*color-mix\(\s*in oklch,\s*var\(--city-color-background\) 90%,\s*var\(--city-color-surface\)\s*\);/g,
     );
 
-    expect(raisedSurfaceDefinitions).toHaveLength(3);
+    expect(raisedSurfaceDefinitions).toHaveLength(1);
   });
 
   it('keeps consumer examples on published variables', () => {

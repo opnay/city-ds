@@ -2,7 +2,10 @@ node_modules
 .turbo
 .next
 dist
-storybook-static
 coverage
 .DS_Store
 *.tsbuildinfo
+
+# Local browser test failure artifacts
+__screenshots__
+.vitest-attachments

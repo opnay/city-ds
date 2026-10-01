@@ -225,7 +225,7 @@ UI의 동작·상태·탐색·빈 상태 아이콘은 `lucide-react`를 사용�
 - 부모와 자식이 같은 경계의 padding이나 margin을 동시에 더하지 마십시오.
 - breakpoint는 Layout Spacing만 바꾸며 Control Size와 Component Spacing을 암묵적으로 바꾸지 않습니다.
 
-세부 계약과 비교 표본은 Storybook의 `디자인 패턴/Density/Component Spacing`, `디자인 패턴/Layout/Layout Spacing`을 참고하십시오.
+세부 계약과 적용 기준은 Public Docs의 `/patterns` 문서에서 Component Spacing과 Layout Spacing을 참고하십시오.
 
 ## 컴포넌트 선택
 
@@ -369,7 +369,7 @@ Drawer의 스크롤 본문은 `Drawer.Content`를 사용하십시오. 동일한 
 
 상태를 색상 하나에 맡기지 말고 아이콘, 제목, 레이블, 위치 또는 ARIA 상태를 함께 제공하십시오. 일반 텍스트는 4.5:1, 큰 텍스트·아이콘·focus 표시는 3:1 이상의 대비를 유지하고 라이트, 다크, 시스템 테마에서 default, hover, active, selected, invalid, focus, disabled를 확인하십시오. disabled는 컴포넌트 전체 opacity를 낮추는 예외입니다.
 
-색상 토큰 목록과 Light·Dark 비교는 Storybook의 `기초/디자인 토큰/색상`, 컴포넌트 선택 규칙은 `디자인 패턴/Color`를 참고하십시오.
+색상 토큰 목록, Light·Dark 비교와 컴포넌트 선택 규칙은 Public Docs의 `/color` 문서를 참고하십시오.
 
 ### 모션 체계
 
@@ -379,7 +379,7 @@ Drawer의 스크롤 본문은 `Drawer.Content`를 사용하십시오. 동일한 
 
 콘텐츠 고유 높이를 펼치고 접을 때 임의의 `max-height`를 추정하지 마십시오. Grid container의 `grid-template-rows`를 `0fr`과 `1fr` 사이에서 전환하고, 직접 자식에 `min-height: 0`과 필요한 overflow 처리를 적용하십시오. 사용자가 reduced motion을 요청하면 이동, 크기 변화와 반복 애니메이션을 제거하되 최종 상태는 즉시 구분되어야 합니다.
 
-색상 외 간격, 글꼴, radius, 그림자와 모션도 `--city-*` 토큰을 사용하십시오. 세부 역할과 예시는 Storybook의 `디자인 패턴/Motion/Overview`를 참고하십시오.
+색상 외 간격, 글꼴, radius, 그림자와 모션도 `--city-*` 토큰을 사용하십시오. 토큰 역할과 사용 예시는 Public Docs의 `/foundations` 문서를 참고하십시오.
 
 제목 수준은 문서 구조를 따르십시오. 글자 크기로 heading 순서를 흉내 내지 마십시오. 보조 텍스트는 낮은 대비를 사용할 수 있지만 읽을 수 있어야 하며, 오류나 필수 지침을 보조 장식처럼 약하게 만들지 마십시오.
 

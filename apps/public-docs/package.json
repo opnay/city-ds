@@ -6,8 +6,9 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "lint": "oxlint src vite.config.ts --ignore-pattern src/routeTree.gen.ts",
-    "test": "vitest run",
+    "lint": "oxlint src tests vite.config.ts --ignore-pattern src/routeTree.gen.ts",
+    "test": "vitest run --project jsdom",
+    "test:browser": "vitest run --project chromium",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -32,7 +33,11 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",
+    "@vitest/browser": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
+    "axe-core": "catalog:",
     "jsdom": "catalog:",
+    "playwright": "catalog:",
     "remark-gfm": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",

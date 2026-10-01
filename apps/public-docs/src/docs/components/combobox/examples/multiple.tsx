@@ -19,7 +19,7 @@ export default function ComboboxMultipleExample() {
                 <Combobox.InputRow>
                   <Combobox.Input aria-label={`${size} 프로젝트`} placeholder="프로젝트 검색" />
                   <Combobox.Clear aria-label="모든 프로젝트 지우기" />
-                  <Combobox.Trigger />
+                  <Combobox.Trigger aria-label="프로젝트 목록 열기" />
                 </Combobox.InputRow>
                 <Combobox.Value>
                   {(selectedProjects: string[]) =>

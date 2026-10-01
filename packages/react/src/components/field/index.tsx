@@ -82,7 +82,7 @@ export const FieldError = React.forwardRef<HTMLDivElement, FieldErrorProps>(func
       {...props}
       ref={ref}
       className={(state) =>
-        cn('text-city-destructive text-xs leading-5', resolveClassName(className, state))
+        cn('text-city-destructive-text text-xs leading-5', resolveClassName(className, state))
       }
     />
   );

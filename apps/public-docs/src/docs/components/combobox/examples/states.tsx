@@ -32,7 +32,7 @@ export default function ComboboxStatesExample() {
         <Combobox.Root items={projects} onValueChange={setValue} value={value}>
           <Combobox.InputGroup>
             <Combobox.Input aria-label="프로젝트" placeholder="프로젝트 검색" />
-            <Combobox.Trigger />
+            <Combobox.Trigger aria-label="프로젝트 목록 열기" />
           </Combobox.InputGroup>
           <ProjectOptions />
         </Combobox.Root>
@@ -41,7 +41,7 @@ export default function ComboboxStatesExample() {
         <Combobox.Root disabled items={projects}>
           <Combobox.InputGroup>
             <Combobox.Input aria-label="프로젝트" placeholder="프로젝트 검색" />
-            <Combobox.Trigger />
+            <Combobox.Trigger aria-label="프로젝트 목록 열기" />
           </Combobox.InputGroup>
           <ProjectOptions />
         </Combobox.Root>

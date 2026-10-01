@@ -25,7 +25,6 @@ jobs:
 
     outputs:
       packages: ${{ steps.scope.outputs.packages }}
-      test_packages: ${{ steps.scope.outputs.test_packages }}
       verify: ${{ steps.scope.outputs.verify }}
       format_package: ${{ steps.scope.outputs.format_package }}
 
@@ -40,7 +39,6 @@ jobs:
           script: |
             const packages = {
               react: '@opnay/city-ds-react',
-              storybook: '@city-ds/storybook',
               vite: '@city-ds/vite-smoke',
               docs: '@city-ds/public-docs',
             };
@@ -68,14 +66,8 @@ jobs:
 
                   if (path.startsWith('packages/react/tests/')) {
                     selected.add(packages.react);
-                  } else if (path.startsWith('apps/storybook/')) {
-                    selected.add(packages.storybook);
                   } else if (path.startsWith('apps/public-docs/')) {
                     selected.add(packages.docs);
-                    if (['article', 'commentary', 'agent-activity'].some((component) =>
-                      path.startsWith(`apps/public-docs/src/docs/components/${component}/examples/`))) {
-                      selected.add(packages.storybook);
-                    }
                   } else if (path.startsWith('examples/vite-react/')) {
                     selected.add(packages.vite);
                     if (path === 'examples/vite-react/src/smoke.css') selected.add(packages.react);
@@ -89,7 +81,6 @@ jobs:
 
             const affected = Object.values(packages).filter((name) => selected.has(name));
             core.setOutput('packages', affected);
-            core.setOutput('test_packages', affected.filter((name) => name !== packages.storybook));
             core.setOutput('verify', affected.length > 0);
             core.setOutput('format_package', affected[0] ?? '');
 
@@ -200,25 +191,16 @@ jobs:
         if: matrix.package == '@opnay/city-ds-react'
         run: pnpm --filter @opnay/city-ds-react pack:check
 
-      - name: Upload Storybook
-        if: matrix.package == '@city-ds/storybook'
-        uses: actions/upload-artifact@v7
-        with:
-          name: city-ds-storybook
-          path: apps/storybook/storybook-static
-          if-no-files-found: error
-          retention-days: 14
-
   test:
     name: test / ${{ matrix.package }}
     needs: [install, lint]
-    if: needs.install.outputs.verify == 'true' && needs.install.outputs.test_packages != '[]'
+    if: needs.install.outputs.verify == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.install.outputs.test_packages) }}
+        package: ${{ fromJSON(needs.install.outputs.packages) }}
 
     steps:
       - name: Check out repository

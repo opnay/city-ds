@@ -46,6 +46,7 @@ const colorTokens = [
   '--city-color-inverse',
   '--city-color-inverse-foreground',
   '--city-color-destructive',
+  '--city-color-destructive-text',
   '--city-color-destructive-hover',
   '--city-color-destructive-active',
   '--city-color-destructive-foreground',

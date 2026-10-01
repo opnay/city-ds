@@ -1,24 +1,117 @@
-name: CI · Static
+name: CI
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
+    paths-ignore:
+      - 'README.md'
+      - 'AGENTS.md'
+      - '.github/pull_request_template.md'
+      - 'apps/public-docs/src/blocks/*_PATTERNS.md'
   workflow_dispatch:
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
-  group: ci-static-${{ github.ref }}
+  group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  format:
-    name: Formatting
+  install:
+    name: install
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
+    outputs:
+      packages: ${{ steps.scope.outputs.packages }}
+      verify: ${{ steps.scope.outputs.verify }}
+      format_package: ${{ steps.scope.outputs.format_package }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Select affected packages
+        id: scope
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const packages = {
+              react: '@opnay/city-ds-react',
+              storybook: '@city-ds/storybook',
+              vite: '@city-ds/vite-smoke',
+              docs: '@city-ds/public-docs',
+            };
+            const selected = new Set();
+            const selectAll = () => Object.values(packages).forEach((name) => selected.add(name));
+
+            if (context.eventName === 'workflow_dispatch') {
+              selectAll();
+            } else {
+              const files = await github.paginate(github.rest.pulls.listFiles, {
+                ...context.repo,
+                pull_number: context.issue.number,
+                per_page: 100,
+              });
+
+              // The API returns at most 3,000 files; validate everything if it reaches that limit.
+              if (files.length >= 3000) selectAll();
+
+              for (const file of files) {
+                for (const path of [file.filename, file.previous_filename].filter(Boolean)) {
+                  if (['README.md', 'AGENTS.md', '.github/pull_request_template.md'].includes(path)
+                    || /^apps\/public-docs\/src\/blocks\/[^/]*_PATTERNS\.md$/.test(path)) {
+                    continue;
+                  }
+
+                  if (path.startsWith('apps/storybook/')) {
+                    selected.add(packages.storybook);
+                  } else if (path.startsWith('apps/public-docs/')) {
+                    selected.add(packages.docs);
+                    if (['article', 'commentary', 'agent-activity'].some((component) =>
+                      path.startsWith(`apps/public-docs/src/docs/components/${component}/examples/`))) {
+                      selected.add(packages.storybook);
+                    }
+                  } else if (path.startsWith('examples/vite-react/')) {
+                    selected.add(packages.vite);
+                    if (path === 'examples/vite-react/src/smoke.css') selected.add(packages.react);
+                  } else {
+                    // React package, shared configuration, and unknown paths affect the whole workspace.
+                    selectAll();
+                  }
+                }
+              }
+            }
+
+            const affected = Object.values(packages).filter((name) => selected.has(name));
+            core.setOutput('packages', affected);
+            core.setOutput('verify', affected.length > 0);
+            core.setOutput('format_package', affected[0] ?? '');
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+  lint:
+    name: lint / ${{ matrix.package }}
+    needs: install
+    if: needs.install.outputs.verify == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.install.outputs.packages) }}
 
     steps:
       - name: Check out repository
@@ -34,8 +127,97 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Restore dependencies from pnpm store
+        run: pnpm install --offline --frozen-lockfile
 
       - name: Check formatting
+        if: matrix.package == needs.install.outputs.format_package
         run: pnpm format:check
+
+      - name: Run lint and type checks
+        env:
+          PACKAGE: ${{ matrix.package }}
+        run: pnpm turbo run lint typecheck --filter="$PACKAGE" --concurrency=2
+
+  build:
+    name: build / ${{ matrix.package }}
+    needs: [install, lint]
+    if: needs.install.outputs.verify == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.install.outputs.packages) }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Restore dependencies from pnpm store
+        run: pnpm install --offline --frozen-lockfile
+
+      - name: Build package
+        env:
+          PACKAGE: ${{ matrix.package }}
+        run: pnpm turbo run build --filter="$PACKAGE"
+
+      - name: Validate package exports
+        if: matrix.package == '@opnay/city-ds-react'
+        run: pnpm --filter @opnay/city-ds-react pack:check
+
+      - name: Upload Storybook
+        if: matrix.package == '@city-ds/storybook'
+        uses: actions/upload-artifact@v7
+        with:
+          name: city-ds-storybook
+          path: apps/storybook/storybook-static
+          if-no-files-found: error
+          retention-days: 14
+
+  test:
+    name: test / ${{ matrix.package }}
+    needs: [install, lint]
+    if: needs.install.outputs.verify == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.install.outputs.packages) }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Restore dependencies from pnpm store
+        run: pnpm install --offline --frozen-lockfile
+
+      - name: Install test browser
+        if: matrix.package == '@city-ds/storybook'
+        run: pnpm --filter @city-ds/storybook exec playwright install chromium
+
+      - name: Run tests
+        env:
+          PACKAGE: ${{ matrix.package }}
+        run: pnpm turbo run test --filter="$PACKAGE"

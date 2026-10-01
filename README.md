@@ -194,8 +194,18 @@ pnpm public-docs:build
 pnpm --filter @opnay/city-ds-react pack:check
 ```
 
-CI는 모든 타입·린트·테스트·프로덕션 빌드를 실행하고 Storybook 정적 결과를 artifact로
-보관합니다.
+CI는 PR에서 하나의 워크플로로 실행합니다. `install`이 pnpm 캐시를 채우고, 변경된
+패키지마다 `lint / <package>` job에서 포맷·린트·타입을 검사합니다. 포맷 검사는 선택된
+패키지 중 하나에서만 실행합니다. 린트가 통과하면 `build / <package>`와
+`test / <package>`가 병렬로 실행됩니다. 각 job은 pnpm 캐시에서 의존성을 오프라인으로
+복원합니다. Storybook 빌드 결과는 artifact로 보관하고 React 빌드에서는 package export도
+검사합니다.
+
+React 패키지나 공통 설정이 바뀌면 전체를 검증합니다. Storybook이 사용하는 public-docs
+예제와 React 테마 테스트가 읽는 Vite CSS도 변경 범위에 포함합니다. `README.md`,
+`AGENTS.md`, PR 템플릿, 블록의 `*_PATTERNS.md`만 바뀐 PR은 CI를 실행하지 않습니다.
+화면에 사용되는 `.mdx`는 제외하지 않습니다. 머지 후 `main` push에서는 중복 실행하지
+않으며, Actions의 수동 실행은 항상 전체를 검증합니다.
 
 ## 배포
 

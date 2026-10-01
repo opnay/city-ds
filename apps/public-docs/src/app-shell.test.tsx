@@ -18,9 +18,10 @@ describe('public docs routes and shell', () => {
     ['/blocks/account-settings', '계정 설정'],
     ['/components/button', 'Button'],
   ])('renders %s', async (path, title) => {
-    await renderDocs([path]);
+    const { container } = await renderDocs([path]);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    expect(screen.getByRole('heading', { level: 1, name: title })).toHaveClass(
+    expect(content.getByRole('heading', { level: 1, name: title })).toHaveClass(
       'city-text-page-title',
     );
     expect(screen.getByRole('navigation', { name: '현재 위치' })).toBeVisible();
@@ -54,10 +55,11 @@ describe('public docs routes and shell', () => {
   });
 
   it('separates Fieldset surfaces and keeps each preview as a real group', async () => {
-    await renderDocs(['/components/fieldset']);
+    const { container } = await renderDocs(['/components/fieldset']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
     for (const name of ['Fieldset', 'Outline', 'Plain', 'Band']) {
-      const preview = screen.getByRole('region', { name });
+      const preview = content.getByRole('region', { name });
       expect(preview.querySelector('.city-docs-example-preview-content')).toHaveAttribute(
         'data-city-docs-layout',
         'wide',
@@ -68,16 +70,16 @@ describe('public docs routes and shell', () => {
     }
 
     expect(
-      screen
+      content
         .getByRole('region', { name: '그룹 상태' })
         .querySelector('.city-docs-example-preview-content'),
     ).toHaveAttribute('data-city-docs-layout', 'wide');
     expect(
-      screen
+      content
         .getByRole('region', { name: '그룹 상태' })
         .querySelectorAll('.city-docs-fieldset-options-2'),
     ).toHaveLength(2);
-    expect(screen.queryByText(/^(plain|band|outline) 알림 채널$/)).not.toBeInTheDocument();
+    expect(content.queryByText(/^(plain|band|outline) 알림 채널$/)).not.toBeInTheDocument();
   });
 
   it('navigates with internal links, focuses main content and supports back history', async () => {

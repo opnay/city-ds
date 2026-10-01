@@ -159,6 +159,10 @@ jsdom에서 문서·예제 상호작용을 검사합니다. Chromium은 실제 C
 라이트·다크 테마의 접근성을 검사하며 로컬에서 명시적으로 실행합니다. 브라우저 테스트의
 파일 병렬 실행은 꺼져 있습니다. 처음 실행할 때는 Playwright 브라우저를 설치하십시오.
 
+React와 Public Docs의 jsdom 테스트는 worker 안에서 DOM과 모듈을 재사용합니다. 테스트가
+변경한 mock·전역 상태는 복원하고 렌더링은 각 테스트 종료 후 정리해야 합니다. 문서 연결과
+옵션 사이드바는 전체 페이지에서, 예제 자체 동작은 해당 예제만 렌더링해 검증합니다.
+
 ```bash
 pnpm --filter @city-ds/public-docs test
 pnpm --filter @city-ds/public-docs exec playwright install chromium

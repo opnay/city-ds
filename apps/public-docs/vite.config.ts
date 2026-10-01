@@ -25,6 +25,7 @@ export default defineConfig({
         extends: true,
         test: {
           name: 'jsdom',
+          isolate: false,
           environment: 'jsdom',
           include: ['src/**/*.test.{ts,tsx}'],
           maxWorkers: 2,

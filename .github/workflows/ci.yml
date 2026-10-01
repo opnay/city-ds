@@ -130,6 +130,16 @@ jobs:
       - name: Restore dependencies from pnpm store
         run: pnpm install --offline --frozen-lockfile
 
+      - name: Restore and save Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-${{ matrix.package }}-${{ github.sha }}-${{ github.job }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-${{ matrix.package }}-${{ github.sha }}-
+            ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-${{ matrix.package }}-
+            ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-
+
       - name: Check formatting
         if: matrix.package == needs.install.outputs.format_package
         run: pnpm format:check
@@ -166,6 +176,16 @@ jobs:
 
       - name: Restore dependencies from pnpm store
         run: pnpm install --offline --frozen-lockfile
+
+      - name: Restore and save Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-${{ matrix.package }}-${{ github.sha }}-${{ github.job }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-${{ matrix.package }}-${{ github.sha }}-
+            ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-${{ matrix.package }}-
+            ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-
 
       - name: Build package
         env:
@@ -212,6 +232,16 @@ jobs:
 
       - name: Restore dependencies from pnpm store
         run: pnpm install --offline --frozen-lockfile
+
+      - name: Restore and save Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-${{ matrix.package }}-${{ github.sha }}-${{ github.job }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-${{ matrix.package }}-${{ github.sha }}-
+            ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-${{ matrix.package }}-
+            ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-
 
       - name: Install test browser
         if: matrix.package == '@city-ds/storybook'

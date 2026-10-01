@@ -18,5 +18,7 @@
     "typecheck": {
       "dependsOn": ["^build", "^typecheck"]
     }
-  }
+  },
+  "globalDependencies": [".nvmrc", ".npmrc", ".oxlintrc.json", "tsconfig.base.json"],
+  "globalEnv": ["CI"]
 }

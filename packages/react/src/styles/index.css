@@ -108,15 +108,17 @@
     padding-inline-start: var(--city-space-6);
   }
 
-  .city-prose :where(ol, ul) :where(ol, ul) {
+  .city-prose > :where(ol, ul) :where(ol, ul) {
     padding-inline-start: var(--city-space-6);
   }
 
-  .city-prose ul {
+  .city-prose > ul,
+  .city-prose > :where(ol, ul) ul {
     list-style-type: disc;
   }
 
-  .city-prose ol {
+  .city-prose > ol,
+  .city-prose > :where(ol, ul) ol {
     list-style-type: decimal;
   }
 

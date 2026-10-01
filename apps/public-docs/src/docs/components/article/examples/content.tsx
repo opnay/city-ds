@@ -1,3 +1,4 @@
+import { Check } from 'lucide-react';
 import { Article } from '@opnay/city-ds-react/article';
 
 const markdown = `## 변경 내용
@@ -70,7 +71,7 @@ export default function ContentExample({ format = 'markdown' }: { format?: 'mark
         <ul>
           <li className="task-list-item">
             <span aria-label="완료" data-city-article-task-state="complete" role="img">
-              ✓
+              <Check aria-hidden="true" className="size-3" strokeWidth={3} />
             </span>
             목록과 코드 확인
           </li>

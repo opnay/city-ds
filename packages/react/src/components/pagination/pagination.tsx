@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Button as BaseButton } from '@base-ui/react/button';
 import { useRender } from '@base-ui/react/use-render';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Ellipsis } from 'lucide-react';
 import { cn } from '../../lib/cn';
 import type { Density } from '../../types';
 import { useDensity } from '../density-provider';
@@ -377,7 +378,7 @@ export const PaginationFirst = React.forwardRef<HTMLElement, PaginationFirstProp
 
   return (
     <PaginationControl {...props} defaultAriaLabel={labels.first} ref={ref} targetPage={() => 1}>
-      <span aria-hidden="true">«</span>
+      <ChevronsLeft aria-hidden="true" className="size-4" />
     </PaginationControl>
   );
 });
@@ -397,7 +398,7 @@ export const PaginationPrevious = React.forwardRef<HTMLElement, PaginationPrevio
         ref={ref}
         targetPage={(state) => state.page - 1}
       >
-        <span aria-hidden="true">‹</span>
+        <ChevronLeft aria-hidden="true" className="size-4" />
       </PaginationControl>
     );
   },
@@ -418,7 +419,7 @@ export const PaginationPreviousGroup = React.forwardRef<HTMLElement, PaginationP
         ref={ref}
         targetPage={(state) => state.page - state.groupSize}
       >
-        <span aria-hidden="true">…</span>
+        <Ellipsis aria-hidden="true" className="size-4" />
       </PaginationControl>
     );
   },
@@ -470,7 +471,7 @@ export const PaginationNextGroup = React.forwardRef<HTMLElement, PaginationNextG
         ref={ref}
         targetPage={(state) => state.page + state.groupSize}
       >
-        <span aria-hidden="true">…</span>
+        <Ellipsis aria-hidden="true" className="size-4" />
       </PaginationControl>
     );
   },
@@ -490,7 +491,7 @@ export const PaginationNext = React.forwardRef<HTMLElement, PaginationNextProps>
       ref={ref}
       targetPage={(state) => state.page + 1}
     >
-      <span aria-hidden="true">›</span>
+      <ChevronRight aria-hidden="true" className="size-4" />
     </PaginationControl>
   );
 });
@@ -509,7 +510,7 @@ export const PaginationLast = React.forwardRef<HTMLElement, PaginationLastProps>
       ref={ref}
       targetPage={(state) => state.totalPages}
     >
-      <span aria-hidden="true">»</span>
+      <ChevronsRight aria-hidden="true" className="size-4" />
     </PaginationControl>
   );
 });

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { useRender } from '@base-ui/react/use-render';
+import { Check } from 'lucide-react';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -39,7 +40,7 @@ function getMarkdownComponents(footnoteLabelId: string): Components {
         data-city-article-task-state={checked ? 'complete' : 'pending'}
         role="img"
       >
-        {checked ? '✓' : null}
+        {checked ? <Check aria-hidden="true" className="size-3" strokeWidth={3} /> : null}
       </span>
     ),
     pre: ({ children }) => (

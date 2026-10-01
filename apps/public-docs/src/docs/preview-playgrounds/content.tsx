@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Table2 } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { Alert } from '@opnay/city-ds-react/alert';
 import { Avatar } from '@opnay/city-ds-react/avatar';
@@ -69,7 +70,9 @@ export function AlertPreview({ appearance, showIcon, tone, variant }: PreviewOpt
 export function EmptyStatePreview({ density }: PreviewOptionProps) {
   return (
     <EmptyState.Root density={density === 'compact' ? 'compact' : 'default'}>
-      <EmptyState.Icon>□</EmptyState.Icon>
+      <EmptyState.Icon>
+        <Table2 aria-hidden="true" />
+      </EmptyState.Icon>
       <EmptyState.Title>아직 데이터가 없습니다</EmptyState.Title>
       <EmptyState.Description>첫 레코드를 추가해 이 표를 채우십시오.</EmptyState.Description>
       <EmptyState.Actions>

@@ -23,6 +23,7 @@ export * from './components/file-upload';
 export * from './components/filter-bar';
 export * from './components/filter-panel';
 export * from './components/input';
+export * from './components/item';
 export * from './components/kbd';
 export * from './components/menu';
 export * from './components/meter';

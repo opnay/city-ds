@@ -118,6 +118,10 @@
       "types": "./dist/components/kbd/index.d.ts",
       "import": "./dist/components/kbd/index.js"
     },
+    "./item": {
+      "types": "./dist/components/item/index.d.ts",
+      "import": "./dist/components/item/index.js"
+    },
     "./menu": {
       "types": "./dist/components/menu/index.d.ts",
       "import": "./dist/components/menu/index.js"

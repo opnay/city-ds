@@ -315,6 +315,8 @@ Drawer의 스크롤 본문은 `Drawer.Content`를 사용하십시오. 동일한 
 
 ### 데이터와 레이아웃
 
+`Item`은 미디어·제목·설명·액션을 한 콘텐츠 행으로 묶습니다. 이름·값 정보에는 `DataList`, 입력 선택에는 `SelectionCard`나 `Field`를 사용하십시오. Item의 표면은 `plain | band | outline`, 내부 간격은 `comfortable | compact` density로 정합니다. `Item.Group` 안의 Root는 목록 항목으로 감싸지며, 행 전체를 링크로 합성할 때는 내부에 다른 링크나 버튼을 넣지 마십시오.
+
 표의 가로 스크롤과 영역 이름은 `DataTableRegion`으로 구성하십시오. `Table`은 표 자체만 제공하며 `Table.ScrollArea`는 제공하지 않습니다. 표가 아닌 일반 영역에 사용자 정의 스크롤바가 필요하면 `ScrollArea`를 사용하십시오.
 
 | 필요                                        | 사용              | 기준                                                                                                |

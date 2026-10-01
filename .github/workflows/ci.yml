@@ -25,6 +25,7 @@ jobs:
 
     outputs:
       packages: ${{ steps.scope.outputs.packages }}
+      test_packages: ${{ steps.scope.outputs.test_packages }}
       verify: ${{ steps.scope.outputs.verify }}
       format_package: ${{ steps.scope.outputs.format_package }}
 
@@ -88,6 +89,7 @@ jobs:
 
             const affected = Object.values(packages).filter((name) => selected.has(name));
             core.setOutput('packages', affected);
+            core.setOutput('test_packages', affected.filter((name) => name !== packages.storybook));
             core.setOutput('verify', affected.length > 0);
             core.setOutput('format_package', affected[0] ?? '');
 
@@ -210,13 +212,13 @@ jobs:
   test:
     name: test / ${{ matrix.package }}
     needs: [install, lint]
-    if: needs.install.outputs.verify == 'true'
+    if: needs.install.outputs.verify == 'true' && needs.install.outputs.test_packages != '[]'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.install.outputs.packages) }}
+        package: ${{ fromJSON(needs.install.outputs.test_packages) }}
 
     steps:
       - name: Check out repository
@@ -244,10 +246,6 @@ jobs:
             ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-${{ matrix.package }}-${{ github.sha }}-
             ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-${{ matrix.package }}-
             ${{ runner.os }}-${{ runner.arch }}-turbo-v1-${{ hashFiles('.nvmrc', 'pnpm-lock.yaml') }}-
-
-      - name: Install test browser
-        if: matrix.package == '@city-ds/storybook'
-        run: pnpm --filter @city-ds/storybook exec playwright install chromium
 
       - name: Run tests
         env:

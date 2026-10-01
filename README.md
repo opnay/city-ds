@@ -157,7 +157,8 @@ DensityProvider는 기초 가이드에서 밀도 설정 API로 다룹니다.
 ### Storybook 브라우저 테스트
 
 Storybook 스토리는 Vitest 브라우저 모드에서 Chromium으로 렌더링 검사를 실행합니다.
-처음 실행하거나 CI 캐시가 비어 있으면 Playwright 브라우저를 먼저 설치하십시오.
+브라우저 테스트는 로컬에서만 실행하며 PR·수동 CI와 게시 워크플로에서는 실행하지 않습니다.
+처음 실행할 때는 Playwright 브라우저를 먼저 설치하십시오.
 
 ```bash
 pnpm --filter @city-ds/storybook exec playwright install chromium
@@ -197,7 +198,8 @@ pnpm --filter @opnay/city-ds-react pack:check
 CI는 PR에서 하나의 워크플로로 실행합니다. `install`이 pnpm 캐시를 채우고, 변경된
 패키지마다 `lint / <package>` job에서 포맷·린트·타입을 검사합니다. 포맷 검사는 선택된
 패키지 중 하나에서만 실행합니다. 린트가 통과하면 `build / <package>`와
-`test / <package>`가 병렬로 실행됩니다. 각 job은 pnpm 캐시에서 의존성을 오프라인으로
+`test / <package>`가 병렬로 실행됩니다. Storybook은 린트·타입·빌드만 검사하고 테스트
+job에서는 제외합니다. 각 job은 pnpm 캐시에서 의존성을 오프라인으로
 복원합니다. Storybook 빌드 결과는 artifact로 보관하고 React 빌드에서는 package export도
 검사합니다.
 
@@ -210,11 +212,12 @@ job의 캐시를 우선 복원하고, 이전 실행 결과도 Turbo가 입력 �
 테스트가 읽는 Vite CSS도 변경 범위에 포함합니다. `README.md`,
 `AGENTS.md`, PR 템플릿, 블록의 `*_PATTERNS.md`만 바뀐 PR은 CI를 실행하지 않습니다.
 화면에 사용되는 `.mdx`는 제외하지 않습니다. 머지 후 `main` push에서는 중복 실행하지
-않으며, Actions의 수동 실행은 항상 전체를 검증합니다.
+않으며, Actions의 수동 실행은 모든 패키지의 린트·타입·빌드와 Storybook을 제외한 테스트를
+검증합니다. 로컬 `pnpm check`와 `pnpm test`에는 Storybook 테스트도 포함됩니다.
 
 ## 배포
 
 `packages/react/package.json`의 버전을 올리고 같은 버전의 `v<version>` 태그로 GitHub
-Release를 게시하십시오. 게시 워크플로는 전체 품질 게이트와 패키지 export 검사를 통과한
+Release를 게시하십시오. 게시 워크플로는 Storybook 테스트를 제외한 품질 게이트와 패키지 export 검사를 통과한
 뒤 `@opnay/city-ds-react`만 비공개 GitHub Package로 배포합니다. CI 인증에는 저장소의
 `GITHUB_TOKEN`을 사용하므로 별도 배포 secret은 필요하지 않습니다.

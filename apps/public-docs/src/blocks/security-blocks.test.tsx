@@ -188,17 +188,24 @@ describe('Security block flows', () => {
         expect(this.download).toBe('recovery-codes.txt');
         expect(this.getAttribute('href')).toBe('blob:recovery-codes');
       });
-    await user.click(screen.getByRole('button', { name: '다운로드' }));
-    expect(download).toHaveBeenCalledOnce();
+    const downloadButton = screen.getByRole('button', { name: '다운로드' });
+    // Only the deferred URL cleanup needs a clock; keep user interactions on real timers.
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      fireEvent.click(downloadButton);
+      expect(download).toHaveBeenCalledOnce();
+      expect(revokeUrl).not.toHaveBeenCalled();
+      await vi.advanceTimersByTimeAsync(1000);
+      expect(revokeUrl).toHaveBeenCalledWith('blob:recovery-codes');
+    } finally {
+      vi.useRealTimers();
+    }
     const contents = await new Promise<string>((resolve) => {
       const reader = new FileReader();
       reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
       reader.readAsText(createUrl.mock.calls[0]![0]);
     });
     expect(contents).toBe('NEW-1111\nNEW-2222');
-    await waitFor(() => expect(revokeUrl).toHaveBeenCalledWith('blob:recovery-codes'), {
-      timeout: 2000,
-    });
     await user.click(
       screen.getByRole('checkbox', { name: '복구 코드를 안전한 곳에 보관했습니다' }),
     );

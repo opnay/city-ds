@@ -707,6 +707,18 @@ export const COMPONENT_DOCS = [
   },
   {
     category: 'Data display',
+    description: '미디어·제목·설명·액션을 한 콘텐츠 행으로 묶습니다.',
+    importPath: '@opnay/city-ds-react/item',
+    keywords: ['아이템', '목록', '리스트', '행', '미디어', '콘텐츠', '액션'],
+    load: () => import('./components/item/index.mdx'),
+    related: ['data-list', 'selection-card', 'avatar', 'button'],
+    selectionGuidance:
+      '콘텐츠와 액션을 함께 표시할 때 사용하십시오. 이름·값에는 DataList, 입력 선택에는 SelectionCard나 Field를 사용하십시오.',
+    slug: 'item',
+    title: 'Item',
+  },
+  {
+    category: 'Data display',
     description: '시간순 이벤트를 지점·연결선·내용으로 구성합니다.',
     importPath: '@opnay/city-ds-react/timeline',
     keywords: ['타임라인', '활동', '이력', '시간', '이벤트'],

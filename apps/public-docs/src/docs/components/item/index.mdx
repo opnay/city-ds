@@ -1,0 +1,31 @@
+import { pageData } from './page-data';
+
+<ComponentReference data={pageData} />
+
+## 사용 기준
+
+Item은 사용자·파일·문서·알림처럼 미디어, 제목, 설명과 액션을 함께 읽는 콘텐츠 행에 사용하십시오.
+이름과 값을 짝지으면 DataList, 입력을 선택하면 SelectionCard 또는 Field, 여러 레코드의 열을 비교하면 Table을 사용하십시오.
+선택 상태, 라우팅, 데이터 조회와 액션의 부수 효과는 소비 프로젝트가 소유합니다.
+
+## 구성과 배치
+
+Root 안에 Media, Content와 Actions를 배치하고, Content 안에 Title과 Description을 넣으십시오.
+Header와 Footer는 행 전체 폭을 사용합니다. Avatar는 Media의 기본 variant 안에 조합하고 이미지에는 `variant="image"`를 사용하십시오.
+
+`appearance="plain | band | outline"`으로 표면을 정하고 `density="comfortable | compact"`로 내부 간격을 조절합니다.
+density를 생략하면 DensityProvider를 따릅니다. Group의 항목 간격도 DensityProvider를 따르며 Separator는 바깥 margin을 추가하지 않습니다.
+긴 제목과 설명은 줄바꿈하고, 액션은 폭이 부족하면 다음 줄로 이동합니다. 텍스트를 기본적으로 생략하지 않습니다.
+
+## 접근성
+
+Group은 `ul`이며, 그룹 안의 Root를 `li`로 감쌉니다. Group에는 Root와 Separator를 배치하고 직접 `li`를 추가하지 마십시오.
+Separator도 숨겨진 `li` 안에 렌더링하므로 보조 기술은 구분선을 항목으로 세지 않습니다.
+Root를 `render={<a href="..." />}`로 합성해도 `li > a` 구조와 링크의 키보드 동작이 유지됩니다.
+Group을 합성할 때는 `ul` 또는 `ol`의 목록 의미를 유지하십시오. Root의 ref는 바깥 li가 아니라 실제 콘텐츠 행을 가리킵니다.
+
+행 전체가 링크나 버튼이면 내부에 다른 링크·버튼·입력을 넣지 마십시오. 별도 액션이 필요하면 Root를 기본 div로 두고 제목 링크와 Actions를 형제로 조합하십시오.
+Title은 기본 div입니다. 문서 구조에 heading이 필요하면 `render={<h3 />}` 등으로 합성하십시오.
+아이콘은 장식이면 `aria-hidden`, 이미지는 의미에 맞는 `alt`, 아이콘 버튼은 접근 가능한 이름을 제공하십시오.
+
+구성은 [shadcn/ui Item](https://ui.shadcn.com/docs/components/base/item)을 참고했으며 city-ds의 표면·밀도·토큰과 목록 의미에 맞췄습니다.

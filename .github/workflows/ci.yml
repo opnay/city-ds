@@ -65,7 +65,9 @@ jobs:
                     continue;
                   }
 
-                  if (path.startsWith('apps/storybook/')) {
+                  if (path.startsWith('packages/react/tests/')) {
+                    selected.add(packages.react);
+                  } else if (path.startsWith('apps/storybook/')) {
                     selected.add(packages.storybook);
                   } else if (path.startsWith('apps/public-docs/')) {
                     selected.add(packages.docs);

@@ -205,8 +205,9 @@ lint·build·test job은 `.turbo/cache`를 저장하고 복원합니다. 같은 
 job의 캐시를 우선 복원하고, 이전 실행 결과도 Turbo가 입력 해시를 확인해 재사용합니다.
 공통 린트·타입 설정과 패키지 밖에서 참조하는 공유 예제·Vite CSS도 캐시 입력에 포함합니다.
 
-React 패키지나 공통 설정이 바뀌면 전체를 검증합니다. Storybook이 사용하는 public-docs
-예제와 React 테마 테스트가 읽는 Vite CSS도 변경 범위에 포함합니다. `README.md`,
+`packages/react/tests/**`만 바뀌면 React 패키지만 검증합니다. React 구현·패키지 설정이나
+공통 설정이 바뀌면 전체를 검증합니다. Storybook이 사용하는 public-docs 예제와 React 테마
+테스트가 읽는 Vite CSS도 변경 범위에 포함합니다. `README.md`,
 `AGENTS.md`, PR 템플릿, 블록의 `*_PATTERNS.md`만 바뀐 PR은 CI를 실행하지 않습니다.
 화면에 사용되는 `.mdx`는 제외하지 않습니다. 머지 후 `main` push에서는 중복 실행하지
 않으며, Actions의 수동 실행은 항상 전체를 검증합니다.

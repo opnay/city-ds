@@ -60,11 +60,10 @@ describe('User management blocks', () => {
     };
     render(<AccountManagement actions={actions} onSignIn={onSignIn} />);
     await user.click(screen.getByRole('button', { name: '이메일 변경' }));
-    await user.type(screen.getByRole('textbox', { name: '새 이메일' }), 'new@example.com');
-    await user.type(
-      screen.getByLabelText('현재 비밀번호', { selector: 'input' }),
-      'current-password',
-    );
+    await user.click(screen.getByRole('textbox', { name: '새 이메일' }));
+    await user.paste('new@example.com');
+    await user.click(screen.getByLabelText('현재 비밀번호', { selector: 'input' }));
+    await user.paste('current-password');
     await user.click(screen.getByRole('button', { name: '확인 코드 보내기' }));
     expect(actions.requestEmailChange).toHaveBeenCalledWith('new@example.com', 'current-password');
     expect(screen.getByText('seoyeon@example.com')).toBeVisible();
@@ -82,10 +81,8 @@ describe('User management blocks', () => {
     await user.click(screen.getByRole('button', { name: '계정 탈퇴' }));
     const removal = within(screen.getByRole('alertdialog'));
     expect(removal.getByRole('button', { name: '계정 탈퇴' })).toBeDisabled();
-    await user.type(
-      removal.getByLabelText('현재 비밀번호', { selector: 'input' }),
-      'current-password',
-    );
+    await user.click(removal.getByLabelText('현재 비밀번호', { selector: 'input' }));
+    await user.paste('current-password');
     await user.type(removal.getByRole('textbox', { name: '확인 문구' }), '탈퇴');
     await user.click(removal.getByRole('button', { name: '계정 탈퇴' }));
     expect(actions.deleteAccount).toHaveBeenCalledWith('current-password');
@@ -135,14 +132,17 @@ describe('User management blocks', () => {
     const current = screen.getByLabelText('현재 비밀번호', { selector: 'input' });
     const next = screen.getByLabelText('새 비밀번호', { selector: 'input' });
     const confirmation = screen.getByLabelText('새 비밀번호 확인', { selector: 'input' });
-    await user.type(current, 'old-password');
-    await user.type(next, 'new-password-123');
+    await user.click(current);
+    await user.paste('old-password');
+    await user.click(next);
+    await user.paste('new-password-123');
     await user.type(confirmation, 'wrong');
     await user.click(screen.getByRole('button', { name: '비밀번호 변경' }));
     expect(screen.getByText('새 비밀번호와 일치하지 않습니다.')).toBeVisible();
     expect(change).not.toHaveBeenCalled();
     await user.clear(confirmation);
-    await user.type(confirmation, 'new-password-123');
+    await user.click(confirmation);
+    await user.paste('new-password-123');
     await user.click(screen.getByRole('button', { name: '새 비밀번호 보기' }));
     expect(next).toHaveAttribute('type', 'text');
     await user.click(screen.getByRole('button', { name: '비밀번호 변경' }));

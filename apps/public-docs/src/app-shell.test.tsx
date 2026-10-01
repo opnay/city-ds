@@ -263,11 +263,13 @@ describe('public docs routes and shell', () => {
     expect(within(navigation).getByText('컴포넌트 · 액션')).toBeVisible();
 
     await user.clear(search);
-    await user.type(search, '존재하지 않는 검색어');
+    await user.click(search);
+    await user.paste('존재하지 않는 검색어');
     expect(within(navigation).getByText('일치하는 문서가 없습니다.')).toBeVisible();
 
     await user.clear(search);
-    await user.type(search, 'Getting started');
+    await user.click(search);
+    await user.paste('Getting started');
     await user.click(within(navigation).getByRole('link', { name: /시작하기/ }));
 
     expect(await screen.findByRole('heading', { level: 1, name: '시작하기' })).toBeVisible();

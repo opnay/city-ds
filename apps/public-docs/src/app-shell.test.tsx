@@ -41,13 +41,14 @@ describe('public docs routes and shell', () => {
 
   it('omits redundant state captions while preserving accessible control names', async () => {
     const { container } = await renderDocs(['/components/select']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Select' })).toBeVisible();
+    expect(await content.findByRole('heading', { level: 1, name: 'Select' })).toBeVisible();
     await waitFor(() =>
       expect(container.querySelectorAll('.city-docs-example-variant').length).toBeGreaterThan(0),
     );
 
-    const selectionExample = screen.getByRole('region', { name: '선택 방식' });
+    const selectionExample = content.getByRole('region', { name: '선택 방식' });
     expect(selectionExample.querySelector('.city-docs-example-label')).toBeNull();
     expect(within(selectionExample).getAllByRole('combobox', { name: '작업 상태' })).toHaveLength(
       3,
@@ -227,15 +228,9 @@ describe('public docs routes and shell', () => {
     const search = within(navigation).getByRole('searchbox', { name: '문서 검색' });
     const mode = within(navigation).getByRole('combobox', { name: '문서 영역' });
 
-    expect(within(sidebar).getByRole('link', { name: 'city-ds 홈' })).toHaveClass(
-      'city-docs-brand',
-      'city-docs-home-link',
-      'hover:bg-city-accent',
-    );
-    expect(within(sidebar).getByRole('link', { name: 'city-ds 홈' })).toHaveAttribute(
-      'data-city-size',
-      'md',
-    );
+    const brand = within(sidebar).getByRole('link', { name: 'city-ds 홈' });
+    expect(brand).toHaveClass('city-docs-brand', 'city-docs-home-link', 'hover:bg-city-accent');
+    expect(brand).toHaveAttribute('data-city-size', 'md');
     expect(within(sidebar).getByText('소비자 문서')).toBeVisible();
     expect(mode).toHaveTextContent('Components');
     expect(within(navigation).getByRole('link', { name: 'DensityProvider' })).toBeVisible();

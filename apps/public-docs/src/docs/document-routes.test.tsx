@@ -95,15 +95,12 @@ describe('all component document routes', () => {
     expect(pageHeading?.querySelector(':scope > [data-city-badge]')).not.toBeInTheDocument();
     const accessibilityHeading = content.getByRole('heading', { level: 2, name: '접근성' });
     expect(accessibilityHeading).toHaveClass('city-text-section-title');
-    for (const removedHeading of [
-      '대표 예제',
-      '주요 API',
-      '언제 사용합니까',
-      '언제 피해야 합니까',
-      '합성 구조',
-    ]) {
-      expect(content.queryByRole('heading', { level: 2, name: removedHeading })).toBeNull();
-    }
+    expect(
+      content.queryAllByRole('heading', {
+        level: 2,
+        name: /^(대표 예제|주요 API|언제 사용합니까|언제 피해야 합니까|합성 구조|가져오기)$/,
+      }),
+    ).toHaveLength(0);
     const componentReference = container.querySelector('.city-docs-component-reference');
     const featuredExample = componentReference?.querySelector(':scope > .city-docs-example');
     expect(componentReference).not.toBeNull();
@@ -189,7 +186,6 @@ describe('all component document routes', () => {
       name: `${entry.title} 가져오기`,
     });
     expect(pageHeading).toContainElement(importRegion);
-    expect(content.queryByRole('heading', { level: 2, name: '가져오기' })).toBeNull();
     const apiRegion = content.getByRole('region', { name: '주요 API' });
     expect(within(apiRegion).getByRole('table')).toBeVisible();
     expect(featuredExample?.compareDocumentPosition(apiRegion)).toBe(

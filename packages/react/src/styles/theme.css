@@ -161,6 +161,7 @@
   --city-color-inverse: var(--city-palette-neutral-900);
   --city-color-inverse-foreground: var(--city-palette-neutral-50);
   --city-color-destructive: var(--city-palette-red-700);
+  --city-color-destructive-text: var(--city-palette-red-700);
   --city-color-destructive-hover: var(--city-palette-red-800);
   --city-color-destructive-active: var(--city-palette-red-900);
   --city-color-destructive-foreground: var(--city-palette-neutral-50);
@@ -210,6 +211,7 @@
   --city-color-inverse: var(--city-palette-neutral-50);
   --city-color-inverse-foreground: var(--city-palette-neutral-900);
   --city-color-destructive: var(--city-palette-red-600);
+  --city-color-destructive-text: var(--city-palette-red-500);
   --city-color-destructive-hover: var(--city-palette-red-700);
   --city-color-destructive-active: var(--city-palette-red-800);
   --city-color-destructive-foreground: var(--city-palette-neutral-50);
@@ -258,6 +260,7 @@
     --city-color-inverse: var(--city-palette-neutral-50);
     --city-color-inverse-foreground: var(--city-palette-neutral-900);
     --city-color-destructive: var(--city-palette-red-600);
+    --city-color-destructive-text: var(--city-palette-red-500);
     --city-color-destructive-hover: var(--city-palette-red-700);
     --city-color-destructive-active: var(--city-palette-red-800);
     --city-color-destructive-foreground: var(--city-palette-neutral-50);
@@ -364,6 +367,7 @@
   --color-city-inverse: var(--city-color-inverse);
   --color-city-inverse-foreground: var(--city-color-inverse-foreground);
   --color-city-destructive: var(--city-color-destructive);
+  --color-city-destructive-text: var(--city-color-destructive-text);
   --color-city-destructive-hover: var(--city-color-destructive-hover);
   --color-city-destructive-active: var(--city-color-destructive-active);
   --color-city-destructive-foreground: var(--city-color-destructive-foreground);

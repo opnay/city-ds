@@ -44,7 +44,8 @@ describe('Security block flows', () => {
     render(<PasswordReset actions={actions} onSignIn={signIn} />);
     await user.click(screen.getByRole('button', { name: '재설정 코드 요청' }));
     expect(actions.request).not.toHaveBeenCalled();
-    await user.type(screen.getByRole('textbox', { name: '이메일' }), 'member@example.com');
+    await user.click(screen.getByRole('textbox', { name: '이메일' }));
+    await user.paste('member@example.com');
     await user.click(screen.getByRole('button', { name: '재설정 코드 요청' }));
     expect(actions.request).toHaveBeenCalledWith('member@example.com');
     expect(screen.getByText(/일치하는 계정이 있으면/)).toBeVisible();
@@ -57,12 +58,14 @@ describe('Security block flows', () => {
     expect(actions.verify).toHaveBeenLastCalledWith('challenge', '123456');
     const password = screen.getByLabelText('새 비밀번호', { selector: 'input' });
     const confirmation = screen.getByLabelText('새 비밀번호 확인', { selector: 'input' });
-    await user.type(password, 'new-password-123');
+    await user.click(password);
+    await user.paste('new-password-123');
     await user.type(confirmation, 'wrong');
     await user.click(screen.getByRole('button', { name: '비밀번호 재설정' }));
     expect(actions.reset).not.toHaveBeenCalled();
     await user.clear(confirmation);
-    await user.type(confirmation, 'new-password-123');
+    await user.click(confirmation);
+    await user.paste('new-password-123');
     await user.click(screen.getByRole('button', { name: '비밀번호 재설정' }));
     expect(await screen.findByRole('alert')).toBeVisible();
     expect(password).toHaveValue('new-password-123');
@@ -188,17 +191,24 @@ describe('Security block flows', () => {
         expect(this.download).toBe('recovery-codes.txt');
         expect(this.getAttribute('href')).toBe('blob:recovery-codes');
       });
-    await user.click(screen.getByRole('button', { name: '다운로드' }));
-    expect(download).toHaveBeenCalledOnce();
+    const downloadButton = screen.getByRole('button', { name: '다운로드' });
+    // Only the deferred URL cleanup needs a clock; keep user interactions on real timers.
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      fireEvent.click(downloadButton);
+      expect(download).toHaveBeenCalledOnce();
+      expect(revokeUrl).not.toHaveBeenCalled();
+      await vi.advanceTimersByTimeAsync(1000);
+      expect(revokeUrl).toHaveBeenCalledWith('blob:recovery-codes');
+    } finally {
+      vi.useRealTimers();
+    }
     const contents = await new Promise<string>((resolve) => {
       const reader = new FileReader();
       reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
       reader.readAsText(createUrl.mock.calls[0]![0]);
     });
     expect(contents).toBe('NEW-1111\nNEW-2222');
-    await waitFor(() => expect(revokeUrl).toHaveBeenCalledWith('blob:recovery-codes'), {
-      timeout: 2000,
-    });
     await user.click(
       screen.getByRole('checkbox', { name: '복구 코드를 안전한 곳에 보관했습니다' }),
     );

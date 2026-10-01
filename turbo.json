@@ -3,7 +3,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", "storybook-static/**"]
+      "outputs": ["dist/**"]
     },
     "dev": {
       "cache": false,
@@ -18,5 +18,7 @@
     "typecheck": {
       "dependsOn": ["^build", "^typecheck"]
     }
-  }
+  },
+  "globalDependencies": [".nvmrc", ".npmrc", ".oxlintrc.json", "tsconfig.base.json"],
+  "globalEnv": ["CI"]
 }

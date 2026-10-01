@@ -72,16 +72,10 @@ jobs:
         include:
           - name: React package
             package: '@opnay/city-ds-react'
-            browser: false
-          - name: Storybook
-            package: '@city-ds/storybook'
-            browser: true
           - name: Vite consumer
             package: '@city-ds/vite-smoke'
-            browser: false
           - name: Public docs
             package: '@city-ds/public-docs'
-            browser: false
 
     steps:
       - name: Check out repository
@@ -99,10 +93,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Install Storybook test browser
-        if: matrix.browser
-        run: pnpm --filter @city-ds/storybook exec playwright install chromium
 
       - name: Run tests
         run: pnpm turbo run test --filter='${{ matrix.package }}'

@@ -82,30 +82,25 @@ describe('all component document routes', () => {
   });
 
   it.each(COMPONENT_DOCS)('renders $slug with examples and API', async (entry) => {
-    const { container } = await renderDocs([`/components/${entry.slug}`]);
+    const { container: page } = await renderDocs([`/components/${entry.slug}`]);
+    const container = page.querySelector<HTMLElement>('main')!;
+    const content = within(container);
 
-    expect(screen.getByRole('heading', { level: 1, name: entry.title })).toHaveClass(
-      'city-text-page-title',
-    );
-    const pageHeading = screen
-      .getByRole('heading', { level: 1, name: entry.title })
-      .closest('header');
+    const title = content.getByRole('heading', { level: 1, name: entry.title });
+    expect(title).toHaveClass('city-text-page-title');
+    const pageHeading = title.closest('header');
 
     expect(pageHeading).not.toBeNull();
     expect(pageHeading?.querySelector('.city-docs-page-eyebrow')).not.toBeInTheDocument();
     expect(pageHeading?.querySelector(':scope > [data-city-badge]')).not.toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 2, name: '접근성' })).toHaveClass(
-      'city-text-section-title',
-    );
-    for (const removedHeading of [
-      '대표 예제',
-      '주요 API',
-      '언제 사용합니까',
-      '언제 피해야 합니까',
-      '합성 구조',
-    ]) {
-      expect(screen.queryByRole('heading', { level: 2, name: removedHeading })).toBeNull();
-    }
+    const accessibilityHeading = content.getByRole('heading', { level: 2, name: '접근성' });
+    expect(accessibilityHeading).toHaveClass('city-text-section-title');
+    expect(
+      content.queryAllByRole('heading', {
+        level: 2,
+        name: /^(대표 예제|주요 API|언제 사용합니까|언제 피해야 합니까|합성 구조|가져오기)$/,
+      }),
+    ).toHaveLength(0);
     const componentReference = container.querySelector('.city-docs-component-reference');
     const featuredExample = componentReference?.querySelector(':scope > .city-docs-example');
     expect(componentReference).not.toBeNull();
@@ -150,7 +145,7 @@ describe('all component document routes', () => {
       expect(body?.querySelector('.city-docs-example-preview')).not.toBeNull();
       expect(body?.querySelector('.city-docs-example-code')).not.toBeNull();
     }
-    const optionHeading = screen.queryByRole('heading', { level: 2, name: '옵션과 사용법' });
+    const optionHeading = content.queryByRole('heading', { level: 2, name: '옵션과 사용법' });
     const optionSection = optionHeading?.closest('.city-docs-component-reference-section');
     const optionTitles = optionSection?.querySelectorAll('.city-docs-example-title') ?? [];
     const optionDescriptions =
@@ -181,18 +176,18 @@ describe('all component document routes', () => {
         within(header as HTMLElement).getByRole('button', { name: '미리보기 설정' }),
       ).toBeVisible();
     }
-    const optionPanels = screen.queryAllByRole('complementary', { name: '미리보기 옵션' });
+    const optionPanels = content.queryAllByRole('complementary', { name: '미리보기 옵션' });
     expect(optionPanels).toHaveLength(1);
     for (const panel of optionPanels) {
       expect(panel).not.toHaveAttribute('hidden');
     }
     expect(container.querySelector('.city-docs-prose')).toHaveClass('city-prose');
-    const importRegion = screen.getByRole('region', { name: `${entry.title} 가져오기` });
+    const importRegion = within(pageHeading!).getByRole('region', {
+      name: `${entry.title} 가져오기`,
+    });
     expect(pageHeading).toContainElement(importRegion);
-    expect(screen.queryByRole('heading', { level: 2, name: '가져오기' })).toBeNull();
-    const apiRegion = screen.getByRole('region', { name: '주요 API' });
+    const apiRegion = content.getByRole('region', { name: '주요 API' });
     expect(within(apiRegion).getByRole('table')).toBeVisible();
-    const accessibilityHeading = screen.getByRole('heading', { level: 2, name: '접근성' });
     expect(featuredExample?.compareDocumentPosition(apiRegion)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
@@ -211,7 +206,7 @@ describe('all component document routes', () => {
     const related = container.querySelector('.city-docs-related');
     expect(selectionGuidance).toHaveTextContent('선택 가이드');
     expect(selectionGuidance).toHaveTextContent(entry.selectionGuidance);
-    expect(screen.queryByRole('heading', { name: '선택 가이드' })).toBeNull();
+    expect(content.queryByRole('heading', { name: '선택 가이드' })).toBeNull();
     expect(selectionGuidance?.compareDocumentPosition(related as Node)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );

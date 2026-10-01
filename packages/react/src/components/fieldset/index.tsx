@@ -97,7 +97,7 @@ export const FieldsetError = React.forwardRef<HTMLParagraphElement, FieldsetErro
       <p
         {...props}
         ref={ref}
-        className={cn('text-city-destructive -mt-2 text-xs leading-5', className)}
+        className={cn('text-city-destructive-text -mt-2 text-xs leading-5', className)}
       />
     );
   },

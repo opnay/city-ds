@@ -12,8 +12,6 @@
     "lint": "turbo run lint",
     "public-docs": "pnpm --filter @city-ds/public-docs dev",
     "public-docs:build": "pnpm --filter @city-ds/public-docs build",
-    "storybook": "pnpm --filter @city-ds/storybook dev",
-    "storybook:build": "pnpm --filter @city-ds/storybook build",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck"
   },

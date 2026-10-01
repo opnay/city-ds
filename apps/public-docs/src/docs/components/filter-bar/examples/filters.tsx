@@ -98,10 +98,12 @@ export default function FiltersExample({
               </Table.Row>
             ))}
           </Table.Body>
-          <Table.Caption role="status">
-            {results.length > 0
-              ? `${results.length}개 · ${results.map((project) => project.name).join(', ')}`
-              : '조건에 맞는 프로젝트가 없어요.'}
+          <Table.Caption>
+            <span role="status">
+              {results.length > 0
+                ? `${results.length}개 · ${results.map((project) => project.name).join(', ')}`
+                : '조건에 맞는 프로젝트가 없어요.'}
+            </span>
           </Table.Caption>
         </Table.Root>
       </DataTableRegion>

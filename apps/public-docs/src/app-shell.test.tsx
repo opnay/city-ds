@@ -18,9 +18,10 @@ describe('public docs routes and shell', () => {
     ['/blocks/account-settings', '계정 설정'],
     ['/components/button', 'Button'],
   ])('renders %s', async (path, title) => {
-    await renderDocs([path]);
+    const { container } = await renderDocs([path]);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    expect(screen.getByRole('heading', { level: 1, name: title })).toHaveClass(
+    expect(content.getByRole('heading', { level: 1, name: title })).toHaveClass(
       'city-text-page-title',
     );
     expect(screen.getByRole('navigation', { name: '현재 위치' })).toBeVisible();
@@ -40,13 +41,14 @@ describe('public docs routes and shell', () => {
 
   it('omits redundant state captions while preserving accessible control names', async () => {
     const { container } = await renderDocs(['/components/select']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Select' })).toBeVisible();
+    expect(await content.findByRole('heading', { level: 1, name: 'Select' })).toBeVisible();
     await waitFor(() =>
       expect(container.querySelectorAll('.city-docs-example-variant').length).toBeGreaterThan(0),
     );
 
-    const selectionExample = screen.getByRole('region', { name: '선택 방식' });
+    const selectionExample = content.getByRole('region', { name: '선택 방식' });
     expect(selectionExample.querySelector('.city-docs-example-label')).toBeNull();
     expect(within(selectionExample).getAllByRole('combobox', { name: '작업 상태' })).toHaveLength(
       3,
@@ -54,10 +56,11 @@ describe('public docs routes and shell', () => {
   });
 
   it('separates Fieldset surfaces and keeps each preview as a real group', async () => {
-    await renderDocs(['/components/fieldset']);
+    const { container } = await renderDocs(['/components/fieldset']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
     for (const name of ['Fieldset', 'Outline', 'Plain', 'Band']) {
-      const preview = screen.getByRole('region', { name });
+      const preview = content.getByRole('region', { name });
       expect(preview.querySelector('.city-docs-example-preview-content')).toHaveAttribute(
         'data-city-docs-layout',
         'wide',
@@ -68,16 +71,16 @@ describe('public docs routes and shell', () => {
     }
 
     expect(
-      screen
+      content
         .getByRole('region', { name: '그룹 상태' })
         .querySelector('.city-docs-example-preview-content'),
     ).toHaveAttribute('data-city-docs-layout', 'wide');
     expect(
-      screen
+      content
         .getByRole('region', { name: '그룹 상태' })
         .querySelectorAll('.city-docs-fieldset-options-2'),
     ).toHaveLength(2);
-    expect(screen.queryByText(/^(plain|band|outline) 알림 채널$/)).not.toBeInTheDocument();
+    expect(content.queryByText(/^(plain|band|outline) 알림 채널$/)).not.toBeInTheDocument();
   });
 
   it('navigates with internal links, focuses main content and supports back history', async () => {
@@ -225,15 +228,9 @@ describe('public docs routes and shell', () => {
     const search = within(navigation).getByRole('searchbox', { name: '문서 검색' });
     const mode = within(navigation).getByRole('combobox', { name: '문서 영역' });
 
-    expect(within(sidebar).getByRole('link', { name: 'city-ds 홈' })).toHaveClass(
-      'city-docs-brand',
-      'city-docs-home-link',
-      'hover:bg-city-accent',
-    );
-    expect(within(sidebar).getByRole('link', { name: 'city-ds 홈' })).toHaveAttribute(
-      'data-city-size',
-      'md',
-    );
+    const brand = within(sidebar).getByRole('link', { name: 'city-ds 홈' });
+    expect(brand).toHaveClass('city-docs-brand', 'city-docs-home-link', 'hover:bg-city-accent');
+    expect(brand).toHaveAttribute('data-city-size', 'md');
     expect(within(sidebar).getByText('소비자 문서')).toBeVisible();
     expect(mode).toHaveTextContent('Components');
     expect(within(navigation).getByRole('link', { name: 'DensityProvider' })).toBeVisible();
@@ -261,11 +258,13 @@ describe('public docs routes and shell', () => {
     expect(within(navigation).getByText('컴포넌트 · 액션')).toBeVisible();
 
     await user.clear(search);
-    await user.type(search, '존재하지 않는 검색어');
+    await user.click(search);
+    await user.paste('존재하지 않는 검색어');
     expect(within(navigation).getByText('일치하는 문서가 없습니다.')).toBeVisible();
 
     await user.clear(search);
-    await user.type(search, 'Getting started');
+    await user.click(search);
+    await user.paste('Getting started');
     await user.click(within(navigation).getByRole('link', { name: /시작하기/ }));
 
     expect(await screen.findByRole('heading', { level: 1, name: '시작하기' })).toBeVisible();

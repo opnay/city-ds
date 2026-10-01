@@ -11,7 +11,7 @@ export default function ComboboxSingleExample() {
           <Combobox.Root defaultValue="도시 포털" items={projects} size={size}>
             <Combobox.InputGroup>
               <Combobox.Input aria-label={`${size} 프로젝트`} placeholder="프로젝트 검색" />
-              <Combobox.Trigger />
+              <Combobox.Trigger aria-label="프로젝트 목록 열기" />
             </Combobox.InputGroup>
             <Combobox.Portal>
               <Combobox.Positioner>

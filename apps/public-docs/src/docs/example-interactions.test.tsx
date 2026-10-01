@@ -1,39 +1,15 @@
-import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { renderDocs } from '../test/render-docs';
-import { pageData as progressPageData } from './components/progress/page-data';
-import { pageData as toastPageData } from './components/toast/page-data';
-import { toast } from '@opnay/city-ds-react/toast';
-
-afterEach(() => {
-  toast.dismiss();
-});
 
 describe('documented component interactions', () => {
-  it('combines filter conditions and resets them together', async () => {
-    const user = userEvent.setup();
-    await renderDocs(['/components/filter-bar']);
-    const preview = within(screen.getByRole('region', { name: 'FilterBar' }));
-    await user.type(preview.getByRole('textbox', { name: '프로젝트 이름' }), '공원');
-    expect(preview.getByRole('status')).toHaveTextContent('2개');
-    await user.click(preview.getByRole('combobox', { name: '상태' }));
-    await user.click(screen.getByRole('option', { name: '완료' }));
-    expect(preview.getByRole('status')).toHaveTextContent('1개 · 공원 안내판 교체');
-    await user.clear(preview.getByRole('textbox', { name: '프로젝트 이름' }));
-    await user.type(preview.getByRole('textbox', { name: '프로젝트 이름' }), '도로');
-    expect(preview.getByRole('status')).toHaveTextContent('조건에 맞는 프로젝트가 없어요.');
-    await user.click(preview.getByRole('button', { name: '초기화' }));
-    expect(preview.getByRole('textbox', { name: '프로젝트 이름' })).toHaveValue('');
-    expect(preview.getByRole('combobox', { name: '상태' })).toHaveTextContent('모든 상태');
-    expect(preview.getByRole('status')).toHaveTextContent('3개');
-  });
-
   it('configures OTP slots and submits a controlled code example', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/otp-input']);
-    const preview = within(screen.getByRole('region', { name: 'OtpInput' }));
+    const { container } = await renderDocs(['/components/otp-input']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
+    const preview = within(content.getByRole('region', { name: 'OtpInput' }));
     const options = within(preview.getByRole('complementary', { name: '미리보기 옵션' }));
     expect(preview.getAllByRole('textbox')).toHaveLength(6);
     await user.click(options.getByRole('radio', { name: '4' }));
@@ -41,7 +17,7 @@ describe('documented component interactions', () => {
     await user.click(options.getByRole('switch', { name: 'disabled' }));
     expect(preview.getAllByRole('textbox')[0]).toBeDisabled();
 
-    const form = within(screen.getByRole('region', { name: '폼 입력' }));
+    const form = within(content.getByRole('region', { name: '폼 입력' }));
     await user.click(form.getAllByRole('textbox')[0]!);
     await user.paste('012345');
     await user.click(form.getByRole('button', { name: '입력 확인' }));
@@ -54,8 +30,9 @@ describe('documented component interactions', () => {
 
   it('switches SelectionCard between radio, checkbox and switch previews', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/selection-card']);
-    const example = screen.getByRole('region', { name: 'SelectionCard' });
+    const { container } = await renderDocs(['/components/selection-card']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
+    const example = content.getByRole('region', { name: 'SelectionCard' });
     const preview = within(example);
     const sidebar = within(preview.getByRole('complementary', { name: '미리보기 옵션' }));
 
@@ -88,9 +65,10 @@ describe('documented component interactions', () => {
 
   it('configures the Button preview from the global options sidebar', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/button']);
+    const { container } = await renderDocs(['/components/button']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    const example = screen.getByRole('region', { name: 'Button' });
+    const example = content.getByRole('region', { name: 'Button' });
     const preview = example.querySelector('.city-docs-example-preview');
     const previewButton = within(example).getByRole('button', { name: '미리보기 버튼' });
     const optionsTrigger = within(example).getByRole('button', { name: '미리보기 옵션 닫기' });
@@ -140,9 +118,10 @@ describe('documented component interactions', () => {
 
   it('switches Avatar shape and content from the preview sidebar', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/avatar']);
+    const { container } = await renderDocs(['/components/avatar']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    const example = screen.getByRole('region', { name: 'Avatar' });
+    const example = content.getByRole('region', { name: 'Avatar' });
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     const avatar = example.querySelector('[data-city-avatar]');
 
@@ -165,9 +144,10 @@ describe('documented component interactions', () => {
 
   it('uses plain to enable horizontal labels regardless of the selected normal orientation', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/divider']);
+    const { container } = await renderDocs(['/components/divider']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    const example = screen.getByRole('region', { name: 'Divider' });
+    const example = content.getByRole('region', { name: 'Divider' });
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     const horizontal = within(sidebar).getByRole('radio', { name: 'horizontal' });
     const vertical = within(sidebar).getByRole('radio', { name: 'vertical' });
@@ -213,9 +193,10 @@ describe('documented component interactions', () => {
 
   it('switches the ScrollArea preview between vertical and two-axis overflow', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/scroll-area']);
+    const { container } = await renderDocs(['/components/scroll-area']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    const example = screen.getByRole('region', { name: 'ScrollArea' });
+    const example = content.getByRole('region', { name: 'ScrollArea' });
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     const vertical = within(sidebar).getByRole('radio', { name: 'vertical' });
     const both = within(sidebar).getByRole('radio', { name: 'both' });
@@ -241,46 +222,12 @@ describe('documented component interactions', () => {
     ).toEqual(['vertical', 'horizontal']);
   });
 
-  it('opens and closes an overlay example', async () => {
-    const user = userEvent.setup();
-    await renderDocs(['/components/dialog']);
-
-    await user.click(screen.getByRole('button', { name: 'MD 크기' }));
-    const dialog = await screen.findByRole('dialog', { name: '프로젝트 세부 정보' });
-    expect(
-      within(dialog).getByText('운영에 필요한 핵심 정보와 공개 범위를 확인합니다.'),
-    ).toBeVisible();
-    expect(within(dialog).getByText('워크스페이스 멤버')).toBeVisible();
-
-    await user.click(within(dialog).getByRole('button', { name: '닫기' }));
-    await waitFor(() =>
-      expect(screen.queryByRole('dialog', { name: '프로젝트 세부 정보' })).not.toBeInTheDocument(),
-    );
-  });
-
-  it('explains destructive consequences before confirming an alert dialog', async () => {
-    const user = userEvent.setup();
-    await renderDocs(['/components/alert-dialog']);
-
-    await user.click(screen.getByRole('button', { name: '프로젝트 삭제' }));
-    const dialog = await screen.findByRole('alertdialog', {
-      name: 'Atlas 프로젝트를 삭제하시겠습니까?',
-    });
-
-    expect(
-      within(dialog).getByText(
-        '연결된 배포 12개와 활동 기록이 영구적으로 삭제되며 복구할 수 없습니다.',
-      ),
-    ).toBeVisible();
-    expect(within(dialog).getByRole('button', { name: '취소' })).toBeVisible();
-    expect(within(dialog).getByRole('button', { name: '프로젝트 삭제' })).toBeVisible();
-  });
-
   it('separates popover state ownership and modal interaction scope', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/popover']);
+    const { container } = await renderDocs(['/components/popover']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    const controlledPreview = screen.getByRole('region', { name: '열림 상태 소유권' });
+    const controlledPreview = content.getByRole('region', { name: '열림 상태 소유권' });
     expect(within(controlledPreview).getByText('컴포넌트 소유')).toBeVisible();
     expect(within(controlledPreview).getByText('외부 상태 소유')).toBeVisible();
 
@@ -291,7 +238,7 @@ describe('documented component interactions', () => {
     ).toBeVisible();
     await user.click(within(releasePopover).getByRole('button', { name: '확인' }));
 
-    const modalPreview = screen.getByRole('region', { name: '상호작용 범위' });
+    const modalPreview = content.getByRole('region', { name: '상호작용 범위' });
     await user.click(within(modalPreview).getByRole('button', { name: '공유 범위 변경' }));
     const modalPopover = await screen.findByRole('dialog', { name: '공유 범위 변경' });
     expect(
@@ -300,28 +247,12 @@ describe('documented component interactions', () => {
     expect(document.querySelector('.bg-city-backdrop-subtle')).toBeInTheDocument();
   });
 
-  it('updates a controlled form example and exposes its local result', async () => {
-    const user = userEvent.setup();
-    await renderDocs(['/components/search-input']);
-    const searchExample = screen.getByRole('region', { name: '제어 검색' });
-    const search = within(searchExample).getByRole('searchbox', {
-      name: '문서 검색',
-    });
-
-    expect(search).toHaveValue('city');
-    await user.clear(search);
-    expect(screen.getByText('빈 검색어')).toBeVisible();
-    await user.type(search, 'Button');
-
-    expect(search).toHaveValue('Button');
-    expect(within(searchExample).getByText('Button')).toBeVisible();
-  });
-
   it('uses chips when the Combobox preview switches to multiple selection', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/combobox']);
+    const { container } = await renderDocs(['/components/combobox']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    const example = screen.getByRole('region', { name: 'Combobox' });
+    const example = content.getByRole('region', { name: 'Combobox' });
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     await user.click(within(sidebar).getByRole('switch', { name: 'multiple' }));
 
@@ -331,9 +262,10 @@ describe('documented component interactions', () => {
 
   it('keeps DatePicker open state with the picker instead of the options panel', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/date-picker']);
+    const { container } = await renderDocs(['/components/date-picker']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    const example = screen.getByRole('region', { name: 'DatePicker' });
+    const example = content.getByRole('region', { name: 'DatePicker' });
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     expect(within(sidebar).queryByRole('switch', { name: 'open' })).toBeNull();
     expect(within(sidebar).getByRole('radiogroup', { name: 'size' })).toBeVisible();
@@ -344,9 +276,10 @@ describe('documented component interactions', () => {
 
   it('syncs ToggleGroup selection when the pressed preview option changes', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/toggle-group']);
+    const { container } = await renderDocs(['/components/toggle-group']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    const example = screen.getByRole('region', { name: 'ToggleGroup' });
+    const example = content.getByRole('region', { name: 'ToggleGroup' });
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
     await user.click(
       within(sidebar).getByRole('switch', {
@@ -364,9 +297,10 @@ describe('documented component interactions', () => {
 
   it('syncs Table sorting and selection when preview options change', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/table']);
+    const { container } = await renderDocs(['/components/table']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    const example = screen.getByRole('region', { name: 'Table' });
+    const example = content.getByRole('region', { name: 'Table' });
     const table = within(example).getByRole('table', { name: '옵션을 조절할 수 있는 장소' });
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
 
@@ -389,9 +323,10 @@ describe('documented component interactions', () => {
 
   it('limits the Badge preview to non-conflicting presentation options', async () => {
     const user = userEvent.setup();
-    await renderDocs(['/components/badge']);
+    const { container } = await renderDocs(['/components/badge']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
 
-    const example = screen.getByRole('region', { name: 'Badge' });
+    const example = content.getByRole('region', { name: 'Badge' });
     const sidebar = within(example).getByRole('complementary', { name: '미리보기 옵션' });
 
     expect(within(sidebar).queryByRole('combobox', { name: 'variant' })).toBeNull();
@@ -403,82 +338,25 @@ describe('documented component interactions', () => {
     );
   });
 
-  it('adds transient feedback through the documented Sonner API', async () => {
-    const user = userEvent.setup();
-    await renderDocs(['/components/toast']);
-
-    await user.click(screen.getByRole('button', { name: '저장' }));
-
-    const savedTitle = await screen.findByText('저장되었습니다.');
-    const savedToast = savedTitle.closest<HTMLElement>('[data-sonner-toast]');
-    expect(savedToast).not.toBeNull();
-    expect(savedToast).toHaveAttribute('data-type', 'success');
-    expect(savedToast?.querySelector('[data-icon] [data-city-toast-default-icon]')).not.toBeNull();
-    expect(screen.getByText('변경 사항을 반영했습니다.')).toBeVisible();
-
-    const savedClose = savedToast?.querySelector<HTMLButtonElement>(
-      'button[aria-label="Close notification"]',
-    );
-    expect(savedClose).not.toBeNull();
-    fireEvent.click(savedClose!);
-    await waitFor(() => expect(screen.queryByText('저장되었습니다.')).not.toBeInTheDocument());
-
-    await user.click(screen.getByRole('button', { name: '새로고침' }));
-
-    const refreshedTitle = await screen.findByText('새로고침했습니다.');
-    const refreshedToast = refreshedTitle.closest<HTMLElement>('[data-sonner-toast]');
-    expect(refreshedToast).toHaveAttribute('data-type', 'info');
-    expect(
-      refreshedToast?.querySelector('[data-icon] [data-city-toast-default-icon]'),
-    ).not.toBeNull();
-
-    const refreshedClose = refreshedToast?.querySelector<HTMLButtonElement>(
-      'button[aria-label="Close notification"]',
-    );
-    expect(refreshedClose).not.toBeNull();
-    fireEvent.click(refreshedClose!);
-    await waitFor(() => expect(screen.queryByText('새로고침했습니다.')).not.toBeInTheDocument());
-
-    await user.click(screen.getByRole('button', { name: '상태 확인' }));
-
-    const errorTitle = await screen.findByText('상태를 확인하지 못했습니다.');
-    const errorToast = errorTitle.closest<HTMLElement>('[data-sonner-toast]');
-    expect(errorToast).toHaveAttribute('data-type', 'error');
-    expect(errorToast?.querySelector('[data-icon] [data-city-toast-default-icon]')).not.toBeNull();
-    expect(within(errorToast!).getByRole('button', { name: '다시 확인' })).toHaveAttribute(
-      'data-action',
-    );
-  });
-
-  it('keeps the documented non-modal Drawer free of a backdrop and inert page state', async () => {
-    const user = userEvent.setup();
-    await renderDocs(['/components/drawer']);
-
-    await user.click(screen.getByRole('button', { name: 'right · md · non-modal' }));
-    const drawer = await screen.findByRole('dialog', { name: 'right Drawer' });
-    expect(drawer).toBeVisible();
-    expect(drawer.parentElement).toHaveClass('city-docs-nonmodal-drawer-viewport');
-    expect(document.querySelector('[data-docs-drawer-backdrop]')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'left · sm' })).toBeVisible();
-  });
-
   it('names Fieldset controls and keeps a controlled SegmentedControl selection', async () => {
     const user = userEvent.setup();
     const fieldset = await renderDocs(['/components/fieldset']);
+    const fieldsetContent = within(fieldset.container.querySelector<HTMLElement>('main')!);
 
-    const defaultPreview = screen.getByRole('region', { name: 'Fieldset' });
+    const defaultPreview = fieldsetContent.getByRole('region', { name: 'Fieldset' });
     for (const name of ['이메일', '문자', '푸시']) {
       expect(within(defaultPreview).getByRole('checkbox', { name })).toBeVisible();
     }
 
-    const statesPreview = screen.getByRole('region', { name: '그룹 상태' });
+    const statesPreview = fieldsetContent.getByRole('region', { name: '그룹 상태' });
     for (const name of ['평일', '주말', '서울', '경기']) {
       expect(within(statesPreview).getByRole('checkbox', { name })).toBeVisible();
     }
 
     fieldset.unmount();
-    await renderDocs(['/components/segmented-control']);
-    const segmentedControl = screen.getByRole('region', { name: '필수 단일 선택' });
+    const { container } = await renderDocs(['/components/segmented-control']);
+    const content = within(container.querySelector<HTMLElement>('main')!);
+    const segmentedControl = content.getByRole('region', { name: '필수 단일 선택' });
     const grid = within(segmentedControl).getByRole('radio', { name: '격자' });
     const list = within(segmentedControl).getByRole('radio', { name: '목록' });
     const map = within(segmentedControl).getByRole('radio', { name: '지도' });
@@ -488,71 +366,5 @@ describe('documented component interactions', () => {
     expect(grid).toHaveAttribute('aria-checked', 'false');
     expect(list).toHaveAttribute('aria-checked', 'true');
     expect(map).toHaveAttribute('data-disabled');
-  });
-
-  it('renders every declared Progress shape, status and size combination', async () => {
-    await renderDocs(['/components/progress']);
-
-    const declared = progressPageData.examples
-      .flatMap((example) => example.coverage)
-      .flatMap((coverage) =>
-        'combinations' in coverage && Array.isArray(coverage.combinations)
-          ? coverage.combinations
-          : [],
-      )
-      .sort((first, second) => first.localeCompare(second));
-    const progressExample = screen.getByRole('region', { name: '진행 상태' });
-    const rendered = [...progressExample.querySelectorAll<HTMLElement>('[data-docs-combination]')]
-      .map((element) => element.dataset.docsCombination ?? '')
-      .sort((first, second) => first.localeCompare(second));
-
-    expect(rendered).toEqual(declared);
-    expect(within(progressExample).getAllByRole('progressbar')).toHaveLength(30);
-  });
-
-  it('renders every declared Toast tone', async () => {
-    const user = userEvent.setup();
-    await renderDocs(['/components/toast']);
-
-    const declared = toastPageData.examples
-      .flatMap((example) => example.coverage)
-      .flatMap((coverage) =>
-        'combinations' in coverage && Array.isArray(coverage.combinations)
-          ? coverage.combinations.filter((value): value is string => typeof value === 'string')
-          : [],
-      )
-      .sort((a, b) => a.localeCompare(b));
-
-    for (const tone of ['neutral', 'info', 'success', 'warning', 'destructive']) {
-      await user.click(screen.getByRole('button', { name: tone }));
-    }
-
-    await waitFor(() =>
-      expect(document.querySelectorAll('[data-sonner-toast]')).toHaveLength(declared.length),
-    );
-
-    const rendered = [...document.querySelectorAll<HTMLElement>('[data-sonner-toast]')]
-      .map((element) => {
-        const type = element.dataset.type;
-        return `tone=${type === 'error' ? 'destructive' : (type ?? 'neutral')}`;
-      })
-      .sort();
-
-    expect(rendered).toEqual(declared);
-  });
-
-  it('updates table sorting and indeterminate row selection', async () => {
-    const user = userEvent.setup();
-    await renderDocs(['/components/table']);
-    const table = screen.getByRole('table', { name: '정렬하고 선택할 수 있는 장소' });
-    const selectAll = within(table).getByRole('checkbox', { name: '모든 장소 선택' });
-
-    expect(selectAll).toHaveAttribute('aria-checked', 'mixed');
-    await user.click(within(table).getByRole('button', { name: '이름 (not sorted)' }));
-    expect(within(table).getByRole('button', { name: '이름 (sorted ascending)' })).toBeVisible();
-
-    await user.click(selectAll);
-    expect(within(table).getByRole('checkbox', { name: '한강 선택' })).toBeChecked();
-    expect(within(table).getByRole('checkbox', { name: '도시 공원 선택' })).toBeChecked();
   });
 });

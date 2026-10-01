@@ -14,12 +14,7 @@ catalog:
   '@mdx-js/rollup': 3.1.1
   '@shikijs/langs': 4.4.1
   '@shikijs/themes': 4.4.1
-  '@storybook/addon-a11y': 10.5.3
-  '@storybook/addon-docs': 10.5.3
-  '@storybook/addon-vitest': 10.5.3
-  '@storybook/react-vite': 10.5.3
   '@tailwindcss/cli': 4.3.3
-  '@tailwindcss/vite': 4.3.3
   '@tanstack/react-router': 1.170.18
   '@tanstack/router-plugin': 1.168.23
   '@testing-library/dom': 10.4.1
@@ -30,8 +25,10 @@ catalog:
   '@types/node': 24.10.0
   '@types/react': 19.2.2
   '@types/react-dom': 19.2.2
+  '@vitest/browser': 4.1.10
   '@vitest/browser-playwright': 4.1.10
   '@vitejs/plugin-react': 6.0.4
+  axe-core: 4.12.1
   class-variance-authority: 0.7.1
   clsx: 2.1.1
   jsdom: 29.1.1
@@ -47,7 +44,6 @@ catalog:
   remark-gfm: 4.0.1
   shiki: 4.4.1
   sonner: 2.0.8
-  storybook: 10.5.3
   tailwind-merge: 3.6.0
   tailwindcss: 4.3.3
   turbo: 2.10.6

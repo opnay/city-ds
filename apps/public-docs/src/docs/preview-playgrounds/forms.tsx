@@ -227,7 +227,7 @@ export function ComboboxPreview({ disabled, mode, multiple, size }: PreviewOptio
             <Combobox.InputRow>
               <Combobox.Input aria-label="프로젝트" placeholder="프로젝트 검색" />
               <Combobox.Clear aria-label="모든 프로젝트 지우기" />
-              <Combobox.Trigger />
+              <Combobox.Trigger aria-label="프로젝트 목록 열기" />
             </Combobox.InputRow>
             <Combobox.Value>
               {(selectedProjects: string[]) =>
@@ -257,7 +257,7 @@ export function ComboboxPreview({ disabled, mode, multiple, size }: PreviewOptio
     <Combobox.Root key="single" {...commonProps} {...valueProps}>
       <Combobox.InputGroup>
         <Combobox.Input aria-label="프로젝트" placeholder="프로젝트 검색" />
-        <Combobox.Trigger />
+        <Combobox.Trigger aria-label="프로젝트 목록 열기" />
       </Combobox.InputGroup>
       <ComboboxOptions />
     </Combobox.Root>

@@ -15,7 +15,9 @@ Light·Dark·System에서 의미와 위계가 유지됩니다.
 
 ## 원시 팔레트
 
-팔레트는 Tailwind v4 OKLCH 값으로 고정되어 있습니다. `bg-city-palette-blue-600` 같은
+Neutral은 어두운 면과 상태의 명도 차이를 줄인 city-ds 전용 OKLCH 팔레트입니다.
+50·950 양 끝은 유지하고 중간 단계를 낮춰, 회색 면의 강조를 줄이면서 텍스트 대비를 확보합니다.
+Blue·Green·Amber·Red는 Tailwind v4 OKLCH 값을 사용합니다. `bg-city-palette-blue-600` 같은
 유틸리티도 제공하지만, 재사용 컴포넌트나 제품 화면에서 원시 팔레트를 직접 의미처럼 사용하지
 마십시오.
 
@@ -36,8 +38,9 @@ Light·Dark·System에서 의미와 위계가 유지됩니다.
 
 ## Surface 위계를 구분하십시오
 
-`surface-raised`는 현재 면 위로 분리된 독립 레이어를 표현합니다. Light와 Dark 모두
-`background` 90%와 `surface` 10%를 혼합해 Canvas와 가까운 면을 유지하며, border와 shadow로
+`surface-raised`는 현재 면 위로 분리된 독립 레이어를 표현합니다. Light는 `background` 90%와
+`surface` 10%를 혼합해 Canvas와 가까운 면을 유지합니다. Dark는 `surface`에 `neutral-950`,
+`surface-raised`에 `neutral-900`을 사용해 떠 있는 면을 조금 밝게 구분합니다. Border와 shadow로
 레이어 관계를 보완합니다.
 
 | 토큰             | 면의 역할                 | 대표 사용                                            |

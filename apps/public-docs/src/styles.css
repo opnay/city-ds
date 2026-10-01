@@ -210,7 +210,7 @@
     min-height: 0;
     padding: var(--city-space-5) var(--city-space-3) var(--city-space-3);
     border-right: 1px solid var(--city-color-border);
-    background: var(--city-color-surface-raised);
+    background: var(--city-color-background);
     flex-direction: column;
     gap: var(--city-space-5);
   }
@@ -441,7 +441,7 @@
     min-height: calc(var(--city-control-sm) + var(--city-space-6));
     padding: var(--city-space-2) var(--city-space-8);
     border-bottom: 1px solid var(--city-color-border);
-    background: color-mix(in oklab, var(--city-color-surface-raised) 92%, transparent);
+    background: color-mix(in oklab, var(--city-color-background) 92%, transparent);
     align-items: center;
     justify-content: space-between;
     gap: var(--city-space-4);
@@ -692,7 +692,7 @@
     overflow: auto;
     border: 1px solid var(--city-color-border);
     border-radius: var(--city-radius-md);
-    background: var(--city-color-surface);
+    background: var(--city-color-surface-raised);
     color: var(--city-color-foreground);
     font-size: var(--city-font-size-xs);
     line-height: 1.65;
@@ -703,7 +703,7 @@
     overflow: hidden;
     border: 1px solid var(--city-color-border);
     border-radius: var(--city-radius-md);
-    background: var(--city-color-surface);
+    background: var(--city-color-surface-raised);
   }
 
   .city-docs-prose > .city-docs-prose-code-wrap {

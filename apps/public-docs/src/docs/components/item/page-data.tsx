@@ -106,7 +106,7 @@ export const pageData = {
     {
       id: 'item-preview',
       title: 'Preview',
-      description: '콘텐츠와 저장 액션을 묶고 표면과 밀도를 조절합니다.',
+      description: '일반 콘텐츠 행과 클릭 가능한 링크 행의 표면과 밀도를 비교합니다.',
       Component: ItemPreview,
       configurable: true,
       filename: 'content.tsx',
@@ -115,6 +115,7 @@ export const pageData = {
         { axis: 'appearance', values: ['plain', 'band', 'outline'] },
         { axis: 'density', values: ['comfortable', 'compact'] },
         { axis: 'media', values: ['icon'] },
+        { axis: 'composition', values: ['group', 'link'] },
       ],
     },
     {

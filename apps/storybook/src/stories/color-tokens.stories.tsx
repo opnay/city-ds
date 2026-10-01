@@ -179,7 +179,7 @@ export const Palette: Story = {
   name: '원시 팔레트',
   render: () => (
     <TokenStoryFrame
-      description="Tailwind v4 OKLCH 값을 저장소에 고정한 원시 재료입니다. 컴포넌트에는 직접 사용하지 않고 의미 토큰을 정의할 때 사용합니다."
+      description="Neutral은 회색 면의 강조를 줄이도록 조정한 city-ds OKLCH 팔레트이며, 유색 팔레트는 Tailwind v4 값을 사용합니다. 컴포넌트에는 직접 사용하지 않고 의미 토큰을 정의할 때 사용합니다."
       title="원시 팔레트"
     >
       <div className="city-palette-groups">
